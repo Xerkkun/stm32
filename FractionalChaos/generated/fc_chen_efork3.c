@@ -1515,6 +1515,7 @@ const fc_precomputed_tables_t FC_CHEN_EFORK_TABLES = {
     0x1.cccccc0000000p-1f, 0x1.47ae140000000p-8f, 2000u,
     0x1.164e680000000p-7f,
     {0x1.ef08680000000p-2f, 0x1.ca56a00000000p-3f, 0x1.14c23a0000000p-1f, 0x1.1e50100000000p-1f, -0x1.27dde40000000p-2f, 0x1.6862020000000p-1f, 0x1.df00060000000p+0f, -0x1.8903b20000000p+0f},
+    {0.0f, 0.0f},
     {fc_chen_efork_w1, fc_chen_efork_w2, fc_chen_efork_w3},
     NULL,
     "5d6a6dfa809761268c5f34b348736245397d4657e7aa2bf9be546da1ecb26a4e"

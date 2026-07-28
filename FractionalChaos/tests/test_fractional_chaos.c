@@ -65,6 +65,8 @@ static void test_manifests(void)
               FC_METHOD_EFORK3, 1000u) == 24000u);
     CHECK(fc_active_workspace_bytes(
               FC_METHOD_GL_CAPUTO, 1000u) == 16004u);
+    CHECK(fc_active_workspace_bytes(
+              FC_METHOD_M2SFRK, 2000u) == 0u);
 }
 
 static void test_rhs(void)
@@ -598,12 +600,60 @@ static void test_six_smoke_and_golden(void)
     }
 }
 
+static void test_m2sfrk_reduces_to_midpoint_at_q_one(void)
+{
+    fc_config_t config;
+    fc_workspace_t workspace;
+    fc_solver_t solver;
+    fc_vec3f_t first_rhs;
+    fc_vec3f_t second_rhs;
+    fc_vec3f_t stage;
+    fc_vec3f_t expected;
+    fc_vec3f_t actual;
+    uint32_t component;
+
+    CHECK_STATUS(fc_config_from_manifest(
+        FC_SYSTEM_LORENZ, FC_METHOD_M2SFRK, &config));
+    config.q = 1.0f;
+    config.h = 0.01f;
+    config.precomputed_tables = NULL;
+    CHECK_STATUS(fc_rhs(
+        config.system,
+        config.parameters,
+        &config.initial_state,
+        &first_rhs));
+    for (component = 0u; component < 3u; ++component) {
+        stage.v[component] = fmaf(
+            0.5f * config.h,
+            first_rhs.v[component],
+            config.initial_state.v[component]);
+    }
+    CHECK_STATUS(fc_rhs(
+        config.system, config.parameters, &stage, &second_rhs));
+    for (component = 0u; component < 3u; ++component) {
+        expected.v[component] = fmaf(
+            config.h,
+            second_rhs.v[component],
+            config.initial_state.v[component]);
+    }
+
+    CHECK_STATUS(fc_solver_init(&solver, &workspace, &config));
+    CHECK_STATUS(fc_solver_step(&solver, &actual));
+    for (component = 0u; component < 3u; ++component) {
+        CHECK(float_word(actual.v[component]) ==
+              float_word(expected.v[component]));
+    }
+    CHECK(fc_solver_diagnostics(&solver)->active_memory_terms == 0u);
+}
+
 int main(void)
 {
     test_manifests();
     test_rhs();
     test_zero_equilibrium(FC_METHOD_EFORK3);
     test_zero_equilibrium(FC_METHOD_GL_CAPUTO);
+    test_zero_equilibrium(FC_METHOD_M2SFRK);
+    test_m2sfrk_reduces_to_midpoint_at_q_one();
     test_gl_first_step();
     test_weights_and_reset();
     test_precomputed_table_copy();

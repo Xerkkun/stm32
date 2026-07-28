@@ -6,8 +6,27 @@
 #include <stdint.h>
 
 #define FC_H755_HSEM_BOOT_ID       0U
+#if FC_H755_SMOKE_DIAGNOSTICS
+#define FC_H755_UART_BAUD          115200U
+#else
 #define FC_H755_UART_BAUD          921600U
+#endif
 #define FC_H755_DMA_BUFFER_BYTES   64U
+#define FC_H755_CM7_SEV_PRIORITY   6U
+
+#ifndef FC_H755_SMOKE_DIAGNOSTICS
+#define FC_H755_SMOKE_DIAGNOSTICS 0
+#endif
+
+#if FC_H755_SMOKE_DIAGNOSTICS
+#define FC_CM4_DIAG_WRITE(field, value) \
+    (g_fc_h755_cm4_diagnostics.field = (uint32_t)(value))
+#define FC_CM4_DIAG_INCREMENT(field) \
+    (++g_fc_h755_cm4_diagnostics.field)
+#else
+#define FC_CM4_DIAG_WRITE(field, value) ((void)0)
+#define FC_CM4_DIAG_INCREMENT(field) ((void)0)
+#endif
 
 typedef union {
     fc_wire_frame_t frame;
@@ -20,6 +39,12 @@ _Static_assert(
 _Static_assert(
     sizeof(fc_h755_dma_buffer_t) == FC_H755_DMA_BUFFER_BYTES,
     "El búfer DMA debe ocupar 64 bytes");
+_Static_assert(
+    CM7_SEV_IRQn == 64,
+    "El vector intercore CM7_SEV debe conservar el IRQ 64 del STM32H755");
+_Static_assert(
+    FC_H755_CM7_SEV_PRIORITY > 5U,
+    "CM7_SEV debe tener menor prioridad que DMA1 y USART3");
 
 UART_HandleTypeDef huart3;
 DMA_HandleTypeDef hdma_usart3_tx;
@@ -32,16 +57,37 @@ static volatile uint32_t g_uart_errors;
 static void wait_for_cm7_release(void);
 static void MX_DMA_Init(void);
 static void MX_USART3_UART_Init(void);
+static void MX_CM7_SEV_Init(void);
 static void transmit_next_sample(void);
 
 int main(void)
 {
+#if FC_H755_SMOKE_DIAGNOSTICS
+    g_fc_h755_cm4_diagnostics.magic = FC_H755_CM4_DIAG_MAGIC;
+    g_fc_h755_cm4_diagnostics.stage = 1U;
+    g_fc_h755_cm4_diagnostics.loop_count = 0U;
+    g_fc_h755_cm4_diagnostics.samples_popped = 0U;
+    g_fc_h755_cm4_diagnostics.dma_started = 0U;
+    g_fc_h755_cm4_diagnostics.tx_completed = 0U;
+    g_fc_h755_cm4_diagnostics.uart_errors = 0U;
+    g_fc_h755_cm4_diagnostics.last_hal_status = 0U;
+    g_fc_h755_cm4_diagnostics.hardfault_count = 0U;
+    g_fc_h755_cm4_diagnostics.cfsr = 0U;
+    g_fc_h755_cm4_diagnostics.hfsr = 0U;
+    g_fc_h755_cm4_diagnostics.mmfar = 0U;
+    g_fc_h755_cm4_diagnostics.bfar = 0U;
+#endif
     HAL_Init();
+    FC_CM4_DIAG_WRITE(stage, 2U);
     wait_for_cm7_release();
+    FC_CM4_DIAG_WRITE(stage, 3U);
     SystemCoreClockUpdate();
 
     MX_DMA_Init();
+    FC_CM4_DIAG_WRITE(stage, 4U);
     MX_USART3_UART_Init();
+    FC_CM4_DIAG_WRITE(stage, 5U);
+    MX_CM7_SEV_Init();
     HAL_SuspendTick();
 
     __DMB();
@@ -53,14 +99,17 @@ int main(void)
     __SEV();
 
     for (;;) {
+        FC_CM4_DIAG_INCREMENT(loop_count);
         if (g_uart_tx_active == 0U) {
             transmit_next_sample();
         }
-        if (g_uart_tx_active != 0U) {
-            __WFI();
-        } else {
-            __WFE();
-        }
+        /*
+         * WFI puede perder la terminación DMA/UART si la interrupción ocurre
+         * entre la comprobación de g_uart_tx_active y la instrucción de
+         * espera. WFE conserva el evento producido por CM7 o por los callbacks
+         * aunque llegue antes de entrar en reposo.
+         */
+        __WFE();
     }
 }
 
@@ -104,6 +153,26 @@ static void MX_USART3_UART_Init(void)
     }
 }
 
+static void MX_CM7_SEV_Init(void)
+{
+    /*
+     * En STM32H755, un SEV ejecutado por CM7 activa CM7_SEV_IRQn en CM4.
+     * SystemInit habilita SEVONPEND: sólo una transición nueva a pending
+     * produce un evento. Si el IRQ queda deshabilitado y pending, únicamente
+     * el primer push despierta WFE. El handler vacío consume cada pending y
+     * rearma así el doorbell intercore sin usar HSEM por muestra.
+     *
+     * CM7 espera g_fc_h755_cm4_ready, por lo que limpiar antes de publicar
+     * ready no puede perder una muestra válida.
+     */
+    HAL_NVIC_ClearPendingIRQ(CM7_SEV_IRQn);
+    HAL_NVIC_SetPriority(
+        CM7_SEV_IRQn,
+        FC_H755_CM7_SEV_PRIORITY,
+        0U);
+    HAL_NVIC_EnableIRQ(CM7_SEV_IRQn);
+}
+
 static void transmit_next_sample(void)
 {
     fc_sample_t sample;
@@ -111,6 +180,7 @@ static void transmit_next_sample(void)
     if (!fc_shared_queue_pop(&g_fc_h755_queue, &sample)) {
         return;
     }
+    FC_CM4_DIAG_INCREMENT(samples_popped);
 
     fc_make_state_frame(
         &g_uart_tx_buffer.frame,
@@ -119,19 +189,43 @@ static void transmit_next_sample(void)
         fc_shared_queue_dropped(&g_fc_h755_queue) + g_uart_errors);
 
     g_uart_tx_active = 1U;
-    if (HAL_UART_Transmit_DMA(
-            &huart3,
-            (uint8_t *)(void *)&g_uart_tx_buffer.frame,
-            (uint16_t)sizeof(g_uart_tx_buffer.frame)) != HAL_OK) {
+#if FC_H755_SMOKE_DIAGNOSTICS
+    const HAL_StatusTypeDef hal_status = HAL_UART_Transmit(
+        &huart3,
+        (uint8_t *)(void *)&g_uart_tx_buffer.frame,
+        (uint16_t)sizeof(g_uart_tx_buffer.frame),
+        100U);
+    FC_CM4_DIAG_WRITE(last_hal_status, hal_status);
+    g_uart_tx_active = 0U;
+    if (hal_status != HAL_OK) {
+        ++g_uart_errors;
+        FC_CM4_DIAG_INCREMENT(uart_errors);
+    } else {
+        FC_CM4_DIAG_INCREMENT(dma_started);
+        FC_CM4_DIAG_INCREMENT(tx_completed);
+    }
+#else
+    const HAL_StatusTypeDef hal_status = HAL_UART_Transmit_DMA(
+        &huart3,
+        (uint8_t *)(void *)&g_uart_tx_buffer.frame,
+        (uint16_t)sizeof(g_uart_tx_buffer.frame));
+    FC_CM4_DIAG_WRITE(last_hal_status, hal_status);
+    if (hal_status != HAL_OK) {
         g_uart_tx_active = 0U;
         ++g_uart_errors;
+        FC_CM4_DIAG_INCREMENT(uart_errors);
+    } else {
+        FC_CM4_DIAG_INCREMENT(dma_started);
     }
+#endif
 }
 
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *uart)
 {
     if (uart->Instance == USART3) {
         g_uart_tx_active = 0U;
+        FC_CM4_DIAG_INCREMENT(tx_completed);
+        __SEV();
     }
 }
 
@@ -140,6 +234,8 @@ void HAL_UART_ErrorCallback(UART_HandleTypeDef *uart)
     if (uart->Instance == USART3) {
         g_uart_tx_active = 0U;
         ++g_uart_errors;
+        FC_CM4_DIAG_INCREMENT(uart_errors);
+        __SEV();
     }
 }
 
@@ -150,4 +246,3 @@ void Error_Handler(void)
         __NOP();
     }
 }
-

@@ -1,0 +1,110 @@
+Sonda validada: 003700344142501220353451 [NUCLEO-H755ZI-Q].
+Programando Cortex-M7 en Flash bank 1...
+      -------------------------------------------------------------------
+                       STM32CubeProgrammer v2.23.0                  
+      -------------------------------------------------------------------
+
+ST-LINK SN  : 003700344142501220353451
+ST-LINK FW  : V3J5M2
+Board       : NUCLEO-H755ZI-Q
+Voltage     : 3.29V
+SWD freq    : 8000 KHz
+Connect mode: Under Reset
+Reset mode  : Hardware reset
+Device ID   : 0x450
+Revision ID : Rev V
+Device name : STM32H7xx
+NVM size    : 2 MBytes
+Device type : MCU
+Device CPU  : Cortex-M7/M4
+BL Version  : 0x92
+
+Core halted
+
+
+Opening and parsing file: h755_m7_chen_m2sfrk.hex
+
+
+Memory Programming ...
+  File          : h755_m7_chen_m2sfrk.hex
+  Size          : 8.20 KB 
+  Address       : 0x08000000
+
+
+Erasing memory corresponding to segment 0:
+Erasing internal memory sector 0
+Download in Progress:
+北北北北北北北北北北北北北北北北北北北北北北北北北 0%圹圹圹圹圹圹圹圹圹圹圹圹圹圹圹圹圹圹圹圹圹圹圹圹圹 100%
+
+File download complete
+Time elapsed during download operation: 00:00:00.906
+
+
+
+Verifying...
+
+
+File size < 32KB legacy verify will be used
+Read progress:
+北北北北北北北北北北北北北北北北北北北北北北北北北 50%圹圹圹圹圹圹圹圹圹圹圹圹圹圹圹圹圹圹圹圹圹圹圹圹圹 100%
+
+Time elapsed during verifying operation: 00:00:00.022
+
+
+Download verified successfully
+
+
+Programando Cortex-M4 en Flash bank 2...
+      -------------------------------------------------------------------
+                       STM32CubeProgrammer v2.23.0                  
+      -------------------------------------------------------------------
+
+ST-LINK SN  : 003700344142501220353451
+ST-LINK FW  : V3J5M2
+Board       : NUCLEO-H755ZI-Q
+Voltage     : 3.29V
+SWD freq    : 8000 KHz
+Connect mode: Under Reset
+Reset mode  : Hardware reset
+Device ID   : 0x450
+Revision ID : Rev V
+Device name : STM32H7xx
+NVM size    : 2 MBytes
+Device type : MCU
+Device CPU  : Cortex-M7/M4
+BL Version  : 0x92
+
+Core halted
+
+
+Opening and parsing file: h755_m4_uart.hex
+
+
+Memory Programming ...
+  File          : h755_m4_uart.hex
+  Size          : 11.42 KB 
+  Address       : 0x08100000
+
+
+Erasing memory corresponding to segment 0:
+Erasing internal memory sector 8
+Download in Progress:
+北北北北北北北北北北北北北北北北北北北北北北北北北 0%圹圹圹圹圹圹圹圹圹圹圹圹圹圹圹圹圹圹圹圹圹圹圹圹圹 100%
+
+File download complete
+Time elapsed during download operation: 00:00:00.922
+
+
+
+Verifying...
+
+
+Read progress:
+北北北北北北北北北北北北北北北北北北北北北北北北北 50%圹圹圹圹圹圹圹圹圹圹圹圹圹圹圹圹圹圹圹圹圹圹圹圹圹 100%
+
+Time elapsed during verifying operation: 00:00:00.031
+
+
+Download verified successfully
+
+

@@ -9,6 +9,21 @@ option(FC_H755_CLOCK_480
 option(FC_H755_LDO_MODIFICATION_CONFIRMED
     "Confirmación explícita de que NUCLEO-H755ZI-Q se modificó físicamente a LDO"
     OFF)
+option(FC_H755_SMOKE_DIAGNOSTICS
+    "Instrumentar CM4 en SRAM4 para diagnosticar UART; no usar en mediciones"
+    OFF)
+option(FC_H755_BENCHMARK_MODE
+    "Guardar 10000 conteos DWT y emitirlos después como bloques de timing"
+    OFF)
+set(FC_H755_OUTPUT_DECIMATION
+    "512"
+    CACHE STRING
+    "Transmitir una muestra por cada N pasos del solucionador")
+
+if(NOT FC_H755_OUTPUT_DECIMATION MATCHES "^[1-9][0-9]*$")
+    message(FATAL_ERROR
+        "FC_H755_OUTPUT_DECIMATION debe ser un entero positivo")
+endif()
 
 if(FC_H755_CLOCK_480 AND NOT FC_H755_LDO_MODIFICATION_CONFIRMED)
     message(FATAL_ERROR
@@ -71,6 +86,7 @@ set(_fc_h755_cm7_sources
     "${CMAKE_CURRENT_LIST_DIR}/shared/h755_shared_memory.c"
     "${CMAKE_CURRENT_LIST_DIR}/shared/h755_syscalls.c"
     "${FC_H755_ROOT}/common/fractional_chaos.c"
+    "${FC_H755_ROOT}/common/fractional_chaos_fixed.c"
     "${FC_H755_ROOT}/transport/fc_shared_queue.c"
     "${_fc_h755_startup}"
     "${_fc_h755_system}"
@@ -159,13 +175,16 @@ function(fc_h755_apply_common target core linker_script)
 endfunction()
 
 function(fc_h755_add_m7_target
-        target system_id method_id table_source table_symbol)
+        target system_id method_id table_source table_symbol fixed_point)
     add_executable(${target}
         ${_fc_h755_cm7_sources}
         "${FC_H755_ROOT}/generated/${table_source}")
     target_compile_definitions(${target} PRIVATE
         FC_SYSTEM_ID=${system_id}
         FC_METHOD_ID=${method_id}
+        FC_H755_FIXED_POINT=${fixed_point}
+        FC_H755_OUTPUT_DECIMATION=${FC_H755_OUTPUT_DECIMATION}
+        FC_H755_BENCHMARK_MODE=$<BOOL:${FC_H755_BENCHMARK_MODE}>
         FC_REQUIRE_PRECOMPUTED_TABLES=1
         FC_PRECOMPUTED_TABLES_SYMBOL=${table_symbol})
     target_link_libraries(${target} PRIVATE m)
@@ -177,24 +196,68 @@ endfunction()
 
 fc_h755_add_m7_target(
     h755_m7_lorenz_efork3 0 0
-    fc_lorenz_efork3.c FC_LORENZ_EFORK_TABLES)
+    fc_lorenz_efork3.c FC_LORENZ_EFORK_TABLES 0)
 fc_h755_add_m7_target(
     h755_m7_lorenz_gl 0 1
-    fc_lorenz_gl.c FC_LORENZ_GL_TABLES)
+    fc_lorenz_gl.c FC_LORENZ_GL_TABLES 0)
+fc_h755_add_m7_target(
+    h755_m7_lorenz_m2sfrk 0 2
+    fc_lorenz_m2sfrk.c FC_LORENZ_M2SFRK_TABLES 0)
 fc_h755_add_m7_target(
     h755_m7_rossler_efork3 1 0
-    fc_rossler_efork3.c FC_ROSSLER_EFORK_TABLES)
+    fc_rossler_efork3.c FC_ROSSLER_EFORK_TABLES 0)
 fc_h755_add_m7_target(
     h755_m7_rossler_gl 1 1
-    fc_rossler_gl.c FC_ROSSLER_GL_TABLES)
+    fc_rossler_gl.c FC_ROSSLER_GL_TABLES 0)
+fc_h755_add_m7_target(
+    h755_m7_rossler_m2sfrk 1 2
+    fc_rossler_m2sfrk.c FC_ROSSLER_M2SFRK_TABLES 0)
 fc_h755_add_m7_target(
     h755_m7_chen_efork3 2 0
-    fc_chen_efork3.c FC_CHEN_EFORK_TABLES)
+    fc_chen_efork3.c FC_CHEN_EFORK_TABLES 0)
 fc_h755_add_m7_target(
     h755_m7_chen_gl 2 1
-    fc_chen_gl.c FC_CHEN_GL_TABLES)
+    fc_chen_gl.c FC_CHEN_GL_TABLES 0)
+fc_h755_add_m7_target(
+    h755_m7_chen_m2sfrk 2 2
+    fc_chen_m2sfrk.c FC_CHEN_M2SFRK_TABLES 0)
+
+fc_h755_add_m7_target(
+    h755_m7_lorenz_efork3_fixed 0 0
+    fc_lorenz_efork3.c FC_LORENZ_EFORK_TABLES 1)
+fc_h755_add_m7_target(
+    h755_m7_lorenz_gl_fixed 0 1
+    fc_lorenz_gl.c FC_LORENZ_GL_TABLES 1)
+fc_h755_add_m7_target(
+    h755_m7_lorenz_m2sfrk_fixed 0 2
+    fc_lorenz_m2sfrk.c FC_LORENZ_M2SFRK_TABLES 1)
+fc_h755_add_m7_target(
+    h755_m7_rossler_efork3_fixed 1 0
+    fc_rossler_efork3.c FC_ROSSLER_EFORK_TABLES 1)
+fc_h755_add_m7_target(
+    h755_m7_rossler_gl_fixed 1 1
+    fc_rossler_gl.c FC_ROSSLER_GL_TABLES 1)
+fc_h755_add_m7_target(
+    h755_m7_rossler_m2sfrk_fixed 1 2
+    fc_rossler_m2sfrk.c FC_ROSSLER_M2SFRK_TABLES 1)
+fc_h755_add_m7_target(
+    h755_m7_chen_efork3_fixed 2 0
+    fc_chen_efork3.c FC_CHEN_EFORK_TABLES 1)
+fc_h755_add_m7_target(
+    h755_m7_chen_gl_fixed 2 1
+    fc_chen_gl.c FC_CHEN_GL_TABLES 1)
+fc_h755_add_m7_target(
+    h755_m7_chen_m2sfrk_fixed 2 2
+    fc_chen_m2sfrk.c FC_CHEN_M2SFRK_TABLES 1)
 
 add_executable(h755_m4_uart ${_fc_h755_cm4_sources})
+if(FC_H755_SMOKE_DIAGNOSTICS)
+    target_compile_definitions(h755_m4_uart PRIVATE
+        FC_H755_SMOKE_DIAGNOSTICS=1)
+else()
+    target_compile_definitions(h755_m4_uart PRIVATE
+        FC_H755_SMOKE_DIAGNOSTICS=0)
+endif()
 fc_h755_apply_common(
     h755_m4_uart
     cm4

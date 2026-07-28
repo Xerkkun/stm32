@@ -1,0 +1,3 @@
+# Los resultados publicados se hashéan byte por byte. Evitar que autocrlf
+# altere capturas, tablas, bitstreams, figuras o logs al añadirlos o extraerlos.
+validation/results/** binary

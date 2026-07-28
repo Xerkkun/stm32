@@ -1,0 +1,9 @@
+{
+  "eligible_as_evidence": false,
+  "error": "no se alcanzó el endpoint sequence=9996 en 180s",
+  "error_type": "CampaignError",
+  "failed_utc": "2026-07-28T23:23:56.567887Z",
+  "run_id": "stm32_primary_36x30_v1__r01__chen_m2sfrk_h755_float32__e2fb1d466a__benchmark-reset-pilot",
+  "schema": "fractional-chaos-physical-run-failure-v1",
+  "started_utc": "2026-07-28T23:20:51.036521Z"
+}

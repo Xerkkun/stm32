@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "status": "pre_registered_candidate",
+  "operator": "caputo",
+  "lower_terminal": 0.0,
+  "prehistory": "x(t<0)=x0",
+  "manifests": [
+    {
+      "manifest_id": "lorenz_caputo_v1",
+      "system": "lorenz",
+      "parameters": [10.0, 28.0, 2.6666666666666665],
+      "initial_state": [0.1, 0.1, 0.1],
+      "q": 0.995,
+      "h": 0.005,
+      "memory_seconds": 10.0,
+      "memory_increments": 2000
+    },
+    {
+      "manifest_id": "rossler_caputo_v1",
+      "system": "rossler",
+      "parameters": [0.2, 0.2, 6.0],
+      "initial_state": [0.5, 1.5, 0.1],
+      "q": 0.97,
+      "h": 0.01,
+      "memory_seconds": 10.0,
+      "memory_increments": 1000
+    },
+    {
+      "manifest_id": "chen_caputo_v1",
+      "system": "chen",
+      "parameters": [35.0, 3.0, 28.0],
+      "initial_state": [0.1, 0.1, 0.1],
+      "q": 0.9,
+      "h": 0.005,
+      "memory_seconds": 10.0,
+      "memory_increments": 2000
+    }
+  ]
+}

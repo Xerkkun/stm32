@@ -46,7 +46,8 @@ static int fc_valid_system(fc_system_t system)
 static int fc_valid_method(fc_method_t method)
 {
     return (method == FC_METHOD_EFORK3) ||
-           (method == FC_METHOD_GL_CAPUTO);
+           (method == FC_METHOD_GL_CAPUTO) ||
+           (method == FC_METHOD_M2SFRK);
 }
 
 static int fc_vec_isfinite(const fc_vec3f_t *value)
@@ -235,6 +236,9 @@ size_t fc_active_workspace_bytes(
     if (method == FC_METHOD_GL_CAPUTO) {
         return ((size_t)memory_length * sizeof(fc_vec3f_t)) +
                (((size_t)memory_length + 1u) * sizeof(fc_real_t));
+    }
+    if (method == FC_METHOD_M2SFRK) {
+        return 0u;
     }
     return 0u;
 }
@@ -502,6 +506,22 @@ static fc_status_t fc_copy_precomputed_gl(
     return FC_OK;
 }
 
+static fc_status_t fc_copy_precomputed_m2sfrk(
+    fc_solver_t *solver,
+    const fc_precomputed_tables_t *tables)
+{
+    if (!fc_precomputed_header_is_valid(&solver->config, tables) ||
+        !isfinite(tables->m2sfrk.c2) ||
+        !isfinite(tables->m2sfrk.c4) ||
+        (tables->m2sfrk.c2 <= 0.0f) ||
+        (tables->m2sfrk.c4 <= 0.0f)) {
+        return FC_ERR_COEFFICIENT;
+    }
+    solver->h_to_q = tables->h_to_q;
+    solver->m2sfrk = tables->m2sfrk;
+    return FC_OK;
+}
+
 fc_status_t fc_solver_init(
     fc_solver_t *solver,
     fc_workspace_t *workspace,
@@ -509,11 +529,15 @@ fc_status_t fc_solver_init(
 {
     fc_status_t status;
 
-    if ((solver == NULL) || (workspace == NULL) || (config == NULL)) {
+    if ((solver == NULL) || (config == NULL)) {
         return FC_ERR_NULL;
     }
     if (!fc_config_is_valid(config)) {
         return FC_ERR_CONFIG;
+    }
+    if ((workspace == NULL) &&
+        (config->method != FC_METHOD_M2SFRK)) {
+        return FC_ERR_WORKSPACE;
     }
 
     solver->magic = 0u;
@@ -526,6 +550,9 @@ fc_status_t fc_solver_init(
                 solver, config->precomputed_tables);
         } else if (config->method == FC_METHOD_GL_CAPUTO) {
             status = fc_copy_precomputed_gl(
+                solver, config->precomputed_tables);
+        } else if (config->method == FC_METHOD_M2SFRK) {
+            status = fc_copy_precomputed_m2sfrk(
                 solver, config->precomputed_tables);
         } else {
             return FC_ERR_METHOD;
@@ -543,6 +570,22 @@ fc_status_t fc_solver_init(
             status = fc_prepare_efork(solver);
         } else if (config->method == FC_METHOD_GL_CAPUTO) {
             status = fc_prepare_gl(solver);
+        } else if (config->method == FC_METHOD_M2SFRK) {
+            const fc_real_t gamma_1 = tgammaf(1.0f + config->q);
+            const fc_real_t gamma_2 = tgammaf(1.0f + (2.0f * config->q));
+            if (!isfinite(gamma_1) ||
+                !isfinite(gamma_2) ||
+                (gamma_1 <= 0.0f) ||
+                (gamma_2 <= 0.0f)) {
+                return FC_ERR_COEFFICIENT;
+            }
+            solver->m2sfrk.c2 = solver->h_to_q / gamma_1;
+            solver->m2sfrk.c4 =
+                (solver->h_to_q * gamma_1) / gamma_2;
+            status =
+                (isfinite(solver->m2sfrk.c2) &&
+                 isfinite(solver->m2sfrk.c4)) ?
+                FC_OK : FC_ERR_COEFFICIENT;
         } else {
             return FC_ERR_METHOD;
         }
@@ -563,7 +606,8 @@ fc_status_t fc_solver_reset(fc_solver_t *solver)
         return FC_ERR_NULL;
     }
     if ((solver->magic != FC_SOLVER_MAGIC) ||
-        (solver->workspace == NULL)) {
+        ((solver->workspace == NULL) &&
+         (solver->config.method != FC_METHOD_M2SFRK))) {
         return FC_ERR_NOT_INITIALIZED;
     }
 
@@ -913,6 +957,63 @@ static fc_status_t fc_step_gl(
     return FC_OK;
 }
 
+static fc_status_t fc_step_m2sfrk(
+    fc_solver_t *solver,
+    fc_vec3f_t *output)
+{
+    fc_vec3f_t rhs;
+    fc_vec3f_t stage_state;
+    fc_vec3f_t next_state;
+    uint32_t component;
+    fc_status_t status;
+
+    status = fc_rhs(
+        solver->config.system,
+        solver->config.parameters,
+        &solver->state,
+        &rhs);
+    if (status != FC_OK) {
+        return status;
+    }
+    for (component = 0u; component < FC_STATE_DIMENSION; ++component) {
+        stage_state.v[component] = fmaf(
+            solver->m2sfrk.c4,
+            rhs.v[component],
+            solver->state.v[component]);
+    }
+
+    status = fc_rhs(
+        solver->config.system,
+        solver->config.parameters,
+        &stage_state,
+        &rhs);
+    if (status != FC_OK) {
+        return status;
+    }
+    for (component = 0u; component < FC_STATE_DIMENSION; ++component) {
+        next_state.v[component] = fmaf(
+            solver->m2sfrk.c2,
+            rhs.v[component],
+            solver->state.v[component]);
+    }
+    if (!fc_vec_isfinite(&next_state)) {
+        return FC_ERR_NONFINITE;
+    }
+
+    solver->state = next_state;
+    ++solver->step_index;
+    solver->diagnostics.steps_completed = solver->step_index;
+    solver->diagnostics.active_memory_terms = 0u;
+    solver->diagnostics.last_history_abs_max = 0.0f;
+    solver->diagnostics.max_abs_state =
+        fc_vec_max_abs(&solver->state);
+    solver->diagnostics.last_status = FC_OK;
+    if (output != NULL) {
+        *output = solver->state;
+    }
+    return FC_OK;
+}
+
 fc_status_t fc_solver_step(
     fc_solver_t *solver,
     fc_vec3f_t *output)
@@ -923,7 +1024,8 @@ fc_status_t fc_solver_step(
         return FC_ERR_NULL;
     }
     if ((solver->magic != FC_SOLVER_MAGIC) ||
-        (solver->workspace == NULL)) {
+        ((solver->workspace == NULL) &&
+         (solver->config.method != FC_METHOD_M2SFRK))) {
         return FC_ERR_NOT_INITIALIZED;
     }
 
@@ -931,6 +1033,8 @@ fc_status_t fc_solver_step(
         status = fc_step_efork(solver, output);
     } else if (solver->config.method == FC_METHOD_GL_CAPUTO) {
         status = fc_step_gl(solver, output);
+    } else if (solver->config.method == FC_METHOD_M2SFRK) {
+        status = fc_step_m2sfrk(solver, output);
     } else {
         status = FC_ERR_METHOD;
     }

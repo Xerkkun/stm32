@@ -46,7 +46,8 @@ typedef enum {
  */
 typedef enum {
     FC_METHOD_EFORK3 = 0,
-    FC_METHOD_GL_CAPUTO = 1
+    FC_METHOD_GL_CAPUTO = 1,
+    FC_METHOD_M2SFRK = 2
 } fc_method_t;
 
 typedef enum {
@@ -96,6 +97,11 @@ typedef struct {
     fc_real_t w3;
 } fc_efork_coefficients_t;
 
+typedef struct {
+    fc_real_t c2;
+    fc_real_t c4;
+} fc_m2sfrk_coefficients_t;
+
 /*
  * Optional tables generated outside the target. When supplied, init validates
  * q, h, M and method, then copies the exact float32 words to the caller's
@@ -110,6 +116,7 @@ struct fc_precomputed_tables {
     uint32_t memory_length;
     fc_real_t h_to_q;
     fc_efork_coefficients_t efork;
+    fc_m2sfrk_coefficients_t m2sfrk;
     const fc_real_t *efork_weights[3];
     const fc_real_t *gl_weights;
     const char *table_sha256;
@@ -155,6 +162,7 @@ typedef struct {
     fc_vec3f_t gl_current_u;
     fc_real_t h_to_q;
     fc_efork_coefficients_t efork;
+    fc_m2sfrk_coefficients_t m2sfrk;
     uint64_t step_index;
     uint32_t ring_head;
     uint32_t ring_valid;
@@ -173,6 +181,9 @@ extern const fc_precomputed_tables_t FC_ROSSLER_EFORK_TABLES;
 extern const fc_precomputed_tables_t FC_ROSSLER_GL_TABLES;
 extern const fc_precomputed_tables_t FC_CHEN_EFORK_TABLES;
 extern const fc_precomputed_tables_t FC_CHEN_GL_TABLES;
+extern const fc_precomputed_tables_t FC_LORENZ_M2SFRK_TABLES;
+extern const fc_precomputed_tables_t FC_ROSSLER_M2SFRK_TABLES;
+extern const fc_precomputed_tables_t FC_CHEN_M2SFRK_TABLES;
 
 const fc_manifest_t *fc_manifest(fc_system_t system);
 

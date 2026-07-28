@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "criteria_id": "abm_caputo_long_horizon_v1",
+  "status": "predeclared_before_first_qualification_run",
+  "declared_date": "2026-07-28",
+  "scope": "Observed long-horizon dynamic qualification of the three candidate Caputo manifests using the independently validated full-memory ABM oracle.",
+  "inputs": {
+    "manifest_ids": [
+      "lorenz_caputo_v1",
+      "rossler_caputo_v1",
+      "chen_caputo_v1"
+    ],
+    "candidate_manifest_sha256": "2c1b2ea27dc796920f993b5e748afd24524549839fad9ca846704ffbeaaecf11"
+  },
+  "integration": {
+    "resolution_divisors": [
+      2,
+      4
+    ],
+    "physical_horizon_s": 50.0,
+    "transient_s": 10.0,
+    "diagnostic_sample_period_s": 0.05,
+    "operator": "caputo",
+    "memory_policy": "full_history",
+    "arithmetic": "IEEE-754 float64"
+  },
+  "observed_boundedness": {
+    "maximum_absolute_state": 1000.0,
+    "minimum_active_components": 3,
+    "minimum_component_standard_deviation": 0.001,
+    "minimum_component_peak_to_peak": 0.01
+  },
+  "nonperiodicity_screen": {
+    "lag_window_s": [
+      1.0,
+      15.0
+    ],
+    "minimum_normalized_lag_rmse": 0.05,
+    "permutation_entropy_order": 5,
+    "permutation_entropy_delay_s": 0.1,
+    "minimum_normalized_permutation_entropy": 0.25
+  },
+  "within_resolution_stability": {
+    "post_transient_blocks": 4,
+    "maximum_block_mean_shift_in_global_std": 1.5,
+    "minimum_block_to_global_std_ratio": 0.25,
+    "maximum_block_to_global_std_ratio": 4.0
+  },
+  "cross_resolution_stability": {
+    "maximum_mean_difference_in_pooled_std": 0.75,
+    "maximum_symmetric_std_ratio": 2.5,
+    "maximum_quantile_difference_in_pooled_std": 1.0,
+    "maximum_permutation_entropy_difference": 0.25,
+    "quantiles": [
+      0.05,
+      0.25,
+      0.5,
+      0.75,
+      0.95
+    ]
+  },
+  "decision_rule": {
+    "qualified": "Every resolution passes observed boundedness, activity, the nonperiodicity screen, and within-resolution stability, and the h/2 versus h/4 distributional comparison passes.",
+    "not_qualified": "Any required dynamic screen fails. A failed screen is reported without changing the criteria.",
+    "prerequisite": "The separate ABM implementation-validation report must pass and its oracle and manifest hashes must match the current inputs."
+  },
+  "does_not_establish": [
+    "mathematical boundedness outside the observed horizon",
+    "a proof of chaos or a positive Lyapunov exponent",
+    "hidden-attractor status",
+    "pointwise convergence of long chaotic trajectories",
+    "equivalence to an embedded finite-memory implementation",
+    "STM32 timing, energy, or randomness",
+    "completion of the 30-cold-start physical campaign"
+  ]
+}

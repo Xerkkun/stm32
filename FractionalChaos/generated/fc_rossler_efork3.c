@@ -765,6 +765,7 @@ const fc_precomputed_tables_t FC_ROSSLER_EFORK_TABLES = {
     0x1.f0a3d80000000p-1f, 0x1.47ae140000000p-7f, 1000u,
     0x1.783a180000000p-7f,
     {0x1.fb95740000000p-2f, 0x1.f0d17a0000000p-3f, 0x1.066c780000000p-1f, 0x1.095c5a0000000p-1f, -0x1.0c4c3e0000000p-2f, 0x1.5a30f60000000p-1f, 0x1.b96d320000000p+0f, -0x1.63548a0000000p+0f},
+    {0.0f, 0.0f},
     {fc_rossler_efork_w1, fc_rossler_efork_w2, fc_rossler_efork_w3},
     NULL,
     "c64c3dfaec7d25d504c42f6607fc198f0a67a1ea62853d71c7db6a2078fc05b7"

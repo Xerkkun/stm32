@@ -105,6 +105,18 @@ def gl_table(manifest: Manifest):
     return weights
 
 
+def m2sfrk_coefficients(manifest: Manifest):
+    q = f32(manifest.q)
+    h = f32(manifest.h)
+    h_to_q = f32(math.pow(h, q))
+    gamma_1 = math.gamma(1.0 + q)
+    gamma_2 = math.gamma(1.0 + 2.0 * q)
+    return (
+        f32(h_to_q / gamma_1),
+        f32(h_to_q * gamma_1 / gamma_2),
+    )
+
+
 def emit_array(name: str, values: list[float]) -> None:
     print(f"static const float {name}[{len(values)}] = {{")
     for start in range(0, len(values), 4):
@@ -149,6 +161,7 @@ def generate(manifest: Manifest, method: str) -> None:
         print(f"    {c_hex(q)}, {c_hex(h)}, {manifest.memory}u,")
         print(f"    {c_hex(h_to_q)},")
         print(f"    {{{coefficient_text}}},")
+        print("    {0.0f, 0.0f},")
         print(
             "    {"
             f"fc_{manifest.name}_efork_w1, "
@@ -159,7 +172,7 @@ def generate(manifest: Manifest, method: str) -> None:
         print("    NULL,")
         print(f'    "{digest_hex}"')
         print("};")
-    else:
+    elif method == "gl":
         values = gl_table(manifest)
         for value in values:
             append_word(digest, value)
@@ -174,8 +187,29 @@ def generate(manifest: Manifest, method: str) -> None:
         print(f"    {c_hex(h_to_q)},")
         print("    {0.0f, 0.0f, 0.0f, 0.0f, "
               "0.0f, 0.0f, 0.0f, 0.0f},")
+        print("    {0.0f, 0.0f},")
         print("    {NULL, NULL, NULL},")
         print(f"    fc_{manifest.name}_gl_w,")
+        print(f'    "{digest_hex}"')
+        print("};")
+    else:
+        coefficients = m2sfrk_coefficients(manifest)
+        for value in coefficients:
+            append_word(digest, value)
+        digest_hex = digest.hexdigest()
+        coefficient_text = ", ".join(c_hex(value) for value in coefficients)
+        print(
+            f"const fc_precomputed_tables_t "
+            f"FC_{manifest.name.upper()}_M2SFRK_TABLES = {{"
+        )
+        print("    FC_METHOD_M2SFRK,")
+        print(f"    {c_hex(q)}, {c_hex(h)}, {manifest.memory}u,")
+        print(f"    {c_hex(h_to_q)},")
+        print("    {0.0f, 0.0f, 0.0f, 0.0f, "
+              "0.0f, 0.0f, 0.0f, 0.0f},")
+        print(f"    {{{coefficient_text}}},")
+        print("    {NULL, NULL, NULL},")
+        print("    NULL,")
         print(f'    "{digest_hex}"')
         print("};")
 
@@ -183,7 +217,7 @@ def generate(manifest: Manifest, method: str) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("system", choices=sorted(MANIFESTS))
-    parser.add_argument("method", choices=("efork", "gl"))
+    parser.add_argument("method", choices=("efork", "gl", "m2sfrk"))
     parser.add_argument(
         "--output",
         type=Path,

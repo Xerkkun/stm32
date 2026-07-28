@@ -3,10 +3,12 @@
 
 from __future__ import annotations
 
+import json
 import math
 import subprocess
 import sys
 from dataclasses import dataclass
+from pathlib import Path
 
 
 @dataclass(frozen=True)
@@ -18,11 +20,26 @@ class Manifest:
     initial: tuple[float, float, float]
 
 
-MANIFESTS = (
-    Manifest(0.995, 0.005, 2000, (10.0, 28.0, 8.0 / 3.0), (0.1, 0.1, 0.1)),
-    Manifest(0.970, 0.010, 1000, (0.2, 0.2, 6.0), (0.5, 1.5, 0.1)),
-    Manifest(0.900, 0.005, 2000, (35.0, 3.0, 28.0), (0.1, 0.1, 0.1)),
-)
+def load_manifests() -> tuple[Manifest, ...]:
+    path = (
+        Path(__file__).resolve().parents[1]
+        / "validation"
+        / "candidate_manifests.json"
+    )
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    return tuple(
+        Manifest(
+            q=float(item["q"]),
+            h=float(item["h"]),
+            memory=int(item["memory_increments"]),
+            parameters=tuple(float(value) for value in item["parameters"]),
+            initial=tuple(float(value) for value in item["initial_state"]),
+        )
+        for item in payload["manifests"]
+    )
+
+
+MANIFESTS = load_manifests()
 
 
 def rhs(system: int, parameters: tuple[float, ...], state: tuple[float, ...]):
@@ -131,6 +148,31 @@ def gl_reference(system: int, manifest: Manifest, steps: int):
     return state
 
 
+def m2sfrk_reference(system: int, manifest: Manifest, steps: int):
+    hq = manifest.h**manifest.q
+    c2 = hq / math.gamma(manifest.q + 1.0)
+    c4 = (
+        hq
+        * math.gamma(manifest.q + 1.0)
+        / math.gamma(2.0 * manifest.q + 1.0)
+    )
+    state = manifest.initial
+    for _ in range(steps):
+        derivative = rhs(system, manifest.parameters, state)
+        predictor = tuple(
+            state[index] + c4 * derivative[index]
+            for index in range(3)
+        )
+        predicted_derivative = rhs(
+            system, manifest.parameters, predictor
+        )
+        state = tuple(
+            state[index] + c2 * predicted_derivative[index]
+            for index in range(3)
+        )
+    return state
+
+
 def main() -> int:
     if len(sys.argv) != 2:
         print("usage: reference_check.py <reference_dump>", file=sys.stderr)
@@ -151,12 +193,13 @@ def main() -> int:
 
     failures = 0
     for system, manifest in enumerate(MANIFESTS):
-        for method in range(2):
-            reference = (
-                efork_reference(system, manifest, 16)
-                if method == 0
-                else gl_reference(system, manifest, 16)
-            )
+        for method in range(3):
+            if method == 0:
+                reference = efork_reference(system, manifest, 16)
+            elif method == 1:
+                reference = gl_reference(system, manifest, 16)
+            else:
+                reference = m2sfrk_reference(system, manifest, 16)
             actual = observed[(system, method)]
             for component, (got, expected) in enumerate(zip(actual, reference)):
                 tolerance = 5.0e-4 * max(1.0, abs(expected))

@@ -23,9 +23,13 @@ set(
     "STM32CubeF7 donor containing Drivers and the F746 startup/system files")
 set(
     FC_F746_OUTPUT_DECIMATION
-    "16"
+    "512"
     CACHE STRING
     "Transmit one state frame every N solver steps")
+option(
+    FC_F746_BENCHMARK_MODE
+    "Store 10000 solver-only DWT counts, then emit timing blocks"
+    OFF)
 
 if(NOT FC_F746_OUTPUT_DECIMATION MATCHES "^[1-9][0-9]*$")
     message(FATAL_ERROR "FC_F746_OUTPUT_DECIMATION must be a positive integer")
@@ -89,7 +93,8 @@ function(
     system_id
     method_id
     table_symbol
-    table_source)
+    table_source
+    fixed_point)
 
     if(TARGET "${target_name}")
         message(FATAL_ERROR "Duplicate F746 firmware target: ${target_name}")
@@ -106,6 +111,7 @@ function(
         src/stm32f7xx_it.c
         src/syscalls.c
         "${FC_PROJECT_ROOT}/common/fractional_chaos.c"
+        "${FC_PROJECT_ROOT}/common/fractional_chaos_fixed.c"
         "${FC_PROJECT_ROOT}/transport/fc_protocol.c"
         "${table_source}"
         "${FC_F7_SYSTEM}"
@@ -150,8 +156,10 @@ function(
             FC_REQUIRE_PRECOMPUTED_TABLES=1
             FC_F746_SYSTEM=${system_id}
             FC_F746_METHOD=${method_id}
+            FC_F746_FIXED_POINT=${fixed_point}
             FC_F746_PRECOMPUTED_TABLES=${table_symbol}
-            FC_F746_OUTPUT_DECIMATION=${FC_F746_OUTPUT_DECIMATION})
+            FC_F746_OUTPUT_DECIMATION=${FC_F746_OUTPUT_DECIMATION}
+            FC_F746_BENCHMARK_MODE=$<BOOL:${FC_F746_BENCHMARK_MODE}>)
 
     target_compile_options(
         "${target_name}"
@@ -167,6 +175,8 @@ function(
             $<$<CONFIG:Debug>:-Og>
             $<$<CONFIG:Debug>:-g3>
             $<$<NOT:$<CONFIG:Debug>>:-O3>)
+
+    target_link_libraries("${target_name}" PRIVATE m)
 
     target_link_options(
         "${target_name}"
@@ -197,30 +207,73 @@ set(FC_LF_TABLE_SOURCE
     "${FC_PROJECT_ROOT}/generated/fc_lorenz_efork3.c")
 set(FC_LG_TABLE_SOURCE
     "${FC_PROJECT_ROOT}/generated/fc_lorenz_gl.c")
+set(FC_LM_TABLE_SOURCE
+    "${FC_PROJECT_ROOT}/generated/fc_lorenz_m2sfrk.c")
 set(FC_RF_TABLE_SOURCE
     "${FC_PROJECT_ROOT}/generated/fc_rossler_efork3.c")
 set(FC_RG_TABLE_SOURCE
     "${FC_PROJECT_ROOT}/generated/fc_rossler_gl.c")
+set(FC_RM_TABLE_SOURCE
+    "${FC_PROJECT_ROOT}/generated/fc_rossler_m2sfrk.c")
 set(FC_CF_TABLE_SOURCE
     "${FC_PROJECT_ROOT}/generated/fc_chen_efork3.c")
 set(FC_CG_TABLE_SOURCE
     "${FC_PROJECT_ROOT}/generated/fc_chen_gl.c")
+set(FC_CM_TABLE_SOURCE
+    "${FC_PROJECT_ROOT}/generated/fc_chen_m2sfrk.c")
 
 fc_add_f746_firmware(
     f746_lorenz_efork3 0 0
-    FC_LORENZ_EFORK_TABLES "${FC_LF_TABLE_SOURCE}")
+    FC_LORENZ_EFORK_TABLES "${FC_LF_TABLE_SOURCE}" 0)
 fc_add_f746_firmware(
     f746_lorenz_gl 0 1
-    FC_LORENZ_GL_TABLES "${FC_LG_TABLE_SOURCE}")
+    FC_LORENZ_GL_TABLES "${FC_LG_TABLE_SOURCE}" 0)
+fc_add_f746_firmware(
+    f746_lorenz_m2sfrk 0 2
+    FC_LORENZ_M2SFRK_TABLES "${FC_LM_TABLE_SOURCE}" 0)
 fc_add_f746_firmware(
     f746_rossler_efork3 1 0
-    FC_ROSSLER_EFORK_TABLES "${FC_RF_TABLE_SOURCE}")
+    FC_ROSSLER_EFORK_TABLES "${FC_RF_TABLE_SOURCE}" 0)
 fc_add_f746_firmware(
     f746_rossler_gl 1 1
-    FC_ROSSLER_GL_TABLES "${FC_RG_TABLE_SOURCE}")
+    FC_ROSSLER_GL_TABLES "${FC_RG_TABLE_SOURCE}" 0)
+fc_add_f746_firmware(
+    f746_rossler_m2sfrk 1 2
+    FC_ROSSLER_M2SFRK_TABLES "${FC_RM_TABLE_SOURCE}" 0)
 fc_add_f746_firmware(
     f746_chen_efork3 2 0
-    FC_CHEN_EFORK_TABLES "${FC_CF_TABLE_SOURCE}")
+    FC_CHEN_EFORK_TABLES "${FC_CF_TABLE_SOURCE}" 0)
 fc_add_f746_firmware(
     f746_chen_gl 2 1
-    FC_CHEN_GL_TABLES "${FC_CG_TABLE_SOURCE}")
+    FC_CHEN_GL_TABLES "${FC_CG_TABLE_SOURCE}" 0)
+fc_add_f746_firmware(
+    f746_chen_m2sfrk 2 2
+    FC_CHEN_M2SFRK_TABLES "${FC_CM_TABLE_SOURCE}" 0)
+
+fc_add_f746_firmware(
+    f746_lorenz_efork3_fixed 0 0
+    FC_LORENZ_EFORK_TABLES "${FC_LF_TABLE_SOURCE}" 1)
+fc_add_f746_firmware(
+    f746_lorenz_gl_fixed 0 1
+    FC_LORENZ_GL_TABLES "${FC_LG_TABLE_SOURCE}" 1)
+fc_add_f746_firmware(
+    f746_lorenz_m2sfrk_fixed 0 2
+    FC_LORENZ_M2SFRK_TABLES "${FC_LM_TABLE_SOURCE}" 1)
+fc_add_f746_firmware(
+    f746_rossler_efork3_fixed 1 0
+    FC_ROSSLER_EFORK_TABLES "${FC_RF_TABLE_SOURCE}" 1)
+fc_add_f746_firmware(
+    f746_rossler_gl_fixed 1 1
+    FC_ROSSLER_GL_TABLES "${FC_RG_TABLE_SOURCE}" 1)
+fc_add_f746_firmware(
+    f746_rossler_m2sfrk_fixed 1 2
+    FC_ROSSLER_M2SFRK_TABLES "${FC_RM_TABLE_SOURCE}" 1)
+fc_add_f746_firmware(
+    f746_chen_efork3_fixed 2 0
+    FC_CHEN_EFORK_TABLES "${FC_CF_TABLE_SOURCE}" 1)
+fc_add_f746_firmware(
+    f746_chen_gl_fixed 2 1
+    FC_CHEN_GL_TABLES "${FC_CG_TABLE_SOURCE}" 1)
+fc_add_f746_firmware(
+    f746_chen_m2sfrk_fixed 2 2
+    FC_CHEN_M2SFRK_TABLES "${FC_CM_TABLE_SOURCE}" 1)

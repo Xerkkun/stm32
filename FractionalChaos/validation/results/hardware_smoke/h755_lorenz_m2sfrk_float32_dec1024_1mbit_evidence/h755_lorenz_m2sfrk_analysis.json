@@ -1,0 +1,81 @@
+{
+  "schema_version": 3,
+  "capture": "C:\\Users\\moren\\Desktop\\Codes\\STM32\\FractionalChaos\\validation\\results\\hardware_smoke\\h755_lorenz_m2sfrk_float32_dec1024_1mbit.csv",
+  "capture_sha256": "c83b0f3039ecb6eca598beb890dff3e0f05281143ee5fdc057e3813b269d0830",
+  "board": "h755",
+  "system": "lorenz",
+  "method": "m2sfrk",
+  "representation": "float32",
+  "discarded_valid_samples": 64,
+  "samples_used": 43865,
+  "sequence_first": 30317568,
+  "sequence_last": 75234304,
+  "transport": {
+    "expected_decimation": 1024,
+    "sequence_gap_count": 0,
+    "maximum_reported_dropped": 0,
+    "transport_complete": true
+  },
+  "solver_status": {
+    "all_samples_ok": true,
+    "counts_by_numeric_status": {
+      "0": 43865
+    },
+    "nonzero_status_samples": 0,
+    "samples_by_flag": {
+      "nonfinite": 0,
+      "queue": 0,
+      "fixed_state_saturation": 0,
+      "fixed_coefficient_saturation": 0,
+      "fixed_coefficient_zeroed": 0
+    },
+    "samples_with_unknown_flags": 0
+  },
+  "performance_cycles_per_step": {
+    "available": true,
+    "nonzero_measurements": 43865,
+    "minimum": 266,
+    "median": 266.0,
+    "mean": 266.0,
+    "p95": 266.0,
+    "p99": 266.0,
+    "maximum": 266,
+    "scope": "DWT cycles for one integration step; UART and decimation are outside the measured interval",
+    "reason_if_unavailable": null
+  },
+  "statistical_eligibility": {
+    "minimum_required_bits": 1000000,
+    "observed_bits": 1052760,
+    "eligible_for_configured_screening": true,
+    "scope": "transport integrity and configured bit-count threshold only; each statistical battery must enforce its own requirements",
+    "is_statistical_test_result": false,
+    "reason": "eligible"
+  },
+  "extraction": {
+    "mode": "signed_fixed_point_projection",
+    "fractional_bits": 14,
+    "rounding": "nearest_ties_away_from_zero",
+    "variables": [
+      "x",
+      "y",
+      "z"
+    ],
+    "variable_order": "x_then_y_then_z_per_sample",
+    "lsb_bits_per_variable": 8,
+    "bits_per_sample": 24,
+    "stored_byte_order": "one low-bit field per byte; unused high bits are zero",
+    "raster_bit_order_within_field": "most_to_least_significant"
+  },
+  "outputs": {
+    "time_series": "h755_lorenz_m2sfrk_time_series.png",
+    "time_series_samples_plotted": 1024,
+    "attractor": "h755_lorenz_m2sfrk_attractor.png",
+    "bitstream": "h755_lorenz_m2sfrk_fixed-point_lsb.bin",
+    "bitstream_sha256": "74d631ce79fb6c302ba3185f17368002f3ec7505642ae26b61c89714dd1749e2",
+    "bit_count": 1052760,
+    "bit_raster": "h755_lorenz_m2sfrk_fixed-point_lsb_raster.png",
+    "bit_raster_bits_per_row": 512,
+    "bit_raster_contains_complete_stream": true,
+    "bit_raster_max_figure_height_inches": 5.5
+  }
+}

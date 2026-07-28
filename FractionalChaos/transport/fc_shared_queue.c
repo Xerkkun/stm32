@@ -45,6 +45,22 @@ bool fc_shared_queue_push(
     return true;
 }
 
+bool fc_shared_queue_has_space(const fc_shared_queue_t *queue)
+{
+    uint32_t write_sequence;
+    uint32_t read_sequence;
+
+    if (queue == NULL) {
+        return false;
+    }
+
+    FC_MEMORY_BARRIER();
+    write_sequence = queue->write_sequence;
+    read_sequence = queue->read_sequence;
+    return (queue->magic == FC_SHARED_QUEUE_MAGIC) &&
+           ((write_sequence - read_sequence) < FC_SHARED_QUEUE_CAPACITY);
+}
+
 bool fc_shared_queue_pop(
     fc_shared_queue_t *queue,
     fc_sample_t *sample)

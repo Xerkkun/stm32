@@ -2,6 +2,7 @@
 
 #include "fc_protocol.h"
 #include "fractional_chaos.h"
+#include "fractional_chaos_fixed.h"
 
 #include <stddef.h>
 #include <stdint.h>
@@ -14,7 +15,11 @@
 #define FC_F746_METHOD FC_METHOD_EFORK3
 #endif
 
-#ifndef FC_F746_PRECOMPUTED_TABLES
+#ifndef FC_F746_FIXED_POINT
+#define FC_F746_FIXED_POINT 0
+#endif
+
+#if !FC_F746_FIXED_POINT && !defined(FC_F746_PRECOMPUTED_TABLES)
 #error "FC_F746_PRECOMPUTED_TABLES must select the linked frozen table"
 #endif
 
@@ -22,11 +27,23 @@
 #define FC_F746_OUTPUT_DECIMATION 16U
 #endif
 
+#ifndef FC_F746_BENCHMARK_MODE
+#define FC_F746_BENCHMARK_MODE 0
+#endif
+
 #define FC_F746_CORE_CLOCK_HZ       216000000U
 #define FC_F746_UART_BAUD           921600U
 #define FC_F746_CACHE_LINE_BYTES    32U
 #define FC_F746_DMA_BUFFER_BYTES    (2U * FC_F746_CACHE_LINE_BYTES)
 #define FC_F746_DTCM_BYTES          (64U * 1024U)
+#define FC_BENCHMARK_TIMED_STEPS    10000U
+#define FC_BENCHMARK_BLOCK_VALUES   4U
+
+#if FC_F746_SYSTEM == 1
+#define FC_BENCHMARK_WARMUP_STEPS   5000U
+#else
+#define FC_BENCHMARK_WARMUP_STEPS   2000U
+#endif
 
 _Static_assert(
     (FC_F746_SYSTEM >= FC_SYSTEM_LORENZ) &&
@@ -34,19 +51,48 @@ _Static_assert(
     "FC_F746_SYSTEM must select one of the three manifests");
 _Static_assert(
     (FC_F746_METHOD == FC_METHOD_EFORK3) ||
-    (FC_F746_METHOD == FC_METHOD_GL_CAPUTO),
-    "FC_F746_METHOD must select EFORK3 or GL_CAPUTO");
+    (FC_F746_METHOD == FC_METHOD_GL_CAPUTO) ||
+    (FC_F746_METHOD == FC_METHOD_M2SFRK),
+    "FC_F746_METHOD must select EFORK3, GL_CAPUTO, or M2SFRK");
 _Static_assert(
     FC_F746_OUTPUT_DECIMATION > 0U,
     "FC_F746_OUTPUT_DECIMATION must be greater than zero");
+_Static_assert(
+    (FC_F746_BENCHMARK_MODE == 0) ||
+    (FC_F746_BENCHMARK_MODE == 1),
+    "FC_F746_BENCHMARK_MODE must be zero or one");
+_Static_assert(
+    (FC_BENCHMARK_TIMED_STEPS % FC_BENCHMARK_BLOCK_VALUES) == 0U,
+    "The benchmark must contain complete four-value timing blocks");
 _Static_assert(
     sizeof(fc_wire_frame_t) <= FC_F746_DMA_BUFFER_BYTES,
     "The DMA storage must contain one complete wire frame");
 
 typedef struct {
+#if FC_F746_FIXED_POINT
+    fc_fixed_solver_t solver;
+#if FC_F746_METHOD != 2
+    fc_fixed_workspace_t workspace;
+#endif
+#else
     fc_solver_t solver;
+#if FC_F746_METHOD != 2
     fc_workspace_t workspace;
+#endif
+#endif
 } fc_f746_solver_storage_t;
+
+#if FC_F746_FIXED_POINT
+typedef fc_fixed_solver_t fc_f746_solver_t;
+typedef fc_fixed_vec3_t fc_f746_state_t;
+typedef fc_fixed_status_t fc_f746_status_t;
+#define FC_F746_STATUS_OK FC_FIXED_OK
+#else
+typedef fc_solver_t fc_f746_solver_t;
+typedef fc_vec3f_t fc_f746_state_t;
+typedef fc_status_t fc_f746_status_t;
+#define FC_F746_STATUS_OK FC_OK
+#endif
 
 typedef union {
     fc_wire_frame_t frame;
@@ -70,9 +116,16 @@ static fc_f746_solver_storage_t g_solver_storage
     __attribute__((section(".solver"), aligned(32)));
 static fc_f746_dma_buffer_t g_uart_tx_buffer
     __attribute__((section(".dma_buffer"), aligned(32)));
+#if FC_F746_BENCHMARK_MODE
+static uint32_t g_benchmark_cycles[FC_BENCHMARK_TIMED_STEPS]
+    __attribute__((aligned(32)));
+#endif
 
 static volatile uint8_t g_uart_tx_active;
 static volatile uint32_t g_uart_dropped;
+#if FC_F746_FIXED_POINT
+static uint8_t g_fixed_status_flags;
+#endif
 
 static void SystemClock_Config(void);
 static void MX_DMA_Init(void);
@@ -81,25 +134,41 @@ static void configure_floating_point(void);
 static void cycle_counter_init(void);
 static void clear_solver_storage(void);
 static uint32_t solver_step_cycles(
-    fc_solver_t *solver,
-    fc_vec3f_t *state,
-    fc_status_t *status);
+    fc_f746_solver_t *solver,
+    fc_f746_state_t *state,
+    fc_f746_status_t *status);
+static uint8_t sample_status_with_fixed_diagnostics(uint8_t status);
 static void transmit_sample(
-    const fc_vec3f_t *state,
+    const fc_f746_state_t *state,
     uint32_t sequence,
     uint32_t cycles,
     uint8_t status);
+#if FC_F746_BENCHMARK_MODE
+static void run_timing_benchmark(
+    fc_f746_solver_t *solver,
+    fc_f746_state_t *state);
+static void transmit_timing_block(
+    uint32_t first_index,
+    const uint32_t cycles[FC_BENCHMARK_BLOCK_VALUES],
+    uint8_t status);
+#endif
 static void halt_after_solver_error(
-    const fc_vec3f_t *state,
+    const fc_f746_state_t *state,
     uint32_t sequence,
     uint32_t cycles);
 
 int main(void)
 {
+#if FC_F746_FIXED_POINT
+    fc_fixed_config_t config;
+#else
     fc_config_t config;
-    fc_vec3f_t state;
+#endif
+    fc_f746_state_t state;
+#if !FC_F746_BENCHMARK_MODE
     uint32_t sequence = 0U;
     uint32_t decimation_counter = 0U;
+#endif
 
     SCB_EnableICache();
     SCB_EnableDCache();
@@ -119,6 +188,24 @@ int main(void)
     HAL_SuspendTick();
 
     clear_solver_storage();
+#if FC_F746_FIXED_POINT
+    if (fc_fixed_config_from_manifest(
+            (fc_fixed_system_t)FC_F746_SYSTEM,
+            (fc_fixed_method_t)FC_F746_METHOD,
+            &config) != FC_FIXED_OK) {
+        Error_Handler();
+    }
+    if (fc_fixed_solver_init(
+            &g_solver_storage.solver,
+#if FC_F746_METHOD == 2
+            NULL,
+#else
+            &g_solver_storage.workspace,
+#endif
+            &config) != FC_FIXED_OK) {
+        Error_Handler();
+    }
+#else
     if (fc_config_from_manifest(
             (fc_system_t)FC_F746_SYSTEM,
             (fc_method_t)FC_F746_METHOD,
@@ -128,22 +215,35 @@ int main(void)
     config.precomputed_tables = &FC_F746_PRECOMPUTED_TABLES;
     if (fc_solver_init(
             &g_solver_storage.solver,
+#if FC_F746_METHOD == 2
+            NULL,
+#else
             &g_solver_storage.workspace,
+#endif
             &config) != FC_OK) {
         Error_Handler();
     }
+#endif
 
+#if FC_F746_BENCHMARK_MODE
+    run_timing_benchmark(&g_solver_storage.solver, &state);
+#else
     for (;;) {
-        fc_status_t status;
+        fc_f746_status_t status;
         const uint32_t cycles = solver_step_cycles(
             &g_solver_storage.solver,
             &state,
             &status);
 
         ++sequence;
-        if (status != FC_OK) {
+        if (status != FC_F746_STATUS_OK) {
+#if FC_F746_FIXED_POINT
+            const fc_fixed_vec3_t *last_state =
+                fc_fixed_solver_state(&g_solver_storage.solver);
+#else
             const fc_vec3f_t *last_state =
                 fc_solver_state(&g_solver_storage.solver);
+#endif
             halt_after_solver_error(
                 (last_state != NULL) ? last_state : &state,
                 sequence,
@@ -160,6 +260,7 @@ int main(void)
                 FC_SAMPLE_STATUS_OK);
         }
     }
+#endif
 }
 
 static void SystemClock_Config(void)
@@ -254,11 +355,23 @@ static void configure_floating_point(void)
 
 static void cycle_counter_init(void)
 {
+    uint32_t probe;
+
     CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
+#if defined(__CORTEX_M) && (__CORTEX_M == 7U)
+    DWT->LAR = 0xC5ACCE55UL;
+#endif
     DWT->CYCCNT = 0U;
     DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
     __DSB();
     __ISB();
+    probe = DWT->CYCCNT;
+    __NOP();
+    __NOP();
+    __NOP();
+    if (DWT->CYCCNT == probe) {
+        Error_Handler();
+    }
 }
 
 static void clear_solver_storage(void)
@@ -275,9 +388,9 @@ static void clear_solver_storage(void)
 }
 
 static uint32_t solver_step_cycles(
-    fc_solver_t *solver,
-    fc_vec3f_t *state,
-    fc_status_t *status)
+    fc_f746_solver_t *solver,
+    fc_f746_state_t *state,
+    fc_f746_status_t *status)
 {
     const uint32_t saved_primask = __get_PRIMASK();
     uint32_t start;
@@ -292,7 +405,11 @@ static uint32_t solver_step_cycles(
     __DSB();
     __ISB();
     start = DWT->CYCCNT;
+#if FC_F746_FIXED_POINT
+    *status = fc_fixed_solver_step(solver, state);
+#else
     *status = fc_solver_step(solver, state);
+#endif
     elapsed = DWT->CYCCNT - start;
     __DSB();
     __ISB();
@@ -303,8 +420,133 @@ static uint32_t solver_step_cycles(
     return elapsed;
 }
 
+static uint8_t sample_status_with_fixed_diagnostics(uint8_t status)
+{
+#if FC_F746_FIXED_POINT
+    const fc_fixed_diagnostics_t *diagnostics =
+        fc_fixed_solver_diagnostics(&g_solver_storage.solver);
+
+    if (diagnostics != NULL) {
+        if (diagnostics->saturation_count != 0U) {
+            g_fixed_status_flags |=
+                FC_SAMPLE_STATUS_FIXED_STATE_SATURATION;
+        }
+        if (diagnostics->coefficient_saturation_count != 0U) {
+            g_fixed_status_flags |=
+                FC_SAMPLE_STATUS_FIXED_COEFFICIENT_SATURATION;
+        }
+        if (diagnostics->zeroed_nonzero_coefficient_count != 0U) {
+            g_fixed_status_flags |=
+                FC_SAMPLE_STATUS_FIXED_COEFFICIENT_ZEROED;
+        }
+    }
+    status |= g_fixed_status_flags;
+#endif
+    return status;
+}
+
+#if FC_F746_BENCHMARK_MODE
+static void run_timing_benchmark(
+    fc_f746_solver_t *solver,
+    fc_f746_state_t *state)
+{
+    uint32_t solver_sequence = 0U;
+    uint32_t index;
+    fc_f746_status_t solver_status = FC_F746_STATUS_OK;
+    uint8_t output_status;
+
+    for (index = 0U; index < FC_BENCHMARK_WARMUP_STEPS; ++index) {
+        const uint32_t cycles =
+            solver_step_cycles(solver, state, &solver_status);
+        ++solver_sequence;
+        if (solver_status != FC_F746_STATUS_OK) {
+            halt_after_solver_error(
+                state,
+                solver_sequence,
+                cycles);
+        }
+    }
+
+    /*
+     * UART remains idle throughout this loop. Each DWT result is preserved
+     * verbatim in SRAM1 and emitted only after all 10000 timed calls finish.
+     */
+    for (index = 0U; index < FC_BENCHMARK_TIMED_STEPS; ++index) {
+        const uint32_t cycles =
+            solver_step_cycles(solver, state, &solver_status);
+        ++solver_sequence;
+        if (solver_status != FC_F746_STATUS_OK) {
+            halt_after_solver_error(
+                state,
+                solver_sequence,
+                cycles);
+        }
+        g_benchmark_cycles[index] = cycles;
+    }
+
+    output_status =
+        sample_status_with_fixed_diagnostics(FC_SAMPLE_STATUS_OK);
+    for (index = 0U;
+         index < FC_BENCHMARK_TIMED_STEPS;
+         index += FC_BENCHMARK_BLOCK_VALUES) {
+        transmit_timing_block(
+            index,
+            &g_benchmark_cycles[index],
+            output_status);
+    }
+    while (g_uart_tx_active != 0U) {
+        __WFI();
+    }
+    for (;;) {
+        __WFI();
+    }
+}
+
+static void transmit_timing_block(
+    uint32_t first_index,
+    const uint32_t cycles[FC_BENCHMARK_BLOCK_VALUES],
+    uint8_t status)
+{
+    fc_sample_t sample = {0};
+
+    while (g_uart_tx_active != 0U) {
+        __WFI();
+    }
+
+    sample.sequence = first_index;
+    sample.cycles = cycles[0];
+    sample.state_words[0] = cycles[1];
+    sample.state_words[1] = cycles[2];
+    sample.state_words[2] = cycles[3];
+    sample.system_id = (uint8_t)FC_F746_SYSTEM;
+    sample.method_id = (uint8_t)FC_F746_METHOD;
+    sample.status = status;
+    sample.representation = FC_REPRESENTATION_TIMING_BLOCK;
+
+    fc_make_state_frame(
+        &g_uart_tx_buffer.frame,
+        &sample,
+        FC_BOARD_F746,
+        g_uart_dropped);
+    SCB_CleanDCache_by_Addr(
+        (uint32_t *)(void *)&g_uart_tx_buffer,
+        (int32_t)sizeof(g_uart_tx_buffer));
+    __DSB();
+
+    g_uart_tx_active = 1U;
+    if (HAL_UART_Transmit_DMA(
+            &huart3,
+            (uint8_t *)(void *)&g_uart_tx_buffer.frame,
+            (uint16_t)sizeof(g_uart_tx_buffer.frame)) != HAL_OK) {
+        g_uart_tx_active = 0U;
+        ++g_uart_dropped;
+        Error_Handler();
+    }
+}
+#endif
+
 static void transmit_sample(
-    const fc_vec3f_t *state,
+    const fc_f746_state_t *state,
     uint32_t sequence,
     uint32_t cycles,
     uint8_t status)
@@ -318,13 +560,24 @@ static void transmit_sample(
 
     sample.sequence = sequence;
     sample.cycles = cycles;
+#if FC_F746_FIXED_POINT
+    sample.fixed_state[0] = state->v[0];
+    sample.fixed_state[1] = state->v[1];
+    sample.fixed_state[2] = state->v[2];
+#else
     sample.state[0] = state->v[0];
     sample.state[1] = state->v[1];
     sample.state[2] = state->v[2];
+#endif
     sample.system_id = (uint8_t)FC_F746_SYSTEM;
     sample.method_id = (uint8_t)FC_F746_METHOD;
-    sample.status = status;
-    sample.reserved = 0U;
+    sample.status = sample_status_with_fixed_diagnostics(status);
+    sample.representation =
+#if FC_F746_FIXED_POINT
+        FC_REPRESENTATION_FIXED_Q14;
+#else
+        FC_REPRESENTATION_FLOAT32;
+#endif
 
     fc_make_state_frame(
         &g_uart_tx_buffer.frame,
@@ -352,7 +605,7 @@ static void transmit_sample(
 }
 
 static void halt_after_solver_error(
-    const fc_vec3f_t *state,
+    const fc_f746_state_t *state,
     uint32_t sequence,
     uint32_t cycles)
 {

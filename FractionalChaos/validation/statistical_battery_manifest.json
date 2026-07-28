@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "scope": "Four accepted physical Lorenz M2sFRK captures from the F746/H755 float-versus-fixed pilot",
+  "alpha": 0.01,
+  "input_contract": {
+    "source": "post-transient LSB artifacts emitted by validation/analyze_capture.py",
+    "variables": [
+      "x",
+      "y",
+      "z"
+    ],
+    "variable_order": "x_then_y_then_z_per_sample",
+    "bits_per_variable": 8,
+    "bits_per_sample": 24,
+    "bit_order_within_byte": "most_to_least_significant",
+    "byte_packing": "each artifact byte is one complete eight-LSB field"
+  },
+  "tool_provenance": {
+    "nist_sp800_22": {
+      "distribution": "NIST Statistical Test Suite",
+      "version": "2.1.2",
+      "official_source_url": "https://csrc.nist.gov/CSRC/media/Projects/Random-Bit-Generation/documents/sts-2_1_2.zip",
+      "source_archive_sha256": "0238d2f1d26e120e3cc748ed2d4c674cdc636de37fc4027c76cc2a394fff9157",
+      "build_command": "gcc -O2 -Wall -I include -o assess.exe src/*.c -lm",
+      "version_evidence": "version is identified by the official source distribution; assess has no version flag"
+    },
+    "practrand": {
+      "distribution": "PractRand",
+      "version": "0.96",
+      "official_source_url": "https://sourceforge.net/projects/pracrand/files/PractRand_0.96.zip/download",
+      "source_archive_sha256": "e4caf7fda98b2c597bbda3b576753cf5a0f6047aab837c82be370ab798a672e1",
+      "build_commands": [
+        "g++ -std=gnu++11 -O3 -I include -c src/*.cpp src/RNGs/*.cpp src/RNGs/other/*.cpp",
+        "ar rcs libPractRand.a *.o",
+        "g++ -std=gnu++11 -O3 -I include -I tools -o RNG_test.exe tools/RNG_test.cpp libPractRand.a -pthread"
+      ],
+      "version_probe": "RNG_test.exe --version"
+    },
+    "testu01": {
+      "distribution": "TestU01",
+      "version": "1.2.3",
+      "official_source_url": "https://github.com/umontreal-simul/TestU01-2009",
+      "source_git_commit": "57e98bf33880daedc930739c81e39b89a8d24dba",
+      "generic_file_runner": "validation/testu01_file_batteries.c",
+      "build_script": "validation/build_testu01_ucrt64.ps1",
+      "build_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File validation/build_testu01_ucrt64.ps1 -SourceRoot <TestU01-2009> -OutputDir <empty-output-dir>",
+      "file_batteries": [
+        "bbattery_RabbitFile",
+        "bbattery_AlphabitFile"
+      ],
+      "note": "The adapter passes the exact requested nb, rejects nb larger than the finite file, and never extends the input. TestU01 may internally use the largest whole 32-bit prefix and rewinds the same file between distinct tests."
+    }
+  },
+  "streams": [
+    {
+      "id": "f746_float32_dec512",
+      "board": "f746",
+      "representation": "float32",
+      "analysis": "validation/results/hardware_smoke/f746_lorenz_m2sfrk_float32_dec512_1mbit_evidence/f746_lorenz_m2sfrk_analysis.json",
+      "bitstream": "validation/results/hardware_smoke/f746_lorenz_m2sfrk_float32_dec512_1mbit_evidence/f746_lorenz_m2sfrk_fixed-point_lsb.bin",
+      "expected_bits": 1062600,
+      "expected_sha256": "a1831d02ef3724b913eb66263996abb12ae752a497e0b901a5e06bbce4af9b84"
+    },
+    {
+      "id": "f746_fixed_q14_q30_dec512",
+      "board": "f746",
+      "representation": "fixed_q14_q30",
+      "analysis": "validation/results/hardware_smoke/f746_lorenz_m2sfrk_fixed_dec512_1mbit_telemetry_evidence/f746_lorenz_m2sfrk_analysis.json",
+      "bitstream": "validation/results/hardware_smoke/f746_lorenz_m2sfrk_fixed_dec512_1mbit_telemetry_evidence/f746_lorenz_m2sfrk_fixed-raw_lsb.bin",
+      "expected_bits": 1042944,
+      "expected_sha256": "6b4118c264f10275535b1345353cfaac605b16bda8c92c96a76609fb4a6c19c8"
+    },
+    {
+      "id": "h755_float32_dec1024",
+      "board": "h755",
+      "representation": "float32",
+      "analysis": "validation/results/hardware_smoke/h755_lorenz_m2sfrk_float32_dec1024_1mbit_evidence/h755_lorenz_m2sfrk_analysis.json",
+      "bitstream": "validation/results/hardware_smoke/h755_lorenz_m2sfrk_float32_dec1024_1mbit_evidence/h755_lorenz_m2sfrk_fixed-point_lsb.bin",
+      "expected_bits": 1052760,
+      "expected_sha256": "74d631ce79fb6c302ba3185f17368002f3ec7505642ae26b61c89714dd1749e2"
+    },
+    {
+      "id": "h755_fixed_q14_q30_dec512",
+      "board": "h755",
+      "representation": "fixed_q14_q30",
+      "analysis": "validation/results/hardware_smoke/h755_lorenz_m2sfrk_fixed_dec512_1mbit_evidence/h755_lorenz_m2sfrk_analysis.json",
+      "bitstream": "validation/results/hardware_smoke/h755_lorenz_m2sfrk_fixed_dec512_1mbit_evidence/h755_lorenz_m2sfrk_fixed-raw_lsb.bin",
+      "expected_bits": 1119120,
+      "expected_sha256": "b2cba20e6eb1712e02c6ee0c6369ad95a2f6732ce08ec1067403eefe482f13be"
+    }
+  ]
+}

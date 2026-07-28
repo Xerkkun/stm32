@@ -510,6 +510,7 @@ const fc_precomputed_tables_t FC_LORENZ_GL_TABLES = {
     0x1.fd70a40000000p-1f, 0x1.47ae140000000p-8f, 2000u,
     0x1.507a0c0000000p-8f,
     {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
+    {0.0f, 0.0f},
     {NULL, NULL, NULL},
     fc_lorenz_gl_w,
     "22c67aa0905403ef1b818258a148da2c1eb0d4785c65ad18777e8f7814c3ae59"

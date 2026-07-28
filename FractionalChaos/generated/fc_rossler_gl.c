@@ -260,6 +260,7 @@ const fc_precomputed_tables_t FC_ROSSLER_GL_TABLES = {
     0x1.f0a3d80000000p-1f, 0x1.47ae140000000p-7f, 1000u,
     0x1.783a180000000p-7f,
     {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
+    {0.0f, 0.0f},
     {NULL, NULL, NULL},
     fc_rossler_gl_w,
     "f7525d829447f26dff9d483aef82f5df5105186a53806555633080d3983ad212"

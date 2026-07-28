@@ -101,10 +101,11 @@ terminal se obtiene el mismo resultado:
 ```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass `
   -File .\tools\flash.ps1 `
-  -Board f746 -System rossler -Method gl
+  -Board f746 -System rossler -Method gl `
+  -ProbeSerial 00112233445566778899AABB
 ```
 
-Cuando se conectan varias sondas se indica su número de serie:
+El número de serie se exige siempre, incluso si sólo hay una sonda conectada:
 
 ```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass `
@@ -129,8 +130,8 @@ method = efork3 | gl
 
 Se programan en una sola operación:
 
-- `h755_m7_<sistema>_<método>.elf`, que contiene el cálculo;
-- `h755_m4_uart.elf`, que contiene FCC1 y USART3 TX por DMA.
+- `h755_m7_<sistema>_<método>.hex`, que contiene el cálculo;
+- `h755_m4_uart.hex`, que contiene FCC1 y USART3 TX por DMA.
 
 No se selecciona 480/240 MHz sobre una NUCLEO-H755ZI-Q de fábrica. Ese perfil
 solo se utiliza después de confirmarse la modificación física de alimentación
@@ -142,7 +143,8 @@ Ejemplo equivalente en terminal:
 ```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass `
   -File .\tools\flash.ps1 `
-  -Board h755 -System lorenz -Method efork3
+  -Board h755 -System lorenz -Method efork3 `
+  -ProbeSerial 00112233445566778899AABB
 ```
 
 ## Captura UART y FCC1
@@ -221,11 +223,13 @@ Se ejecuta primero `build:f746:release` o `build:h755:release`. El script de
 programación no sustituye automáticamente una compilación anterior y no
 programa un binario de otra configuración.
 
-### Se conectan varias placas
+### Selección segura de la placa
 
-Se consulta el número de serie con STM32CubeProgrammer y se pasa
-`-ProbeSerial` desde el terminal. De este modo se evita seleccionar una sonda
-por posición.
+Se consulta el número de serie con
+`STM32_Programmer_CLI.exe -l stlink-only` y se pasa siempre `-ProbeSerial`.
+Antes de cualquier escritura, el script comprueba que el serial existe una
+sola vez y que su `Board Name` coincide con `-Board`; una omisión o discrepancia
+detiene el proceso.
 
 ### No aparecen tramas
 
@@ -239,4 +243,3 @@ la H755.
 Se revisa `dropped`. El cálculo no se bloquea cuando el transporte queda atrás;
 por ello una captura destinada a estimar tasa efectiva de bits contabiliza
 los descartes y no asume continuidad implícita.
-

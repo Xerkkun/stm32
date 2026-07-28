@@ -1,0 +1,225 @@
+{
+  "schema": "fractional-chaos-physical-campaign-v1",
+  "campaign_id": "stm32_primary_36x30_v1",
+  "paper_matrix": {
+    "systems": [
+      "lorenz",
+      "rossler",
+      "chen"
+    ],
+    "methods": [
+      "efork3",
+      "gl",
+      "m2sfrk"
+    ],
+    "representations": [
+      "float32",
+      "fixed_q14_q30"
+    ],
+    "boards": [
+      "f746",
+      "h755"
+    ]
+  },
+  "systems": {
+    "lorenz": {
+      "wire_id": 0,
+      "manifest_id": "lorenz_caputo_v1",
+      "contract_status": "pre_registered_candidate",
+      "q": 0.995,
+      "dt_s": 0.005,
+      "memory_s": 10,
+      "memory_increments": 2000,
+      "history_states": 2001,
+      "initial_state_words_hex": [
+        "0x3DCCCCCD",
+        "0x3DCCCCCD",
+        "0x3DCCCCCD"
+      ],
+      "transient_steps": 2000,
+      "observation_steps": 8000
+    },
+    "rossler": {
+      "wire_id": 1,
+      "manifest_id": "rossler_caputo_v1",
+      "contract_status": "pre_registered_candidate",
+      "q": 0.97,
+      "dt_s": 0.01,
+      "memory_s": 10,
+      "memory_increments": 1000,
+      "history_states": 1001,
+      "initial_state_words_hex": [
+        "0x3F000000",
+        "0x3FC00000",
+        "0x3DCCCCCD"
+      ],
+      "transient_steps": 5000,
+      "observation_steps": 20000
+    },
+    "chen": {
+      "wire_id": 2,
+      "manifest_id": "chen_caputo_v1",
+      "contract_status": "pre_registered_candidate",
+      "q": 0.9,
+      "dt_s": 0.005,
+      "memory_s": 10,
+      "memory_increments": 2000,
+      "history_states": 2001,
+      "initial_state_words_hex": [
+        "0x3DCCCCCD",
+        "0x3DCCCCCD",
+        "0x3DCCCCCD"
+      ],
+      "transient_steps": 2000,
+      "observation_steps": 8000
+    }
+  },
+  "methods": {
+    "efork3": {
+      "wire_id": 0,
+      "wire_name": "efork3"
+    },
+    "gl": {
+      "wire_id": 1,
+      "wire_name": "gl_caputo"
+    },
+    "m2sfrk": {
+      "wire_id": 2,
+      "wire_name": "m2sfrk"
+    }
+  },
+  "representations": {
+    "float32": {
+      "wire_kind": 1,
+      "decoder_name": "float32",
+      "flash_name": "float32",
+      "target_suffix": ""
+    },
+    "fixed_q14_q30": {
+      "wire_kind": 3,
+      "decoder_name": "fixed_q14",
+      "flash_name": "fixed",
+      "target_suffix": "_fixed"
+    }
+  },
+  "boards": {
+    "f746": {
+      "wire_id": 1,
+      "board_name": "NUCLEO-F746ZG",
+      "mcu": "STM32F746ZG",
+      "probe_serial": "066AFF504955657867165348",
+      "port": "COM7",
+      "baud": 921600,
+      "system_clock_hz": 216000000
+    },
+    "h755": {
+      "wire_id": 2,
+      "board_name": "NUCLEO-H755ZI-Q",
+      "mcu": "STM32H755ZI",
+      "probe_serial": "003700344142501220353451",
+      "port": "COM6",
+      "baud": 921600,
+      "system_clock_hz": 400000000
+    }
+  },
+  "schedule": {
+    "cold_starts_per_cell": 30,
+    "randomization": "randomized_complete_blocks",
+    "randomization_algorithm": "sha256_rank_v1",
+    "seed": 20260728,
+    "pairing_key": "cold_start_id"
+  },
+  "build": {
+    "configuration": "Release",
+    "root": "build/campaign",
+    "directory_pattern": "{root}/{board}/decim-{decimation}-release",
+    "benchmark_directory_pattern": "{root}/{board}/benchmark-10000-release",
+    "benchmark_unused_decimation_value": 512,
+    "toolchain_file": "cmake/arm-none-eabi.cmake"
+  },
+  "timeouts_s": {
+    "build": 900,
+    "flash": 180,
+    "first_frame": 15,
+    "endpoint": 180,
+    "serial_read": 0.1
+  },
+  "reset_contract": {
+    "implemented_mode": "stlink_hardware_reset",
+    "preparation": "program_verify_halt_open_and_flush_uart_then_hardware_reset",
+    "power_removed": false,
+    "eligible_as_paper_cold_start": false,
+    "reason": "A hardware reset reinitializes firmware state but does not demonstrate removal and restoration of board power."
+  },
+  "endpoints": {
+    "primary_benchmark": {
+      "ready": false,
+      "required_timed_steps_after_warmup": 10000,
+      "required_cycle_values_per_cold_start": 10000,
+      "implemented_timing_frame_kind": 4,
+      "implemented_cycle_values_per_frame": 4,
+      "stop_rule": "2500_complete_kind4_blocks_covering_indices_0_through_9999",
+      "duration_rule": "complete_block_endpoint_with_watchdog_not_fixed_duration",
+      "evidence_level": "timing_endpoint_ready_but_power_cycle_contract_unresolved",
+      "blocking_reasons": [
+        "The current reset contract is an ST-LINK hardware reset, not a demonstrated board power cycle."
+      ]
+    },
+    "benchmark_reset_pilot": {
+      "ready": true,
+      "required_timed_steps_after_warmup": 10000,
+      "required_cycle_values": 10000,
+      "frame_kind": 4,
+      "values_per_frame": 4,
+      "first_sequence": 0,
+      "last_sequence": 9996,
+      "sequence_increment": 4,
+      "duration_rule": "complete_block_endpoint_with_180_second_watchdog",
+      "evidence_level": "solver_only_timing_under_stlink_hardware_reset",
+      "eligible_as_paper_cold_start": false
+    },
+    "transport_pilot": {
+      "ready": true,
+      "timed_steps_after_warmup": 10000,
+      "stop_rule": "first_valid_frame_at_or_beyond_transient_steps_plus_10000",
+      "duration_rule": "sequence_endpoint_with_180_second_watchdog",
+      "evidence_level": "transport_and_decimated_cycle_subsample_only",
+      "eligible_as_primary_benchmark": false
+    }
+  },
+  "calibrated_cells": {
+    "lorenz_m2sfrk_f746_float32": {
+      "decimation": 512,
+      "basis": "accepted_1mbit_pilot"
+    },
+    "lorenz_m2sfrk_f746_fixed": {
+      "decimation": 512,
+      "basis": "accepted_1mbit_pilot"
+    },
+    "lorenz_m2sfrk_h755_float32": {
+      "decimation": 1024,
+      "basis": "accepted_1mbit_pilot"
+    },
+    "lorenz_m2sfrk_h755_fixed": {
+      "decimation": 512,
+      "basis": "accepted_1mbit_pilot_after_cm4_irq_fix"
+    }
+  },
+  "transport_acceptance": {
+    "first_sequence_must_equal_decimation": true,
+    "expected_sequence_delta_is_decimation": true,
+    "required_status": 0,
+    "required_dropped": 0,
+    "crc_errors": 0,
+    "identity_mismatches": 0
+  },
+  "safety": {
+    "explicit_probe_serial_required": true,
+    "separate_build_directories_required": true,
+    "global_and_resource_locks_required": true,
+    "execute_requires_campaign_confirmation": true,
+    "maximum_transport_pilot_runs_per_invocation": 2,
+    "maximum_benchmark_reset_pilot_runs_per_invocation": 2,
+    "uncalibrated_cells_may_execute": false
+  }
+}
