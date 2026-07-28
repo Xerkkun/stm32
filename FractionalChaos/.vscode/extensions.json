@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "stmicroelectronics.stm32-vscode-extension",
+    "ms-vscode.cmake-tools",
+    "marus25.cortex-debug",
+    "ms-python.python"
+  ]
+}

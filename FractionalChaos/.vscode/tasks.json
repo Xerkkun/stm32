@@ -1,0 +1,269 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build:host:release",
+      "type": "process",
+      "command": "powershell.exe",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}\\tools\\build.ps1",
+        "-Board",
+        "host",
+        "-Configuration",
+        "Release"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [
+        "$gcc"
+      ],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      }
+    },
+    {
+      "label": "build:f746:release",
+      "type": "process",
+      "command": "powershell.exe",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}\\tools\\build.ps1",
+        "-Board",
+        "f746",
+        "-Configuration",
+        "Release"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [
+        "$gcc"
+      ],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      }
+    },
+    {
+      "label": "build:h755:release",
+      "type": "process",
+      "command": "powershell.exe",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}\\tools\\build.ps1",
+        "-Board",
+        "h755",
+        "-Configuration",
+        "Release"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [
+        "$gcc"
+      ],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      }
+    },
+    {
+      "label": "build:all:release",
+      "type": "process",
+      "command": "powershell.exe",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}\\tools\\build.ps1",
+        "-Board",
+        "all",
+        "-Configuration",
+        "Release"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [
+        "$gcc"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      }
+    },
+    {
+      "label": "test:host:release",
+      "type": "process",
+      "command": "powershell.exe",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-Command",
+        "& { . '${workspaceFolder}\\tools\\Resolve-Stm32Tools.ps1'; $tools = Resolve-Stm32Tools; Enable-Stm32ToolEnvironment $tools; $ctest = Join-Path $tools.CMakeBin 'ctest.exe'; & $ctest --test-dir '${workspaceFolder}\\build\\host-release' -C Release --output-on-failure; exit $LASTEXITCODE }"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "dependsOn": [
+        "build:host:release"
+      ],
+      "dependsOrder": "sequence",
+      "problemMatcher": [],
+      "group": "test",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      }
+    },
+    {
+      "label": "flash:seleccionar",
+      "type": "process",
+      "command": "powershell.exe",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}\\tools\\flash.ps1",
+        "-Board",
+        "${input:board}",
+        "-System",
+        "${input:system}",
+        "-Method",
+        "${input:method}"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      }
+    },
+    {
+      "label": "uart:capturar-csv",
+      "type": "process",
+      "command": "powershell.exe",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-Command",
+        "& python '${workspaceFolder}\\tools\\decode_uart.py' --port '${input:serialPort}' --baud 921600 --seconds '${input:captureSeconds}' --output '${input:csvOutput}'; exit $LASTEXITCODE"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      }
+    },
+    {
+      "label": "uart:decodificar-binario",
+      "type": "process",
+      "command": "powershell.exe",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-Command",
+        "& python '${workspaceFolder}\\tools\\decode_uart.py' --input '${input:binaryInput}' --output '${input:csvOutput}'; exit $LASTEXITCODE"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "board",
+      "type": "pickString",
+      "description": "Placa que se programa",
+      "options": [
+        "f746",
+        "h755"
+      ],
+      "default": "f746"
+    },
+    {
+      "id": "system",
+      "type": "pickString",
+      "description": "Sistema fraccionario",
+      "options": [
+        "lorenz",
+        "rossler",
+        "chen"
+      ],
+      "default": "lorenz"
+    },
+    {
+      "id": "method",
+      "type": "pickString",
+      "description": "Método numérico",
+      "options": [
+        "efork3",
+        "gl"
+      ],
+      "default": "efork3"
+    },
+    {
+      "id": "serialPort",
+      "type": "promptString",
+      "description": "Puerto virtual de ST-LINK",
+      "default": "COM7"
+    },
+    {
+      "id": "captureSeconds",
+      "type": "promptString",
+      "description": "Duración de la captura en segundos",
+      "default": "60"
+    },
+    {
+      "id": "binaryInput",
+      "type": "promptString",
+      "description": "Ruta de la captura FCC1 binaria",
+      "default": "captura_fcc1.bin"
+    },
+    {
+      "id": "csvOutput",
+      "type": "promptString",
+      "description": "Ruta del CSV de salida",
+      "default": "captura_fcc1.csv"
+    }
+  ]
+}

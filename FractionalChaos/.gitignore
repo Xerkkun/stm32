@@ -1,0 +1,8 @@
+/build/
+/tests/build*/
+*.su
+*.map
+*.list
+
+# Se recupera de la revisión fijada mediante tools/bootstrap.ps1.
+/vendor/STM32CubeH7/

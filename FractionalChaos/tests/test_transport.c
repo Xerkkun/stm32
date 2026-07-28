@@ -1,0 +1,123 @@
+#include "fc_protocol.h"
+#include "fc_shared_queue.h"
+
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
+
+static int failures;
+
+#define CHECK(condition)                                                    \
+    do {                                                                    \
+        if (!(condition)) {                                                 \
+            fprintf(stderr, "FAIL %s:%d: %s\n",                           \
+                    __FILE__, __LINE__, #condition);                        \
+            ++failures;                                                     \
+        }                                                                   \
+    } while (0)
+
+static uint32_t float_word(float value)
+{
+    uint32_t word;
+    memcpy(&word, &value, sizeof(word));
+    return word;
+}
+
+static void test_protocol_golden_frame(void)
+{
+    const fc_sample_t sample = {
+        UINT32_C(0x01020304),
+        UINT32_C(0x11223344),
+        {1.0f, -2.0f, 0.5f},
+        UINT8_C(2),
+        UINT8_C(1),
+        FC_SAMPLE_STATUS_OK,
+        UINT8_C(0)
+    };
+    fc_wire_frame_t frame;
+    fc_wire_frame_t corrupted;
+
+    fc_make_state_frame(
+        &frame,
+        &sample,
+        FC_BOARD_H755,
+        UINT32_C(0xAABBCCDD));
+
+    CHECK(frame.sync == FC_PROTOCOL_SYNC);
+    CHECK(frame.version == FC_PROTOCOL_VERSION);
+    CHECK(frame.kind == FC_FRAME_STATE);
+    CHECK(frame.board_id == FC_BOARD_H755);
+    CHECK(frame.payload_bytes == UINT16_C(24));
+    CHECK(frame.sequence == sample.sequence);
+    CHECK(frame.cycles == sample.cycles);
+    CHECK(frame.dropped == UINT32_C(0xAABBCCDD));
+    CHECK(frame.x_bits == float_word(1.0f));
+    CHECK(frame.y_bits == float_word(-2.0f));
+    CHECK(frame.z_bits == float_word(0.5f));
+    CHECK(frame.crc32 == UINT32_C(0xEDA10E9E));
+    CHECK(fc_wire_frame_is_valid(&frame));
+
+    corrupted = frame;
+    corrupted.y_bits ^= UINT32_C(1);
+    CHECK(!fc_wire_frame_is_valid(&corrupted));
+    CHECK(!fc_wire_frame_is_valid(NULL));
+    fc_make_state_frame(NULL, &sample, FC_BOARD_H755, 0u);
+    fc_make_state_frame(&frame, NULL, FC_BOARD_H755, 0u);
+}
+
+static void test_shared_queue_wrap_and_full(void)
+{
+    fc_shared_queue_t queue;
+    fc_sample_t source = {0};
+    fc_sample_t result;
+    uint32_t index;
+
+    fc_shared_queue_initialize(&queue);
+    CHECK(queue.magic == FC_SHARED_QUEUE_MAGIC);
+    CHECK(fc_shared_queue_dropped(&queue) == 0u);
+
+    for (index = 0u; index < FC_SHARED_QUEUE_CAPACITY; ++index) {
+        source.sequence = index;
+        source.cycles = UINT32_C(1000) + index;
+        source.state[0] = (float)index;
+        CHECK(fc_shared_queue_push(&queue, &source));
+    }
+    CHECK(!fc_shared_queue_push(&queue, &source));
+    CHECK(fc_shared_queue_dropped(&queue) == 1u);
+
+    for (index = 0u; index < FC_SHARED_QUEUE_CAPACITY; ++index) {
+        CHECK(fc_shared_queue_pop(&queue, &result));
+        CHECK(result.sequence == index);
+        CHECK(result.cycles == UINT32_C(1000) + index);
+        CHECK(result.state[0] == (float)index);
+    }
+    CHECK(!fc_shared_queue_pop(&queue, &result));
+
+    for (index = 0u; index < (FC_SHARED_QUEUE_CAPACITY * 3u); ++index) {
+        source.sequence = UINT32_C(0x1000) + index;
+        CHECK(fc_shared_queue_push(&queue, &source));
+        CHECK(fc_shared_queue_pop(&queue, &result));
+        CHECK(result.sequence == source.sequence);
+    }
+
+    CHECK(!fc_shared_queue_push(NULL, &source));
+    CHECK(!fc_shared_queue_push(&queue, NULL));
+    CHECK(!fc_shared_queue_pop(NULL, &result));
+    CHECK(!fc_shared_queue_pop(&queue, NULL));
+    CHECK(fc_shared_queue_dropped(NULL) == 0u);
+    fc_shared_queue_initialize(NULL);
+}
+
+int main(void)
+{
+    test_protocol_golden_frame();
+    test_shared_queue_wrap_and_full();
+
+    if (failures != 0) {
+        fprintf(stderr, "%d comprobaciones fallaron\n", failures);
+        return 1;
+    }
+
+    puts("Protocolo y cola compartida: OK");
+    return 0;
+}

@@ -1,0 +1,23 @@
+# STM32CubeIDE build outputs
+**/Debug/
+**/Release/
+
+# Common generated firmware artifacts
+*.elf
+*.bin
+*.hex
+*.map
+*.list
+*.su
+*.o
+*.obj
+
+# Python caches used by host-side tooling
+__pycache__/
+*.py[cod]
+
+# Operating-system and editor noise
+.DS_Store
+Thumbs.db
+*.swp
+*~
