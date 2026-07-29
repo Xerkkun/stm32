@@ -119,6 +119,20 @@ SECTIONS
     } > SRAM1
 
     /*
+     * Optional one-shot acquisition buffer. It is filled completely before
+     * UART draining and therefore must not consume DTCM or DMA-owned SRAM2.
+     */
+    .capture (NOLOAD) :
+    {
+        . = ALIGN(32);
+        __capture_start__ = .;
+        KEEP(*(.capture))
+        KEEP(*(.capture.*))
+        . = ALIGN(32);
+        __capture_end__ = .;
+    } > SRAM1
+
+    /*
      * DTCM is single-cycle CPU memory and is intentionally reserved for the
      * solver context and complete finite-memory history. DMA cannot access it.
      */
@@ -172,5 +186,7 @@ ASSERT(SIZEOF(.solver) <= LENGTH(DTCMRAM),
        "Solver history exceeds the 64 KiB DTCM bank")
 ASSERT(SIZEOF(.dma_buffer) <= LENGTH(SRAM2),
        "DMA buffers exceed the dedicated 16 KiB SRAM2 bank")
+ASSERT((ADDR(.capture) & 31) == 0,
+       "Buffered capture section is not cache-line aligned")
 ASSERT((ADDR(.dma_buffer) & 31) == 0,
        "DMA buffer section is not cache-line aligned")

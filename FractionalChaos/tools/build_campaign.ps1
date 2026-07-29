@@ -20,7 +20,12 @@ param(
     [Parameter(Mandatory = $true)]
     [string]$Target,
 
-    [switch]$BenchmarkMode
+    [switch]$BenchmarkMode,
+
+    [switch]$BufferedCaptureMode,
+
+    [ValidateRange(1, 12000)]
+    [int]$BufferedCaptureSamples = 12000
 )
 
 Set-StrictMode -Version Latest
@@ -42,8 +47,18 @@ if ($Target -cnotmatch $targetPattern) {
     throw "Target '$Target' no corresponde a Board '$Board'."
 }
 
+if ($BenchmarkMode -and $BufferedCaptureMode) {
+    throw 'BenchmarkMode y BufferedCaptureMode son mutuamente excluyentes.'
+}
+if ($BufferedCaptureMode -and $Decimation -ne 1) {
+    throw 'BufferedCaptureMode conserva cada paso y requiere Decimation=1.'
+}
+
 $profileDirectory = if ($BenchmarkMode) {
     'benchmark-10000-release'
+}
+elseif ($BufferedCaptureMode) {
+    "dense-$BufferedCaptureSamples-decim-1-release"
 }
 else {
     "decim-$Decimation-release"
@@ -77,10 +92,24 @@ else {
     'FC_H755_BENCHMARK_MODE'
 }
 $benchmarkValue = if ($BenchmarkMode) { 'ON' } else { 'OFF' }
+$bufferedCaptureVariable = if ($Board -eq 'f746') {
+    'FC_F746_BUFFERED_CAPTURE_MODE'
+}
+else {
+    'FC_H755_BUFFERED_CAPTURE_MODE'
+}
+$bufferedCaptureSamplesVariable = if ($Board -eq 'f746') {
+    'FC_F746_BUFFERED_CAPTURE_SAMPLES'
+}
+else {
+    'FC_H755_BUFFERED_CAPTURE_SAMPLES'
+}
+$bufferedCaptureValue = if ($BufferedCaptureMode) { 'ON' } else { 'OFF' }
 
 if (-not $PSCmdlet.ShouldProcess(
         $buildDirectory,
         "Configurar y compilar $Target (benchmark=$benchmarkValue, " +
+        "captura_RAM=$bufferedCaptureValue, " +
         "decimación=$Decimation)")) {
     return
 }
@@ -97,7 +126,9 @@ $configureArguments = @(
     '-DCMAKE_BUILD_TYPE=Release',
     "-DFC_PLATFORM=$Board",
     "-D${decimationVariable}=$Decimation",
-    "-D${benchmarkVariable}=$benchmarkValue"
+    "-D${benchmarkVariable}=$benchmarkValue",
+    "-D${bufferedCaptureVariable}=$bufferedCaptureValue",
+    "-D${bufferedCaptureSamplesVariable}=$BufferedCaptureSamples"
 )
 if (-not (Test-Path -LiteralPath (
         Join-Path $buildDirectory 'CMakeCache.txt') -PathType Leaf)) {

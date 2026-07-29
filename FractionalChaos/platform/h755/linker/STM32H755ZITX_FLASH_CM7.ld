@@ -107,6 +107,20 @@ SECTIONS
   } > RAM_D1
 
   /*
+   * Buffer opcional de adquisicion one-shot. CM7 lo llena antes de publicar
+   * estados hacia SRAM4, de modo que no comparte trafico con el integrador.
+   */
+  .capture (NOLOAD) :
+  {
+    . = ALIGN(32);
+    __capture_start__ = .;
+    KEEP(*(.capture))
+    KEEP(*(.capture.*))
+    . = ALIGN(32);
+    __capture_end__ = .;
+  } > RAM_D1
+
+  /*
    * El historial del integrador se mantiene en DTCM: acceso determinista del
    * CM7 y sin tráfico en la matriz AXI durante la suma fraccionaria.
    */
@@ -162,3 +176,5 @@ ASSERT(SIZEOF(.shared) <= LENGTH(SRAM4),
        "La región compartida excede SRAM4")
 ASSERT(SIZEOF(.solver) <= LENGTH(DTCMRAM),
        "El workspace fraccionario excede DTCM")
+ASSERT((ADDR(.capture) & 31) == 0,
+       "La seccion de captura no esta alineada a cache")

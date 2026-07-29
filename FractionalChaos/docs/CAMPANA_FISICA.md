@@ -77,6 +77,64 @@ El endpoint `benchmark_reset_pilot` termina al reconstruir los índices
 `0..9999`, no después de un tiempo fijo. Los 180 segundos son únicamente su
 watchdog.
 
+## Endpoint de series temporales densas
+
+La separación entre muestras del piloto UART continuo no se corrige mediante
+interpolación. Una trama FCC1 ocupa 40 bytes y UART usa 8N1 a
+921600 bit/s, por lo que el límite ideal es
+\(921600/(40\times10)=2304\) tramas/s. El integrador M2sFRK ejecuta muchos más
+pasos por segundo; por ello una transmisión continua con decimación 1 perdería
+muestras aunque el cálculo numérico fuera correcto.
+
+El manifiesto derivado `validation/dense_uart_capture_manifest.json` define el
+endpoint separado `dense_timeseries_pilot`. La imagen de adquisición:
+
+1. ejecuta 12 000 pasos consecutivos y conserva en RAM un registro compacto de
+   estado y ciclos después de cada paso;
+2. mantiene UART inactiva durante toda la ventana numérica;
+3. detiene el integrador y sólo entonces vacía los 12 000 registros mediante
+   FCC1; y
+4. permanece detenida después de transmitir el último registro.
+
+El contrato exige exactamente `sequence=1..12000`, incremento uno, CRC válido,
+`status=0` y `dropped=0`. Para Lorenz se descartan después las secuencias
+`1..2000`; las 10 000 restantes tienen separación de tiempo de modelo
+\(\Delta t=h=0.005\). El tiempo se reconstruye como
+\(t_i=(\texttt{sequence}_i-2001)h\): el instante de recepción en el anfitrión
+no es tiempo del sistema porque UART se vacía después del cálculo.
+
+Cada registro interno ocupa 16 bytes y el buffer completo 192 000 bytes. Los
+mapas enlazados medidos dejan el uso de SRAM1 de F746 en 200 480/245 760 bytes
+(81.58 %) y el de RAM_D1 de H755 en 196 160/524 288 bytes (37.41 %). Este
+firmware es exclusivamente una imagen de adquisición; no es elegible para
+throughput UART, tiempo de pared ni benchmark primario. Los conteos DWT de cada
+paso se preservan, pero las comparaciones primarias de rendimiento continúan
+usando `benchmark_reset_pilot`.
+
+Ejemplo acotado para las dos representaciones F746:
+
+```powershell
+python tools/run_physical_campaign.py `
+  --manifest validation/dense_uart_capture_manifest.json `
+  --output-root validation/results/dense_uart_capture `
+  run `
+  --endpoint dense_timeseries_pilot `
+  --cell lorenz_m2sfrk_f746_float32 `
+  --cell lorenz_m2sfrk_f746_fixed `
+  --board f746 `
+  --reset-repetition 1 `
+  --max-runs 2 `
+  --execute `
+  --confirm-campaign-id stm32_dense_lorenz_m2sfrk_4cells_v1 `
+  --allow-pilot-only
+```
+
+Para H755 se sustituyen las dos celdas por
+`lorenz_m2sfrk_h755_float32` y `lorenz_m2sfrk_h755_fixed`, y `--board` por
+`h755`. El runner programa con `-NoReset`, abre y limpia el puerto UART antes
+del reset, captura hasta la secuencia exacta y conserva binario, CSV, hashes,
+mapas, logs y revisión Git.
+
 ## Plan sin hardware
 
 El comando siguiente valida el manifiesto y escribe un JSON de resumen y un CSV
@@ -167,6 +225,8 @@ build/campaign/f746/decim-<N>-release
 build/campaign/h755/decim-<N>-release
 build/campaign/f746/benchmark-10000-release
 build/campaign/h755/benchmark-10000-release
+build/campaign/f746/dense-12000-decim-1-release
+build/campaign/h755/dense-12000-decim-1-release
 ```
 
 El flasher comprueba el `Board Name`, exige el serial exacto y acepta

@@ -31,6 +31,14 @@
 #define FC_F746_BENCHMARK_MODE 0
 #endif
 
+#ifndef FC_F746_BUFFERED_CAPTURE_MODE
+#define FC_F746_BUFFERED_CAPTURE_MODE 0
+#endif
+
+#ifndef FC_F746_BUFFERED_CAPTURE_SAMPLES
+#define FC_F746_BUFFERED_CAPTURE_SAMPLES 12000U
+#endif
+
 #define FC_F746_CORE_CLOCK_HZ       216000000U
 #define FC_F746_UART_BAUD           921600U
 #define FC_F746_CACHE_LINE_BYTES    32U
@@ -61,6 +69,19 @@ _Static_assert(
     (FC_F746_BENCHMARK_MODE == 0) ||
     (FC_F746_BENCHMARK_MODE == 1),
     "FC_F746_BENCHMARK_MODE must be zero or one");
+_Static_assert(
+    (FC_F746_BUFFERED_CAPTURE_MODE == 0) ||
+    (FC_F746_BUFFERED_CAPTURE_MODE == 1),
+    "FC_F746_BUFFERED_CAPTURE_MODE must be zero or one");
+_Static_assert(
+    FC_F746_BUFFERED_CAPTURE_SAMPLES > 0U,
+    "FC_F746_BUFFERED_CAPTURE_SAMPLES must be greater than zero");
+_Static_assert(
+    !FC_F746_BUFFERED_CAPTURE_MODE || (FC_F746_OUTPUT_DECIMATION == 1U),
+    "Buffered capture represents every solver step and requires decimation 1");
+_Static_assert(
+    !(FC_F746_BUFFERED_CAPTURE_MODE && FC_F746_BENCHMARK_MODE),
+    "Buffered capture and benchmark modes are mutually exclusive");
 _Static_assert(
     (FC_BENCHMARK_TIMED_STEPS % FC_BENCHMARK_BLOCK_VALUES) == 0U,
     "The benchmark must contain complete four-value timing blocks");
@@ -94,6 +115,11 @@ typedef fc_status_t fc_f746_status_t;
 #define FC_F746_STATUS_OK FC_OK
 #endif
 
+typedef struct {
+    fc_f746_state_t state;
+    uint32_t cycles;
+} fc_f746_capture_record_t;
+
 typedef union {
     fc_wire_frame_t frame;
     uint8_t cache_lines[FC_F746_DMA_BUFFER_BYTES];
@@ -108,6 +134,9 @@ _Static_assert(
 _Static_assert(
     sizeof(fc_f746_dma_buffer_t) == FC_F746_DMA_BUFFER_BYTES,
     "The TX buffer must span two complete M7 cache lines");
+_Static_assert(
+    sizeof(fc_f746_capture_record_t) == 16U,
+    "Buffered capture records must retain the compact 16-byte layout");
 
 UART_HandleTypeDef huart3;
 DMA_HandleTypeDef hdma_usart3_tx;
@@ -119,6 +148,11 @@ static fc_f746_dma_buffer_t g_uart_tx_buffer
 #if FC_F746_BENCHMARK_MODE
 static uint32_t g_benchmark_cycles[FC_BENCHMARK_TIMED_STEPS]
     __attribute__((aligned(32)));
+#endif
+#if FC_F746_BUFFERED_CAPTURE_MODE
+static fc_f746_capture_record_t
+    g_buffered_capture[FC_F746_BUFFERED_CAPTURE_SAMPLES]
+    __attribute__((section(".capture"), aligned(32), used));
 #endif
 
 static volatile uint8_t g_uart_tx_active;
@@ -143,6 +177,11 @@ static void transmit_sample(
     uint32_t sequence,
     uint32_t cycles,
     uint8_t status);
+#if FC_F746_BUFFERED_CAPTURE_MODE
+static void run_buffered_capture(
+    fc_f746_solver_t *solver,
+    fc_f746_state_t *state);
+#endif
 #if FC_F746_BENCHMARK_MODE
 static void run_timing_benchmark(
     fc_f746_solver_t *solver,
@@ -165,7 +204,7 @@ int main(void)
     fc_config_t config;
 #endif
     fc_f746_state_t state;
-#if !FC_F746_BENCHMARK_MODE
+#if !FC_F746_BENCHMARK_MODE && !FC_F746_BUFFERED_CAPTURE_MODE
     uint32_t sequence = 0U;
     uint32_t decimation_counter = 0U;
 #endif
@@ -227,6 +266,8 @@ int main(void)
 
 #if FC_F746_BENCHMARK_MODE
     run_timing_benchmark(&g_solver_storage.solver, &state);
+#elif FC_F746_BUFFERED_CAPTURE_MODE
+    run_buffered_capture(&g_solver_storage.solver, &state);
 #else
     for (;;) {
         fc_f746_status_t status;
@@ -444,6 +485,57 @@ static uint8_t sample_status_with_fixed_diagnostics(uint8_t status)
 #endif
     return status;
 }
+
+#if FC_F746_BUFFERED_CAPTURE_MODE
+static void run_buffered_capture(
+    fc_f746_solver_t *solver,
+    fc_f746_state_t *state)
+{
+    uint32_t index;
+    fc_f746_status_t solver_status = FC_F746_STATUS_OK;
+
+    /*
+     * UART remains idle while every consecutive solver state is copied to
+     * SRAM1. Sequence is therefore model-step sequence, never reception time.
+     */
+    for (index = 0U;
+         index < FC_F746_BUFFERED_CAPTURE_SAMPLES;
+         ++index) {
+        const uint32_t cycles =
+            solver_step_cycles(solver, state, &solver_status);
+        const uint32_t sequence = index + 1U;
+
+        if (solver_status != FC_F746_STATUS_OK) {
+            halt_after_solver_error(state, sequence, cycles);
+        }
+        g_buffered_capture[index].state = *state;
+        g_buffered_capture[index].cycles = cycles;
+    }
+
+    /*
+     * Drain only after the numerical window has closed. Waiting before each
+     * DMA launch makes loss impossible without perturbing the saved states.
+     */
+    for (index = 0U;
+         index < FC_F746_BUFFERED_CAPTURE_SAMPLES;
+         ++index) {
+        while (g_uart_tx_active != 0U) {
+            __WFI();
+        }
+        transmit_sample(
+            &g_buffered_capture[index].state,
+            index + 1U,
+            g_buffered_capture[index].cycles,
+            FC_SAMPLE_STATUS_OK);
+    }
+    while (g_uart_tx_active != 0U) {
+        __WFI();
+    }
+    for (;;) {
+        __WFI();
+    }
+}
+#endif
 
 #if FC_F746_BENCHMARK_MODE
 static void run_timing_benchmark(

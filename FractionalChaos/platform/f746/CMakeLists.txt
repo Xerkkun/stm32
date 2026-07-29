@@ -30,9 +30,30 @@ option(
     FC_F746_BENCHMARK_MODE
     "Store 10000 solver-only DWT counts, then emit timing blocks"
     OFF)
-
+option(
+    FC_F746_BUFFERED_CAPTURE_MODE
+    "Capture every solver step in RAM, then drain it over UART"
+    OFF)
+set(
+    FC_F746_BUFFERED_CAPTURE_SAMPLES
+    "12000"
+    CACHE STRING
+    "Number of consecutive states retained by buffered capture mode")
 if(NOT FC_F746_OUTPUT_DECIMATION MATCHES "^[1-9][0-9]*$")
     message(FATAL_ERROR "FC_F746_OUTPUT_DECIMATION must be a positive integer")
+endif()
+if(NOT FC_F746_BUFFERED_CAPTURE_SAMPLES MATCHES "^[1-9][0-9]*$")
+    message(FATAL_ERROR
+        "FC_F746_BUFFERED_CAPTURE_SAMPLES must be a positive integer")
+endif()
+if(FC_F746_BUFFERED_CAPTURE_MODE AND FC_F746_BENCHMARK_MODE)
+    message(FATAL_ERROR
+        "Buffered capture and benchmark modes are mutually exclusive")
+endif()
+if(FC_F746_BUFFERED_CAPTURE_MODE AND
+        NOT FC_F746_OUTPUT_DECIMATION STREQUAL "1")
+    message(FATAL_ERROR
+        "Buffered capture represents every step and requires decimation 1")
 endif()
 
 set(FC_F7_HAL "${FC_F746_DONOR_ROOT}/Drivers/STM32F7xx_HAL_Driver")
@@ -159,6 +180,8 @@ function(
             FC_F746_FIXED_POINT=${fixed_point}
             FC_F746_PRECOMPUTED_TABLES=${table_symbol}
             FC_F746_OUTPUT_DECIMATION=${FC_F746_OUTPUT_DECIMATION}
+            FC_F746_BUFFERED_CAPTURE_MODE=$<BOOL:${FC_F746_BUFFERED_CAPTURE_MODE}>
+            FC_F746_BUFFERED_CAPTURE_SAMPLES=${FC_F746_BUFFERED_CAPTURE_SAMPLES}
             FC_F746_BENCHMARK_MODE=$<BOOL:${FC_F746_BENCHMARK_MODE}>)
 
     target_compile_options(

@@ -15,6 +15,13 @@ option(FC_H755_SMOKE_DIAGNOSTICS
 option(FC_H755_BENCHMARK_MODE
     "Guardar 10000 conteos DWT y emitirlos después como bloques de timing"
     OFF)
+option(FC_H755_BUFFERED_CAPTURE_MODE
+    "Retener cada paso en RAM y transmitirlo despues por UART"
+    OFF)
+set(FC_H755_BUFFERED_CAPTURE_SAMPLES
+    "12000"
+    CACHE STRING
+    "Numero de estados consecutivos del modo de captura en RAM")
 set(FC_H755_OUTPUT_DECIMATION
     "512"
     CACHE STRING
@@ -23,6 +30,19 @@ set(FC_H755_OUTPUT_DECIMATION
 if(NOT FC_H755_OUTPUT_DECIMATION MATCHES "^[1-9][0-9]*$")
     message(FATAL_ERROR
         "FC_H755_OUTPUT_DECIMATION debe ser un entero positivo")
+endif()
+if(NOT FC_H755_BUFFERED_CAPTURE_SAMPLES MATCHES "^[1-9][0-9]*$")
+    message(FATAL_ERROR
+        "FC_H755_BUFFERED_CAPTURE_SAMPLES debe ser un entero positivo")
+endif()
+if(FC_H755_BUFFERED_CAPTURE_MODE AND FC_H755_BENCHMARK_MODE)
+    message(FATAL_ERROR
+        "La captura en RAM y el benchmark son mutuamente excluyentes")
+endif()
+if(FC_H755_BUFFERED_CAPTURE_MODE AND
+        NOT FC_H755_OUTPUT_DECIMATION STREQUAL "1")
+    message(FATAL_ERROR
+        "La captura en RAM representa cada paso y requiere decimacion 1")
 endif()
 
 if(FC_H755_CLOCK_480 AND NOT FC_H755_LDO_MODIFICATION_CONFIRMED)
@@ -184,6 +204,8 @@ function(fc_h755_add_m7_target
         FC_METHOD_ID=${method_id}
         FC_H755_FIXED_POINT=${fixed_point}
         FC_H755_OUTPUT_DECIMATION=${FC_H755_OUTPUT_DECIMATION}
+        FC_H755_BUFFERED_CAPTURE_MODE=$<BOOL:${FC_H755_BUFFERED_CAPTURE_MODE}>
+        FC_H755_BUFFERED_CAPTURE_SAMPLES=${FC_H755_BUFFERED_CAPTURE_SAMPLES}
         FC_H755_BENCHMARK_MODE=$<BOOL:${FC_H755_BENCHMARK_MODE}>
         FC_REQUIRE_PRECOMPUTED_TABLES=1
         FC_PRECOMPUTED_TABLES_SYMBOL=${table_symbol})

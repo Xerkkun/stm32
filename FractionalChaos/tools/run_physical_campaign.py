@@ -102,12 +102,49 @@ def atomic_write_csv(
     os.replace(temporary, path)
 
 
+def merge_manifest_overrides(
+    base: dict[str, Any],
+    overrides: dict[str, Any],
+) -> dict[str, Any]:
+    merged = dict(base)
+    for key, value in overrides.items():
+        if (
+            isinstance(value, dict)
+            and isinstance(merged.get(key), dict)
+        ):
+            merged[key] = merge_manifest_overrides(merged[key], value)
+        else:
+            merged[key] = value
+    return merged
+
+
 def load_manifest(path: Path) -> tuple[dict[str, Any], str]:
     try:
         payload = path.read_bytes()
         manifest = json.loads(payload)
     except (OSError, json.JSONDecodeError) as exc:
         raise CampaignError(f"No se pudo leer el manifiesto {path}: {exc}") from exc
+    if manifest.get("schema") == (
+        "fractional-chaos-physical-campaign-derived-v1"
+    ):
+        base_name = manifest.get("extends")
+        overrides = manifest.get("overrides")
+        if not isinstance(base_name, str) or not isinstance(overrides, dict):
+            raise CampaignError(
+                "un manifiesto derivado exige extends y overrides"
+            )
+        base_path = (path.parent / base_name).resolve()
+        allowed_root = (ROOT / "validation").resolve()
+        try:
+            base_path.relative_to(allowed_root)
+        except ValueError as exc:
+            raise CampaignError(
+                f"manifiesto base fuera de {allowed_root}: {base_path}"
+            ) from exc
+        if base_path == path.resolve():
+            raise CampaignError("un manifiesto derivado no puede extenderse a sí mismo")
+        base, _base_sha256 = load_manifest(base_path)
+        manifest = merge_manifest_overrides(base, overrides)
     validate_manifest(manifest)
     return manifest, sha256_bytes(canonical_json_bytes(manifest))
 
@@ -201,6 +238,46 @@ def validate_manifest(manifest: dict[str, Any]) -> None:
         or benchmark_pilot.get("required_cycle_values") != 10_000
     ):
         raise CampaignError("contrato benchmark_reset_pilot inválido")
+    dense_pilot = endpoints.get("dense_timeseries_pilot")
+    if dense_pilot is not None:
+        if (
+            dense_pilot.get("ready") is not True
+            or dense_pilot.get("buffered_capture_mode") is not True
+            or dense_pilot.get("output_decimation") != 1
+            or dense_pilot.get("required_frames") != 12_000
+            or dense_pilot.get("first_sequence") != 1
+            or dense_pilot.get("last_sequence") != 12_000
+            or dense_pilot.get("sequence_increment") != 1
+            or dense_pilot.get("eligible_as_primary_benchmark") is not False
+        ):
+            raise CampaignError("contrato dense_timeseries_pilot inválido")
+        require_exact_set(
+            manifest.get("dense_capture_cells", []),
+            {
+                "lorenz_m2sfrk_f746_float32",
+                "lorenz_m2sfrk_f746_fixed",
+                "lorenz_m2sfrk_h755_float32",
+                "lorenz_m2sfrk_h755_fixed",
+            },
+            "dense_capture_cells",
+        )
+        build = manifest.get("build", {})
+        if (
+            build.get("dense_buffered_capture_samples") != 12_000
+            or not isinstance(build.get("dense_directory_pattern"), str)
+            or "{buffered_capture_samples}"
+            not in build["dense_directory_pattern"]
+        ):
+            raise CampaignError(
+                "el build denso debe fijar 12000 muestras y un directorio "
+                "dedicado"
+            )
+        if manifest.get("safety", {}).get(
+            "maximum_dense_timeseries_pilot_runs_per_invocation"
+        ) != 2:
+            raise CampaignError(
+                "dense_timeseries_pilot debe admitir como máximo 2 runs"
+            )
     if manifest.get("reset_contract", {}).get(
         "eligible_as_paper_cold_start"
     ) is not False:
@@ -353,7 +430,7 @@ def plan_payload(
         row["calibration_status"] == "accepted_pilot"
         for row in schedule[:36]
     )
-    return {
+    payload = {
         "schema": "fractional-chaos-physical-campaign-plan-v1",
         "campaign_id": manifest["campaign_id"],
         "manifest_sha256": manifest_sha256,
@@ -381,6 +458,24 @@ def plan_payload(
         ],
         "schedule_sha256": sha256_bytes(canonical_json_bytes(schedule)),
     }
+    dense_contract = manifest.get("endpoints", {}).get(
+        "dense_timeseries_pilot"
+    )
+    if dense_contract is not None:
+        payload.update(
+            {
+                "dense_timeseries_pilot_ready": True,
+                "dense_capture_cells": list(manifest["dense_capture_cells"]),
+                "dense_capture_cell_count": len(
+                    manifest["dense_capture_cells"]
+                ),
+                "dense_capture_evidence_level": dense_contract[
+                    "evidence_level"
+                ],
+                "dense_capture_eligible_as_primary_benchmark": False,
+            }
+        )
+    return payload
 
 
 SCHEDULE_FIELDS = (
@@ -573,15 +668,26 @@ def build_directory(
     decimation: int,
     *,
     benchmark_mode: bool = False,
+    buffered_capture_mode: bool = False,
 ) -> Path:
+    if benchmark_mode and buffered_capture_mode:
+        raise CampaignError(
+            "benchmark_mode y buffered_capture_mode son mutuamente excluyentes"
+        )
     build = manifest["build"]
-    pattern = (
-        build["benchmark_directory_pattern"]
-        if benchmark_mode
-        else build["directory_pattern"]
-    )
+    if benchmark_mode:
+        pattern = build["benchmark_directory_pattern"]
+    elif buffered_capture_mode:
+        pattern = build["dense_directory_pattern"]
+    else:
+        pattern = build["directory_pattern"]
     relative = pattern.format(
-        root=build["root"], board=cell["board"], decimation=decimation
+        root=build["root"],
+        board=cell["board"],
+        decimation=decimation,
+        buffered_capture_samples=build.get(
+            "dense_buffered_capture_samples", 12_000
+        ),
     )
     path = (ROOT / Path(relative)).resolve()
     allowed = (ROOT / "build" / "campaign").resolve()
@@ -610,9 +716,14 @@ def image_paths(
     decimation: int,
     *,
     benchmark_mode: bool = False,
+    buffered_capture_mode: bool = False,
 ) -> list[Path]:
     directory = build_directory(
-        manifest, cell, decimation, benchmark_mode=benchmark_mode
+        manifest,
+        cell,
+        decimation,
+        benchmark_mode=benchmark_mode,
+        buffered_capture_mode=buffered_capture_mode,
     )
     paths = [directory / f"{firmware_target(manifest, cell)}.hex"]
     if cell["board"] == "h755":
@@ -626,9 +737,14 @@ def map_paths(
     decimation: int,
     *,
     benchmark_mode: bool = False,
+    buffered_capture_mode: bool = False,
 ) -> list[Path]:
     directory = build_directory(
-        manifest, cell, decimation, benchmark_mode=benchmark_mode
+        manifest,
+        cell,
+        decimation,
+        benchmark_mode=benchmark_mode,
+        buffered_capture_mode=buffered_capture_mode,
     )
     paths = [directory / f"{firmware_target(manifest, cell)}.map"]
     if cell["board"] == "h755":
@@ -649,6 +765,7 @@ def build_command(
     decimation: int,
     *,
     benchmark_mode: bool = False,
+    buffered_capture_mode: bool = False,
 ) -> list[str]:
     command = [
         powershell_executable(),
@@ -666,6 +783,14 @@ def build_command(
     ]
     if benchmark_mode:
         command.append("-BenchmarkMode")
+    if buffered_capture_mode:
+        command.extend(
+            (
+                "-BufferedCaptureMode",
+                "-BufferedCaptureSamples",
+                str(manifest["build"]["dense_buffered_capture_samples"]),
+            )
+        )
     return command
 
 
@@ -677,6 +802,7 @@ def flash_command(
     reset_only: bool = False,
     no_reset: bool = False,
     benchmark_mode: bool = False,
+    buffered_capture_mode: bool = False,
 ) -> list[str]:
     if reset_only and no_reset:
         raise CampaignError("reset_only y no_reset son mutuamente excluyentes")
@@ -706,6 +832,7 @@ def flash_command(
                 cell,
                 decimation,
                 benchmark_mode=benchmark_mode,
+                buffered_capture_mode=buffered_capture_mode,
             )
         ),
     ]
@@ -750,6 +877,7 @@ def ensure_build(
     log_path: Path,
     *,
     benchmark_mode: bool = False,
+    buffered_capture_mode: bool = False,
 ) -> list[Path]:
     run_process(
         build_command(
@@ -757,6 +885,7 @@ def ensure_build(
             cell,
             decimation,
             benchmark_mode=benchmark_mode,
+            buffered_capture_mode=buffered_capture_mode,
         ),
         log_path,
         float(manifest["timeouts_s"]["build"]),
@@ -766,6 +895,7 @@ def ensure_build(
         cell,
         decimation,
         benchmark_mode=benchmark_mode,
+        buffered_capture_mode=buffered_capture_mode,
     )
     missing = [path for path in images if not path.is_file()]
     missing.extend(
@@ -775,6 +905,7 @@ def ensure_build(
             cell,
             decimation,
             benchmark_mode=benchmark_mode,
+            buffered_capture_mode=buffered_capture_mode,
         )
         if not path.is_file()
     )
@@ -843,12 +974,18 @@ def capture_after_reset(
     frames: list[tuple[int, ...]] = []
     raw = bytearray()
     benchmark_mode = endpoint == "benchmark_reset_pilot"
+    buffered_capture_mode = endpoint == "dense_timeseries_pilot"
     identity = expected_identity(manifest, cell, endpoint=endpoint)
-    target = (
-        manifest["endpoints"]["benchmark_reset_pilot"]["last_sequence"]
-        if benchmark_mode
-        else sequence_endpoint(manifest, cell, decimation)
-    )
+    if benchmark_mode:
+        target = manifest["endpoints"]["benchmark_reset_pilot"][
+            "last_sequence"
+        ]
+    elif buffered_capture_mode:
+        target = manifest["endpoints"]["dense_timeseries_pilot"][
+            "last_sequence"
+        ]
+    else:
+        target = sequence_endpoint(manifest, cell, decimation)
     first_matching_sequence: int | None = None
     endpoint_reached = False
     first_frame_timeout = float(
@@ -877,6 +1014,7 @@ def capture_after_reset(
                 decimation,
                 reset_only=True,
                 benchmark_mode=benchmark_mode,
+                buffered_capture_mode=buffered_capture_mode,
             ),
             cwd=ROOT,
             stdin=subprocess.DEVNULL,
@@ -957,6 +1095,101 @@ def capture_after_reset(
             "capture_wall_time_s": finished - process_started,
         },
     )
+
+
+def summarize_dense_capture(
+    manifest: dict[str, Any],
+    cell: dict[str, Any],
+    frames: Sequence[tuple[int, ...]],
+    parser: FCC1StreamParser,
+) -> dict[str, Any]:
+    contract = manifest["endpoints"]["dense_timeseries_pilot"]
+    identity = expected_identity(
+        manifest, cell, endpoint="dense_timeseries_pilot"
+    )
+    matching = [
+        values for values in frames if frame_matches_identity(values, identity)
+    ]
+    identity_mismatches = len(frames) - len(matching)
+    sequences = [int(values[8]) for values in matching]
+    expected_sequences = list(
+        range(
+            int(contract["first_sequence"]),
+            int(contract["last_sequence"]) + 1,
+            int(contract["sequence_increment"]),
+        )
+    )
+    nonzero_status = sum(int(values[6]) != 0 for values in matching)
+    nonzero_dropped = sum(int(values[10]) != 0 for values in matching)
+    exact_sequence_window = sequences == expected_sequences
+    transport_accepted = bool(
+        exact_sequence_window
+        and len(matching) == int(contract["required_frames"])
+        and identity_mismatches == 0
+        and nonzero_status == 0
+        and nonzero_dropped == 0
+        and parser.counters.crc_errors == 0
+        and parser.counters.invalid_headers == 0
+    )
+    cycles = [int(values[9]) for values in matching]
+    return {
+        "endpoint": {
+            "rule": "exact_consecutive_model_step_sequence_window",
+            "buffered_capture_mode": True,
+            "output_decimation": 1,
+            "first_sequence": sequences[0] if sequences else None,
+            "last_sequence": sequences[-1] if sequences else None,
+            "expected_first_sequence": int(contract["first_sequence"]),
+            "expected_last_sequence": int(contract["last_sequence"]),
+            "expected_frames": int(contract["required_frames"]),
+            "received_frames": len(matching),
+            "sequence_increment": int(contract["sequence_increment"]),
+            "complete": exact_sequence_window,
+            "watchdog_s": manifest["timeouts_s"]["endpoint"],
+        },
+        "transport": {
+            "accepted": transport_accepted,
+            "valid_frames": len(frames),
+            "matching_frames": len(matching),
+            "identity_mismatches": identity_mismatches,
+            "sequence_gaps": sum(
+                current - previous != 1
+                for previous, current in zip(sequences, sequences[1:])
+            ),
+            "nonzero_status_frames": nonzero_status,
+            "nonzero_dropped_frames": nonzero_dropped,
+            "crc_errors": parser.counters.crc_errors,
+            "invalid_headers": parser.counters.invalid_headers,
+            "noise_bytes": parser.counters.noise_bytes,
+            "trailing_bytes": parser.trailing_bytes,
+            "bytes_received": parser.counters.bytes_received,
+        },
+        "time_series": {
+            "accepted_for_dense_series_analysis": transport_accepted,
+            "states_buffered_before_uart_drain": int(
+                contract["required_frames"]
+            ),
+            "sample_spacing_model_steps": 1,
+            "sample_interval_model_time": manifest["systems"][
+                cell["system"]
+            ]["dt_s"],
+            "host_reception_time_is_model_time": False,
+        },
+        "timing": {
+            "reported_cycle_values": len(cycles),
+            "all_reported_cycles_nonzero": bool(cycles)
+            and all(value > 0 for value in cycles),
+            "accepted_as_solver_timing": False,
+            "eligible_as_primary_benchmark": False,
+            "ineligibility_reason": (
+                "dense_timeseries_pilot is a state-series acquisition "
+                "endpoint, not a randomized primary timing repetition"
+            ),
+        },
+        "evidence_level": contract["evidence_level"],
+        "eligible_as_primary_benchmark": False,
+        "eligible_as_paper_cold_start": False,
+    }
 
 
 def summarize_capture(
@@ -1170,11 +1403,15 @@ def git_metadata() -> dict[str, Any]:
 
 
 def pilot_run_id(scheduled: dict[str, Any], endpoint: str) -> str:
-    suffix = (
-        "benchmark-reset-pilot"
-        if endpoint == "benchmark_reset_pilot"
-        else "transport-pilot"
-    )
+    suffixes = {
+        "benchmark_reset_pilot": "benchmark-reset-pilot",
+        "transport_pilot": "transport-pilot",
+        "dense_timeseries_pilot": "dense-timeseries-pilot",
+    }
+    try:
+        suffix = suffixes[endpoint]
+    except KeyError as exc:
+        raise CampaignError(f"endpoint sin run-id propio: {endpoint}") from exc
     return f"{scheduled['run_id']}__{suffix}"
 
 
@@ -1249,6 +1486,19 @@ def validate_completed_run(
         raise CampaignError(
             f"--resume rechazó timing incompleto: {result_path}"
         )
+    if endpoint == "dense_timeseries_pilot":
+        dense_checks = (
+            result.get("endpoint", {}).get("complete") is True,
+            result.get("time_series", {}).get(
+                "accepted_for_dense_series_analysis"
+            )
+            is True,
+            result.get("eligible_as_primary_benchmark") is False,
+        )
+        if not all(dense_checks):
+            raise CampaignError(
+                f"--resume rechazó captura densa incompleta: {result_path}"
+            )
 
     capture = result.get("capture", {})
     raw_path = safe_artifact_path(run_directory, capture.get("raw_path"))
@@ -1271,6 +1521,17 @@ def validate_completed_run(
             raise CampaignError(
                 f"--resume rechazó hash de ciclos: {timing_path}"
             )
+    if endpoint == "dense_timeseries_pilot":
+        csv_path = safe_artifact_path(
+            run_directory, capture.get("csv_path")
+        )
+        if (
+            not csv_path.is_file()
+            or sha256_file(csv_path) != capture.get("csv_sha256")
+        ):
+            raise CampaignError(
+                f"--resume rechazó hash CSV denso: {csv_path}"
+            )
     return result
 
 
@@ -1285,16 +1546,26 @@ def execute_pilot(
 ) -> dict[str, Any]:
     cell = dict(scheduled)
     benchmark_mode = endpoint == "benchmark_reset_pilot"
+    buffered_capture_mode = endpoint == "dense_timeseries_pilot"
     calibration = manifest["calibrated_cells"].get(cell["cell_id"])
-    if not benchmark_mode and calibration is None:
+    if buffered_capture_mode and cell["cell_id"] not in set(
+        manifest["dense_capture_cells"]
+    ):
+        raise CampaignError(
+            f"{cell['cell_id']} no pertenece a dense_capture_cells"
+        )
+    if not benchmark_mode and not buffered_capture_mode and calibration is None:
         raise CampaignError(
             f"{cell['cell_id']} no tiene decimación físicamente calibrada"
         )
-    decimation = (
-        int(manifest["build"]["benchmark_unused_decimation_value"])
-        if benchmark_mode
-        else int(calibration["decimation"])
-    )
+    if benchmark_mode:
+        decimation = int(
+            manifest["build"]["benchmark_unused_decimation_value"]
+        )
+    elif buffered_capture_mode:
+        decimation = 1
+    else:
+        decimation = int(calibration["decimation"])
     current_run_id = pilot_run_id(scheduled, endpoint)
     run_directory = pilot_run_directory(
         output_root,
@@ -1314,6 +1585,7 @@ def execute_pilot(
         cell,
         decimation,
         benchmark_mode=benchmark_mode,
+        buffered_capture_mode=buffered_capture_mode,
     )
     with contextlib.ExitStack() as stack:
         for lock_name in (
@@ -1340,6 +1612,7 @@ def execute_pilot(
                 decimation,
                 run_directory / "build.log",
                 benchmark_mode=benchmark_mode,
+                buffered_capture_mode=buffered_capture_mode,
             )
             program_started = time.monotonic()
             run_process(
@@ -1349,6 +1622,7 @@ def execute_pilot(
                     decimation,
                     no_reset=True,
                     benchmark_mode=benchmark_mode,
+                    buffered_capture_mode=buffered_capture_mode,
                 ),
                 run_directory / "flash.log",
                 float(manifest["timeouts_s"]["flash"]),
@@ -1366,6 +1640,11 @@ def execute_pilot(
                 summary, timing_values = summarize_benchmark_capture(
                     manifest, cell, frames, parser
                 )
+            elif buffered_capture_mode:
+                summary = summarize_dense_capture(
+                    manifest, cell, frames, parser
+                )
+                timing_values = []
             else:
                 summary = summarize_capture(
                     manifest, cell, decimation, frames, parser
@@ -1406,7 +1685,10 @@ def execute_pilot(
             result = {
                 "schema": "fractional-chaos-physical-run-v1",
                 "run_id": current_run_id,
-                "scheduled_primary_run_id": scheduled["run_id"],
+                "scheduled_campaign_run_id": scheduled["run_id"],
+                "scheduled_primary_run_id": (
+                    None if buffered_capture_mode else scheduled["run_id"]
+                ),
                 "campaign_id": manifest["campaign_id"],
                 "manifest_sha256": manifest_sha256,
                 "started_utc": started_utc,
@@ -1415,7 +1697,11 @@ def execute_pilot(
                 "experimental_unit": (
                     "stlink_hardware_reset_repetition"
                     if benchmark_mode
-                    else "transport_pilot_acquisition"
+                    else (
+                        "dense_buffered_timeseries_acquisition"
+                        if buffered_capture_mode
+                        else "transport_pilot_acquisition"
+                    )
                 ),
                 "cell": {
                     key: cell[key]
@@ -1454,10 +1740,20 @@ def execute_pilot(
                     "target": firmware_target(manifest, cell),
                     "decimation": decimation,
                     "benchmark_mode": benchmark_mode,
+                    "buffered_capture_mode": buffered_capture_mode,
+                    "buffered_capture_samples": (
+                        manifest["build"]["dense_buffered_capture_samples"]
+                        if buffered_capture_mode
+                        else None
+                    ),
                     "calibration_basis": (
                         "compile_time_kind4_timing_endpoint"
                         if benchmark_mode
-                        else calibration["basis"]
+                        else (
+                            "explicit_dense_capture_contract"
+                            if buffered_capture_mode
+                            else calibration["basis"]
+                        )
                     ),
                     "images": [
                         {
@@ -1476,6 +1772,7 @@ def execute_pilot(
                             cell,
                             decimation,
                             benchmark_mode=benchmark_mode,
+                            buffered_capture_mode=buffered_capture_mode,
                         )
                     ],
                 },
@@ -1484,6 +1781,7 @@ def execute_pilot(
                     "raw_path": raw_path.name,
                     "raw_sha256": sha256_bytes(raw),
                     "csv_path": csv_path.name,
+                    "csv_sha256": sha256_file(csv_path),
                     "timing_cycles_path": (
                         timing_path.name if timing_path is not None else None
                     ),
@@ -1572,8 +1870,18 @@ def command_run(args: argparse.Namespace) -> int:
     manifest, manifest_sha256 = load_manifest(args.manifest)
     schedule = generate_schedule(manifest, manifest_sha256)
     validate_schedule(schedule, manifest)
+    selectable_schedule = schedule
+    if args.endpoint == "dense_timeseries_pilot":
+        if "dense_timeseries_pilot" not in manifest.get("endpoints", {}):
+            raise CampaignError(
+                "el manifiesto no declara dense_timeseries_pilot"
+            )
+        dense_cells = set(manifest["dense_capture_cells"])
+        selectable_schedule = [
+            row for row in schedule if row["cell_id"] in dense_cells
+        ]
     selected = select_runs(
-        schedule,
+        selectable_schedule,
         cells=args.cell,
         board=args.board,
         cold_start=args.cold_start,
@@ -1584,20 +1892,37 @@ def command_run(args: argparse.Namespace) -> int:
     if not selected:
         raise CampaignError("ninguna ejecución coincide con los filtros")
 
+    endpoint_contract = manifest["endpoints"][args.endpoint]
     dry_summary = {
         "campaign_id": manifest["campaign_id"],
         "endpoint": args.endpoint,
+        "evidence_level": endpoint_contract["evidence_level"],
+        "eligible_as_primary_benchmark": False,
         "execute": bool(args.execute),
         "resume": bool(args.resume),
         "selected_runs": len(selected),
         "selected_cells": sorted({row["cell_id"] for row in selected}),
-        "calibrated_selected_runs": sum(
+        "transport_calibrated_selected_runs": sum(
             row["calibration_status"] == "accepted_pilot"
             for row in selected
         ),
+        "dense_contract_selected_runs": (
+            len(selected) if args.endpoint == "dense_timeseries_pilot" else 0
+        ),
+        "buffered_capture_mode": (
+            args.endpoint == "dense_timeseries_pilot"
+        ),
         "primary_benchmark_ready": False,
-        "first_run_id": selected[0]["run_id"],
-        "last_run_id": selected[-1]["run_id"],
+        "first_run_id": (
+            pilot_run_id(selected[0], args.endpoint)
+            if args.endpoint != "primary_benchmark"
+            else selected[0]["run_id"]
+        ),
+        "last_run_id": (
+            pilot_run_id(selected[-1], args.endpoint)
+            if args.endpoint != "primary_benchmark"
+            else selected[-1]["run_id"]
+        ),
     }
     if not args.execute:
         print(json.dumps(dry_summary, ensure_ascii=False, indent=2))
@@ -1618,11 +1943,15 @@ def command_run(args: argparse.Namespace) -> int:
             f"{args.endpoint} exige --allow-pilot-only para reconocer "
             "que no es evidencia primaria"
         )
-    maximum_key = (
-        "maximum_benchmark_reset_pilot_runs_per_invocation"
-        if args.endpoint == "benchmark_reset_pilot"
-        else "maximum_transport_pilot_runs_per_invocation"
-    )
+    maximum_key = {
+        "benchmark_reset_pilot": (
+            "maximum_benchmark_reset_pilot_runs_per_invocation"
+        ),
+        "transport_pilot": "maximum_transport_pilot_runs_per_invocation",
+        "dense_timeseries_pilot": (
+            "maximum_dense_timeseries_pilot_runs_per_invocation"
+        ),
+    }[args.endpoint]
     maximum = manifest["safety"][maximum_key]
     if args.max_runs is None or args.max_runs > maximum:
         raise CampaignError(
@@ -1736,6 +2065,7 @@ def make_parser() -> argparse.ArgumentParser:
             "primary_benchmark",
             "benchmark_reset_pilot",
             "transport_pilot",
+            "dense_timeseries_pilot",
         ),
         default="primary_benchmark",
     )

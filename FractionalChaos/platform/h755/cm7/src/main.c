@@ -31,6 +31,14 @@
 #define FC_H755_BENCHMARK_MODE 0
 #endif
 
+#ifndef FC_H755_BUFFERED_CAPTURE_MODE
+#define FC_H755_BUFFERED_CAPTURE_MODE 0
+#endif
+
+#ifndef FC_H755_BUFFERED_CAPTURE_SAMPLES
+#define FC_H755_BUFFERED_CAPTURE_SAMPLES 12000U
+#endif
+
 #ifndef FC_H755_CLOCK_480
 #define FC_H755_CLOCK_480 0
 #endif
@@ -76,6 +84,19 @@ _Static_assert(
     (FC_H755_BENCHMARK_MODE == 1),
     "FC_H755_BENCHMARK_MODE debe ser cero o uno");
 _Static_assert(
+    (FC_H755_BUFFERED_CAPTURE_MODE == 0) ||
+    (FC_H755_BUFFERED_CAPTURE_MODE == 1),
+    "FC_H755_BUFFERED_CAPTURE_MODE debe ser cero o uno");
+_Static_assert(
+    FC_H755_BUFFERED_CAPTURE_SAMPLES > 0U,
+    "FC_H755_BUFFERED_CAPTURE_SAMPLES debe ser mayor que cero");
+_Static_assert(
+    !FC_H755_BUFFERED_CAPTURE_MODE || (FC_H755_OUTPUT_DECIMATION == 1U),
+    "La captura en RAM representa cada paso y requiere decimacion 1");
+_Static_assert(
+    !(FC_H755_BUFFERED_CAPTURE_MODE && FC_H755_BENCHMARK_MODE),
+    "La captura en RAM y el benchmark son mutuamente excluyentes");
+_Static_assert(
     (FC_BENCHMARK_TIMED_STEPS % FC_BENCHMARK_BLOCK_VALUES) == 0U,
     "El benchmark debe emitir bloques completos de cuatro conteos");
 
@@ -105,18 +126,31 @@ typedef fc_status_t fc_h755_status_t;
 #define FC_H755_STATUS_OK FC_OK
 #endif
 
+typedef struct {
+    fc_h755_state_t state;
+    uint32_t cycles;
+} fc_h755_capture_record_t;
+
 _Static_assert(
     sizeof(fc_h755_solver_storage_t) <= FC_H755_DTCM_BYTES,
     "El integrador y el historial deben caber en DTCM");
 _Static_assert(
     (sizeof(fc_h755_solver_storage_t) % sizeof(uint32_t)) == 0U,
     "El almacenamiento del integrador debe poder borrarse por palabras");
+_Static_assert(
+    sizeof(fc_h755_capture_record_t) == 16U,
+    "Los registros de captura deben conservar 16 bytes");
 
 static fc_h755_solver_storage_t g_solver_storage
     __attribute__((section(".solver"), aligned(32), used));
 #if FC_H755_BENCHMARK_MODE
 static uint32_t g_benchmark_cycles[FC_BENCHMARK_TIMED_STEPS]
     __attribute__((aligned(32)));
+#endif
+#if FC_H755_BUFFERED_CAPTURE_MODE
+static fc_h755_capture_record_t
+    g_buffered_capture[FC_H755_BUFFERED_CAPTURE_SAMPLES]
+    __attribute__((section(".capture"), aligned(32), used));
 #endif
 #if FC_H755_FIXED_POINT
 static uint8_t g_fixed_status_flags;
@@ -140,6 +174,11 @@ static void publish_sample(
     uint32_t sequence,
     uint32_t cycles,
     uint8_t status);
+#if FC_H755_BUFFERED_CAPTURE_MODE
+static void run_buffered_capture(
+    fc_h755_solver_t *solver,
+    fc_h755_state_t *state);
+#endif
 #if FC_H755_BENCHMARK_MODE
 static void run_timing_benchmark(
     fc_h755_solver_t *solver,
@@ -158,7 +197,7 @@ int main(void)
     fc_config_t config;
 #endif
     fc_h755_state_t state = {{0}};
-#if !FC_H755_BENCHMARK_MODE
+#if !FC_H755_BENCHMARK_MODE && !FC_H755_BUFFERED_CAPTURE_MODE
     uint32_t sequence = 0U;
     uint32_t decimation_counter = 0U;
 #endif
@@ -227,6 +266,8 @@ int main(void)
 
 #if FC_H755_BENCHMARK_MODE
     run_timing_benchmark(&g_solver_storage.solver, &state);
+#elif FC_H755_BUFFERED_CAPTURE_MODE
+    run_buffered_capture(&g_solver_storage.solver, &state);
 #else
     for (;;) {
         fc_h755_status_t status;
@@ -496,6 +537,67 @@ static uint8_t sample_status_with_fixed_diagnostics(uint8_t status)
 #endif
     return status;
 }
+
+#if FC_H755_BUFFERED_CAPTURE_MODE
+static void run_buffered_capture(
+    fc_h755_solver_t *solver,
+    fc_h755_state_t *state)
+{
+    uint32_t index;
+    fc_h755_status_t solver_status = FC_H755_STATUS_OK;
+
+    /*
+     * CM4/UART remain idle while every consecutive model step is retained in
+     * RAM_D1. Sequence denotes solver order, not host reception time.
+     */
+    for (index = 0U;
+         index < FC_H755_BUFFERED_CAPTURE_SAMPLES;
+         ++index) {
+        const uint32_t cycles =
+            solver_step_cycles(solver, state, &solver_status);
+        const uint32_t sequence = index + 1U;
+
+        if (solver_status != FC_H755_STATUS_OK) {
+            publish_sample(
+                state,
+                sequence,
+                cycles,
+                FC_SAMPLE_STATUS_NONFINITE);
+            for (;;) {
+                __WFE();
+            }
+        }
+        g_buffered_capture[index].state = *state;
+        g_buffered_capture[index].cycles = cycles;
+    }
+
+    /*
+     * Reuse the proven single-producer queue only after the numerical window
+     * has closed. The preflight and postcondition turn a full ring into a wait,
+     * never a silent omission.
+     */
+    for (index = 0U;
+         index < FC_H755_BUFFERED_CAPTURE_SAMPLES;
+         ++index) {
+        while (!fc_shared_queue_has_space(&g_fc_h755_queue)) {
+            if (g_fc_h755_queue.magic != FC_SHARED_QUEUE_MAGIC) {
+                Error_Handler();
+            }
+        }
+        publish_sample(
+            &g_buffered_capture[index].state,
+            index + 1U,
+            g_buffered_capture[index].cycles,
+            FC_SAMPLE_STATUS_OK);
+        if (fc_shared_queue_dropped(&g_fc_h755_queue) != 0U) {
+            Error_Handler();
+        }
+    }
+    for (;;) {
+        __WFE();
+    }
+}
+#endif
 
 #if FC_H755_BENCHMARK_MODE
 static void run_timing_benchmark(
