@@ -1,0 +1,867 @@
+{
+  "schema_version": 1,
+  "generated_at_utc": "2026-07-29T03:29:27.278871Z",
+  "status": "completed_no_arithmetic_contract_failures",
+  "scope": "One-second host execution of the actual portable C float32 and mixed fixed-point kernels compared with a full-memory float64 Caputo ABM reference at h/4",
+  "evidence_layer": "host_short_horizon_numerical_comparison",
+  "does_not_establish": [
+    "long-horizon chaos",
+    "physical-board timing or energy",
+    "bitstream randomness",
+    "equivalence between different fractional operators"
+  ],
+  "provenance": {
+    "dump_executable": "C:\\Users\\moren\\Desktop\\Codes\\STM32\\FractionalChaos\\build\\host-release\\tests\\fractional_embedded_trajectory_dump.exe",
+    "dump_executable_sha256": "c05a1ade09a11e449614946a87625acc72b45f93b4096993508544f69e39f8db",
+    "dump_source": "tests/embedded_trajectory_dump.c",
+    "dump_source_sha256": "10b2f837b5ddadef0f466793fb45889fd44c8af4e11155ed61cffccc8d3d1884",
+    "float_kernel_source_sha256": "3d1e1b0d5b2c72864ac52f35fe3c1b417b08da9c36d8ba75cc22a4a4d615a9fe",
+    "fixed_kernel_source_sha256": "43c8f8e6c8f4a9b0fee06f33d621400e3c813dfb2768d898235668901f90dbc3",
+    "abm_source_sha256": "5608dc119e85a01accc4ae8b58f83e13c79b230a7731953c280330e16bcb2aca",
+    "manifest": "C:\\Users\\moren\\Desktop\\Codes\\STM32\\FractionalChaos\\validation\\candidate_manifests_rossler_classic_v2.json",
+    "manifest_sha256": "fc15e5cf21d82b6b9f1224cd740c2fd47dfaca7cc16289e726f18e9be9fdd8bc"
+  },
+  "configuration": {
+    "physical_horizon_s": 1.0,
+    "abm_resolution_divisor": 4,
+    "candidate_arithmetic": [
+      "float32",
+      "fixed_q14_q30"
+    ]
+  },
+  "cells": [
+    {
+      "system": "lorenz",
+      "method": "efork3",
+      "representation": "float32",
+      "h": 0.005,
+      "q": 0.995,
+      "steps": 200,
+      "physical_horizon_s": 1.0,
+      "reference": {
+        "method": "full-memory Caputo ABM PECE",
+        "h": 0.00125,
+        "resolution_divisor": 4
+      },
+      "metrics_vs_abm": {
+        "rmse": 17.38714114571123,
+        "component_rmse": [
+          13.618429022096231,
+          18.210665088265426,
+          19.74457139762247
+        ],
+        "normalized_component_rmse": [
+          0.47552864281393425,
+          0.4786996293941762,
+          0.41251443936707216
+        ],
+        "maximum_absolute_component_error": 46.39854058581942,
+        "maximum_state_error_norm": 48.57581749729907,
+        "final_state_error_norm": 25.820443338969145,
+        "initial_state_error_norm": 1.7320508066572022e-09
+      },
+      "diagnostics": {
+        "state_saturations": 0,
+        "coefficient_saturations": 0,
+        "zeroed_nonzero_coefficients": 0
+      },
+      "arithmetic_contract_passed": true
+    },
+    {
+      "system": "lorenz",
+      "method": "efork3",
+      "representation": "fixed_q14_q30",
+      "h": 0.005,
+      "q": 0.995,
+      "steps": 200,
+      "physical_horizon_s": 1.0,
+      "reference": {
+        "method": "full-memory Caputo ABM PECE",
+        "h": 0.00125,
+        "resolution_divisor": 4
+      },
+      "metrics_vs_abm": {
+        "rmse": 17.36278026290613,
+        "component_rmse": [
+          13.60941104303257,
+          18.180046169917095,
+          19.714671381875824
+        ],
+        "normalized_component_rmse": [
+          0.4752137527970234,
+          0.4778947568211672,
+          0.4118897518018471
+        ],
+        "maximum_absolute_component_error": 46.360982147694415,
+        "maximum_state_error_norm": 48.52266500729387,
+        "final_state_error_norm": 25.55753732243625,
+        "initial_state_error_norm": 4.228639666917166e-05
+      },
+      "diagnostics": {
+        "state_saturations": 0,
+        "coefficient_saturations": 0,
+        "zeroed_nonzero_coefficients": 0
+      },
+      "arithmetic_contract_passed": true,
+      "metrics_fixed_vs_float32": {
+        "rmse": 0.13683506811718826,
+        "component_rmse": [
+          0.0718265058366595,
+          0.15364456744813812,
+          0.16554699499802927
+        ],
+        "normalized_component_rmse": [
+          0.003751153933664562,
+          0.004975917605004905,
+          0.0035672115004729936
+        ],
+        "maximum_absolute_component_error": 0.4399490039062499,
+        "maximum_state_error_norm": 0.4634636207676208,
+        "final_state_error_norm": 0.2798632166916276,
+        "initial_state_error_norm": 4.228812871997831e-05
+      }
+    },
+    {
+      "system": "lorenz",
+      "method": "gl",
+      "representation": "float32",
+      "h": 0.005,
+      "q": 0.995,
+      "steps": 200,
+      "physical_horizon_s": 1.0,
+      "reference": {
+        "method": "full-memory Caputo ABM PECE",
+        "h": 0.00125,
+        "resolution_divisor": 4
+      },
+      "metrics_vs_abm": {
+        "rmse": 1.96980718843049,
+        "component_rmse": [
+          1.113644383294877,
+          2.016161788637808,
+          2.5170039547783523
+        ],
+        "normalized_component_rmse": [
+          0.03888626223379612,
+          0.05299838838074791,
+          0.052586630237773706
+        ],
+        "maximum_absolute_component_error": 5.445004374231942,
+        "maximum_state_error_norm": 5.72853189248733,
+        "final_state_error_norm": 3.612719740027837,
+        "initial_state_error_norm": 1.7320508066572022e-09
+      },
+      "diagnostics": {
+        "state_saturations": 0,
+        "coefficient_saturations": 0,
+        "zeroed_nonzero_coefficients": 0
+      },
+      "arithmetic_contract_passed": true
+    },
+    {
+      "system": "lorenz",
+      "method": "gl",
+      "representation": "fixed_q14_q30",
+      "h": 0.005,
+      "q": 0.995,
+      "steps": 200,
+      "physical_horizon_s": 1.0,
+      "reference": {
+        "method": "full-memory Caputo ABM PECE",
+        "h": 0.00125,
+        "resolution_divisor": 4
+      },
+      "metrics_vs_abm": {
+        "rmse": 2.0083085443311988,
+        "component_rmse": [
+          1.1302682308659475,
+          2.055526703268716,
+          2.5685041028087734
+        ],
+        "normalized_component_rmse": [
+          0.039466734156144184,
+          0.05403316497751767,
+          0.053662599640414095
+        ],
+        "maximum_absolute_component_error": 5.654177531263191,
+        "maximum_state_error_norm": 5.9716485483735315,
+        "final_state_error_norm": 3.6068631304422496,
+        "initial_state_error_norm": 4.228639666917166e-05
+      },
+      "diagnostics": {
+        "state_saturations": 0,
+        "coefficient_saturations": 0,
+        "zeroed_nonzero_coefficients": 0
+      },
+      "arithmetic_contract_passed": true,
+      "metrics_fixed_vs_float32": {
+        "rmse": 0.06649007260177978,
+        "component_rmse": [
+          0.04244099911109045,
+          0.0742495699941018,
+          0.07712685792843656
+        ],
+        "normalized_component_rmse": [
+          0.001485638447055327,
+          0.0018331825566497565,
+          0.0015246225895239067
+        ],
+        "maximum_absolute_component_error": 0.2596683467187493,
+        "maximum_state_error_norm": 0.27761008503458756,
+        "final_state_error_norm": 0.03728223486136176,
+        "initial_state_error_norm": 4.228812871997831e-05
+      }
+    },
+    {
+      "system": "lorenz",
+      "method": "m2sfrk",
+      "representation": "float32",
+      "h": 0.005,
+      "q": 0.995,
+      "steps": 200,
+      "physical_horizon_s": 1.0,
+      "reference": {
+        "method": "full-memory Caputo ABM PECE",
+        "h": 0.00125,
+        "resolution_divisor": 4
+      },
+      "metrics_vs_abm": {
+        "rmse": 0.9581416864204124,
+        "component_rmse": [
+          0.73427463642185,
+          1.0406014126226328,
+          1.063999968103852
+        ],
+        "normalized_component_rmse": [
+          0.02563941999064964,
+          0.027354053690795663,
+          0.022229672221793322
+        ],
+        "maximum_absolute_component_error": 3.4889666347353314,
+        "maximum_state_error_norm": 3.705460448970179,
+        "final_state_error_norm": 0.9838943754918495,
+        "initial_state_error_norm": 1.7320508066572022e-09
+      },
+      "diagnostics": {
+        "state_saturations": 0,
+        "coefficient_saturations": 0,
+        "zeroed_nonzero_coefficients": 0
+      },
+      "arithmetic_contract_passed": true
+    },
+    {
+      "system": "lorenz",
+      "method": "m2sfrk",
+      "representation": "fixed_q14_q30",
+      "h": 0.005,
+      "q": 0.995,
+      "steps": 200,
+      "physical_horizon_s": 1.0,
+      "reference": {
+        "method": "full-memory Caputo ABM PECE",
+        "h": 0.00125,
+        "resolution_divisor": 4
+      },
+      "metrics_vs_abm": {
+        "rmse": 0.9565723028633559,
+        "component_rmse": [
+          0.7332682196722311,
+          1.038854927980294,
+          1.0621628257690467
+        ],
+        "normalized_component_rmse": [
+          0.025604277905591593,
+          0.027308144244491645,
+          0.02219128963424468
+        ],
+        "maximum_absolute_component_error": 3.482954196766581,
+        "maximum_state_error_norm": 3.6988837956670118,
+        "final_state_error_norm": 0.9836096108645836,
+        "initial_state_error_norm": 4.228639666917166e-05
+      },
+      "diagnostics": {
+        "state_saturations": 0,
+        "coefficient_saturations": 0,
+        "zeroed_nonzero_coefficients": 0
+      },
+      "arithmetic_contract_passed": true,
+      "metrics_fixed_vs_float32": {
+        "rmse": 0.0016725486567649894,
+        "component_rmse": [
+          0.0010980580107448326,
+          0.0018370777469262072,
+          0.0019523501183257943
+        ],
+        "normalized_component_rmse": [
+          3.810753314852475e-05,
+          4.883757069335506e-05,
+          4.0453154971766784e-05
+        ],
+        "maximum_absolute_component_error": 0.00640293828125138,
+        "maximum_state_error_norm": 0.00690131882580917,
+        "final_state_error_norm": 0.00029709584915914116,
+        "initial_state_error_norm": 4.228812871997831e-05
+      }
+    },
+    {
+      "system": "rossler",
+      "method": "efork3",
+      "representation": "float32",
+      "h": 0.01,
+      "q": 0.9877,
+      "steps": 100,
+      "physical_horizon_s": 1.0,
+      "reference": {
+        "method": "full-memory Caputo ABM PECE",
+        "h": 0.0025,
+        "resolution_divisor": 4
+      },
+      "metrics_vs_abm": {
+        "rmse": 0.14250413057973757,
+        "component_rmse": [
+          0.14629113282970826,
+          0.19874009659670033,
+          0.004853880612001545
+        ],
+        "normalized_component_rmse": [
+          0.2761345418372949,
+          0.2167441721709423,
+          0.12264684268217789
+        ],
+        "maximum_absolute_component_error": 0.3131494782422569,
+        "maximum_state_error_norm": 0.434424399272354,
+        "final_state_error_norm": 0.434424399272354,
+        "initial_state_error_norm": 0.0
+      },
+      "diagnostics": {
+        "state_saturations": 0,
+        "coefficient_saturations": 0,
+        "zeroed_nonzero_coefficients": 0
+      },
+      "arithmetic_contract_passed": true
+    },
+    {
+      "system": "rossler",
+      "method": "efork3",
+      "representation": "fixed_q14_q30",
+      "h": 0.01,
+      "q": 0.9877,
+      "steps": 100,
+      "physical_horizon_s": 1.0,
+      "reference": {
+        "method": "full-memory Caputo ABM PECE",
+        "h": 0.0025,
+        "resolution_divisor": 4
+      },
+      "metrics_vs_abm": {
+        "rmse": 0.13848697386875225,
+        "component_rmse": [
+          0.14260116356074523,
+          0.19281851462079927,
+          0.004674865187744195
+        ],
+        "normalized_component_rmse": [
+          0.26916947188555085,
+          0.210286147820106,
+          0.11812351828843659
+        ],
+        "maximum_absolute_component_error": 0.30517270824225695,
+        "maximum_state_error_norm": 0.42076412764648896,
+        "final_state_error_norm": 0.42076412764648896,
+        "initial_state_error_norm": 0.0
+      },
+      "diagnostics": {
+        "state_saturations": 0,
+        "coefficient_saturations": 0,
+        "zeroed_nonzero_coefficients": 0
+      },
+      "arithmetic_contract_passed": true,
+      "metrics_fixed_vs_float32": {
+        "rmse": 0.0040754564794602014,
+        "component_rmse": [
+          0.0036937075934014353,
+          0.006011481267399923,
+          0.00021599475472984517
+        ],
+        "normalized_component_rmse": [
+          0.01705056167976854,
+          0.009761548580269752,
+          0.0055272033492023065
+        ],
+        "maximum_absolute_component_error": 0.011425554781249958,
+        "maximum_state_error_norm": 0.013935569225539155,
+        "final_state_error_norm": 0.013935569225539155,
+        "initial_state_error_norm": 0.0
+      }
+    },
+    {
+      "system": "rossler",
+      "method": "gl",
+      "representation": "float32",
+      "h": 0.01,
+      "q": 0.9877,
+      "steps": 100,
+      "physical_horizon_s": 1.0,
+      "reference": {
+        "method": "full-memory Caputo ABM PECE",
+        "h": 0.0025,
+        "resolution_divisor": 4
+      },
+      "metrics_vs_abm": {
+        "rmse": 0.001810210481408052,
+        "component_rmse": [
+          0.0025094749201246143,
+          0.0018641271550604518,
+          0.00024114629590872837
+        ],
+        "normalized_component_rmse": [
+          0.004736805942486149,
+          0.002033000405876122,
+          0.006093234296817994
+        ],
+        "maximum_absolute_component_error": 0.004249546233229706,
+        "maximum_state_error_norm": 0.0054181076996392755,
+        "final_state_error_norm": 0.0054181076996392755,
+        "initial_state_error_norm": 0.0
+      },
+      "diagnostics": {
+        "state_saturations": 0,
+        "coefficient_saturations": 0,
+        "zeroed_nonzero_coefficients": 0
+      },
+      "arithmetic_contract_passed": true
+    },
+    {
+      "system": "rossler",
+      "method": "gl",
+      "representation": "fixed_q14_q30",
+      "h": 0.01,
+      "q": 0.9877,
+      "steps": 100,
+      "physical_horizon_s": 1.0,
+      "reference": {
+        "method": "full-memory Caputo ABM PECE",
+        "h": 0.0025,
+        "resolution_divisor": 4
+      },
+      "metrics_vs_abm": {
+        "rmse": 0.005328105324176822,
+        "component_rmse": [
+          0.008499765483137361,
+          0.0033972519468100345,
+          0.0011742167509136972
+        ],
+        "normalized_component_rmse": [
+          0.016043890029498444,
+          0.0037050125942209504,
+          0.029669863895705653
+        ],
+        "maximum_absolute_component_error": 0.01751401683600695,
+        "maximum_state_error_norm": 0.018697017884138963,
+        "final_state_error_norm": 0.018697017884138963,
+        "initial_state_error_norm": 0.0
+      },
+      "diagnostics": {
+        "state_saturations": 0,
+        "coefficient_saturations": 0,
+        "zeroed_nonzero_coefficients": 0
+      },
+      "arithmetic_contract_passed": true,
+      "metrics_fixed_vs_float32": {
+        "rmse": 0.004729833500461212,
+        "component_rmse": [
+          0.006164304441526628,
+          0.005234450188498236,
+          0.0013099071732612794
+        ],
+        "normalized_component_rmse": [
+          0.011709824140114802,
+          0.005682309805891955,
+          0.03300114304312037
+        ],
+        "maximum_absolute_component_error": 0.014153540593750014,
+        "maximum_state_error_norm": 0.017745976441883977,
+        "final_state_error_norm": 0.017745976441883977,
+        "initial_state_error_norm": 0.0
+      }
+    },
+    {
+      "system": "rossler",
+      "method": "m2sfrk",
+      "representation": "float32",
+      "h": 0.01,
+      "q": 0.9877,
+      "steps": 100,
+      "physical_horizon_s": 1.0,
+      "reference": {
+        "method": "full-memory Caputo ABM PECE",
+        "h": 0.0025,
+        "resolution_divisor": 4
+      },
+      "metrics_vs_abm": {
+        "rmse": 0.020519440184317502,
+        "component_rmse": [
+          0.023585359877113764,
+          0.02658280359591813,
+          0.00047710468581387515
+        ],
+        "normalized_component_rmse": [
+          0.04451898360316713,
+          0.028990967892463443,
+          0.012055381667044108
+        ],
+        "maximum_absolute_component_error": 0.05262229175774302,
+        "maximum_state_error_norm": 0.06694702692056322,
+        "final_state_error_norm": 0.06694702692056322,
+        "initial_state_error_norm": 0.0
+      },
+      "diagnostics": {
+        "state_saturations": 0,
+        "coefficient_saturations": 0,
+        "zeroed_nonzero_coefficients": 0
+      },
+      "arithmetic_contract_passed": true
+    },
+    {
+      "system": "rossler",
+      "method": "m2sfrk",
+      "representation": "fixed_q14_q30",
+      "h": 0.01,
+      "q": 0.9877,
+      "steps": 100,
+      "physical_horizon_s": 1.0,
+      "reference": {
+        "method": "full-memory Caputo ABM PECE",
+        "h": 0.0025,
+        "resolution_divisor": 4
+      },
+      "metrics_vs_abm": {
+        "rmse": 0.020458757451853212,
+        "component_rmse": [
+          0.023494641107144096,
+          0.02652176766416676,
+          0.0005291017253145509
+        ],
+        "normalized_component_rmse": [
+          0.04434774570585194,
+          0.028924402651092057,
+          0.013369232013467984
+        ],
+        "maximum_absolute_component_error": 0.05243227222649305,
+        "maximum_state_error_norm": 0.06675655763239798,
+        "final_state_error_norm": 0.06675655763239798,
+        "initial_state_error_norm": 0.0
+      },
+      "diagnostics": {
+        "state_saturations": 0,
+        "coefficient_saturations": 0,
+        "zeroed_nonzero_coefficients": 0
+      },
+      "arithmetic_contract_passed": true,
+      "metrics_fixed_vs_float32": {
+        "rmse": 9.734706205516187e-05,
+        "component_rmse": [
+          0.00010671434973289677,
+          9.197191106781534e-05,
+          9.264214272097486e-05
+        ],
+        "normalized_component_rmse": [
+          0.00018323068011447677,
+          9.597204079579446e-05,
+          0.0023275101490366924
+        ],
+        "maximum_absolute_component_error": 0.0002502984937500022,
+        "maximum_state_error_norm": 0.0003215055106176075,
+        "final_state_error_norm": 0.0003215055106176075,
+        "initial_state_error_norm": 0.0
+      }
+    },
+    {
+      "system": "chen",
+      "method": "efork3",
+      "representation": "float32",
+      "h": 0.005,
+      "q": 0.9,
+      "steps": 200,
+      "physical_horizon_s": 1.0,
+      "reference": {
+        "method": "full-memory Caputo ABM PECE",
+        "h": 0.00125,
+        "resolution_divisor": 4
+      },
+      "metrics_vs_abm": {
+        "rmse": 12.148567612500822,
+        "component_rmse": [
+          11.640002424889307,
+          14.155316271369955,
+          10.33926737794181
+        ],
+        "normalized_component_rmse": [
+          0.2998839856432091,
+          0.2858794259182566,
+          0.234804158090652
+        ],
+        "maximum_absolute_component_error": 48.476377073785464,
+        "maximum_state_error_norm": 59.660075873866376,
+        "final_state_error_norm": 10.859977961842477,
+        "initial_state_error_norm": 1.7320508066572022e-09
+      },
+      "diagnostics": {
+        "state_saturations": 0,
+        "coefficient_saturations": 0,
+        "zeroed_nonzero_coefficients": 0
+      },
+      "arithmetic_contract_passed": true
+    },
+    {
+      "system": "chen",
+      "method": "efork3",
+      "representation": "fixed_q14_q30",
+      "h": 0.005,
+      "q": 0.9,
+      "steps": 200,
+      "physical_horizon_s": 1.0,
+      "reference": {
+        "method": "full-memory Caputo ABM PECE",
+        "h": 0.00125,
+        "resolution_divisor": 4
+      },
+      "metrics_vs_abm": {
+        "rmse": 12.148839410035286,
+        "component_rmse": [
+          11.640254075236548,
+          14.155653698928749,
+          10.339480182892322
+        ],
+        "normalized_component_rmse": [
+          0.2998904689673842,
+          0.285886240573256,
+          0.23480899087864515
+        ],
+        "maximum_absolute_component_error": 48.47647247691046,
+        "maximum_state_error_norm": 59.659610929501305,
+        "final_state_error_norm": 10.857443047760166,
+        "initial_state_error_norm": 4.228639666917166e-05
+      },
+      "diagnostics": {
+        "state_saturations": 0,
+        "coefficient_saturations": 0,
+        "zeroed_nonzero_coefficients": 0
+      },
+      "arithmetic_contract_passed": true,
+      "metrics_fixed_vs_float32": {
+        "rmse": 0.0042975589645124395,
+        "component_rmse": [
+          0.0037909869098363305,
+          0.004579797571929329,
+          0.004478940902711658
+        ],
+        "normalized_component_rmse": [
+          0.00010280996077856504,
+          9.814025767274954e-05,
+          0.00010694864157279818
+        ],
+        "maximum_absolute_component_error": 0.011183742656250217,
+        "maximum_state_error_norm": 0.015711247499366154,
+        "final_state_error_norm": 0.010961413192649448,
+        "initial_state_error_norm": 4.228812871997831e-05
+      }
+    },
+    {
+      "system": "chen",
+      "method": "gl",
+      "representation": "float32",
+      "h": 0.005,
+      "q": 0.9,
+      "steps": 200,
+      "physical_horizon_s": 1.0,
+      "reference": {
+        "method": "full-memory Caputo ABM PECE",
+        "h": 0.00125,
+        "resolution_divisor": 4
+      },
+      "metrics_vs_abm": {
+        "rmse": 11.563449984454621,
+        "component_rmse": [
+          10.860187052696443,
+          12.355155348868239,
+          11.425699108357788
+        ],
+        "normalized_component_rmse": [
+          0.2797934278114514,
+          0.2495235465285364,
+          0.2594769592146012
+        ],
+        "maximum_absolute_component_error": 24.92381618388238,
+        "maximum_state_error_norm": 34.27680398731746,
+        "final_state_error_norm": 17.058031092307264,
+        "initial_state_error_norm": 1.7320508066572022e-09
+      },
+      "diagnostics": {
+        "state_saturations": 0,
+        "coefficient_saturations": 0,
+        "zeroed_nonzero_coefficients": 0
+      },
+      "arithmetic_contract_passed": true
+    },
+    {
+      "system": "chen",
+      "method": "gl",
+      "representation": "fixed_q14_q30",
+      "h": 0.005,
+      "q": 0.9,
+      "steps": 200,
+      "physical_horizon_s": 1.0,
+      "reference": {
+        "method": "full-memory Caputo ABM PECE",
+        "h": 0.00125,
+        "resolution_divisor": 4
+      },
+      "metrics_vs_abm": {
+        "rmse": 11.563086290924424,
+        "component_rmse": [
+          10.859770000245557,
+          12.354756726688883,
+          11.425422332684054
+        ],
+        "normalized_component_rmse": [
+          0.2797826831958896,
+          0.24951549599277953,
+          0.25947067365522103
+        ],
+        "maximum_absolute_component_error": 24.91799493622613,
+        "maximum_state_error_norm": 34.27114124891525,
+        "final_state_error_norm": 17.07300160048232,
+        "initial_state_error_norm": 4.228639666917166e-05
+      },
+      "diagnostics": {
+        "state_saturations": 0,
+        "coefficient_saturations": 0,
+        "zeroed_nonzero_coefficients": 0
+      },
+      "arithmetic_contract_passed": true,
+      "metrics_fixed_vs_float32": {
+        "rmse": 0.008912149836123956,
+        "component_rmse": [
+          0.008334534426733075,
+          0.01078137853632005,
+          0.007250976268803482
+        ],
+        "normalized_component_rmse": [
+          0.00015520567356252385,
+          0.00015597597209367455,
+          0.0001239273950177805
+        ],
+        "maximum_absolute_component_error": 0.03271842312499995,
+        "maximum_state_error_norm": 0.03701926171486472,
+        "final_state_error_norm": 0.015940755519750716,
+        "initial_state_error_norm": 4.228812871997831e-05
+      }
+    },
+    {
+      "system": "chen",
+      "method": "m2sfrk",
+      "representation": "float32",
+      "h": 0.005,
+      "q": 0.9,
+      "steps": 200,
+      "physical_horizon_s": 1.0,
+      "reference": {
+        "method": "full-memory Caputo ABM PECE",
+        "h": 0.00125,
+        "resolution_divisor": 4
+      },
+      "metrics_vs_abm": {
+        "rmse": 12.112033474081846,
+        "component_rmse": [
+          11.084859506675393,
+          14.031130742080059,
+          10.970748581922832
+        ],
+        "normalized_component_rmse": [
+          0.2855817144890711,
+          0.28337138673777174,
+          0.24914505933933906
+        ],
+        "maximum_absolute_component_error": 57.9585333674824,
+        "maximum_state_error_norm": 69.70815527343407,
+        "final_state_error_norm": 5.693170354240731,
+        "initial_state_error_norm": 1.7320508066572022e-09
+      },
+      "diagnostics": {
+        "state_saturations": 0,
+        "coefficient_saturations": 0,
+        "zeroed_nonzero_coefficients": 0
+      },
+      "arithmetic_contract_passed": true
+    },
+    {
+      "system": "chen",
+      "method": "m2sfrk",
+      "representation": "fixed_q14_q30",
+      "h": 0.005,
+      "q": 0.9,
+      "steps": 200,
+      "physical_horizon_s": 1.0,
+      "reference": {
+        "method": "full-memory Caputo ABM PECE",
+        "h": 0.00125,
+        "resolution_divisor": 4
+      },
+      "metrics_vs_abm": {
+        "rmse": 12.11209312634757,
+        "component_rmse": [
+          11.084976045108158,
+          14.03117254366907,
+          10.970774942232364
+        ],
+        "normalized_component_rmse": [
+          0.2855847168947771,
+          0.2833722309587019,
+          0.24914565798042843
+        ],
+        "maximum_absolute_component_error": 57.9564753596699,
+        "maximum_state_error_norm": 69.70576419963781,
+        "final_state_error_norm": 5.7029652734931275,
+        "initial_state_error_norm": 4.228639666917166e-05
+      },
+      "diagnostics": {
+        "state_saturations": 0,
+        "coefficient_saturations": 0,
+        "zeroed_nonzero_coefficients": 0
+      },
+      "arithmetic_contract_passed": true,
+      "metrics_fixed_vs_float32": {
+        "rmse": 0.002215565694061999,
+        "component_rmse": [
+          0.0020555491049115402,
+          0.0023361830345742128,
+          0.0022456982745636756
+        ],
+        "normalized_component_rmse": [
+          3.970350568561171e-05,
+          3.494063361331629e-05,
+          3.7514116269144086e-05
+        ],
+        "maximum_absolute_component_error": 0.010936764062499549,
+        "maximum_state_error_norm": 0.011762612925069322,
+        "final_state_error_norm": 0.011489661488485988,
+        "initial_state_error_norm": 4.228812871997831e-05
+      }
+    }
+  ],
+  "artifacts": {
+    "embedded_trajectories.csv": {
+      "sha256": "3d61827b5b86d03d87cd56e169d700b75f17d69294f9bb908e42bf7840d02391",
+      "bytes": 344272
+    },
+    "abm_reference_h_over_4.csv": {
+      "sha256": "8a6d866ab02ff2591d18844961dd29567b0e85095dea97d1afd50d10f9d602e5",
+      "bytes": 41160
+    },
+    "comparison.csv": {
+      "sha256": "f84d01967d027592b110507a4c59d93e6bd9ab1e9666f74e05778c3277aa4bb4",
+      "bytes": 2869
+    }
+  }
+}

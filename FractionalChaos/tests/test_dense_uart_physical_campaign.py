@@ -24,6 +24,9 @@ DENSE_MANIFEST = ROOT / "validation" / "dense_uart_capture_manifest.json"
 OTHER_SYSTEMS_DENSE_MANIFEST = (
     ROOT / "validation" / "dense_uart_rossler_chen_capture_manifest.json"
 )
+ROSSLER_CLASSIC_DENSE_MANIFEST = (
+    ROOT / "validation" / "dense_uart_rossler_classic_capture_manifest.json"
+)
 DENSE_CELLS = {
     "lorenz_m2sfrk_f746_float32",
     "lorenz_m2sfrk_f746_fixed",
@@ -118,6 +121,72 @@ def test_other_systems_dense_manifest_scopes_rossler_and_chen() -> None:
         for row in schedule
         if row["cell_id"] in dense_cells
     } == {"rossler", "chen"}
+
+
+def test_rossler_classic_dense_manifest_is_scoped_and_preserves_history() -> None:
+    raw = json.loads(ROSSLER_CLASSIC_DENSE_MANIFEST.read_text(encoding="utf-8"))
+    manifest, digest = campaign.load_manifest(ROSSLER_CLASSIC_DENSE_MANIFEST)
+    base, _base_digest = campaign.load_manifest(
+        ROOT / "validation" / "physical_campaign_manifest.json"
+    )
+    historical, _historical_digest = campaign.load_manifest(
+        OTHER_SYSTEMS_DENSE_MANIFEST
+    )
+    schedule = campaign.generate_schedule(manifest, digest)
+    campaign.validate_schedule(schedule, manifest)
+    plan = campaign.plan_payload(manifest, digest, schedule)
+
+    assert raw["extends"] == "physical_campaign_manifest.json"
+    assert manifest["campaign_id"] == (
+        "stm32_dense_rossler_classic_q09877_m2sfrk_4cells_v1"
+    )
+    assert set(manifest["dense_capture_cells"]) == {
+        "rossler_m2sfrk_f746_float32",
+        "rossler_m2sfrk_f746_fixed",
+        "rossler_m2sfrk_h755_float32",
+        "rossler_m2sfrk_h755_fixed",
+    }
+    assert plan["matrix_cells"] == 36
+    assert plan["dense_capture_cell_count"] == 4
+    assert {
+        row["system"]
+        for row in schedule
+        if row["cell_id"] in manifest["dense_capture_cells"]
+    } == {"rossler"}
+
+    rossler = manifest["systems"]["rossler"]
+    assert rossler["manifest_id"] == "rossler_classic_caputo_v2"
+    assert rossler["parameters"] == [0.2, 0.2, 5.7]
+    assert rossler["q"] == pytest.approx(0.9877)
+    assert rossler["dt_s"] == pytest.approx(0.01)
+    assert rossler["memory_s"] == 10
+    assert rossler["memory_increments"] == 1000
+    assert rossler["history_states"] == 1001
+    assert rossler["initial_state_words_hex"] == [
+        "0x3F800000",
+        "0x00000000",
+        "0x00000000",
+    ]
+    assert rossler["transient_steps"] == 5000
+    assert rossler["observation_steps"] == 20_000
+
+    endpoint = manifest["endpoints"]["dense_timeseries_pilot"]
+    assert endpoint["required_frames"] == 12_000
+    assert endpoint["first_sequence"] == 1
+    assert endpoint["last_sequence"] == 12_000
+    assert endpoint["sequence_increment"] == 1
+    assert manifest["safety"][
+        "maximum_dense_timeseries_pilot_runs_per_invocation"
+    ] == 2
+
+    assert manifest["systems"]["lorenz"] == base["systems"]["lorenz"]
+    assert manifest["systems"]["chen"] == base["systems"]["chen"]
+    assert base["systems"]["rossler"]["manifest_id"] == "rossler_caputo_v1"
+    assert base["systems"]["rossler"]["q"] == pytest.approx(0.97)
+    assert historical["systems"]["rossler"] == base["systems"]["rossler"]
+    assert historical["campaign_id"] == (
+        "stm32_dense_rossler_chen_m2sfrk_f746_v1"
+    )
 
 
 def test_dense_build_profile_is_dedicated_and_enables_buffering() -> None:

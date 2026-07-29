@@ -24,7 +24,7 @@ def load_manifests() -> tuple[Manifest, ...]:
     path = (
         Path(__file__).resolve().parents[1]
         / "validation"
-        / "candidate_manifests.json"
+        / "candidate_manifests_rossler_classic_v2.json"
     )
     payload = json.loads(path.read_text(encoding="utf-8"))
     return tuple(

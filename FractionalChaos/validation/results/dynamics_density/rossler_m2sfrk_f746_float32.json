@@ -1,0 +1,236 @@
+{
+  "density": {
+    "standardization": {
+      "clip": [
+        -4.0,
+        4.0
+      ],
+      "method": "componentwise_z_score"
+    },
+    "three_dimensional": {
+      "bins_per_axis": 32,
+      "occupancy_fraction": 0.009033203125,
+      "occupied_bins": 296,
+      "sample_limited_occupancy_efficiency": 0.04228571428571429,
+      "total_bins": 32768
+    },
+    "two_dimensional": {
+      "bins_per_axis": 64,
+      "entropy_definition": "Shannon entropy with natural logarithm, normalized by log(64^2)",
+      "mean_normalized_histogram_entropy": 0.5743282506761164,
+      "mean_occupancy_fraction": 0.07275390625,
+      "projections": {
+        "xy": {
+          "normalized_histogram_entropy": 0.6979505956135492,
+          "occupancy_fraction": 0.10400390625,
+          "occupied_bins": 426,
+          "total_bins": 4096
+        },
+        "xz": {
+          "normalized_histogram_entropy": 0.5001956499192558,
+          "occupancy_fraction": 0.057373046875,
+          "occupied_bins": 235,
+          "total_bins": 4096
+        },
+        "yz": {
+          "normalized_histogram_entropy": 0.524838506495544,
+          "occupancy_fraction": 0.056884765625,
+          "occupied_bins": 233,
+          "total_bins": 4096
+        }
+      }
+    }
+  },
+  "identity": {
+    "board": "f746",
+    "method": "m2sfrk",
+    "representation": "float32",
+    "system": "rossler"
+  },
+  "interpretation": {
+    "does_not_establish": [
+      "chaos",
+      "a positive Lyapunov exponent",
+      "hidden-attractor status",
+      "randomness"
+    ],
+    "evidence_layer": "observed_descriptive_dynamics_screen",
+    "statement": "The metrics describe the retained UART state series under the declared sampling contract."
+  },
+  "radial_peaks": {
+    "amplitude_summary": {
+      "maximum": 12.891144174932297,
+      "mean": 8.464179514793251,
+      "minimum": 3.3362807607288674,
+      "standard_deviation": 3.439204634358315
+    },
+    "amplitudes": [
+      10.851504417393906,
+      8.385303445568372,
+      12.87416780768784,
+      3.362691484338399,
+      6.157913388228303,
+      10.93734634684501,
+      8.146324231315925,
+      12.891144174932297,
+      3.3362807607288674,
+      6.110168538855683,
+      10.864772669192208,
+      8.34847568463064,
+      12.881999752264141,
+      3.350420505123927
+    ],
+    "count": 14,
+    "definition": "interior local maxima of sqrt(x^2+y^2)",
+    "model_times_from_first_retained_state_s": [
+      0.2,
+      5.18,
+      10.38,
+      14.66,
+      20.07,
+      25.36,
+      30.33,
+      35.54,
+      39.81,
+      45.22,
+      50.51,
+      55.49,
+      60.69,
+      64.97
+    ],
+    "plateau_policy": "strictly_greater_left_and_greater_or_equal_right",
+    "retained_indices": [
+      20,
+      518,
+      1038,
+      1466,
+      2007,
+      2536,
+      3033,
+      3554,
+      3981,
+      4522,
+      5051,
+      5549,
+      6069,
+      6497
+    ],
+    "sequences": [
+      5021,
+      5519,
+      6039,
+      6467,
+      7008,
+      7537,
+      8034,
+      8555,
+      8982,
+      9523,
+      10052,
+      10550,
+      11070,
+      11498
+    ]
+  },
+  "rows": {
+    "discarded": 5000,
+    "retained": 7000,
+    "total": 12000
+  },
+  "sampling": {
+    "diagnostic_sample_period_s": 0.05,
+    "diagnostic_samples": 1400,
+    "diagnostic_stride": 5,
+    "host_reception_time_used": false,
+    "interpolation": false,
+    "resampling": false,
+    "retained_sequence_first": 5001,
+    "retained_sequence_last": 12000,
+    "sample_interval_s": 0.01,
+    "time_origin_sequence": 5001
+  },
+  "schema": "fractional-chaos-dynamics-density-v1",
+  "source": {
+    "capture": "validation/results/dense_uart_capture/stm32_dense_rossler_chen_m2sfrk_f746_v1/runs/stm32_dense_rossler_chen_m2sfrk_f746_v1__r01__rossler_m2sfrk_f746_float32__1bc4367645__dense-timeseries-pilot/capture.csv",
+    "capture_sha256": "a7c8a2f38cb8c0f004722259c82ad92074a21e0a7d51d3b5334324c220cf8ef8"
+  },
+  "state_summary": {
+    "all_finite": true,
+    "components": {
+      "x": {
+        "maximum": 11.990039825439453,
+        "mean": 0.2089380218366527,
+        "minimum": -9.57054328918457,
+        "peak_to_peak": 21.560583114624023,
+        "standard_deviation": 5.18969372335609
+      },
+      "y": {
+        "maximum": 8.244378089904785,
+        "mean": -0.8769757555362635,
+        "minimum": -11.336194038391113,
+        "peak_to_peak": 19.5805721282959,
+        "standard_deviation": 4.855656365143453
+      },
+      "z": {
+        "maximum": 25.09357452392578,
+        "mean": 0.924773900680377,
+        "minimum": 0.012861400842666626,
+        "peak_to_peak": 25.080713123083115,
+        "standard_deviation": 3.196161929230264
+      }
+    },
+    "z_score_means": [
+      0.2089380218366527,
+      -0.8769757555362635,
+      0.924773900680377
+    ],
+    "z_score_standard_deviations": [
+      5.189693723356108,
+      4.855656365143449,
+      3.196161929230266
+    ],
+    "zero_variance_components": []
+  },
+  "temporal_complexity": {
+    "lag_recurrence": {
+      "lag_at_minimum_s": 10.05,
+      "lag_window_s": [
+        1.0,
+        15.0
+      ],
+      "minimum_normalized_lag_rmse": 0.851291714359909
+    },
+    "permutation_entropy": {
+      "component": "x",
+      "delay_diagnostic_samples": 2,
+      "delay_s": 0.1,
+      "method": "Bandt-Pompe",
+      "normalized_value": 0.27009714556844966,
+      "order": 5
+    }
+  },
+  "transport_and_state_validation": {
+    "accepted": true,
+    "all_states_finite": true,
+    "nonzero_dropped_rows": 0,
+    "required_sequence_increment": 1,
+    "sequence_first": 1,
+    "sequence_gap_count": 0,
+    "sequence_last": 12000,
+    "solver_status": {
+      "all_samples_ok": true,
+      "counts_by_numeric_status": {
+        "0": 12000
+      },
+      "nonzero_status_samples": 0,
+      "samples_by_flag": {
+        "fixed_coefficient_saturation": 0,
+        "fixed_coefficient_zeroed": 0,
+        "fixed_state_saturation": 0,
+        "nonfinite": 0,
+        "queue": 0
+      },
+      "samples_with_unknown_flags": 0
+    }
+  }
+}

@@ -3,11 +3,11 @@
 
 const fc_precomputed_tables_t FC_ROSSLER_M2SFRK_TABLES = {
     FC_METHOD_M2SFRK,
-    0x1.f0a3d80000000p-1f, 0x1.47ae140000000p-7f, 1000u,
-    0x1.783a180000000p-7f,
+    0x1.f9b3d00000000p-1f, 0x1.47ae140000000p-7f, 1000u,
+    0x1.5ac6d80000000p-7f,
     {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
-    {0x1.7ceafe0000000p-7f, 0x1.8877760000000p-8f},
+    {0x1.5c91560000000p-7f, 0x1.60dfb00000000p-8f},
     {NULL, NULL, NULL},
     NULL,
-    "e2ac4fee54985810763c918991564c1b05dff8376ce02d4bdc019c4d8125a0c7"
+    "7ab9297c9943681a44e2b119317bf4f9162c2f40c698c8c72ef19138983bd57d"
 };

@@ -85,6 +85,20 @@ static void test_manifest_and_validation(void)
     CHECK(config.parameters[1] == 28.0);
     CHECK(config.initial_state[0] == 0.1);
 
+    CHECK_STATUS(fc_fixed_config_from_manifest(
+        FC_FIXED_SYSTEM_ROSSLER,
+        FC_FIXED_METHOD_EFORK3,
+        &config));
+    CHECK(config.q == 0.9877);
+    CHECK(config.h == 0.01);
+    CHECK(config.memory_length == 1000u);
+    CHECK(config.parameters[0] == 0.2);
+    CHECK(config.parameters[1] == 0.2);
+    CHECK(config.parameters[2] == 5.7);
+    CHECK(config.initial_state[0] == 1.0);
+    CHECK(config.initial_state[1] == 0.0);
+    CHECK(config.initial_state[2] == 0.0);
+
     CHECK(fc_fixed_config_from_manifest(
         (fc_fixed_system_t)99,
         FC_FIXED_METHOD_EFORK3,
@@ -276,9 +290,9 @@ static const fc_fixed_t GOLDEN_32
         {7542, 16401, 1340}
     },
     {
-        {2336, 26840, 883},
-        {-957, 27541, 734},
-        {-2021, 27718, 679}
+        {15968, 3406, 427},
+        {15428, 5389, 535},
+        {15307, 5643, 555}
     },
     {
         {47922, 80290, 6158},

@@ -189,7 +189,7 @@ if(Python3_Interpreter_FOUND)
             ${Python3_EXECUTABLE}
             ${CMAKE_CURRENT_SOURCE_DIR}/fixed_reference_check.py
             $<TARGET_FILE:fractional_fixed_reference_dump>
-            ${CMAKE_CURRENT_SOURCE_DIR}/../validation/candidate_manifests.json
+            ${CMAKE_CURRENT_SOURCE_DIR}/../validation/candidate_manifests_rossler_classic_v2.json
     )
     add_test(NAME fractional_uart_decoder
         COMMAND
@@ -215,6 +215,11 @@ if(Python3_Interpreter_FOUND)
             ${Python3_EXECUTABLE}
             ${CMAKE_CURRENT_SOURCE_DIR}/test_abm_oracle.py
     )
+    add_test(NAME fractional_abm_long_horizon_artifacts
+        COMMAND
+            ${Python3_EXECUTABLE}
+            ${CMAKE_CURRENT_SOURCE_DIR}/test_abm_long_horizon_qualification.py
+    )
     add_test(NAME fractional_fixed_point_oracle
         COMMAND
             ${Python3_EXECUTABLE}
@@ -232,6 +237,15 @@ if(Python3_Interpreter_FOUND)
             ${CMAKE_CURRENT_SOURCE_DIR}/test_analyze_capture.py
             --basetemp
             ${CMAKE_BINARY_DIR}/pytest-capture
+    )
+    add_test(NAME fractional_dynamics_density_analysis
+        COMMAND
+            ${Python3_EXECUTABLE}
+            -m pytest
+            -q
+            ${CMAKE_CURRENT_SOURCE_DIR}/test_analyze_dynamics_density.py
+            --basetemp
+            ${CMAKE_BINARY_DIR}/pytest-dynamics-density
     )
     add_test(NAME fractional_fixed_capture_parity
         COMMAND

@@ -19,12 +19,12 @@ const fc_manifest_t FC_MANIFESTS[FC_SYSTEM_COUNT] = {
     {
         FC_SYSTEM_ROSSLER,
         "rossler",
-        0.970f,
+        0.9877f,
         0.010f,
         10.0f,
         1000u,
-        {0.2f, 0.2f, 6.0f},
-        {{0.5f, 1.5f, 0.1f}}
+        {0.2f, 0.2f, 5.7f},
+        {{1.0f, 0.0f, 0.0f}}
     },
     {
         FC_SYSTEM_CHEN,

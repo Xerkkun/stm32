@@ -27,7 +27,7 @@ class Manifest:
 
 MANIFESTS = {
     "lorenz": Manifest("lorenz", 0.995, 0.005, 2000),
-    "rossler": Manifest("rossler", 0.970, 0.010, 1000),
+    "rossler": Manifest("rossler", 0.9877, 0.010, 1000),
     "chen": Manifest("chen", 0.900, 0.005, 2000),
 }
 

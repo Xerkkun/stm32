@@ -1,0 +1,1109 @@
+{
+  "all_manifests_qualified": false,
+  "criteria": {
+    "criteria_id": "abm_caputo_long_horizon_rossler_classic_v2",
+    "decision_rule": {
+      "not_qualified": "Any required dynamic screen fails. A failed screen is reported without changing the criteria.",
+      "prerequisite": "The separate ABM implementation-validation report must pass and its oracle and manifest hashes must match the current inputs.",
+      "qualified": "Every resolution passes observed boundedness, activity, the nonperiodicity screen, and within-resolution stability, and the h/2 versus h/4 distributional comparison passes."
+    },
+    "source": "validation/long_horizon_criteria_rossler_classic_v2.json",
+    "source_sha256": "ded3043bb4cf4d3972b9333c061d124cd1b6c75a32ce4ee508235e9f75a8b2c1",
+    "status": "predeclared_before_first_qualification_run"
+  },
+  "criteria_snapshot": {
+    "criteria_id": "abm_caputo_long_horizon_rossler_classic_v2",
+    "criteria_lineage": "Thresholds are unchanged from abm_caputo_long_horizon_v1 and were reused before the first formal rossler_classic_caputo_v2 qualification run.",
+    "cross_resolution_stability": {
+      "maximum_mean_difference_in_pooled_std": 0.75,
+      "maximum_permutation_entropy_difference": 0.25,
+      "maximum_quantile_difference_in_pooled_std": 1.0,
+      "maximum_symmetric_std_ratio": 2.5,
+      "quantiles": [
+        0.05,
+        0.25,
+        0.5,
+        0.75,
+        0.95
+      ]
+    },
+    "decision_rule": {
+      "not_qualified": "Any required dynamic screen fails. A failed screen is reported without changing the criteria.",
+      "prerequisite": "The separate ABM implementation-validation report must pass and its oracle and manifest hashes must match the current inputs.",
+      "qualified": "Every resolution passes observed boundedness, activity, the nonperiodicity screen, and within-resolution stability, and the h/2 versus h/4 distributional comparison passes."
+    },
+    "declared_date": "2026-07-28",
+    "does_not_establish": [
+      "mathematical boundedness outside the observed horizon",
+      "a proof of chaos or a positive Lyapunov exponent",
+      "hidden-attractor status",
+      "pointwise convergence of long chaotic trajectories",
+      "equivalence to an embedded finite-memory implementation",
+      "STM32 timing, energy, or randomness",
+      "completion of the 30-cold-start physical campaign"
+    ],
+    "inputs": {
+      "candidate_manifest_sha256": "fc15e5cf21d82b6b9f1224cd740c2fd47dfaca7cc16289e726f18e9be9fdd8bc",
+      "manifest_ids": [
+        "lorenz_caputo_v1",
+        "rossler_classic_caputo_v2",
+        "chen_caputo_v1"
+      ]
+    },
+    "integration": {
+      "arithmetic": "IEEE-754 float64",
+      "diagnostic_sample_period_s": 0.05,
+      "memory_policy": "full_history",
+      "operator": "caputo",
+      "physical_horizon_s": 50.0,
+      "resolution_divisors": [
+        2,
+        4
+      ],
+      "transient_s": 10.0
+    },
+    "nonperiodicity_screen": {
+      "lag_window_s": [
+        1.0,
+        15.0
+      ],
+      "minimum_normalized_lag_rmse": 0.05,
+      "minimum_normalized_permutation_entropy": 0.25,
+      "permutation_entropy_delay_s": 0.1,
+      "permutation_entropy_order": 5
+    },
+    "observed_boundedness": {
+      "maximum_absolute_state": 1000.0,
+      "minimum_active_components": 3,
+      "minimum_component_peak_to_peak": 0.01,
+      "minimum_component_standard_deviation": 0.001
+    },
+    "schema_version": 1,
+    "scope": "Observed long-horizon dynamic qualification of the active Caputo manifests, including rossler_classic_caputo_v2, using the independently validated full-memory ABM oracle.",
+    "status": "predeclared_before_first_qualification_run",
+    "within_resolution_stability": {
+      "maximum_block_mean_shift_in_global_std": 1.5,
+      "maximum_block_to_global_std_ratio": 4.0,
+      "minimum_block_to_global_std_ratio": 0.25,
+      "post_transient_blocks": 4
+    }
+  },
+  "does_not_establish": [
+    "mathematical boundedness outside the observed horizon",
+    "a proof of chaos or a positive Lyapunov exponent",
+    "hidden-attractor status",
+    "pointwise convergence of long chaotic trajectories",
+    "equivalence to an embedded finite-memory implementation",
+    "STM32 timing, energy, or randomness",
+    "completion of the 30-cold-start physical campaign"
+  ],
+  "evidence_layer": "dynamic_manifest_qualification",
+  "execution": {
+    "completed_utc": "2026-07-29T03:29:00.272046+00:00",
+    "numpy_version": "2.4.5",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "python_version": "3.14.3",
+    "started_utc": "2026-07-29T03:28:31.079638+00:00",
+    "wall_time_s": 29.194747999994433
+  },
+  "implementation_validation_is_separate": true,
+  "implementation_validation_prerequisite": {
+    "checks": {
+      "algorithm_validation_passed": true,
+      "manifest_hash_matches_predeclared_criteria": true,
+      "manifest_hash_matches_report": true,
+      "oracle_hash_matches_report": true,
+      "status_passed": true
+    },
+    "current_manifest_sha256": "fc15e5cf21d82b6b9f1224cd740c2fd47dfaca7cc16289e726f18e9be9fdd8bc",
+    "current_oracle_sha256": "5608dc119e85a01accc4ae8b58f83e13c79b230a7731953c280330e16bcb2aca",
+    "evidence_layer": "abm_implementation_validation",
+    "passed": true,
+    "source": "validation/results/abm_oracle_validation_rossler_classic_v2.json",
+    "source_sha256": "505f3ebf48f6f2177a4833982fd42153d1a54a9b7b1231095d55857e87a6b654"
+  },
+  "manifests": [
+    {
+      "cross_resolution_stability": {
+        "checks": {
+          "mean_difference": true,
+          "permutation_entropy_difference": true,
+          "quantile_difference": true,
+          "standard_deviation_ratio": true
+        },
+        "interpretation": "Distributional h/2 versus h/4 stability; pointwise trajectory agreement is intentionally not required at long horizon.",
+        "maximum_mean_difference_in_pooled_std": 0.22103160516063433,
+        "maximum_quantile_difference_in_pooled_std": 0.7370071472783751,
+        "maximum_symmetric_std_ratio": 1.1931211625070928,
+        "mean_difference_in_pooled_std_by_component": [
+          0.22103160516063433,
+          0.1921249563648344,
+          0.04691533023064195
+        ],
+        "passed": true,
+        "permutation_entropy_difference": 0.019541341443600535,
+        "symmetric_std_ratio_by_component": [
+          1.1931211625070928,
+          1.1617855203629546,
+          1.0767168228962956
+        ],
+        "thresholds": {
+          "maximum_mean_difference_in_pooled_std": 0.75,
+          "maximum_permutation_entropy_difference": 0.25,
+          "maximum_quantile_difference_in_pooled_std": 1.0,
+          "maximum_symmetric_std_ratio": 2.5
+        }
+      },
+      "decision": "not_qualified_dynamic_screen_failed",
+      "failure_reasons": [
+        "h/4 failed within_resolution_stability"
+      ],
+      "manifest": {
+        "h": 0.005,
+        "initial_state": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "manifest_id": "lorenz_caputo_v1",
+        "memory_increments": 2000,
+        "memory_seconds": 10.0,
+        "parameters": [
+          10.0,
+          28.0,
+          2.6666666666666665
+        ],
+        "q": 0.995,
+        "system": "lorenz"
+      },
+      "manifest_id": "lorenz_caputo_v1",
+      "resolutions": [
+        {
+          "diagnostics": {
+            "activity": {
+              "active_components": 3,
+              "checks": {
+                "minimum_active_components": true
+              },
+              "minimum_required": 3,
+              "passed": true
+            },
+            "analysis_window_s": [
+              10.0,
+              50.0
+            ],
+            "component_summary": {
+              "maximum": [
+                18.449019391801816,
+                25.12636382690968,
+                45.467599578488645
+              ],
+              "mean": [
+                -5.936260123055736,
+                -5.888626868724179,
+                25.146314447481668
+              ],
+              "minimum": [
+                -17.1816657082489,
+                -22.743617310013008,
+                4.087308546533321
+              ],
+              "peak_to_peak": [
+                35.63068510005071,
+                47.86998113692269,
+                41.38029103195532
+              ],
+              "quantile_probabilities": [
+                0.05,
+                0.25,
+                0.5,
+                0.75,
+                0.95
+              ],
+              "quantiles": [
+                [
+                  -12.12998561805994,
+                  -14.036726329452275,
+                  14.028758533632805
+                ],
+                [
+                  -9.72078097280443,
+                  -10.340348390120718,
+                  21.504824116198275
+                ],
+                [
+                  -6.892147657010023,
+                  -6.4038789802244445,
+                  25.09329771018906
+                ],
+                [
+                  -4.555088511118954,
+                  -3.487674681798513,
+                  29.87938678360865
+                ],
+                [
+                  6.4322830164735105,
+                  6.457152495551048,
+                  34.60290771970964
+                ]
+              ],
+              "standard_deviation": [
+                5.623554829099785,
+                6.483270262690859,
+                6.348690448299342
+              ]
+            },
+            "diagnostic_sample_period_s": 0.05,
+            "diagnostic_samples": 801,
+            "nonperiodicity_screen": {
+              "checks": {
+                "minimum_normalized_lag_rmse": true,
+                "minimum_normalized_permutation_entropy": true
+              },
+              "interpretation": "Observed no-near-period recurrence and complexity screen; not a proof of chaos.",
+              "lag_at_minimum_s": 1.3,
+              "lag_window_s": [
+                1.0,
+                15.0
+              ],
+              "minimum_normalized_lag_rmse": 1.1304263281580713,
+              "normalized_permutation_entropy": 0.6654488259705466,
+              "passed": true,
+              "permutation_entropy_component": 1,
+              "permutation_entropy_delay_samples": 2,
+              "permutation_entropy_order": 5,
+              "thresholds": {
+                "minimum_normalized_lag_rmse": 0.05,
+                "minimum_normalized_permutation_entropy": 0.25
+              }
+            },
+            "observed_boundedness": {
+              "checks": {
+                "all_finite": true,
+                "maximum_absolute_state": true
+              },
+              "maximum_absolute_state": 47.9504536894796,
+              "passed": true,
+              "threshold": 1000.0
+            },
+            "post_transient_samples": 16001,
+            "within_resolution_stability": {
+              "checks": {
+                "maximum_mean_shift": true,
+                "maximum_std_ratio": true,
+                "minimum_std_ratio": true
+              },
+              "maximum_block_mean_shift_in_global_std": 0.5822256598470968,
+              "maximum_block_to_global_std_ratio": 1.402799730053895,
+              "minimum_block_to_global_std_ratio": 0.2755865036901255,
+              "passed": true,
+              "thresholds": {
+                "maximum_block_mean_shift_in_global_std": 1.5,
+                "maximum_block_to_global_std_ratio": 4.0,
+                "minimum_block_to_global_std_ratio": 0.25
+              }
+            }
+          },
+          "h": 0.0025,
+          "resolution_divisor": 2,
+          "rhs_evaluations": 40001,
+          "runtime_s": 2.3473445999989053,
+          "steps": 20000,
+          "trajectory_float64_le_sha256": "32f140f4b8382bb92320831b584b5d8938b285f86ea53ac381ae51d41adcbb3a"
+        },
+        {
+          "diagnostics": {
+            "activity": {
+              "active_components": 3,
+              "checks": {
+                "minimum_active_components": true
+              },
+              "minimum_required": 3,
+              "passed": true
+            },
+            "analysis_window_s": [
+              10.0,
+              50.0
+            ],
+            "component_summary": {
+              "maximum": [
+                17.149670499940278,
+                22.6873395602343,
+                42.951362838662185
+              ],
+              "mean": [
+                -4.567979300229578,
+                -4.538503879808767,
+                24.836827493443568
+              ],
+              "minimum": [
+                -17.15904040575867,
+                -22.703797352665017,
+                7.70617010036427
+              ],
+              "peak_to_peak": [
+                34.308710905698945,
+                45.39113691289931,
+                35.245192738297916
+              ],
+              "quantile_probabilities": [
+                0.05,
+                0.25,
+                0.5,
+                0.75,
+                0.95
+              ],
+              "quantiles": [
+                [
+                  -12.433677092204638,
+                  -14.54839742676692,
+                  12.94817091595876
+                ],
+                [
+                  -9.33442584630765,
+                  -9.777932345335637,
+                  20.4637401509256
+                ],
+                [
+                  -6.435368080039637,
+                  -5.714404974610889,
+                  24.779494212099667
+                ],
+                [
+                  -1.4748403616912702,
+                  -0.7581040824477183,
+                  29.8937329368551
+                ],
+                [
+                  10.54702710171821,
+                  11.636335415681202,
+                  35.84574401914994
+                ]
+              ],
+              "standard_deviation": [
+                6.709582275117911,
+                7.53216951579397,
+                6.835741809044926
+              ]
+            },
+            "diagnostic_sample_period_s": 0.05,
+            "diagnostic_samples": 801,
+            "nonperiodicity_screen": {
+              "checks": {
+                "minimum_normalized_lag_rmse": true,
+                "minimum_normalized_permutation_entropy": true
+              },
+              "interpretation": "Observed no-near-period recurrence and complexity screen; not a proof of chaos.",
+              "lag_at_minimum_s": 6.800000000000001,
+              "lag_window_s": [
+                1.0,
+                15.0
+              ],
+              "minimum_normalized_lag_rmse": 1.1115869204329463,
+              "normalized_permutation_entropy": 0.6849901674141471,
+              "passed": true,
+              "permutation_entropy_component": 1,
+              "permutation_entropy_delay_samples": 2,
+              "permutation_entropy_order": 5,
+              "thresholds": {
+                "minimum_normalized_lag_rmse": 0.05,
+                "minimum_normalized_permutation_entropy": 0.25
+              }
+            },
+            "observed_boundedness": {
+              "checks": {
+                "all_finite": true,
+                "maximum_absolute_state": true
+              },
+              "maximum_absolute_state": 47.945481628840994,
+              "passed": true,
+              "threshold": 1000.0
+            },
+            "post_transient_samples": 32001,
+            "within_resolution_stability": {
+              "checks": {
+                "maximum_mean_shift": true,
+                "maximum_std_ratio": true,
+                "minimum_std_ratio": false
+              },
+              "maximum_block_mean_shift_in_global_std": 0.589007060654336,
+              "maximum_block_to_global_std_ratio": 1.283120769316336,
+              "minimum_block_to_global_std_ratio": 0.23075790327397064,
+              "passed": false,
+              "thresholds": {
+                "maximum_block_mean_shift_in_global_std": 1.5,
+                "maximum_block_to_global_std_ratio": 4.0,
+                "minimum_block_to_global_std_ratio": 0.25
+              }
+            }
+          },
+          "h": 0.00125,
+          "resolution_divisor": 4,
+          "rhs_evaluations": 80001,
+          "runtime_s": 10.802537000010489,
+          "steps": 40000,
+          "trajectory_float64_le_sha256": "12e303aa1a660e0052f3f3208ff369f7b39f5b0720fcbe39d1d830aa9c472347"
+        }
+      ],
+      "system": "lorenz"
+    },
+    {
+      "cross_resolution_stability": {
+        "checks": {
+          "mean_difference": true,
+          "permutation_entropy_difference": true,
+          "quantile_difference": true,
+          "standard_deviation_ratio": true
+        },
+        "interpretation": "Distributional h/2 versus h/4 stability; pointwise trajectory agreement is intentionally not required at long horizon.",
+        "maximum_mean_difference_in_pooled_std": 7.108046503917545e-05,
+        "maximum_quantile_difference_in_pooled_std": 0.0009790363163582367,
+        "maximum_symmetric_std_ratio": 1.0000820588107353,
+        "mean_difference_in_pooled_std_by_component": [
+          1.6451877204790216e-05,
+          4.3111209333015035e-05,
+          7.108046503917545e-05
+        ],
+        "passed": true,
+        "permutation_entropy_difference": 0.0,
+        "symmetric_std_ratio_by_component": [
+          1.000012473736118,
+          1.0000048318275538,
+          1.0000820588107353
+        ],
+        "thresholds": {
+          "maximum_mean_difference_in_pooled_std": 0.75,
+          "maximum_permutation_entropy_difference": 0.25,
+          "maximum_quantile_difference_in_pooled_std": 1.0,
+          "maximum_symmetric_std_ratio": 2.5
+        }
+      },
+      "decision": "not_qualified_dynamic_screen_failed",
+      "failure_reasons": [
+        "h/2 failed within_resolution_stability",
+        "h/4 failed within_resolution_stability"
+      ],
+      "manifest": {
+        "h": 0.01,
+        "initial_state": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "manifest_id": "rossler_classic_caputo_v2",
+        "memory_increments": 1000,
+        "memory_seconds": 10.0,
+        "parameters": [
+          0.2,
+          0.2,
+          5.7
+        ],
+        "q": 0.9877,
+        "system": "rossler"
+      },
+      "manifest_id": "rossler_classic_caputo_v2",
+      "resolutions": [
+        {
+          "diagnostics": {
+            "activity": {
+              "active_components": 3,
+              "checks": {
+                "minimum_active_components": true
+              },
+              "minimum_required": 3,
+              "passed": true
+            },
+            "analysis_window_s": [
+              10.0,
+              50.0
+            ],
+            "component_summary": {
+              "maximum": [
+                10.231130622029035,
+                7.433524551766759,
+                12.581311160349642
+              ],
+              "mean": [
+                0.28742301391113934,
+                -0.6396389512593682,
+                0.4954354518111179
+              ],
+              "minimum": [
+                -8.398216825475709,
+                -9.65237474883219,
+                0.014370589774615765
+              ],
+              "peak_to_peak": [
+                18.629347447504742,
+                17.085899300598946,
+                12.566940570575026
+              ],
+              "quantile_probabilities": [
+                0.05,
+                0.25,
+                0.5,
+                0.75,
+                0.95
+              ],
+              "quantiles": [
+                [
+                  -7.03188487339326,
+                  -8.089969332307199,
+                  0.016195551581692835
+                ],
+                [
+                  -3.477275751615905,
+                  -4.018331612151397,
+                  0.02274475572352143
+                ],
+                [
+                  0.12702903682105304,
+                  -0.7077588166624164,
+                  0.040872228632863335
+                ],
+                [
+                  3.9888317752911617,
+                  3.056469919392395,
+                  0.12497046673888335
+                ],
+                [
+                  8.461975595270198,
+                  6.229800361186835,
+                  3.5226442774055164
+                ]
+              ],
+              "standard_deviation": [
+                4.710498759867972,
+                4.44696475633134,
+                1.5618766755528184
+              ]
+            },
+            "diagnostic_sample_period_s": 0.05,
+            "diagnostic_samples": 801,
+            "nonperiodicity_screen": {
+              "checks": {
+                "minimum_normalized_lag_rmse": true,
+                "minimum_normalized_permutation_entropy": true
+              },
+              "interpretation": "Observed no-near-period recurrence and complexity screen; not a proof of chaos.",
+              "lag_at_minimum_s": 12.05,
+              "lag_window_s": [
+                1.0,
+                15.0
+              ],
+              "minimum_normalized_lag_rmse": 0.827517337744283,
+              "normalized_permutation_entropy": 0.2512640579980947,
+              "passed": true,
+              "permutation_entropy_component": 0,
+              "permutation_entropy_delay_samples": 2,
+              "permutation_entropy_order": 5,
+              "thresholds": {
+                "minimum_normalized_lag_rmse": 0.05,
+                "minimum_normalized_permutation_entropy": 0.25
+              }
+            },
+            "observed_boundedness": {
+              "checks": {
+                "all_finite": true,
+                "maximum_absolute_state": true
+              },
+              "maximum_absolute_state": 12.581311160349642,
+              "passed": true,
+              "threshold": 1000.0
+            },
+            "post_transient_samples": 8001,
+            "within_resolution_stability": {
+              "checks": {
+                "maximum_mean_shift": true,
+                "maximum_std_ratio": true,
+                "minimum_std_ratio": false
+              },
+              "maximum_block_mean_shift_in_global_std": 0.3493653378015012,
+              "maximum_block_to_global_std_ratio": 1.6418953292005725,
+              "minimum_block_to_global_std_ratio": 0.018405503278500088,
+              "passed": false,
+              "thresholds": {
+                "maximum_block_mean_shift_in_global_std": 1.5,
+                "maximum_block_to_global_std_ratio": 4.0,
+                "minimum_block_to_global_std_ratio": 0.25
+              }
+            }
+          },
+          "h": 0.005,
+          "resolution_divisor": 2,
+          "rhs_evaluations": 20001,
+          "runtime_s": 0.7777750999957789,
+          "steps": 10000,
+          "trajectory_float64_le_sha256": "8e2d95b5c47e1d2a1fecf7a64f99893bab6e845c0f6d3f59ac8df7b69dace068"
+        },
+        {
+          "diagnostics": {
+            "activity": {
+              "active_components": 3,
+              "checks": {
+                "minimum_active_components": true
+              },
+              "minimum_required": 3,
+              "passed": true
+            },
+            "analysis_window_s": [
+              10.0,
+              50.0
+            ],
+            "component_summary": {
+              "maximum": [
+                10.230971055873885,
+                7.433481481626366,
+                12.580149863991567
+              ],
+              "mean": [
+                0.2873455168806314,
+                -0.6398306648247132,
+                0.4953244374452589
+              ],
+              "minimum": [
+                -8.39816234986497,
+                -9.652296985820765,
+                0.014370632082854867
+              ],
+              "peak_to_peak": [
+                18.629133405738855,
+                17.08577846744713,
+                12.565779231908712
+              ],
+              "quantile_probabilities": [
+                0.05,
+                0.25,
+                0.5,
+                0.75,
+                0.95
+              ],
+              "quantiles": [
+                [
+                  -7.033420175207436,
+                  -8.089996178426816,
+                  0.016186055034649514
+                ],
+                [
+                  -3.4778053669398483,
+                  -4.018145565859551,
+                  0.02274237379504289
+                ],
+                [
+                  0.1279291077216098,
+                  -0.7083388758720625,
+                  0.040850074749479263
+                ],
+                [
+                  3.9876620945024808,
+                  3.0556940757829305,
+                  0.12493457761775359
+                ],
+                [
+                  8.463070192500155,
+                  6.230160755847667,
+                  3.524173348659532
+                ]
+              ],
+              "standard_deviation": [
+                4.710557517386487,
+                4.446943269468321,
+                1.5617485203265729
+              ]
+            },
+            "diagnostic_sample_period_s": 0.05,
+            "diagnostic_samples": 801,
+            "nonperiodicity_screen": {
+              "checks": {
+                "minimum_normalized_lag_rmse": true,
+                "minimum_normalized_permutation_entropy": true
+              },
+              "interpretation": "Observed no-near-period recurrence and complexity screen; not a proof of chaos.",
+              "lag_at_minimum_s": 12.05,
+              "lag_window_s": [
+                1.0,
+                15.0
+              ],
+              "minimum_normalized_lag_rmse": 0.827538582152355,
+              "normalized_permutation_entropy": 0.2512640579980947,
+              "passed": true,
+              "permutation_entropy_component": 0,
+              "permutation_entropy_delay_samples": 2,
+              "permutation_entropy_order": 5,
+              "thresholds": {
+                "minimum_normalized_lag_rmse": 0.05,
+                "minimum_normalized_permutation_entropy": 0.25
+              }
+            },
+            "observed_boundedness": {
+              "checks": {
+                "all_finite": true,
+                "maximum_absolute_state": true
+              },
+              "maximum_absolute_state": 12.580149863991567,
+              "passed": true,
+              "threshold": 1000.0
+            },
+            "post_transient_samples": 16001,
+            "within_resolution_stability": {
+              "checks": {
+                "maximum_mean_shift": true,
+                "maximum_std_ratio": true,
+                "minimum_std_ratio": false
+              },
+              "maximum_block_mean_shift_in_global_std": 0.34936890211406013,
+              "maximum_block_to_global_std_ratio": 1.6419699280079587,
+              "minimum_block_to_global_std_ratio": 0.018407223008414308,
+              "passed": false,
+              "thresholds": {
+                "maximum_block_mean_shift_in_global_std": 1.5,
+                "maximum_block_to_global_std_ratio": 4.0,
+                "minimum_block_to_global_std_ratio": 0.25
+              }
+            }
+          },
+          "h": 0.0025,
+          "resolution_divisor": 4,
+          "rhs_evaluations": 40001,
+          "runtime_s": 2.5689724999974715,
+          "steps": 20000,
+          "trajectory_float64_le_sha256": "629df5ee5f3e37277b60edfb0794315133b890a31847278e61c97f71fccdee1a"
+        }
+      ],
+      "system": "rossler"
+    },
+    {
+      "cross_resolution_stability": {
+        "checks": {
+          "mean_difference": true,
+          "permutation_entropy_difference": true,
+          "quantile_difference": true,
+          "standard_deviation_ratio": true
+        },
+        "interpretation": "Distributional h/2 versus h/4 stability; pointwise trajectory agreement is intentionally not required at long horizon.",
+        "maximum_mean_difference_in_pooled_std": 0.023294079107965965,
+        "maximum_quantile_difference_in_pooled_std": 0.1810924552936883,
+        "maximum_symmetric_std_ratio": 1.081998294194284,
+        "mean_difference_in_pooled_std_by_component": [
+          0.014949922084974735,
+          0.01638657252206565,
+          0.023294079107965965
+        ],
+        "passed": true,
+        "permutation_entropy_difference": 0.010247287839374342,
+        "symmetric_std_ratio_by_component": [
+          1.002513690511887,
+          1.0013554978198504,
+          1.081998294194284
+        ],
+        "thresholds": {
+          "maximum_mean_difference_in_pooled_std": 0.75,
+          "maximum_permutation_entropy_difference": 0.25,
+          "maximum_quantile_difference_in_pooled_std": 1.0,
+          "maximum_symmetric_std_ratio": 2.5
+        }
+      },
+      "decision": "qualified_observed_long_horizon_screen",
+      "failure_reasons": [],
+      "manifest": {
+        "h": 0.005,
+        "initial_state": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "manifest_id": "chen_caputo_v1",
+        "memory_increments": 2000,
+        "memory_seconds": 10.0,
+        "parameters": [
+          35.0,
+          3.0,
+          28.0
+        ],
+        "q": 0.9,
+        "system": "chen"
+      },
+      "manifest_id": "chen_caputo_v1",
+      "resolutions": [
+        {
+          "diagnostics": {
+            "activity": {
+              "active_components": 3,
+              "checks": {
+                "minimum_active_components": true
+              },
+              "minimum_required": 3,
+              "passed": true
+            },
+            "analysis_window_s": [
+              10.0,
+              50.0
+            ],
+            "component_summary": {
+              "maximum": [
+                19.46612898580934,
+                22.496889508106264,
+                34.829507480735835
+              ],
+              "mean": [
+                0.1266062889108243,
+                0.1410734985860288,
+                20.878849572908162
+              ],
+              "minimum": [
+                -18.206570033959952,
+                -20.868160770993093,
+                9.504193190959363
+              ],
+              "peak_to_peak": [
+                37.6726990197693,
+                43.36505027909936,
+                25.325314289776472
+              ],
+              "quantile_probabilities": [
+                0.05,
+                0.25,
+                0.5,
+                0.75,
+                0.95
+              ],
+              "quantiles": [
+                [
+                  -12.136527961017652,
+                  -13.102968808516387,
+                  13.969061856159817
+                ],
+                [
+                  -6.329485038006233,
+                  -6.491067817460752,
+                  17.90410502848651
+                ],
+                [
+                  0.3611657237980186,
+                  0.3571611617914676,
+                  20.96097717636255
+                ],
+                [
+                  6.572888437167523,
+                  6.793280620882537,
+                  23.5662029708121
+                ],
+                [
+                  12.085934006530668,
+                  13.027694293455486,
+                  28.182985741509395
+                ]
+              ],
+              "standard_deviation": [
+                7.793353055446187,
+                8.314618691626102,
+                4.231355537466798
+              ]
+            },
+            "diagnostic_sample_period_s": 0.05,
+            "diagnostic_samples": 801,
+            "nonperiodicity_screen": {
+              "checks": {
+                "minimum_normalized_lag_rmse": true,
+                "minimum_normalized_permutation_entropy": true
+              },
+              "interpretation": "Observed no-near-period recurrence and complexity screen; not a proof of chaos.",
+              "lag_at_minimum_s": 6.5,
+              "lag_window_s": [
+                1.0,
+                15.0
+              ],
+              "minimum_normalized_lag_rmse": 1.2722666674848775,
+              "normalized_permutation_entropy": 0.823826056577283,
+              "passed": true,
+              "permutation_entropy_component": 1,
+              "permutation_entropy_delay_samples": 2,
+              "permutation_entropy_order": 5,
+              "thresholds": {
+                "minimum_normalized_lag_rmse": 0.05,
+                "minimum_normalized_permutation_entropy": 0.25
+              }
+            },
+            "observed_boundedness": {
+              "checks": {
+                "all_finite": true,
+                "maximum_absolute_state": true
+              },
+              "maximum_absolute_state": 44.26948918724945,
+              "passed": true,
+              "threshold": 1000.0
+            },
+            "post_transient_samples": 16001,
+            "within_resolution_stability": {
+              "checks": {
+                "maximum_mean_shift": true,
+                "maximum_std_ratio": true,
+                "minimum_std_ratio": true
+              },
+              "maximum_block_mean_shift_in_global_std": 0.10899317998522301,
+              "maximum_block_to_global_std_ratio": 1.0586430009155583,
+              "minimum_block_to_global_std_ratio": 0.9534112213810788,
+              "passed": true,
+              "thresholds": {
+                "maximum_block_mean_shift_in_global_std": 1.5,
+                "maximum_block_to_global_std_ratio": 4.0,
+                "minimum_block_to_global_std_ratio": 0.25
+              }
+            }
+          },
+          "h": 0.0025,
+          "resolution_divisor": 2,
+          "rhs_evaluations": 40001,
+          "runtime_s": 2.5637740999954985,
+          "steps": 20000,
+          "trajectory_float64_le_sha256": "a8d07c6207280b8445e24d166ae639ffb9bcb77a8c10b494bb76944010d6949c"
+        },
+        {
+          "diagnostics": {
+            "activity": {
+              "active_components": 3,
+              "checks": {
+                "minimum_active_components": true
+              },
+              "minimum_required": 3,
+              "passed": true
+            },
+            "analysis_window_s": [
+              10.0,
+              50.0
+            ],
+            "component_summary": {
+              "maximum": [
+                20.164946274187244,
+                23.52057303853308,
+                36.19639760243541
+              ],
+              "mean": [
+                0.010242244171716645,
+                0.00473302312849246,
+                20.776163392189176
+              ],
+              "minimum": [
+                -20.567924603726226,
+                -24.01880084900276,
+                8.120937699662669
+              ],
+              "peak_to_peak": [
+                40.73287087791347,
+                47.53937388753584,
+                28.075459902772742
+              ],
+              "quantile_probabilities": [
+                0.05,
+                0.25,
+                0.5,
+                0.75,
+                0.95
+              ],
+              "quantiles": [
+                [
+                  -12.13415699803318,
+                  -13.09911951407852,
+                  13.170760600937692
+                ],
+                [
+                  -6.315017412006056,
+                  -6.532705455443186,
+                  17.73094185026041
+                ],
+                [
+                  -0.02221345872366834,
+                  -0.012652289586053508,
+                  20.925169595162195
+                ],
+                [
+                  6.331277666175237,
+                  6.53907187263014,
+                  23.72641191798699
+                ],
+                [
+                  12.13095032517152,
+                  13.086204720110052,
+                  28.455925265228917
+                ]
+              ],
+              "standard_deviation": [
+                7.773812097734918,
+                8.325889139135489,
+                4.578319473668613
+              ]
+            },
+            "diagnostic_sample_period_s": 0.05,
+            "diagnostic_samples": 801,
+            "nonperiodicity_screen": {
+              "checks": {
+                "minimum_normalized_lag_rmse": true,
+                "minimum_normalized_permutation_entropy": true
+              },
+              "interpretation": "Observed no-near-period recurrence and complexity screen; not a proof of chaos.",
+              "lag_at_minimum_s": 1.4500000000000002,
+              "lag_window_s": [
+                1.0,
+                15.0
+              ],
+              "minimum_normalized_lag_rmse": 1.3006505334547438,
+              "normalized_permutation_entropy": 0.8340733444166574,
+              "passed": true,
+              "permutation_entropy_component": 1,
+              "permutation_entropy_delay_samples": 2,
+              "permutation_entropy_order": 5,
+              "thresholds": {
+                "minimum_normalized_lag_rmse": 0.05,
+                "minimum_normalized_permutation_entropy": 0.25
+              }
+            },
+            "observed_boundedness": {
+              "checks": {
+                "all_finite": true,
+                "maximum_absolute_state": true
+              },
+              "maximum_absolute_state": 44.1419287406715,
+              "passed": true,
+              "threshold": 1000.0
+            },
+            "post_transient_samples": 32001,
+            "within_resolution_stability": {
+              "checks": {
+                "maximum_mean_shift": true,
+                "maximum_std_ratio": true,
+                "minimum_std_ratio": true
+              },
+              "maximum_block_mean_shift_in_global_std": 0.052734419570924784,
+              "maximum_block_to_global_std_ratio": 1.0614840011051063,
+              "minimum_block_to_global_std_ratio": 0.8972410448109298,
+              "passed": true,
+              "thresholds": {
+                "maximum_block_mean_shift_in_global_std": 1.5,
+                "maximum_block_to_global_std_ratio": 4.0,
+                "minimum_block_to_global_std_ratio": 0.25
+              }
+            }
+          },
+          "h": 0.00125,
+          "resolution_divisor": 4,
+          "rhs_evaluations": 80001,
+          "runtime_s": 10.016211099995417,
+          "steps": 40000,
+          "trajectory_float64_le_sha256": "50c29351f9e58863d52bacc5acebe5a9c46a4bde0a9280aad6df34d269f0ccb1"
+        }
+      ],
+      "system": "chen"
+    }
+  ],
+  "provenance": {
+    "candidate_manifest_sha256": "fc15e5cf21d82b6b9f1224cd740c2fd47dfaca7cc16289e726f18e9be9fdd8bc",
+    "candidate_manifest_source": "validation/candidate_manifests_rossler_classic_v2.json",
+    "oracle_source": "validation/abm_oracle.py",
+    "oracle_source_sha256": "5608dc119e85a01accc4ae8b58f83e13c79b230a7731953c280330e16bcb2aca",
+    "qualification_source": "validation/long_horizon_qualification.py",
+    "qualification_source_sha256": "e6c348df386799a8fd16d0cfe6a439edda5b547166b9d5239c894c5c90b61641"
+  },
+  "schema_version": 1,
+  "scope": "Observed long-horizon dynamic qualification of the active Caputo manifests, including rossler_classic_caputo_v2, using the independently validated full-memory ABM oracle.",
+  "status": "one_or_more_manifests_not_qualified"
+}

@@ -105,6 +105,27 @@ python validation/analyze_capture.py captura_densa.csv `
   --discard 2000 --expected-decimation 1 --sample-interval 0.005
 ```
 
+### Densidad dinámica descriptiva
+
+`analyze_dynamics_density.py` cuantifica una captura densa aceptada sin
+interpolar ni remuestrear sus estados. Rechaza gaps de secuencia, filas
+descartadas, banderas del solver y valores no finitos:
+
+```powershell
+python validation/analyze_dynamics_density.py `
+  --capture captura.csv --output densidad.json `
+  --discard 5000 --sample-interval 0.01
+```
+
+El JSON conserva el hash de la captura, rangos y desviaciones de estado,
+ocupación y entropía de histogramas `xy`, `xz` y `yz` en una malla
+\(64\times64\), ocupación tridimensional en \(32^3\), entropía de permutación
+Bandt--Pompe, recurrencia entre 1 y 15 s y los máximos radiales
+\(\sqrt{x^2+y^2}\). La densidad se calcula después de estandarizar cada
+componente y limitarla al intervalo \([-4,4]\). El alcance del informe es una
+descripción cuantitativa de la serie UART; la identificación de caos,
+atractores ocultos o aleatoriedad requiere evidencia independiente.
+
 ## Comparación flotante frente a punto fijo mixto
 
 `fixed_point_comparison.py` ejecuta los tres sistemas con EFORK3, GL-Caputo y
@@ -280,7 +301,37 @@ bloque en \(h/2\) ni la comparación cuantil entre resoluciones, y Rössler no
 superó estabilidad de bloque en ninguna resolución. La decisión y sus límites
 están en
 [`results/abm_replacement_exploration_v1/DECISION.md`](results/abm_replacement_exploration_v1/DECISION.md).
-No se congeló un manifiesto v2 ni se modificaron umbrales.
+Esa exploración no congeló un manifiesto v2 ni modificó umbrales.
+
+### Contrato activo Rössler clásico v2
+
+El contrato `rossler_classic_caputo_v2` se adoptó después como una revisión
+operativa independiente, sustentada en el régimen clásico
+\(a=b=0.2,\ c=5.7,\ q=0.9877,\ \mathbf{x}_0=(1,0,0)\). Su fuente canónica es
+`candidate_manifests_rossler_classic_v2.json`; el manifiesto v1 y sus
+resultados permanecen inalterados.
+
+La evaluación formal reutiliza sin cambios los umbrales v1:
+
+```powershell
+python .\validation\validate_abm_oracle.py `
+  --manifests .\validation\candidate_manifests_rossler_classic_v2.json `
+  --output .\validation\results\abm_oracle_validation_rossler_classic_v2.json
+python .\validation\long_horizon_qualification.py `
+  --manifests .\validation\candidate_manifests_rossler_classic_v2.json `
+  --criteria .\validation\long_horizon_criteria_rossler_classic_v2.json `
+  --implementation-report .\validation\results\abm_oracle_validation_rossler_classic_v2.json `
+  --output-dir .\validation\results\abm_long_horizon_rossler_classic_v2
+```
+
+Rössler v2 supera acotamiento observado, actividad, no periodicidad y la
+comparación distributiva entre \(h/2\) y \(h/4\). Su entropía de permutación
+normalizada es \(0.251264\), apenas por encima del umbral 0.25. La razón mínima
+entre la desviación de un bloque y la desviación global es 0.018406 en \(h/2\)
+y 0.018407 en \(h/4\), por debajo del umbral 0.25; por ello su decisión formal
+es `not_qualified_dynamic_screen_failed`. El cambio produce una geometría
+física más poblada para la comparación descriptiva, pero Chen conserva el
+papel de único manifiesto primario calificado a horizonte largo.
 
 ## Bloqueadores de cierre
 

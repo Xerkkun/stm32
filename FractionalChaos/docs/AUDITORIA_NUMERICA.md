@@ -41,8 +41,16 @@ Se fijan los manifiestos siguientes:
 | Sistema | Parámetros | Estado inicial | \(q\) | \(h\) | \(L_m\) | \(M\) |
 |---|---|---:|---:|---:|---:|---:|
 | Lorenz | \(\sigma=10,\rho=28,\beta=8/3\) | \((0.1,0.1,0.1)\) | 0.995 | 0.005 | 10 s | 2000 |
-| Rössler | \(a=0.2,b=0.2,c=6\) | \((0.5,1.5,0.1)\) | 0.970 | 0.010 | 10 s | 1000 |
+| Rössler | \(a=0.2,b=0.2,c=5.7\) | \((1,0,0)\) | 0.9877 | 0.010 | 10 s | 1000 |
 | Chen | \(a=35,b=3,c=28\) | \((0.1,0.1,0.1)\) | 0.900 | 0.005 | 10 s | 2000 |
+
+La fuente canónica del contrato activo es
+`validation/candidate_manifests_rossler_classic_v2.json`. El identificador
+`rossler_classic_caputo_v2` reemplaza `rossler_caputo_v1` en el firmware
+`float32`, el núcleo fijo y las tablas Rössler generadas. No reemplaza la
+proveniencia de experimentos ya ejecutados: `validation/candidate_manifests.json`
+permanece congelado como manifiesto histórico v1 y sus resultados conservan
+sus parámetros, identificadores y conclusiones originales.
 
 En EFORK3 se almacenan los incrementos
 \(\Delta x_j=x_{j+1}-x_j\). Los pesos de las tres abscisas se consultan en una

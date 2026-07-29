@@ -48,10 +48,15 @@ static void test_manifests(void)
     CHECK(float_word(lorenz->initial_state.v[0]) == 0x3dcccccdu);
 
     CHECK(rossler->memory_length == 1000u);
-    CHECK(float_word(rossler->q) == float_word(0.970f));
+    CHECK(float_word(rossler->q) == float_word(0.9877f));
     CHECK(float_word(rossler->h) == float_word(0.010f));
-    CHECK(float_word(rossler->initial_state.v[0]) == 0x3f000000u);
-    CHECK(float_word(rossler->initial_state.v[1]) == 0x3fc00000u);
+    CHECK(float_word(rossler->memory_seconds) == float_word(10.0f));
+    CHECK(float_word(rossler->parameters[0]) == float_word(0.2f));
+    CHECK(float_word(rossler->parameters[1]) == float_word(0.2f));
+    CHECK(float_word(rossler->parameters[2]) == float_word(5.7f));
+    CHECK(float_word(rossler->initial_state.v[0]) == 0x3f800000u);
+    CHECK(float_word(rossler->initial_state.v[1]) == 0x00000000u);
+    CHECK(float_word(rossler->initial_state.v[2]) == 0x00000000u);
 
     CHECK(chen->memory_length == 2000u);
     CHECK(float_word(chen->q) == float_word(0.900f));
@@ -90,7 +95,7 @@ static void test_rhs(void)
         &derivative));
     CHECK(close_float(derivative.v[0], -5.0f, 1.0e-6f));
     CHECK(close_float(derivative.v[1], 1.4f, 1.0e-6f));
-    CHECK(close_float(derivative.v[2], -14.8f, 1.0e-6f));
+    CHECK(close_float(derivative.v[2], -13.9f, 1.0e-6f));
 
     CHECK_STATUS(fc_rhs(
         FC_SYSTEM_CHEN,
@@ -556,8 +561,8 @@ static const golden_state_t GOLDEN_32[FC_SYSTEM_COUNT][2] = {
         {{0x3ed952aau, 0x3f6c467fu, 0x3da233c5u}}
     },
     {
-        {{0x3e13fccbu, 0x3fd16073u, 0x3d60c9e0u}},
-        {{0xbd74ca60u, 0x3fd767bdu, 0x3d338446u}}
+        {{0x3f79a75eu, 0x3e52542cu, 0x3cd35bafu}},
+        {{0x3f70c410u, 0x3ea92e79u, 0x3d08c65cu}}
     },
     {
         {{0x403b2ec7u, 0x409cce6eu, 0x3ec0e891u}},

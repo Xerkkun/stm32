@@ -20,8 +20,16 @@ temporal para cada sistema. La memoria corta representa diez segundos:
 | Sistema | Parámetros | Estado inicial | \(q\) | \(h\) | \(M\) |
 |---|---|---:|---:|---:|---:|
 | Lorenz | \(\sigma=10,\ \rho=28,\ \beta=8/3\) | \((0.1,0.1,0.1)\) | 0.995 | 0.005 | 2000 |
-| Rössler | \(a=0.2,\ b=0.2,\ c=6\) | \((0.5,1.5,0.1)\) | 0.97 | 0.01 | 1000 |
+| Rössler | \(a=0.2,\ b=0.2,\ c=5.7\) | \((1,0,0)\) | 0.9877 | 0.01 | 1000 |
 | Chen | \(a=35,\ b=3,\ c=28\) | \((0.1,0.1,0.1)\) | 0.9 | 0.005 | 2000 |
+
+El contrato activo está registrado en
+[`validation/candidate_manifests_rossler_classic_v2.json`](validation/candidate_manifests_rossler_classic_v2.json).
+`rossler_classic_caputo_v2` reemplaza el Rössler v1 únicamente como contrato
+activo del firmware y de sus tablas de coeficientes. El archivo
+[`validation/candidate_manifests.json`](validation/candidate_manifests.json)
+y todos los resultados obtenidos con `rossler_caputo_v1` se conservan sin
+modificar como evidencia histórica; no se reetiquetan ni se atribuyen a v2.
 
 La matriz primaria produce 36 imágenes de cálculo: 18 `float32` y 18 de
 punto fijo mixto `fixed_q14_q30`. En la segunda representación, el sufijo
@@ -160,11 +168,13 @@ solo una prueba de integración.
 
 La calificación ABM posterior, con criterios congelados, memoria completa,
 \(h/2\), \(h/4\), 50 s de horizonte y 10 s de transitorio, terminó para los
-tres manifiestos. Sólo Chen obtuvo
+tres manifiestos históricos v1. Sólo Chen obtuvo
 `qualified_observed_long_horizon_screen`; Lorenz y Rössler no superaron todas
 las pantallas predeclaradas. Dos contratos bibliográficos exploratorios,
 uno por cada sistema rechazado, tampoco resultaron elegibles (0/2), por lo que
-no se congeló ningún reemplazo ni se modificaron umbrales. La decisión,
+esa campaña no congeló ningún reemplazo ni modificó umbrales. La adopción
+operativa posterior de `rossler_classic_caputo_v2` como contrato activo del
+firmware no cambia ni amplía esos resultados históricos. La decisión,
 diagnósticos y límites están en
 [`validation/results/abm_long_horizon/`](validation/results/abm_long_horizon/)
 y
