@@ -188,6 +188,8 @@ def test_flagged_capture_is_ineligible(
             "1",
             "--minimum-statistical-bits",
             "1",
+            "--sample-interval",
+            "0.005",
         ],
     )
     assert MODULE.main() == 0
@@ -211,3 +213,11 @@ def test_flagged_capture_is_ineligible(
         metadata["statistical_eligibility"]["reason"]
         == "nonzero_solver_status"
     )
+    assert metadata["sampling"] == {
+        "sample_interval": 0.005,
+        "time_unit": "model_time",
+        "time_origin_sequence": 1,
+        "host_reception_time_used": False,
+        "interpolation": False,
+        "resampling": False,
+    }

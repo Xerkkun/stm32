@@ -304,6 +304,7 @@ def test_analyze_campaign_freezes_protocol_and_writes_all_artifacts(
         "markdown",
         "spectrum_figure",
         "divergence_figure",
+        "primary_divergence_figure",
     }
     assert all(path.is_file() and path.stat().st_size > 0 for path in outputs.values())
     written = json.loads(outputs["json"].read_text(encoding="utf-8"))

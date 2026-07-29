@@ -1038,7 +1038,7 @@ def save_spectrum_figure(
         for case in cases
     ]
     colors = ("#0072B2", "#E69F00", "#009E73", "#CC79A7")
-    fig, axes = plt.subplots(1, 4, figsize=(14.0, 3.8))
+    fig, axes = plt.subplots(1, 4, figsize=(14.0, 4.3))
     exponent_index = np.arange(1, 6)
     for protocol_index, protocol in enumerate(PROTOCOLS):
         axis = axes[protocol_index]
@@ -1081,22 +1081,23 @@ def save_spectrum_figure(
         ha="right",
     )
     axes[3].set_ylim(0.0, 5.15)
-    axes[3].set_ylabel(r"exploratory Kaplan--Yorke $D_{KY}$")
-    axes[3].set_title("Kaplan--Yorke comparison")
+    axes[3].set_ylabel(r"exploratory Kaplan–Yorke $D_{KY}$")
+    axes[3].set_title("Kaplan–Yorke comparison")
 
     handles, legend_labels = axes[0].get_legend_handles_labels()
     fig.legend(
         handles,
         legend_labels,
         loc="upper center",
+        bbox_to_anchor=(0.5, 0.925),
         ncols=4,
         frameon=False,
     )
     fig.suptitle(
-        "Dense UART scalar-reconstruction spectra and Kaplan--Yorke diagnostics",
-        y=1.05,
+        "Dense UART scalar-reconstruction spectra and Kaplan–Yorke diagnostics",
+        y=0.99,
     )
-    fig.tight_layout()
+    fig.tight_layout(rect=(0.0, 0.0, 1.0, 0.82))
     fig.savefig(path, dpi=220, bbox_inches="tight")
     plt.close(fig)
 
@@ -1159,6 +1160,121 @@ def save_divergence_figure(
             axis.set_ylabel("mean log distance")
     fig.suptitle("Dense UART Rosenstein finite-window fit diagnostics")
     fig.tight_layout()
+    fig.savefig(path, dpi=220, bbox_inches="tight")
+    plt.close(fig)
+
+
+def save_primary_divergence_figure(
+    cases: Sequence[dict[str, Any]],
+    path: Path,
+) -> None:
+    """Save a paper-scale view of the primary Rosenstein fits.
+
+    When both MCUs reproduce a bit-identical signal, the compact figure plots
+    that unique signal once.  Otherwise it keeps the board curves separate so
+    a future campaign cannot silently imply cross-board equality.
+    """
+
+    representation_order = ("float32", "fixed_q14_q30")
+    fig, axes = plt.subplots(1, 2, figsize=(9.6, 3.7), squeeze=False)
+    for axis, representation in zip(
+        axes[0],
+        representation_order,
+        strict=True,
+    ):
+        group = [
+            case
+            for case in cases
+            if case["representation"] == representation
+        ]
+        if len(group) != 2:
+            raise ValueError(
+                f"expected two board cases for {representation}, got "
+                f"{len(group)}"
+            )
+        primary_evaluations = [case["evaluations"][0] for case in group]
+        signal_hashes = {
+            evaluation["signal_sha256_float64_le"]
+            for evaluation in primary_evaluations
+        }
+        cross_board_identical = len(signal_hashes) == 1
+        plotted = (
+            [(group[0]["board"], primary_evaluations[0])]
+            if cross_board_identical
+            else [
+                (case["board"], evaluation)
+                for case, evaluation in zip(
+                    group,
+                    primary_evaluations,
+                    strict=True,
+                )
+            ]
+        )
+        colors = ("#0072B2", "#009E73")
+        fit_colors = ("#D55E00", "#CC79A7")
+        for plot_index, (board, evaluation) in enumerate(plotted):
+            trajectory = np.asarray(
+                evaluation["rosenstein_divergence_time_trajectory"],
+                dtype=float,
+            )
+            fit_offset = int(
+                evaluation["rosenstein_parameters"]["fit_offset"]
+            )
+            fit_x = trajectory[fit_offset:, 0]
+            fit_y = trajectory[fit_offset:, 1]
+            board_label = (
+                ""
+                if cross_board_identical
+                else f"{board.upper()} "
+            )
+            axis.plot(
+                trajectory[:, 0],
+                trajectory[:, 1],
+                "o-",
+                color=colors[plot_index],
+                linewidth=0.9,
+                markersize=3.0,
+                label=f"{board_label}mean log divergence",
+            )
+            polynomial = np.polyfit(fit_x, fit_y, 1)
+            axis.plot(
+                fit_x,
+                np.polyval(polynomial, fit_x),
+                color=fit_colors[plot_index],
+                linewidth=1.2,
+                label=f"{board_label}reported linear fit",
+            )
+        evaluation = primary_evaluations[0]
+        display_representation = (
+            "float32"
+            if representation == "float32"
+            else "Q14/Q30"
+        )
+        board_relation = (
+            "F746 = H755"
+            if cross_board_identical
+            else "F746 versus H755"
+        )
+        axis.set_title(
+            f"{display_representation}; {board_relation}\n"
+            f"LLE={float(evaluation['largest_exponent']):.6f}, "
+            f"$R^2$={float(evaluation['rosenstein_fit_r2']):.5f}"
+        )
+        axis.set_xlabel("future model time")
+        axis.set_ylabel("mean log distance")
+        axis.grid(alpha=0.15)
+
+    handles, labels = axes[0, 0].get_legend_handles_labels()
+    fig.legend(
+        handles,
+        labels,
+        loc="upper center",
+        bbox_to_anchor=(0.5, 0.89),
+        ncols=2,
+        frameon=False,
+    )
+    fig.suptitle("Primary-window Rosenstein fit diagnostics", y=0.99)
+    fig.tight_layout(rect=(0.0, 0.0, 1.0, 0.78))
     fig.savefig(path, dpi=220, bbox_inches="tight")
     plt.close(fig)
 
@@ -1277,6 +1393,9 @@ def write_outputs(
         "divergence_figure": (
             output / "dense_uart_rosenstein_divergence_fits.png"
         ),
+        "primary_divergence_figure": (
+            output / "dense_uart_rosenstein_primary_fits.png"
+        ),
     }
     paths["json"].write_text(
         json.dumps(summary, indent=2, sort_keys=True) + "\n",
@@ -1286,6 +1405,10 @@ def write_outputs(
     save_summary_markdown(cases, software, paths["markdown"])
     save_spectrum_figure(cases, paths["spectrum_figure"])
     save_divergence_figure(cases, paths["divergence_figure"])
+    save_primary_divergence_figure(
+        cases,
+        paths["primary_divergence_figure"],
+    )
     return paths
 
 

@@ -93,6 +93,18 @@ sólo como diagnóstico: no es equivalente a los LSB de aritmética en punto fij
 El JSON marca una trama como no apta para baterías estadísticas si encuentra
 saltos de secuencia o paquetes descartados.
 
+Para una adquisición densa que conserva un estado por paso, `--sample-interval`
+permite expresar el eje horizontal en tiempo del modelo. El origen es la primera
+muestra retenida; no se usan marcas de llegada UART y no se interpola ni
+remuestrea:
+
+```powershell
+python validation/analyze_capture.py captura_densa.csv `
+  --output-dir validation/results/captura_densa `
+  --mode fixed-point --fractional-bits 14 --lsb-bits 8 `
+  --discard 2000 --expected-decimation 1 --sample-interval 0.005
+```
+
 ## Comparación flotante frente a punto fijo mixto
 
 `fixed_point_comparison.py` ejecuta los tres sistemas con EFORK3, GL-Caputo y

@@ -195,21 +195,35 @@ def save_time_series(
     output: Path,
     *,
     maximum_samples: int,
+    sample_interval: float | None = None,
 ) -> None:
     sample_count = min(maximum_samples, int(arrays["sequence"].size))
     window = slice(0, sample_count)
+    if sample_interval is None:
+        horizontal = arrays["sequence"][window]
+        horizontal_label = "Integration sequence"
+        title_suffix = "transmitted states"
+    else:
+        horizontal = (
+            arrays["sequence"][window].astype(np.float64)
+            - float(arrays["sequence"][0])
+        ) * sample_interval
+        horizontal_label = "Model time from first retained state"
+        title_suffix = (
+            f"consecutive states, $\\Delta t={sample_interval:g}$"
+        )
     figure, axes = plt.subplots(3, 1, sharex=True, figsize=(9, 7))
     for axis, variable in zip(axes, VARIABLES, strict=True):
         axis.plot(
-            arrays["sequence"][window],
+            horizontal,
             arrays[variable][window],
             linewidth=0.65,
         )
         axis.set_ylabel(variable)
         axis.grid(alpha=0.2)
-    axes[-1].set_xlabel("Índice de integración")
+    axes[-1].set_xlabel(horizontal_label)
     figure.suptitle(
-        f"Ventana pos-transitorio: {sample_count} muestras transmitidas"
+        f"Post-transient window: {sample_count} {title_suffix}"
     )
     figure.tight_layout()
     figure.savefig(output, dpi=220)
@@ -269,8 +283,8 @@ def save_bit_raster(
         vmin=0,
         vmax=1,
     )
-    axis.set_xlabel(f"Bits por fila: {width}")
-    axis.set_ylabel("Fila")
+    axis.set_xlabel(f"Bits per row: {width}")
+    axis.set_ylabel("Row")
     figure.tight_layout()
     figure.savefig(output, dpi=220)
     plt.close(figure)
@@ -290,6 +304,14 @@ def main() -> int:
     parser.add_argument("--lsb-bits", type=int, default=8)
     parser.add_argument("--discard", type=int, default=0)
     parser.add_argument("--time-series-samples", type=int, default=1024)
+    parser.add_argument(
+        "--sample-interval",
+        type=float,
+        help=(
+            "intervalo temporal del modelo entre secuencias consecutivas; "
+            "si se omite, el eje horizontal conserva el número de secuencia"
+        ),
+    )
     parser.add_argument("--expected-decimation", type=int)
     parser.add_argument(
         "--minimum-statistical-bits",
@@ -306,6 +328,8 @@ def main() -> int:
         parser.error("--discard no puede ser negativo")
     if args.time_series_samples <= 0:
         parser.error("--time-series-samples debe ser positivo")
+    if args.sample_interval is not None and args.sample_interval <= 0.0:
+        parser.error("--sample-interval debe ser positivo")
     if args.expected_decimation is not None and args.expected_decimation <= 0:
         parser.error("--expected-decimation debe ser positivo")
     if args.minimum_statistical_bits <= 0:
@@ -366,6 +390,7 @@ def main() -> int:
         arrays,
         time_series_path,
         maximum_samples=args.time_series_samples,
+        sample_interval=args.sample_interval,
     )
     save_attractor(arrays, attractor_path)
     bit_count = save_bit_raster(
@@ -396,7 +421,7 @@ def main() -> int:
     nonzero_cycle_count = int(np.count_nonzero(arrays["cycles"]))
     performance_available = nonzero_cycle_count > 0
     metadata = {
-        "schema_version": 3,
+        "schema_version": 4,
         "capture": str(args.capture.resolve()),
         "capture_sha256": sha256(args.capture),
         **identity,
@@ -404,6 +429,20 @@ def main() -> int:
         "samples_used": int(arrays["sequence"].size),
         "sequence_first": int(arrays["sequence"][0]),
         "sequence_last": int(arrays["sequence"][-1]),
+        "sampling": {
+            "sample_interval": args.sample_interval,
+            "time_unit": (
+                "model_time" if args.sample_interval is not None else None
+            ),
+            "time_origin_sequence": (
+                int(arrays["sequence"][0])
+                if args.sample_interval is not None
+                else None
+            ),
+            "host_reception_time_used": False,
+            "interpolation": False,
+            "resampling": False,
+        },
         "transport": {
             "expected_decimation": args.expected_decimation,
             "sequence_gap_count": sequence_gap_count,
