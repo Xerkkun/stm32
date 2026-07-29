@@ -121,6 +121,34 @@ def test_dense_build_profile_is_dedicated_and_enables_buffering() -> None:
     assert str(directory) in flash
 
 
+def test_git_metadata_excludes_only_declared_generated_paths(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    commands: list[list[str]] = []
+
+    def fake_run(command, **_kwargs):
+        commands.append(list(command))
+        stdout = "f3484c2\n" if "rev-parse" in command else ""
+        return SimpleNamespace(returncode=0, stdout=stdout)
+
+    monkeypatch.setattr(campaign.subprocess, "run", fake_run)
+    output = ROOT / "validation" / "results" / "dense_uart_capture"
+    build = ROOT / "build" / "campaign" / "f746" / "dense"
+    metadata = campaign.git_metadata(
+        exclude_generated_paths=(output, build),
+    )
+
+    status_command = next(command for command in commands if "status" in command)
+    assert ":(exclude)validation/results/dense_uart_capture/**" in status_command
+    assert ":(exclude)build/campaign/f746/dense/**" in status_command
+    assert metadata["dirty"] is False
+    assert metadata["commit"] == "f3484c2"
+    assert metadata["excluded_generated_paths"] == [
+        "validation/results/dense_uart_capture",
+        "build/campaign/f746/dense",
+    ]
+
+
 def test_dense_summary_requires_exact_sequences_1_through_12000() -> None:
     manifest, _digest = dense_manifest()
     parser, frames = parsed_frames(range(1, 12_001))

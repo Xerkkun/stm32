@@ -1381,7 +1381,10 @@ def summarize_benchmark_capture(
     return summary, cycle_values
 
 
-def git_metadata() -> dict[str, Any]:
+def git_metadata(
+    *,
+    exclude_generated_paths: Sequence[Path] = (),
+) -> dict[str, Any]:
     def git(*arguments: str) -> str:
         completed = subprocess.run(
             ["git", *arguments],
@@ -1394,11 +1397,32 @@ def git_metadata() -> dict[str, Any]:
         )
         return completed.stdout.strip() if completed.returncode == 0 else ""
 
-    status = git("status", "--porcelain")
+    status_arguments = [
+        "status",
+        "--porcelain",
+        "--untracked-files=all",
+        "--",
+        ".",
+    ]
+    excluded: list[str] = []
+    for path in exclude_generated_paths:
+        try:
+            relative = path.resolve().relative_to(ROOT.resolve())
+        except ValueError:
+            continue
+        relative_text = relative.as_posix().rstrip("/")
+        if not relative_text:
+            continue
+        excluded.append(relative_text)
+        status_arguments.append(f":(exclude){relative_text}/**")
+
+    status = git(*status_arguments)
     return {
         "commit": git("rev-parse", "HEAD") or None,
         "dirty": bool(status),
         "status_sha256": sha256_bytes(status.encode("utf-8")),
+        "status_scope": "source tree excluding generated run and build paths",
+        "excluded_generated_paths": excluded,
     }
 
 
@@ -1586,6 +1610,9 @@ def execute_pilot(
         decimation,
         benchmark_mode=benchmark_mode,
         buffered_capture_mode=buffered_capture_mode,
+    )
+    source_metadata = git_metadata(
+        exclude_generated_paths=(output_root, build_dir),
     )
     with contextlib.ExitStack() as stack:
         for lock_name in (
@@ -1776,7 +1803,7 @@ def execute_pilot(
                         )
                     ],
                 },
-                "source": git_metadata(),
+                "source": source_metadata,
                 "capture": {
                     "raw_path": raw_path.name,
                     "raw_sha256": sha256_bytes(raw),
