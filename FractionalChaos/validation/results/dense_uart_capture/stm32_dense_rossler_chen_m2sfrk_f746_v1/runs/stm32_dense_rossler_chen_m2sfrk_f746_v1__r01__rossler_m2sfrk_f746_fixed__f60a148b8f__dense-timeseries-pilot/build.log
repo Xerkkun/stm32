@@ -1,0 +1,35 @@
+Dependencias verificadas:
+  STM32CubeH7 v1.13.0  5abb9764b32e11a6557b90bf39531528019b5761
+  CMSIS H7              8f922cdc7cc6de2344e75ddd657889f4ff761790
+  HAL H7                a1996eed9172b59887bafaaa0ea1816ea14d48b5
+  GCC                    C:\Users\moren\AppData\Local\STM32Cube\bundles\gnu-tools-for-stm32\14.3.1+st.2\bin\arm-none-eabi-gcc.exe
+  Ninja                  C:\Users\moren\AppData\Local\STM32Cube\bundles\ninja\1.13.2+st.1\bin\ninja.exe
+  Programmer             C:\Users\moren\AppData\Local\STM32Cube\bundles\programmer\2.23.0\bin\STM32_Programmer_CLI.exe
+-- Configuring done (0.0s)
+-- Generating done (0.1s)
+-- Build files have been written to: C:/Users/moren/Desktop/Codes/STM32/FractionalChaos/build/campaign/f746/dense-12000-decim-1-release
+[1/19] Building ASM object platform/f746/CMakeFiles/f746_rossler_m2sfrk_fixed.dir/C_/Users/moren/Desktop/Codes/STM32/Lorenz_efork/Core/Startup/startup_stm32f746zgtx.s.obj
+[2/19] Building C object platform/f746/CMakeFiles/f746_rossler_m2sfrk_fixed.dir/src/syscalls.c.obj
+[3/19] Building C object platform/f746/CMakeFiles/f746_rossler_m2sfrk_fixed.dir/__/__/generated/fc_rossler_m2sfrk.c.obj
+[4/19] Building C object platform/f746/CMakeFiles/f746_rossler_m2sfrk_fixed.dir/src/stm32f7xx_hal_msp.c.obj
+[5/19] Building C object platform/f746/CMakeFiles/f746_rossler_m2sfrk_fixed.dir/src/stm32f7xx_it.c.obj
+[6/19] Building C object platform/f746/CMakeFiles/f746_rossler_m2sfrk_fixed.dir/__/__/transport/fc_protocol.c.obj
+[7/19] Building C object platform/f746/CMakeFiles/f746_rossler_m2sfrk_fixed.dir/src/main.c.obj
+[8/19] Building C object platform/f746/CMakeFiles/f746_rossler_m2sfrk_fixed.dir/C_/Users/moren/Desktop/Codes/STM32/Lorenz_efork/Core/Src/system_stm32f7xx.c.obj
+[9/19] Building C object platform/f746/CMakeFiles/f746_rossler_m2sfrk_fixed.dir/__/__/common/fractional_chaos.c.obj
+[10/19] Building C object platform/f746/CMakeFiles/f746_rossler_m2sfrk_fixed.dir/__/__/common/fractional_chaos_fixed.c.obj
+[11/19] Building C object platform/f746/CMakeFiles/f746_rossler_m2sfrk_fixed.dir/C_/Users/moren/Desktop/Codes/STM32/Lorenz_efork/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.c.obj
+[12/19] Building C object platform/f746/CMakeFiles/f746_rossler_m2sfrk_fixed.dir/d10c05f57ffeed7a536e4923a8a8e895/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_pwr_ex.c.obj
+[13/19] Building C object platform/f746/CMakeFiles/f746_rossler_m2sfrk_fixed.dir/d10c05f57ffeed7a536e4923a8a8e895/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_gpio.c.obj
+[14/19] Building C object platform/f746/CMakeFiles/f746_rossler_m2sfrk_fixed.dir/d10c05f57ffeed7a536e4923a8a8e895/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dma.c.obj
+[15/19] Building C object platform/f746/CMakeFiles/f746_rossler_m2sfrk_fixed.dir/d10c05f57ffeed7a536e4923a8a8e895/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.c.obj
+[16/19] Building C object platform/f746/CMakeFiles/f746_rossler_m2sfrk_fixed.dir/d10c05f57ffeed7a536e4923a8a8e895/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc_ex.c.obj
+[17/19] Building C object platform/f746/CMakeFiles/f746_rossler_m2sfrk_fixed.dir/d10c05f57ffeed7a536e4923a8a8e895/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc.c.obj
+[18/19] Building C object platform/f746/CMakeFiles/f746_rossler_m2sfrk_fixed.dir/d10c05f57ffeed7a536e4923a8a8e895/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.c.obj
+[19/19] Linking C executable f746_rossler_m2sfrk_fixed.elf; Generating f746_rossler_m2sfrk_fixed HEX and BIN images
+Memory region         Used Size  Region Size  %age Used
+           FLASH:       27624 B         1 MB      2.63%
+         DTCMRAM:         288 B        64 KB      0.44%
+           SRAM1:      200480 B       240 KB     81.58%
+           SRAM2:          64 B        16 KB      0.39%
+Build de campaÃ±a listo: C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\build\campaign\f746\dense-12000-decim-1-release [f746_rossler_m2sfrk_fixed].
