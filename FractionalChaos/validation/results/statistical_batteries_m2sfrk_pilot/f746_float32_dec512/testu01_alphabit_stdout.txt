@@ -292,7 +292,7 @@ p-value of test                       :    0.13
 
 
 -----------------------------------------------
-CPU time used                    :  00:00:00.01
+CPU time used                    :  00:00:00.00
 
 Generator state:
  1062592  bits have been read.
@@ -368,7 +368,7 @@ Generator state:
  File:             C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\hardware_smoke\f746_lorenz_m2sfrk_float32_dec512_1mbit_evidence\f746_lorenz_m2sfrk_fixed-point_lsb.bin
  Number of bits:   1062592
  Number of statistics:  17
- Total CPU time:   00:00:00.01
+ Total CPU time:   00:00:00.00
 
  All tests were passed
 

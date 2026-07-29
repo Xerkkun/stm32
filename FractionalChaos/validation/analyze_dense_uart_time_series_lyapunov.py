@@ -164,6 +164,30 @@ def sha256_signal(values: np.ndarray) -> str:
     return hashlib.sha256(normalized.tobytes(order="C")).hexdigest()
 
 
+def sha256_sequence_state_bits(
+    sequences: np.ndarray,
+    state_bits: np.ndarray,
+) -> str:
+    """Hash all sequence/x/y/z state words with an explicit little-endian ABI."""
+
+    normalized_sequences = np.asarray(sequences, dtype="<u8")
+    normalized_state_bits = np.asarray(state_bits, dtype="<u4")
+    if normalized_sequences.shape != (EXPECTED_FRAMES,):
+        raise DenseLyapunovError(
+            "state-word hash requires exactly "
+            f"{EXPECTED_FRAMES} sequence values"
+        )
+    if normalized_state_bits.shape != (EXPECTED_FRAMES, 3):
+        raise DenseLyapunovError(
+            "state-word hash requires exactly "
+            f"{EXPECTED_FRAMES} x/y/z word triples"
+        )
+    digest = hashlib.sha256()
+    digest.update(normalized_sequences.tobytes(order="C"))
+    digest.update(normalized_state_bits.tobytes(order="C"))
+    return digest.hexdigest()
+
+
 def display_path(path: Path) -> str:
     resolved = path.resolve()
     try:
@@ -218,6 +242,20 @@ def _parse_float(row: Mapping[str, str], key: str, path: Path) -> float:
         ) from exc
     if not math.isfinite(value):
         raise DenseLyapunovError(f"{path}: non-finite field {key!r}")
+    return value
+
+
+def _parse_u32_word(row: Mapping[str, str], key: str, path: Path) -> int:
+    try:
+        value = int(row[key], 0)
+    except (KeyError, TypeError, ValueError) as exc:
+        raise DenseLyapunovError(
+            f"{path}: invalid uint32 word field {key!r}"
+        ) from exc
+    if not 0 <= value <= 0xFFFFFFFF:
+        raise DenseLyapunovError(
+            f"{path}: uint32 word field {key!r} is out of range"
+        )
     return value
 
 
@@ -452,7 +490,10 @@ def _validate_run_contract(
     return csv_path, raw_path
 
 
-def _load_dense_csv(case: DenseCase, path: Path) -> tuple[np.ndarray, np.ndarray]:
+def _load_dense_csv(
+    case: DenseCase,
+    path: Path,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     required = {
         "kind",
         "board",
@@ -463,9 +504,13 @@ def _load_dense_csv(case: DenseCase, path: Path) -> tuple[np.ndarray, np.ndarray
         "dropped",
         "sequence",
         OBSERVABLE,
+        "x_bits",
+        "y_bits",
+        "z_bits",
     }
     sequences: list[int] = []
     signal: list[float] = []
+    state_bits: list[tuple[int, int, int]] = []
     try:
         stream = path.open("r", encoding="utf-8", newline="")
     except OSError as exc:
@@ -492,6 +537,13 @@ def _load_dense_csv(case: DenseCase, path: Path) -> tuple[np.ndarray, np.ndarray
             _require(sequence, row_index, "sequence", path)
             sequences.append(sequence)
             signal.append(_parse_float(row, OBSERVABLE, path))
+            state_bits.append(
+                (
+                    _parse_u32_word(row, "x_bits", path),
+                    _parse_u32_word(row, "y_bits", path),
+                    _parse_u32_word(row, "z_bits", path),
+                )
+            )
 
     if len(signal) != EXPECTED_FRAMES:
         raise DenseLyapunovError(
@@ -507,7 +559,11 @@ def _load_dense_csv(case: DenseCase, path: Path) -> tuple[np.ndarray, np.ndarray
         raise DenseLyapunovError(
             f"{path}: sequence must be exactly 1..{EXPECTED_LAST_SEQUENCE}"
         )
-    return sequence_array, np.asarray(signal, dtype=float)
+    return (
+        sequence_array,
+        np.asarray(signal, dtype=float),
+        np.asarray(state_bits, dtype="<u4"),
+    )
 
 
 def load_dense_capture(
@@ -518,7 +574,7 @@ def load_dense_capture(
     """Validate one run manifest, its hashes, and its exact UART CSV."""
 
     csv_path, raw_path = _validate_run_contract(case, run_path, payload)
-    sequences, signal = _load_dense_csv(case, csv_path)
+    sequences, signal, state_bits = _load_dense_csv(case, csv_path)
     source = payload.get("source", {})
     return {
         "case": case,
@@ -536,6 +592,11 @@ def load_dense_capture(
         "manifest_sha256": payload.get("manifest_sha256"),
         "sequences": sequences,
         "signal": signal,
+        "state_bits": state_bits,
+        "sequence_state_bits_sha256": sha256_sequence_state_bits(
+            sequences,
+            state_bits,
+        ),
     }
 
 
@@ -544,6 +605,43 @@ def load_dense_campaign(campaign_root: Path) -> list[dict[str, Any]]:
         load_dense_capture(case, run_path, payload)
         for case, run_path, payload in discover_dense_runs(campaign_root)
     ]
+
+
+def _validate_full_cross_board_state_identity(
+    captures: Sequence[dict[str, Any]],
+) -> None:
+    """Require all 12,000 sequence/x/y/z words to match across boards."""
+
+    for representation in ("float32", "fixed_q14_q30"):
+        group = [
+            capture
+            for capture in captures
+            if capture["case"].run_representation == representation
+        ]
+        if len(group) != 2 or {
+            capture["case"].board for capture in group
+        } != {"f746", "h755"}:
+            raise DenseLyapunovError(
+                "expected exactly F746 and H755 captures for "
+                f"{representation}"
+            )
+        first, second = group
+        if not np.array_equal(first["sequences"], second["sequences"]):
+            raise DenseLyapunovError(
+                f"F746 and H755 full sequences differ for {representation}"
+            )
+        if not np.array_equal(first["state_bits"], second["state_bits"]):
+            raise DenseLyapunovError(
+                "F746 and H755 full 12000-sample x_bits/y_bits/z_bits "
+                f"captures differ for {representation}"
+            )
+        if (
+            first["sequence_state_bits_sha256"]
+            != second["sequence_state_bits_sha256"]
+        ):
+            raise DenseLyapunovError(
+                f"cross-board state-word hash mismatch for {representation}"
+            )
 
 
 def load_hidden_api(
@@ -716,6 +814,7 @@ def analyze_campaign(
     """Validate all captures and evaluate the frozen three-protocol design."""
 
     captures = load_dense_campaign(campaign_root)
+    _validate_full_cross_board_state_identity(captures)
     cases: list[dict[str, Any]] = []
     for case_index, capture in enumerate(captures):
         case: DenseCase = capture["case"]
@@ -801,6 +900,10 @@ def analyze_campaign(
                 "capture_raw": display_path(capture["raw_path"]),
                 "capture_raw_sha256": capture["raw_sha256"],
                 "capture_raw_bytes": capture["raw_bytes"],
+                "capture_state_word_samples": EXPECTED_FRAMES,
+                "capture_sequence_xyz_bits_sha256_le": capture[
+                    "sequence_state_bits_sha256"
+                ],
                 "capture_manifest_sha256": capture["manifest_sha256"],
                 "firmware_source_commit": capture["source_commit"],
                 "firmware_source_dirty": capture["source_dirty"],
@@ -1028,76 +1131,193 @@ def save_summary_markdown(
     path.write_text("\n".join(lines), encoding="utf-8")
 
 
+def _unique_cross_board_signal_cases(
+    cases: Sequence[dict[str, Any]],
+    *,
+    representation_order: Sequence[str] = ("float32", "fixed_q14_q30"),
+) -> list[dict[str, Any]]:
+    """Return one representative case per bit-identical arithmetic signal.
+
+    The physical campaign contains one capture per board and representation,
+    but F746 and H755 reproduce the same retained signal bit for bit within
+    each arithmetic lane.  The editorial comparison must not plot those board
+    copies as if they were four independent dynamical estimates.
+    """
+
+    unique_cases: list[dict[str, Any]] = []
+    for representation in representation_order:
+        group = [
+            case
+            for case in cases
+            if case["representation"] == representation
+        ]
+        if len(group) != 2 or {case["board"] for case in group} != {
+            "f746",
+            "h755",
+        }:
+            raise DenseLyapunovError(
+                "expected exactly F746 and H755 cases for "
+                f"{representation}, got "
+                f"{[(case['board'], case['representation']) for case in group]}"
+            )
+        if any(
+            len(case["evaluations"]) != len(PROTOCOLS)
+            for case in group
+        ):
+            raise DenseLyapunovError(
+                f"incomplete protocol evaluations for {representation}"
+            )
+        state_word_sample_counts = {
+            int(case["capture_state_word_samples"]) for case in group
+        }
+        full_state_hashes = {
+            case["capture_sequence_xyz_bits_sha256_le"] for case in group
+        }
+        if state_word_sample_counts != {EXPECTED_FRAMES}:
+            raise DenseLyapunovError(
+                "cross-board state comparison does not contain exactly "
+                f"{EXPECTED_FRAMES} samples for {representation}"
+            )
+        if len(full_state_hashes) != 1:
+            raise DenseLyapunovError(
+                "F746 and H755 full 12000-sample x_bits/y_bits/z_bits "
+                f"captures are not identical for {representation}"
+            )
+
+        for protocol_index, protocol in enumerate(PROTOCOLS):
+            evaluations = [
+                case["evaluations"][protocol_index] for case in group
+            ]
+            analysis_ids = {
+                evaluation["analysis_id"] for evaluation in evaluations
+            }
+            signal_hashes = {
+                evaluation["signal_sha256_float64_le"]
+                for evaluation in evaluations
+            }
+            if analysis_ids != {protocol["analysis_id"]}:
+                raise DenseLyapunovError(
+                    f"protocol mismatch for {representation}: {analysis_ids}"
+                )
+            if len(signal_hashes) != 1:
+                raise DenseLyapunovError(
+                    "F746 and H755 signals are not bit-identical for "
+                    f"{representation} / {protocol['analysis_id']}"
+                )
+
+            first, second = evaluations
+            scalar_fields = (
+                "largest_exponent",
+                "kaplan_yorke_dimension",
+            )
+            if any(
+                float(first[field]) != float(second[field])
+                for field in scalar_fields
+            ) or not np.array_equal(
+                np.asarray(first["spectrum"], dtype=float),
+                np.asarray(second["spectrum"], dtype=float),
+            ):
+                raise DenseLyapunovError(
+                    "cross-board diagnostic mismatch for "
+                    f"{representation} / {protocol['analysis_id']}"
+                )
+        unique_cases.append(group[0])
+
+    return unique_cases
+
+
 def save_spectrum_figure(
     cases: Sequence[dict[str, Any]],
     path: Path,
 ) -> None:
-    labels = [
-        f"{case['board'].upper()} "
-        f"{'float32' if case['representation'] == 'float32' else 'Q14/Q30'}"
-        for case in cases
-    ]
-    colors = ("#0072B2", "#E69F00", "#009E73", "#CC79A7")
-    fig, axes = plt.subplots(1, 4, figsize=(14.0, 4.3))
-    exponent_index = np.arange(1, 6)
-    for protocol_index, protocol in enumerate(PROTOCOLS):
-        axis = axes[protocol_index]
-        for case_index, case in enumerate(cases):
-            evaluation = case["evaluations"][protocol_index]
-            axis.plot(
-                exponent_index,
-                evaluation["spectrum"],
-                "o-",
-                color=colors[case_index],
-                linewidth=1.0,
-                markersize=4,
-                label=labels[case_index],
-            )
-        axis.axhline(0.0, color="black", linewidth=0.7)
-        axis.set_xticks(exponent_index)
-        axis.set_xlabel("ordered exponent index")
-        axis.set_ylabel(r"$\lambda_i$ [model time$^{-1}$]")
-        axis.set_title(protocol["analysis_id"].replace("_", " "))
+    """Save the compact paper comparison; full spectra remain in CSV/JSON."""
 
+    unique_cases = _unique_cross_board_signal_cases(cases)
     x_positions = np.arange(len(PROTOCOLS), dtype=float)
-    for case_index, case in enumerate(cases):
-        dimensions = [
-            float(evaluation["kaplan_yorke_dimension"])
-            for evaluation in case["evaluations"]
-        ]
-        axes[3].plot(
-            x_positions,
-            dimensions,
-            "o-",
-            color=colors[case_index],
-            linewidth=1.0,
-            markersize=4,
-            label=labels[case_index],
-        )
-    axes[3].set_xticks(
-        x_positions,
-        ("window 1", "window 2", "sensitivity"),
-        rotation=20,
-        ha="right",
+    tick_labels = ("Window 1", "Window 2", "Sensitivity")
+    styles = (
+        {
+            "label": "float32",
+            "color": "#0072B2",
+            "marker": "o",
+        },
+        {
+            "label": "Q14/Q30",
+            "color": "#D55E00",
+            "marker": "s",
+        },
     )
-    axes[3].set_ylim(0.0, 5.15)
-    axes[3].set_ylabel(r"exploratory Kaplan–Yorke $D_{KY}$")
-    axes[3].set_title("Kaplan–Yorke comparison")
+    metrics = (
+        {
+            "title": "(a) Rosenstein largest exponent",
+            "ylabel": r"LLE [model time$^{-1}$]",
+            "extract": lambda evaluation: float(
+                evaluation["largest_exponent"]
+            ),
+            "zero_line": True,
+        },
+        {
+            "title": r"(b) Eckmann first component",
+            "ylabel": r"$\lambda_1$ [model time$^{-1}$]",
+            "extract": lambda evaluation: float(evaluation["spectrum"][0]),
+            "zero_line": True,
+        },
+        {
+            "title": r"(c) Kaplan--Yorke dimension",
+            "ylabel": r"Exploratory $D_{KY}$",
+            "extract": lambda evaluation: float(
+                evaluation["kaplan_yorke_dimension"]
+            ),
+            "zero_line": False,
+        },
+    )
 
-    handles, legend_labels = axes[0].get_legend_handles_labels()
+    fig, axes = plt.subplots(1, 3, figsize=(10.8, 3.8), squeeze=False)
+    for axis, metric in zip(axes[0], metrics, strict=True):
+        for case, style in zip(unique_cases, styles, strict=True):
+            values = [
+                metric["extract"](evaluation)
+                for evaluation in case["evaluations"]
+            ]
+            axis.plot(
+                x_positions,
+                values,
+                color=style["color"],
+                marker=style["marker"],
+                linewidth=1.7,
+                markersize=5.5,
+                label=style["label"],
+            )
+        if metric["zero_line"]:
+            axis.axhline(0.0, color="black", linewidth=0.7, alpha=0.7)
+        axis.set_xticks(x_positions, tick_labels)
+        axis.set_ylabel(metric["ylabel"])
+        axis.set_title(metric["title"])
+        axis.grid(axis="y", alpha=0.22)
+        axis.margins(x=0.08, y=0.16)
+
+    handles, legend_labels = axes[0, 0].get_legend_handles_labels()
     fig.legend(
         handles,
         legend_labels,
         loc="upper center",
-        bbox_to_anchor=(0.5, 0.925),
-        ncols=4,
+        bbox_to_anchor=(0.5, 0.88),
+        ncols=2,
         frameon=False,
     )
     fig.suptitle(
-        "Dense UART scalar-reconstruction spectra and Kaplan–Yorke diagnostics",
+        "Dense UART finite-time scalar diagnostics",
         y=0.99,
     )
-    fig.tight_layout(rect=(0.0, 0.0, 1.0, 0.82))
+    fig.text(
+        0.5,
+        0.025,
+        "F746 and H755 are bit-identical within each arithmetic lane.",
+        ha="center",
+        fontsize=8,
+        color="#444444",
+    )
+    fig.tight_layout(rect=(0.0, 0.09, 1.0, 0.78), w_pad=1.6)
     fig.savefig(path, dpi=220, bbox_inches="tight")
     plt.close(fig)
 

@@ -221,3 +221,9 @@ def test_flagged_capture_is_ineligible(
         "interpolation": False,
         "resampling": False,
     }
+    assert metadata["outputs"]["dynamics_plot_style"] == {
+        "color": "#1F4E79",
+        "time_series_line_width_points": 1.15,
+        "attractor_point_area_points_squared": 2.4,
+        "attractor_point_alpha": 0.52,
+    }

@@ -41,7 +41,7 @@ p-value of test                       :    0.78
 
 
 -----------------------------------------------
-CPU time used                    :  00:00:00.01
+CPU time used                    :  00:00:00.00
 
 Generator state:
  1052736  bits have been read.
@@ -206,7 +206,7 @@ Chi-square statistic                  :  176.09
 p-value of test                       :    0.51
 
 -----------------------------------------------
-CPU time used                    :  00:00:00.00
+CPU time used                    :  00:00:00.01
 
 Generator state:
  1052736  bits have been read.

@@ -21,6 +21,9 @@ import run_physical_campaign as campaign  # noqa: E402
 
 
 DENSE_MANIFEST = ROOT / "validation" / "dense_uart_capture_manifest.json"
+OTHER_SYSTEMS_DENSE_MANIFEST = (
+    ROOT / "validation" / "dense_uart_rossler_chen_capture_manifest.json"
+)
 DENSE_CELLS = {
     "lorenz_m2sfrk_f746_float32",
     "lorenz_m2sfrk_f746_fixed",
@@ -93,6 +96,28 @@ def test_dense_manifest_is_derived_and_scopes_exactly_four_cells() -> None:
     assert campaign.pilot_run_id(
         dense_run, "dense_timeseries_pilot"
     ).endswith("__dense-timeseries-pilot")
+
+
+def test_other_systems_dense_manifest_scopes_rossler_and_chen() -> None:
+    manifest, digest = campaign.load_manifest(OTHER_SYSTEMS_DENSE_MANIFEST)
+    schedule = campaign.generate_schedule(manifest, digest)
+    campaign.validate_schedule(schedule, manifest)
+    dense_cells = set(manifest["dense_capture_cells"])
+
+    assert manifest["campaign_id"] == (
+        "stm32_dense_rossler_chen_m2sfrk_f746_v1"
+    )
+    assert dense_cells == {
+        "rossler_m2sfrk_f746_float32",
+        "rossler_m2sfrk_f746_fixed",
+        "chen_m2sfrk_f746_float32",
+        "chen_m2sfrk_f746_fixed",
+    }
+    assert {
+        row["system"]
+        for row in schedule
+        if row["cell_id"] in dense_cells
+    } == {"rossler", "chen"}
 
 
 def test_dense_build_profile_is_dedicated_and_enables_buffering() -> None:

@@ -251,16 +251,27 @@ def validate_manifest(manifest: dict[str, Any]) -> None:
             or dense_pilot.get("eligible_as_primary_benchmark") is not False
         ):
             raise CampaignError("contrato dense_timeseries_pilot inválido")
-        require_exact_set(
-            manifest.get("dense_capture_cells", []),
-            {
-                "lorenz_m2sfrk_f746_float32",
-                "lorenz_m2sfrk_f746_fixed",
-                "lorenz_m2sfrk_h755_float32",
-                "lorenz_m2sfrk_h755_fixed",
-            },
-            "dense_capture_cells",
-        )
+        dense_cells = manifest.get("dense_capture_cells")
+        if not isinstance(dense_cells, list) or not dense_cells:
+            raise CampaignError(
+                "dense_capture_cells debe contener al menos una celda"
+            )
+        if (
+            any(not isinstance(cell_id, str) for cell_id in dense_cells)
+            or len(set(dense_cells)) != len(dense_cells)
+        ):
+            raise CampaignError(
+                "dense_capture_cells debe contener identificadores únicos"
+            )
+        known_cell_ids = {
+            cell["cell_id"] for cell in matrix_cells(manifest)
+        }
+        unknown_dense_cells = sorted(set(dense_cells) - known_cell_ids)
+        if unknown_dense_cells:
+            raise CampaignError(
+                "dense_capture_cells contiene celdas inexistentes: "
+                + ", ".join(unknown_dense_cells)
+            )
         build = manifest.get("build", {})
         if (
             build.get("dense_buffered_capture_samples") != 12_000

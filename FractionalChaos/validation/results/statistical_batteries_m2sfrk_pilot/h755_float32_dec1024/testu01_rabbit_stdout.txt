@@ -188,7 +188,7 @@ Normal statistic                      :    0.22
 p-value of test                       :    0.41
 
 -----------------------------------------------
-CPU time used                    :  00:00:00.00
+CPU time used                    :  00:00:00.01
 
 Generator state:
  1048576  bits have been read.
@@ -212,7 +212,7 @@ Normal statistic                      :    1.83
 p-value of test                       :    0.03
 
 -----------------------------------------------
-CPU time used                    :  00:00:00.12
+CPU time used                    :  00:00:00.10
 
 Generator state:
  1048576  bits have been read.
@@ -504,7 +504,7 @@ Normal statistic                      :    0.50
 p-value of test                       :    0.31
 
 -----------------------------------------------
-CPU time used                    :  00:00:00.00
+CPU time used                    :  00:00:00.01
 
 Generator state:
  1052704  bits have been read.
@@ -589,7 +589,7 @@ Chi-square statistic                  :    5.72
 p-value of test                       :    0.06
 
 -----------------------------------------------
-CPU time used                    :  00:00:00.01
+CPU time used                    :  00:00:00.00
 
 Generator state:
  1052672  bits have been read.

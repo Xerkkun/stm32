@@ -37,10 +37,17 @@ def _write_csv(path: Path, case: Any) -> None:
         "dropped",
         "sequence",
         "x",
+        "x_bits",
+        "y_bits",
+        "z_bits",
     )
-    board_offset = 0.2 if case.board == "h755" else 0.0
     representation_offset = (
         0.1 if case.run_representation == "fixed_q14_q30" else 0.0
+    )
+    representation_word_offset = (
+        0x10000000
+        if case.run_representation == "fixed_q14_q30"
+        else 0
     )
     with path.open("w", encoding="utf-8", newline="") as stream:
         writer = csv.DictWriter(stream, fieldnames=fields)
@@ -59,8 +66,16 @@ def _write_csv(path: Path, case: Any) -> None:
                     "x": (
                         np.sin(sequence * 0.01)
                         + 0.2 * np.sin(sequence * 0.031)
-                        + board_offset
                         + representation_offset
+                    ),
+                    "x_bits": (
+                        f"0x{sequence + representation_word_offset:08X}"
+                    ),
+                    "y_bits": (
+                        f"0x{sequence * 3 + representation_word_offset:08X}"
+                    ),
+                    "z_bits": (
+                        f"0x{sequence * 7 + representation_word_offset:08X}"
                     ),
                 }
             )
@@ -239,11 +254,33 @@ def test_load_dense_campaign_enforces_exact_native_sequences(
         assert capture["sequences"][0] == 1
         assert capture["sequences"][-1] == 12_000
         assert np.all(np.diff(capture["sequences"]) == 1)
+        assert capture["state_bits"].shape == (12_000, 3)
+        assert len(capture["sequence_state_bits_sha256"]) == 64
         first_sequences, first_signal = module._window(capture, 0)
         second_sequences, second_signal = module._window(capture, 1)
         assert (first_sequences[0], first_sequences[-1]) == (2001, 6096)
         assert (second_sequences[0], second_sequences[-1]) == (6097, 10192)
         assert first_signal.size == second_signal.size == 4096
+
+
+def test_full_cross_board_state_identity_checks_all_xyz_words(
+    valid_campaign: Path,
+) -> None:
+    captures = module.load_dense_campaign(valid_campaign)
+    h755_float = next(
+        capture
+        for capture in captures
+        if capture["case"].board == "h755"
+        and capture["case"].run_representation == "float32"
+    )
+    h755_float["state_bits"] = h755_float["state_bits"].copy()
+    h755_float["state_bits"][11_999, 2] ^= np.uint32(1)
+
+    with pytest.raises(
+        module.DenseLyapunovError,
+        match="full 12000-sample",
+    ):
+        module._validate_full_cross_board_state_identity(captures)
 
 
 def test_analyze_campaign_freezes_protocol_and_writes_all_artifacts(
@@ -255,8 +292,15 @@ def test_analyze_campaign_freezes_protocol_and_writes_all_artifacts(
 
     assert len(cases) == 4
     assert len(estimator.calls) == 12
+    unique_cases = module._unique_cross_board_signal_cases(cases)
+    assert [
+        case["representation"] for case in unique_cases
+    ] == ["float32", "fixed_q14_q30"]
+    assert [case["board"] for case in unique_cases] == ["f746", "f746"]
     for case in cases:
         assert len(case["evaluations"]) == 3
+        assert case["capture_state_word_samples"] == 12_000
+        assert len(case["capture_sequence_xyz_bits_sha256_le"]) == 64
         assert [
             evaluation["analysis_id"] for evaluation in case["evaluations"]
         ] == [
@@ -319,6 +363,25 @@ def test_analyze_campaign_freezes_protocol_and_writes_all_artifacts(
         rows = list(csv.DictReader(stream))
     assert len(rows) == 12
     assert all(row["lambda_5"] for row in rows)
+
+
+def test_editorial_comparison_rejects_cross_board_state_word_mismatch(
+    valid_campaign: Path,
+) -> None:
+    cases = module.analyze_campaign(valid_campaign, RecordingEstimator())
+    h755_float = next(
+        case
+        for case in cases
+        if case["board"] == "h755"
+        and case["representation"] == "float32"
+    )
+    h755_float["capture_sequence_xyz_bits_sha256_le"] = "0" * 64
+
+    with pytest.raises(
+        module.DenseLyapunovError,
+        match="full 12000-sample",
+    ):
+        module._unique_cross_board_signal_cases(cases)
 
 
 def test_discovery_rejects_anything_other_than_four_dense_runs(

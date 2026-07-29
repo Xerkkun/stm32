@@ -20,6 +20,13 @@ import numpy as np  # noqa: E402
 VARIABLES = ("x", "y", "z")
 BIT_RASTER_WIDTH = 512
 BIT_RASTER_MAX_HEIGHT_INCHES = 5.5
+# These defaults are sized for figures reduced to roughly half a journal page.
+# Keeping them as public module constants also lets downstream report builders
+# reuse the same visual contract without editing generated PNG files.
+DYNAMICS_COLOR = "#1F4E79"
+TIME_SERIES_LINE_WIDTH = 1.15
+ATTRACTOR_POINT_SIZE = 2.4
+ATTRACTOR_POINT_ALPHA = 0.52
 STATUS_FLAGS = (
     (0x01, "nonfinite"),
     (0x02, "queue"),
@@ -196,6 +203,7 @@ def save_time_series(
     *,
     maximum_samples: int,
     sample_interval: float | None = None,
+    line_width: float = TIME_SERIES_LINE_WIDTH,
 ) -> None:
     sample_count = min(maximum_samples, int(arrays["sequence"].size))
     window = slice(0, sample_count)
@@ -217,7 +225,9 @@ def save_time_series(
         axis.plot(
             horizontal,
             arrays[variable][window],
-            linewidth=0.65,
+            color=DYNAMICS_COLOR,
+            linewidth=line_width,
+            solid_capstyle="round",
         )
         axis.set_ylabel(variable)
         axis.grid(alpha=0.2)
@@ -233,6 +243,9 @@ def save_time_series(
 def save_attractor(
     arrays: dict[str, np.ndarray],
     output: Path,
+    *,
+    point_size: float = ATTRACTOR_POINT_SIZE,
+    point_alpha: float = ATTRACTOR_POINT_ALPHA,
 ) -> None:
     pairs = (("x", "y"), ("x", "z"), ("y", "z"))
     figure, axes = plt.subplots(1, 3, figsize=(12, 4))
@@ -240,8 +253,9 @@ def save_attractor(
         axis.scatter(
             arrays[horizontal],
             arrays[vertical],
-            s=0.7,
-            alpha=0.35,
+            color=DYNAMICS_COLOR,
+            s=point_size,
+            alpha=point_alpha,
             linewidths=0,
             rasterized=True,
         )
@@ -510,6 +524,12 @@ def main() -> int:
                 int(arrays["sequence"].size),
             ),
             "attractor": attractor_path.name,
+            "dynamics_plot_style": {
+                "color": DYNAMICS_COLOR,
+                "time_series_line_width_points": TIME_SERIES_LINE_WIDTH,
+                "attractor_point_area_points_squared": ATTRACTOR_POINT_SIZE,
+                "attractor_point_alpha": ATTRACTOR_POINT_ALPHA,
+            },
             "bitstream": bitstream_path.name,
             "bitstream_sha256": sha256(bitstream_path),
             "bit_count": bit_count,

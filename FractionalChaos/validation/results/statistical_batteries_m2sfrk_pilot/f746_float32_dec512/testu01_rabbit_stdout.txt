@@ -53,7 +53,7 @@ Total number of cells containing j balls
   j =  5                              :                0
 
 -----------------------------------------------
-CPU time used                    :  00:00:00.26
+CPU time used                    :  00:00:00.28
 
 Generator state:
  1062592  bits have been read.
@@ -164,7 +164,7 @@ p-value of test                       :    0.45
 
 
 -----------------------------------------------
-CPU time used                    :  00:00:00.06
+CPU time used                    :  00:00:00.07
 
 Generator state:
  12032  bits have been read.
@@ -212,7 +212,7 @@ Normal statistic                      :    0.22
 p-value of test                       :    0.41
 
 -----------------------------------------------
-CPU time used                    :  00:00:00.10
+CPU time used                    :  00:00:00.12
 
 Generator state:
  1048576  bits have been read.
@@ -243,7 +243,7 @@ Anderson-Darling statistic = A2       :    0.81
 p-value of test                       :    0.47
 
 -----------------------------------------------
-CPU time used                    :  00:00:00.01
+CPU time used                    :  00:00:00.00
 
 Generator state:
  1062432  bits have been read.
@@ -274,7 +274,7 @@ p-value of test                       :    0.64
 
 
 -----------------------------------------------
-CPU time used                    :  00:00:00.00
+CPU time used                    :  00:00:00.01
 
 Generator state:
  1061760  bits have been read.
@@ -480,7 +480,7 @@ Chi-square statistic                  :  223.15
 p-value of test                       :    0.30
 
 -----------------------------------------------
-CPU time used                    :  00:00:00.01
+CPU time used                    :  00:00:00.00
 
 Generator state:
  1062528  bits have been read.
@@ -650,7 +650,7 @@ p-value of test                       :    0.99
 
 
 -----------------------------------------------
-CPU time used                    :  00:00:00.00
+CPU time used                    :  00:00:00.01
 
 Generator state:
  1062528  bits have been read.
@@ -772,7 +772,7 @@ p-value of test                       :    0.34
 
 
 -----------------------------------------------
-CPU time used                    :  00:00:00.01
+CPU time used                    :  00:00:00.00
 
 Generator state:
  1061696  bits have been read.
@@ -787,7 +787,7 @@ Generator state:
  File:             C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\hardware_smoke\f746_lorenz_m2sfrk_float32_dec512_1mbit_evidence\f746_lorenz_m2sfrk_fixed-point_lsb.bin
  Number of bits:   1062592
  Number of statistics:  38
- Total CPU time:   00:00:00.50
+ Total CPU time:   00:00:00.53
 
  All tests were passed
 

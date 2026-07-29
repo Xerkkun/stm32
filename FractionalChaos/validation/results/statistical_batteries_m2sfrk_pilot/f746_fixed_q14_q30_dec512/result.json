@@ -115,7 +115,7 @@
         "completed": true,
         "return_code": 1,
         "known_success_return_code": 1,
-        "elapsed_seconds": 2.2190709999995306,
+        "elapsed_seconds": 3.2940476999938255,
         "command": [
           "assess.exe",
           "1042944"
@@ -1132,7 +1132,7 @@
           "bytes": 0
         },
         "nist_sp800_22_final_analysis_report.txt": {
-          "sha256": "a8b3b6fa9c98f2e8548d04017553e34d2fd1b81354cc06632f5c0692dc33895d",
+          "sha256": "731d8fff1d02037fdef47061326d8a4dd7947e306666970bd1b857bc6d48e270",
           "bytes": 17629
         },
         "nist_sp800_22_detailed_results.txt": {
@@ -1147,7 +1147,7 @@
       "execution": {
         "completed": true,
         "return_code": 0,
-        "elapsed_seconds": 0.1693061999976635,
+        "elapsed_seconds": 0.15088339999783784,
         "command": [
           "RNG_test.exe",
           "stdin8",
@@ -1491,7 +1491,7 @@
       "execution": {
         "completed": true,
         "battery_invocations_completed": 2,
-        "elapsed_seconds": 0.46091350000642706,
+        "elapsed_seconds": 0.45475759998953436,
         "finite_file_adapter": "testu01_file_batteries_v1"
       },
       "eligibility": {
@@ -1514,7 +1514,7 @@
             "execution": {
               "completed": true,
               "return_code": 0,
-              "elapsed_seconds": 0.42877120000775903,
+              "elapsed_seconds": 0.4317109999974491,
               "command": [
                 "testu01_file_batteries.exe",
                 "rabbit",
@@ -1531,14 +1531,14 @@
               "reported_statistics": 38,
               "tool_reported_all_tests_passed": true,
               "tool_reported_conclusion": "all_tests_passed",
-              "summary_text": "========= Summary results of Rabbit =========\n\nVersion:          TestU01 1.2.3\n File:             C:\\Users\\moren\\Desktop\\Codes\\STM32\\FractionalChaos\\validation\\results\\hardware_smoke\\f746_lorenz_m2sfrk_fixed_dec512_1mbit_telemetry_evidence\\f746_lorenz_m2sfrk_fixed-raw_lsb.bin\n Number of bits:   1042944\n Number of statistics:  38\n Total CPU time:   00:00:00.40\n\n All tests were passed\n",
+              "summary_text": "========= Summary results of Rabbit =========\n\nVersion:          TestU01 1.2.3\n File:             C:\\Users\\moren\\Desktop\\Codes\\STM32\\FractionalChaos\\validation\\results\\hardware_smoke\\f746_lorenz_m2sfrk_fixed_dec512_1mbit_telemetry_evidence\\f746_lorenz_m2sfrk_fixed-raw_lsb.bin\n Number of bits:   1042944\n Number of statistics:  38\n Total CPU time:   00:00:00.42\n\n All tests were passed\n",
               "omitted_tail_bits": 0,
               "classification": "external_file_battery_output_not_formal_validation",
               "battery_pass": null
             },
             "artifacts": {
               "testu01_rabbit_stdout.txt": {
-                "sha256": "f9774643ea8def036dd316b41117514b28612f91e15ee28567856214b878ea19",
+                "sha256": "4ac832af9178ba3552154aec2ed4dbd625b97206953319cb403b47085ae68e6b",
                 "bytes": 23562
               },
               "testu01_rabbit_stderr.txt": {
@@ -1551,7 +1551,7 @@
             "execution": {
               "completed": true,
               "return_code": 0,
-              "elapsed_seconds": 0.03214229999866802,
+              "elapsed_seconds": 0.023046599992085248,
               "command": [
                 "testu01_file_batteries.exe",
                 "alphabit",
@@ -1568,14 +1568,14 @@
               "reported_statistics": 17,
               "tool_reported_all_tests_passed": true,
               "tool_reported_conclusion": "all_tests_passed",
-              "summary_text": "========= Summary results of Alphabit =========\n\nVersion:          TestU01 1.2.3\n File:             C:\\Users\\moren\\Desktop\\Codes\\STM32\\FractionalChaos\\validation\\results\\hardware_smoke\\f746_lorenz_m2sfrk_fixed_dec512_1mbit_telemetry_evidence\\f746_lorenz_m2sfrk_fixed-raw_lsb.bin\n Number of bits:   1042944\n Number of statistics:  17\n Total CPU time:   00:00:00.00\n\n All tests were passed\n",
+              "summary_text": "========= Summary results of Alphabit =========\n\nVersion:          TestU01 1.2.3\n File:             C:\\Users\\moren\\Desktop\\Codes\\STM32\\FractionalChaos\\validation\\results\\hardware_smoke\\f746_lorenz_m2sfrk_fixed_dec512_1mbit_telemetry_evidence\\f746_lorenz_m2sfrk_fixed-raw_lsb.bin\n Number of bits:   1042944\n Number of statistics:  17\n Total CPU time:   00:00:00.01\n\n All tests were passed\n",
               "omitted_tail_bits": 0,
               "classification": "external_file_battery_output_not_formal_validation",
               "battery_pass": null
             },
             "artifacts": {
               "testu01_alphabit_stdout.txt": {
-                "sha256": "7e2fc0e425b5ca80966a1a17b69bac90079e243fdff7f75b46e93fa204ead3f7",
+                "sha256": "c75c0241ed40d75b88799f769faa56feb64ea0b942ba80e75a4ed256a42bbb9f",
                 "bytes": 11465
               },
               "testu01_alphabit_stderr.txt": {

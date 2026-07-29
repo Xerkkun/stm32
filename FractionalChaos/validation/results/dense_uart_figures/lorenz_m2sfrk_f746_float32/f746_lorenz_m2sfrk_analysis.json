@@ -78,6 +78,12 @@
     "time_series": "f746_lorenz_m2sfrk_time_series.png",
     "time_series_samples_plotted": 2048,
     "attractor": "f746_lorenz_m2sfrk_attractor.png",
+    "dynamics_plot_style": {
+      "color": "#1F4E79",
+      "time_series_line_width_points": 1.15,
+      "attractor_point_area_points_squared": 2.4,
+      "attractor_point_alpha": 0.52
+    },
     "bitstream": "f746_lorenz_m2sfrk_fixed-point_lsb.bin",
     "bitstream_sha256": "d668ec6696962c25446cc2d959e4b4bfa143364f275c02100cec9ba833dfff31",
     "bit_count": 240000,

@@ -57,6 +57,12 @@ PRACTRAND_RESULT = re.compile(
     r"p\s*(?P<relation>~?=)\s*(?P<pvalue>.*?)\s{2,}"
     r"(?P<evaluation>\S.*?)\s*$"
 )
+PRACTRAND_PASS_RESULT = re.compile(
+    r'^\s{2}(?P<name>.+?)\s{2,}'
+    r'R=\s*(?P<raw>.*?)\s{2,}'
+    r'(?P<processed>"pass")\s{2,}'
+    r"(?P<evaluation>\S.*?)\s*$"
+)
 NIST_FINAL_ROW = re.compile(
     r"^\s*(?:\d+\s+){10}"
     r"(?:----|\d+\.\d+)\s+\*?\s*"
@@ -625,6 +631,17 @@ def parse_practrand_output(stdout: str) -> list[dict[str, str]]:
                     "raw_score": match.group("raw").strip(),
                     "p_relation": match.group("relation"),
                     "p_value_text": match.group("pvalue").strip(),
+                    "evaluation": match.group("evaluation").strip(),
+                }
+            )
+            continue
+        match = PRACTRAND_PASS_RESULT.match(line)
+        if match is not None:
+            results.append(
+                {
+                    "test": match.group("name").strip(),
+                    "raw_score": match.group("raw").strip(),
+                    "processed_text": match.group("processed"),
                     "evaluation": match.group("evaluation").strip(),
                 }
             )

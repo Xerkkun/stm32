@@ -115,7 +115,7 @@
         "completed": true,
         "return_code": 1,
         "known_success_return_code": 1,
-        "elapsed_seconds": 2.310191600001417,
+        "elapsed_seconds": 3.1303677999967476,
         "command": [
           "assess.exe",
           "1062600"
@@ -1087,7 +1087,7 @@
           "bytes": 0
         },
         "nist_sp800_22_final_analysis_report.txt": {
-          "sha256": "46b65373ccec5bfdc4168e964d516dfbc8cca94558f9866f29305e80c3047f7d",
+          "sha256": "71ef5b150c272e7b1cf537fd1292b4181e98ca71ea3925e7a5f6b34b79c312e5",
           "bytes": 17629
         },
         "nist_sp800_22_detailed_results.txt": {
@@ -1102,7 +1102,7 @@
       "execution": {
         "completed": true,
         "return_code": 0,
-        "elapsed_seconds": 0.14143479999620467,
+        "elapsed_seconds": 0.15519819999462925,
         "command": [
           "RNG_test.exe",
           "stdin8",
@@ -1133,9 +1133,9 @@
       },
       "result": {
         "classification": "short_prefix_external_test_output",
-        "reported_result_count": 41,
+        "reported_result_count": 42,
         "evaluation_counts": {
-          "normal": 41
+          "normal": 42
         },
         "reported_results": [
           {
@@ -1398,6 +1398,12 @@
             "evaluation": "normal"
           },
           {
+            "test": "[Low1/8]BDayS2(4,24)[18]",
+            "raw_score": "-0.5",
+            "processed_text": "\"pass\"",
+            "evaluation": "normal"
+          },
+          {
             "test": "[Low1/8]BRank(12):score:64(1)",
             "raw_score": "-0.7",
             "p_relation": "~=",
@@ -1445,7 +1451,7 @@
       "execution": {
         "completed": true,
         "battery_invocations_completed": 2,
-        "elapsed_seconds": 0.5528221999993548,
+        "elapsed_seconds": 0.5751899000024423,
         "finite_file_adapter": "testu01_file_batteries_v1"
       },
       "eligibility": {
@@ -1468,7 +1474,7 @@
             "execution": {
               "completed": true,
               "return_code": 0,
-              "elapsed_seconds": 0.5205889000062598,
+              "elapsed_seconds": 0.5525865999952657,
               "command": [
                 "testu01_file_batteries.exe",
                 "rabbit",
@@ -1485,14 +1491,14 @@
               "reported_statistics": 38,
               "tool_reported_all_tests_passed": true,
               "tool_reported_conclusion": "all_tests_passed",
-              "summary_text": "========= Summary results of Rabbit =========\n\nVersion:          TestU01 1.2.3\n File:             C:\\Users\\moren\\Desktop\\Codes\\STM32\\FractionalChaos\\validation\\results\\hardware_smoke\\f746_lorenz_m2sfrk_float32_dec512_1mbit_evidence\\f746_lorenz_m2sfrk_fixed-point_lsb.bin\n Number of bits:   1062592\n Number of statistics:  38\n Total CPU time:   00:00:00.50\n\n All tests were passed\n",
+              "summary_text": "========= Summary results of Rabbit =========\n\nVersion:          TestU01 1.2.3\n File:             C:\\Users\\moren\\Desktop\\Codes\\STM32\\FractionalChaos\\validation\\results\\hardware_smoke\\f746_lorenz_m2sfrk_float32_dec512_1mbit_evidence\\f746_lorenz_m2sfrk_fixed-point_lsb.bin\n Number of bits:   1062592\n Number of statistics:  38\n Total CPU time:   00:00:00.53\n\n All tests were passed\n",
               "omitted_tail_bits": 8,
               "classification": "external_file_battery_output_not_formal_validation",
               "battery_pass": null
             },
             "artifacts": {
               "testu01_rabbit_stdout.txt": {
-                "sha256": "29652a952eaf90c352e0ce3f38df666495c8b69327366805db58a0ee9a892d3e",
+                "sha256": "614a6571acb8ae9b450f0d749ed30083972664c7dada2dc2043b50f55c22c63b",
                 "bytes": 23554
               },
               "testu01_rabbit_stderr.txt": {
@@ -1505,7 +1511,7 @@
             "execution": {
               "completed": true,
               "return_code": 0,
-              "elapsed_seconds": 0.03223329999309499,
+              "elapsed_seconds": 0.022603300007176585,
               "command": [
                 "testu01_file_batteries.exe",
                 "alphabit",
@@ -1522,14 +1528,14 @@
               "reported_statistics": 17,
               "tool_reported_all_tests_passed": true,
               "tool_reported_conclusion": "all_tests_passed",
-              "summary_text": "========= Summary results of Alphabit =========\n\nVersion:          TestU01 1.2.3\n File:             C:\\Users\\moren\\Desktop\\Codes\\STM32\\FractionalChaos\\validation\\results\\hardware_smoke\\f746_lorenz_m2sfrk_float32_dec512_1mbit_evidence\\f746_lorenz_m2sfrk_fixed-point_lsb.bin\n Number of bits:   1062592\n Number of statistics:  17\n Total CPU time:   00:00:00.01\n\n All tests were passed\n",
+              "summary_text": "========= Summary results of Alphabit =========\n\nVersion:          TestU01 1.2.3\n File:             C:\\Users\\moren\\Desktop\\Codes\\STM32\\FractionalChaos\\validation\\results\\hardware_smoke\\f746_lorenz_m2sfrk_float32_dec512_1mbit_evidence\\f746_lorenz_m2sfrk_fixed-point_lsb.bin\n Number of bits:   1062592\n Number of statistics:  17\n Total CPU time:   00:00:00.00\n\n All tests were passed\n",
               "omitted_tail_bits": 8,
               "classification": "external_file_battery_output_not_formal_validation",
               "battery_pass": null
             },
             "artifacts": {
               "testu01_alphabit_stdout.txt": {
-                "sha256": "ec1fffece557287a17112b31acb1be3e982af3171943753756c0002fa1682cd4",
+                "sha256": "940bc71caafbbefb7dfe9263aebb7726bc91ad37b9400b34b0830e10635b63b6",
                 "bytes": 11453
               },
               "testu01_alphabit_stderr.txt": {

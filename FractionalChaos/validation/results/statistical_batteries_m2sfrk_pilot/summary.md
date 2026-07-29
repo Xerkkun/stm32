@@ -14,10 +14,10 @@ Este documento separa diagnósticos descriptivos, elegibilidad y salida de bater
 
 | Trama | Bits completos | Fracción de unos | Entropía por byte | NIST p<0.01 | Familias NIST señaladas | NIST no aplicables | Prefijo PractRand | Cola no evaluada | Evaluaciones PractRand |
 |---|---:|---:|---:|---:|---|---|---:|---:|---|
-| f746_float32_dec512 | 1062600 | 0.499732731 | 7.998680296 | 1 | NonOverlappingTemplate | RandomExcursions, RandomExcursionsVariant | 132096 | 729 | normal: 41 |
+| f746_float32_dec512 | 1062600 | 0.499732731 | 7.998680296 | 1 | NonOverlappingTemplate | RandomExcursions, RandomExcursionsVariant | 132096 | 729 | normal: 42 |
 | f746_fixed_q14_q30_dec512 | 1042944 | 0.500907048 | 7.998545434 | 5 | NonOverlappingTemplate, Serial | RandomExcursions, RandomExcursionsVariant | 130048 | 320 | normal: 40, normalish: 1 |
-| h755_float32_dec1024 | 1052760 | 0.500240321 | 7.998639907 | 2 | NonOverlappingTemplate | RandomExcursions, RandomExcursionsVariant | 131072 | 523 | normal: 40, normalish: 1 |
-| h755_fixed_q14_q30_dec512 | 1119120 | 0.500019658 | 7.998730772 | 1 | NonOverlappingTemplate | RandomExcursions, RandomExcursionsVariant | 139264 | 626 | normal: 40, normalish: 1 |
+| h755_float32_dec1024 | 1052760 | 0.500240321 | 7.998639907 | 2 | NonOverlappingTemplate | RandomExcursions, RandomExcursionsVariant | 131072 | 523 | normal: 41, normalish: 1 |
+| h755_fixed_q14_q30_dec512 | 1119120 | 0.500019658 | 7.998730772 | 1 | NonOverlappingTemplate | RandomExcursions, RandomExcursionsVariant | 139264 | 626 | normal: 41, normalish: 1 |
 
 ## TestU01 Rabbit/Alphabit
 

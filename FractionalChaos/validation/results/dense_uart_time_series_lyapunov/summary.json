@@ -1,8 +1,8 @@
 {
   "analysis_script": "validation/analyze_dense_uart_time_series_lyapunov.py",
-  "analysis_script_sha256": "b991a491a48cbb8b5cafe8afdf071384b2c7b3490d85e91c48f8c2c0d252647b",
+  "analysis_script_sha256": "5dddf0c1e451be6845e331086e1df992d4cdf59cf1a919b11fd31191325202f0",
   "analysis_status": "completed_exploratory_diagnostic",
-  "campaign_root": "C:\\Users\\moren\\Desktop\\Codes\\STM32\\FractionalChaos\\validation\\results\\dense_uart_capture",
+  "campaign_root": "C:\\Users\\moren\\Desktop\\Codes\\STM32\\FractionalChaos\\validation\\results\\dense_uart_capture\\stm32_dense_lorenz_m2sfrk_4cells_v1",
   "cases": [
     {
       "board": "f746",
@@ -13,6 +13,8 @@
       "capture_raw": "validation/results/dense_uart_capture/stm32_dense_lorenz_m2sfrk_4cells_v1/runs/stm32_dense_lorenz_m2sfrk_4cells_v1__r01__lorenz_m2sfrk_f746_float32__da628d3c98__dense-timeseries-pilot/capture.bin",
       "capture_raw_bytes": 480000,
       "capture_raw_sha256": "569de6027e31e724ce7a89205b71eac387ad33fb5edc53342ddce2fa0d4ea404",
+      "capture_sequence_xyz_bits_sha256_le": "e5c8c371832aa791e5bbb92f698cda92516329718d698c2fb429a8033b18f597",
+      "capture_state_word_samples": 12000,
       "captured_sequences": [
         1,
         12000
@@ -1196,6 +1198,8 @@
       "capture_raw": "validation/results/dense_uart_capture/stm32_dense_lorenz_m2sfrk_4cells_v1/runs/stm32_dense_lorenz_m2sfrk_4cells_v1__r01__lorenz_m2sfrk_f746_fixed__11cfcb5da0__dense-timeseries-pilot/capture.bin",
       "capture_raw_bytes": 480000,
       "capture_raw_sha256": "be490211b75bf497ca139c70da8e5b0bc669c6b9c5ad0ace03803a78ab8e44cf",
+      "capture_sequence_xyz_bits_sha256_le": "f9befcd1c995ec763e68d0487e20ef9ce701d4f40985a235fb88d8a6bf27df1d",
+      "capture_state_word_samples": 12000,
       "captured_sequences": [
         1,
         12000
@@ -2379,6 +2383,8 @@
       "capture_raw": "validation/results/dense_uart_capture/stm32_dense_lorenz_m2sfrk_4cells_v1/runs/stm32_dense_lorenz_m2sfrk_4cells_v1__r01__lorenz_m2sfrk_h755_float32__18199d4847__dense-timeseries-pilot/capture.bin",
       "capture_raw_bytes": 480000,
       "capture_raw_sha256": "054bc77f34d8b97de322495cfb2ee439878e4e577947724b05fca562082e20a7",
+      "capture_sequence_xyz_bits_sha256_le": "e5c8c371832aa791e5bbb92f698cda92516329718d698c2fb429a8033b18f597",
+      "capture_state_word_samples": 12000,
       "captured_sequences": [
         1,
         12000
@@ -3562,6 +3568,8 @@
       "capture_raw": "validation/results/dense_uart_capture/stm32_dense_lorenz_m2sfrk_4cells_v1/runs/stm32_dense_lorenz_m2sfrk_4cells_v1__r01__lorenz_m2sfrk_h755_fixed__a03d710f4d__dense-timeseries-pilot/capture.bin",
       "capture_raw_bytes": 480000,
       "capture_raw_sha256": "3c9cf146864d73309bcdd5c68bc341da4a611b0d3a1b42605a9b81b6f862832c",
+      "capture_sequence_xyz_bits_sha256_le": "f9befcd1c995ec763e68d0487e20ef9ce701d4f40985a235fb88d8a6bf27df1d",
+      "capture_state_word_samples": 12000,
       "captured_sequences": [
         1,
         12000

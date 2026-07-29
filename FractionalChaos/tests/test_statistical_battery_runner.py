@@ -54,6 +54,7 @@ def test_parse_practrand_preserves_tool_evaluation() -> None:
   BCFN(2+0,13-9U)                   R=  -1.0  p = 0.621     normal
   FPF/16:all                        R=  +4.6  p =  2.5e-3   normalish
   [Low1/8]Gap-16:C                  R=  +0.2  p~= 0.575     normal
+  [Low1/8]BDayS2(4,24)[18]          R=  -0.5    "pass"      normal
 """
     results = MODULE.parse_practrand_output(stdout)
 
@@ -61,10 +62,17 @@ def test_parse_practrand_preserves_tool_evaluation() -> None:
         "BCFN(2+0,13-9U)",
         "FPF/16:all",
         "[Low1/8]Gap-16:C",
+        "[Low1/8]BDayS2(4,24)[18]",
     ]
     assert results[1]["p_value_text"] == "2.5e-3"
     assert results[1]["evaluation"] == "normalish"
     assert results[2]["p_relation"] == "~="
+    assert results[3] == {
+        "test": "[Low1/8]BDayS2(4,24)[18]",
+        "raw_score": "-0.5",
+        "processed_text": '"pass"',
+        "evaluation": "normal",
+    }
 
 
 def test_parse_nist_results_counts_p_values_below_alpha(

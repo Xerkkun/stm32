@@ -115,7 +115,7 @@
         "completed": true,
         "return_code": 1,
         "known_success_return_code": 1,
-        "elapsed_seconds": 2.355639899993548,
+        "elapsed_seconds": 3.281429800001206,
         "command": [
           "assess.exe",
           "1052760"
@@ -1098,7 +1098,7 @@
           "bytes": 0
         },
         "nist_sp800_22_final_analysis_report.txt": {
-          "sha256": "d3d04cbfbe23c9c0bf4c89be98313490a1238f526c3a96224bcf0276c2e41037",
+          "sha256": "35c6b5e478c9c731ad47a5e06368bf127117ac1e855bedf525e6bed6b7564919",
           "bytes": 17629
         },
         "nist_sp800_22_detailed_results.txt": {
@@ -1113,7 +1113,7 @@
       "execution": {
         "completed": true,
         "return_code": 0,
-        "elapsed_seconds": 0.1712759000074584,
+        "elapsed_seconds": 0.14793989999452606,
         "command": [
           "RNG_test.exe",
           "stdin8",
@@ -1144,9 +1144,9 @@
       },
       "result": {
         "classification": "short_prefix_external_test_output",
-        "reported_result_count": 41,
+        "reported_result_count": 42,
         "evaluation_counts": {
-          "normal": 40,
+          "normal": 41,
           "normalish": 1
         },
         "reported_results": [
@@ -1410,6 +1410,12 @@
             "evaluation": "normal"
           },
           {
+            "test": "[Low1/8]BDayS2(4,24)[18]",
+            "raw_score": "-0.5",
+            "processed_text": "\"pass\"",
+            "evaluation": "normal"
+          },
+          {
             "test": "[Low1/8]BRank(12):score:64(1)",
             "raw_score": "+0.4",
             "p_relation": "~=",
@@ -1457,7 +1463,7 @@
       "execution": {
         "completed": true,
         "battery_invocations_completed": 2,
-        "elapsed_seconds": 0.5547324000071967,
+        "elapsed_seconds": 0.5396991000015987,
         "finite_file_adapter": "testu01_file_batteries_v1"
       },
       "eligibility": {
@@ -1480,7 +1486,7 @@
             "execution": {
               "completed": true,
               "return_code": 0,
-              "elapsed_seconds": 0.5232112999947276,
+              "elapsed_seconds": 0.5160672999918461,
               "command": [
                 "testu01_file_batteries.exe",
                 "rabbit",
@@ -1504,7 +1510,7 @@
             },
             "artifacts": {
               "testu01_rabbit_stdout.txt": {
-                "sha256": "560fc613d3e62c4868fbb3a453a5eb3ba8372ae50b058ed3b37295e37f82cd75",
+                "sha256": "811e41e41c8d148a05265287ebe717f05f7342bf2db4f14c194e734c77963e64",
                 "bytes": 23556
               },
               "testu01_rabbit_stderr.txt": {
@@ -1517,7 +1523,7 @@
             "execution": {
               "completed": true,
               "return_code": 0,
-              "elapsed_seconds": 0.031521100012469105,
+              "elapsed_seconds": 0.023631800009752624,
               "command": [
                 "testu01_file_batteries.exe",
                 "alphabit",
@@ -1541,7 +1547,7 @@
             },
             "artifacts": {
               "testu01_alphabit_stdout.txt": {
-                "sha256": "987c30acc6f86bc61b195a86aea605fa014769ad9694af4279189adddf9e6e2d",
+                "sha256": "97c863be1c4e270745cdac6a6eb430fbd00f8febd35348513f30026f5aef8948",
                 "bytes": 11455
               },
               "testu01_alphabit_stderr.txt": {

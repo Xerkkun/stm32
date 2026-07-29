@@ -1,0 +1,43 @@
+{
+  "schema": "fractional-chaos-physical-campaign-derived-v1",
+  "extends": "physical_campaign_manifest.json",
+  "overrides": {
+    "campaign_id": "stm32_dense_rossler_chen_m2sfrk_f746_v1",
+    "derivation": {
+      "source_manifest": "physical_campaign_manifest.json",
+      "purpose": "Consecutive model-step UART series for Rossler and Chen dynamics figures",
+      "paper_matrix_inherited_for_validator": true,
+      "dense_scope_is_not_transport_calibration": true,
+      "dense_scope_is_not_primary_benchmark": true
+    },
+    "dense_capture_cells": [
+      "rossler_m2sfrk_f746_float32",
+      "rossler_m2sfrk_f746_fixed",
+      "chen_m2sfrk_f746_float32",
+      "chen_m2sfrk_f746_fixed"
+    ],
+    "build": {
+      "dense_directory_pattern": "{root}/{board}/dense-{buffered_capture_samples}-decim-1-release",
+      "dense_buffered_capture_samples": 12000
+    },
+    "endpoints": {
+      "dense_timeseries_pilot": {
+        "ready": true,
+        "buffered_capture_mode": true,
+        "output_decimation": 1,
+        "required_frames": 12000,
+        "first_sequence": 1,
+        "last_sequence": 12000,
+        "sequence_increment": 1,
+        "stop_rule": "exact_sequences_1_through_12000_without_gaps",
+        "duration_rule": "exact_sequence_endpoint_with_180_second_watchdog",
+        "evidence_level": "dense_consecutive_state_series_under_stlink_hardware_reset",
+        "eligible_as_primary_benchmark": false,
+        "eligible_as_paper_cold_start": false
+      }
+    },
+    "safety": {
+      "maximum_dense_timeseries_pilot_runs_per_invocation": 2
+    }
+  }
+}

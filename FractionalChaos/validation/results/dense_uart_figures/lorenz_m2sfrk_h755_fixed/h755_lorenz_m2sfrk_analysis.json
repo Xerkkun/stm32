@@ -79,6 +79,12 @@
     "time_series": "h755_lorenz_m2sfrk_time_series.png",
     "time_series_samples_plotted": 2048,
     "attractor": "h755_lorenz_m2sfrk_attractor.png",
+    "dynamics_plot_style": {
+      "color": "#1F4E79",
+      "time_series_line_width_points": 1.15,
+      "attractor_point_area_points_squared": 2.4,
+      "attractor_point_alpha": 0.52
+    },
     "bitstream": "h755_lorenz_m2sfrk_fixed-raw_lsb.bin",
     "bitstream_sha256": "c7c3b4fcbf91a8927939e3a03abf2a480c01d8ab9154f7bf431be1619e40af65",
     "bit_count": 240000,
