@@ -1,0 +1,232 @@
+{
+  "density": {
+    "standardization": {
+      "clip": [
+        -4.0,
+        4.0
+      ],
+      "method": "componentwise_z_score"
+    },
+    "three_dimensional": {
+      "bins_per_axis": 32,
+      "occupancy_fraction": 0.01177978515625,
+      "occupied_bins": 386,
+      "sample_limited_occupancy_efficiency": 0.055142857142857146,
+      "total_bins": 32768
+    },
+    "two_dimensional": {
+      "bins_per_axis": 64,
+      "entropy_definition": "Shannon entropy with natural logarithm, normalized by log(64^2)",
+      "mean_normalized_histogram_entropy": 0.6009161529299383,
+      "mean_occupancy_fraction": 0.10880533854166667,
+      "projections": {
+        "xy": {
+          "normalized_histogram_entropy": 0.7509864096069735,
+          "occupancy_fraction": 0.1552734375,
+          "occupied_bins": 636,
+          "total_bins": 4096
+        },
+        "xz": {
+          "normalized_histogram_entropy": 0.5154081136803925,
+          "occupancy_fraction": 0.088134765625,
+          "occupied_bins": 361,
+          "total_bins": 4096
+        },
+        "yz": {
+          "normalized_histogram_entropy": 0.536353935502449,
+          "occupancy_fraction": 0.0830078125,
+          "occupied_bins": 340,
+          "total_bins": 4096
+        }
+      }
+    }
+  },
+  "identity": {
+    "board": "h755",
+    "method": "m2sfrk",
+    "representation": "fixed_q14",
+    "system": "rossler"
+  },
+  "interpretation": {
+    "does_not_establish": [
+      "chaos",
+      "a positive Lyapunov exponent",
+      "hidden-attractor status",
+      "randomness"
+    ],
+    "evidence_layer": "observed_descriptive_dynamics_screen",
+    "statement": "The metrics describe the retained UART state series under the declared sampling contract."
+  },
+  "radial_peaks": {
+    "amplitude_summary": {
+      "maximum": 12.249199247767438,
+      "mean": 8.384525163395557,
+      "minimum": 3.6544198143452107,
+      "standard_deviation": 2.8401196284958217
+    },
+    "amplitudes": [
+      10.442447319498635,
+      8.015385829134704,
+      12.249199247767438,
+      3.6544198143452107,
+      6.664138769471353,
+      11.467174585859858,
+      5.3100564978584455,
+      9.514358582261648,
+      10.331714131476977,
+      8.30895068218435,
+      12.12705917330461,
+      3.8688322211049933,
+      7.045090269874005
+    ],
+    "count": 13,
+    "definition": "interior local maxima of sqrt(x^2+y^2)",
+    "model_times_from_first_retained_state_s": [
+      0.8,
+      6.23,
+      11.92,
+      16.66,
+      22.55,
+      28.3,
+      33.46,
+      39.27,
+      44.83,
+      50.28,
+      55.94,
+      60.77,
+      66.65
+    ],
+    "plateau_policy": "strictly_greater_left_and_greater_or_equal_right",
+    "retained_indices": [
+      80,
+      623,
+      1192,
+      1666,
+      2255,
+      2830,
+      3346,
+      3927,
+      4483,
+      5028,
+      5594,
+      6077,
+      6665
+    ],
+    "sequences": [
+      5081,
+      5624,
+      6193,
+      6667,
+      7256,
+      7831,
+      8347,
+      8928,
+      9484,
+      10029,
+      10595,
+      11078,
+      11666
+    ]
+  },
+  "rows": {
+    "discarded": 5000,
+    "retained": 7000,
+    "total": 12000
+  },
+  "sampling": {
+    "diagnostic_sample_period_s": 0.05,
+    "diagnostic_samples": 1400,
+    "diagnostic_stride": 5,
+    "host_reception_time_used": false,
+    "interpolation": false,
+    "resampling": false,
+    "retained_sequence_first": 5001,
+    "retained_sequence_last": 12000,
+    "sample_interval_s": 0.01,
+    "time_origin_sequence": 5001
+  },
+  "schema": "fractional-chaos-dynamics-density-v1",
+  "source": {
+    "capture": "validation/results/dense_uart_capture/stm32_dense_rossler_classic_q09877_m2sfrk_4cells_v1/runs/stm32_dense_rossler_classic_q09877_m2sfrk_4cells_v1__r01__rossler_m2sfrk_h755_fixed__1ba3b605d2__dense-timeseries-pilot/capture.csv",
+    "capture_sha256": "456fa8ae4bc21564597698005e860ef27b9c65f91bbf9753c73ed319eae1518f"
+  },
+  "state_summary": {
+    "all_finite": true,
+    "components": {
+      "x": {
+        "maximum": 11.41876220703125,
+        "mean": 0.2583575788225446,
+        "minimum": -9.09112548828125,
+        "peak_to_peak": 20.5098876953125,
+        "standard_deviation": 5.18172823842547
+      },
+      "y": {
+        "maximum": 7.8284912109375,
+        "mean": -0.7335517403738839,
+        "minimum": -10.7728271484375,
+        "peak_to_peak": 18.601318359375,
+        "standard_deviation": 4.840149511552393
+      },
+      "z": {
+        "maximum": 22.70587158203125,
+        "mean": 0.8921725289481027,
+        "minimum": 0.013671875,
+        "peak_to_peak": 22.69219970703125,
+        "standard_deviation": 2.838527373510027
+      }
+    },
+    "z_score_means": [
+      0.2583575788225446,
+      -0.7335517403738839,
+      0.8921725289481027
+    ],
+    "z_score_standard_deviations": [
+      5.181728238425466,
+      4.840149511552391,
+      2.8385273735100167
+    ],
+    "zero_variance_components": []
+  },
+  "temporal_complexity": {
+    "lag_recurrence": {
+      "lag_at_minimum_s": 11.0,
+      "lag_window_s": [
+        1.0,
+        15.0
+      ],
+      "minimum_normalized_lag_rmse": 0.8486723804443155
+    },
+    "permutation_entropy": {
+      "component": "x",
+      "delay_diagnostic_samples": 2,
+      "delay_s": 0.1,
+      "method": "Bandt-Pompe",
+      "normalized_value": 0.2589545845121933,
+      "order": 5
+    }
+  },
+  "transport_and_state_validation": {
+    "accepted": true,
+    "all_states_finite": true,
+    "nonzero_dropped_rows": 0,
+    "required_sequence_increment": 1,
+    "sequence_first": 1,
+    "sequence_gap_count": 0,
+    "sequence_last": 12000,
+    "solver_status": {
+      "all_samples_ok": true,
+      "counts_by_numeric_status": {
+        "0": 12000
+      },
+      "nonzero_status_samples": 0,
+      "samples_by_flag": {
+        "fixed_coefficient_saturation": 0,
+        "fixed_coefficient_zeroed": 0,
+        "fixed_state_saturation": 0,
+        "nonfinite": 0,
+        "queue": 0
+      },
+      "samples_with_unknown_flags": 0
+    }
+  }
+}

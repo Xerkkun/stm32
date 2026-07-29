@@ -126,6 +126,23 @@ componente y limitarla al intervalo \([-4,4]\). El alcance del informe es una
 descripción cuantitativa de la serie UART; la identificación de caos,
 atractores ocultos o aleatoriedad requiere evidencia independiente.
 
+### Paridad densa entre placas
+
+`compare_dense_capture_parity.py` compara dos capturas de la misma celda
+sistema--método--representación. La paridad exige la misma secuencia y las
+mismas palabras `x_bits`, `y_bits` y `z_bits`, además de `status` y `dropped`,
+en todas las filas:
+
+```powershell
+python validation/compare_dense_capture_parity.py `
+  captura_f746.csv captura_h755.csv `
+  --output paridad.json
+```
+
+El informe conserva los hashes de ambos CSV y del payload canónico comparado,
+el número de filas y el primer desacuerdo. Los ciclos DWT se excluyen de la
+paridad porque describen el tiempo de cada placa y no el estado numérico.
+
 ## Comparación flotante frente a punto fijo mixto
 
 `fixed_point_comparison.py` ejecuta los tres sistemas con EFORK3, GL-Caputo y

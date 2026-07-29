@@ -256,6 +256,15 @@ if(Python3_Interpreter_FOUND)
             --basetemp
             ${CMAKE_BINARY_DIR}/pytest-fixed-capture-parity
     )
+    add_test(NAME fractional_dense_capture_parity
+        COMMAND
+            ${Python3_EXECUTABLE}
+            -m pytest
+            -q
+            ${CMAKE_CURRENT_SOURCE_DIR}/test_compare_dense_capture_parity.py
+            --basetemp
+            ${CMAKE_BINARY_DIR}/pytest-dense-capture-parity
+    )
     add_test(NAME fractional_statistical_battery_runner
         COMMAND
             ${Python3_EXECUTABLE}
