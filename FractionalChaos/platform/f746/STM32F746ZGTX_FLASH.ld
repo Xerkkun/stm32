@@ -12,6 +12,10 @@ MEMORY
 }
 
 _estack = ORIGIN(SRAM1) + LENGTH(SRAM1);
+__stack_probe_size__ =
+    DEFINED(FC_RUNTIME_PROBE_ENABLED) ? 0x8000 : 0;
+__stack_probe_start__ = _estack - __stack_probe_size__;
+__stack_probe_end__ = _estack;
 
 SECTIONS
 {
@@ -41,6 +45,7 @@ SECTIONS
         . = ALIGN(4);
         *(.rodata)
         *(.rodata*)
+        KEEP(*(.fc_manifest_hash))
         . = ALIGN(4);
     } > FLASH
 
@@ -119,6 +124,20 @@ SECTIONS
     } > SRAM1
 
     /*
+     * Optional one-shot acquisition buffer. It is filled completely before
+     * UART draining and therefore must not consume DTCM or DMA-owned SRAM2.
+     */
+    .capture ALIGN(32) (NOLOAD) :
+    {
+        . = ALIGN(32);
+        __capture_start__ = .;
+        KEEP(*(.capture))
+        KEEP(*(.capture.*))
+        . = ALIGN(32);
+        __capture_end__ = .;
+    } > SRAM1
+
+    /*
      * DTCM is single-cycle CPU memory and is intentionally reserved for the
      * solver context and complete finite-memory history. DMA cannot access it.
      */
@@ -154,6 +173,7 @@ SECTIONS
         . += _Min_Heap_Size;
         . += _Min_Stack_Size;
         . = ALIGN(8);
+        __heap_stack_reservation_end__ = .;
     } > SRAM1
 
     .ARM.attributes 0 :
@@ -172,5 +192,11 @@ ASSERT(SIZEOF(.solver) <= LENGTH(DTCMRAM),
        "Solver history exceeds the 64 KiB DTCM bank")
 ASSERT(SIZEOF(.dma_buffer) <= LENGTH(SRAM2),
        "DMA buffers exceed the dedicated 16 KiB SRAM2 bank")
+ASSERT((ADDR(.capture) & 31) == 0,
+       "Buffered capture section is not cache-line aligned")
 ASSERT((ADDR(.dma_buffer) & 31) == 0,
        "DMA buffer section is not cache-line aligned")
+ASSERT(__heap_stack_reservation_end__ <= __stack_probe_start__,
+       "Static SRAM1 allocations overlap the 32 KiB stack probe")
+ASSERT(__stack_probe_end__ == _estack,
+       "The stack probe must end at the initial MSP")

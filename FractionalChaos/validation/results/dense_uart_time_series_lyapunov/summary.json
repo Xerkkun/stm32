@@ -1,0 +1,4874 @@
+{
+  "analysis_script": "validation/analyze_dense_uart_time_series_lyapunov.py",
+  "analysis_script_sha256": "5dddf0c1e451be6845e331086e1df992d4cdf59cf1a919b11fd31191325202f0",
+  "analysis_status": "completed_exploratory_diagnostic",
+  "campaign_root": "C:\\Users\\moren\\Desktop\\Codes\\STM32\\FractionalChaos\\validation\\results\\dense_uart_capture\\stm32_dense_lorenz_m2sfrk_4cells_v1",
+  "cases": [
+    {
+      "board": "f746",
+      "capture_csv": "validation/results/dense_uart_capture/stm32_dense_lorenz_m2sfrk_4cells_v1/runs/stm32_dense_lorenz_m2sfrk_4cells_v1__r01__lorenz_m2sfrk_f746_float32__da628d3c98__dense-timeseries-pilot/capture.csv",
+      "capture_csv_bytes": 1977736,
+      "capture_csv_sha256": "c4f0458baed7f63cf18e569d2c1211342f64aff2871a4185c2bc5a6acaee97dc",
+      "capture_manifest_sha256": "e4cb0a7f080ac6b6485209b407f55e72cc76fe370eacec922249bc8f6112575d",
+      "capture_raw": "validation/results/dense_uart_capture/stm32_dense_lorenz_m2sfrk_4cells_v1/runs/stm32_dense_lorenz_m2sfrk_4cells_v1__r01__lorenz_m2sfrk_f746_float32__da628d3c98__dense-timeseries-pilot/capture.bin",
+      "capture_raw_bytes": 480000,
+      "capture_raw_sha256": "569de6027e31e724ce7a89205b71eac387ad33fb5edc53342ddce2fa0d4ea404",
+      "capture_sequence_xyz_bits_sha256_le": "e5c8c371832aa791e5bbb92f698cda92516329718d698c2fb429a8033b18f597",
+      "capture_state_word_samples": 12000,
+      "captured_sequences": [
+        1,
+        12000
+      ],
+      "case_id": "f746_float32",
+      "claim_eligible": false,
+      "csv_representation": "float32",
+      "discarded_transient_sequences": [
+        1,
+        2000
+      ],
+      "evaluations": [
+        {
+          "analysis_id": "primary_window_1",
+          "backend": "nolds",
+          "backend_version": "0.6.3",
+          "eckmann_method": "nolds.lyap_e (Eckmann et al. 1986)",
+          "eckmann_parameters": {
+            "emb_dim": 5,
+            "matrix_dim": 5,
+            "min_neighbors": 8,
+            "min_tsep": 10
+          },
+          "estimated_pairwise_matrix_bytes": 132910208,
+          "evidence_status": "finite_time_time_series_diagnostic",
+          "exponent_unit": "model_time^-1",
+          "kaplan_yorke_dimension": 2.2180673528332595,
+          "kaplan_yorke_status": "computed_from_exploratory_eckmann_spectrum",
+          "largest_exponent": 7.018190566175359,
+          "largest_sign_agrees_with_spectrum": true,
+          "model_time_span": 20.475,
+          "n_samples": 4096,
+          "observable": "x",
+          "parameter_contract": {
+            "eckmann_emb_dim": 5,
+            "eckmann_matrix_dim": 5,
+            "eckmann_min_neighbors": 8,
+            "eckmann_min_tsep": 10,
+            "rosenstein_emb_dim": 5,
+            "rosenstein_fit": "poly",
+            "rosenstein_fit_offset": 8,
+            "rosenstein_lag": 5,
+            "rosenstein_min_neighbors": 20,
+            "rosenstein_min_tsep": 10,
+            "rosenstein_trajectory_len": 28
+          },
+          "rosenstein_divergence_index_unit": "retained_sample_offset",
+          "rosenstein_divergence_time_trajectory": [
+            [
+              0.0,
+              -1.38351094543542
+            ],
+            [
+              0.005,
+              -1.3796169272170264
+            ],
+            [
+              0.01,
+              -1.3675327155618193
+            ],
+            [
+              0.015,
+              -1.3479098400832243
+            ],
+            [
+              0.02,
+              -1.3217180017682046
+            ],
+            [
+              0.025,
+              -1.2900472110169998
+            ],
+            [
+              0.03,
+              -1.2539986600518154
+            ],
+            [
+              0.035,
+              -1.2146432425976752
+            ],
+            [
+              0.04,
+              -1.1729895687146006
+            ],
+            [
+              0.045,
+              -1.1299398964772234
+            ],
+            [
+              0.05,
+              -1.0862521755512788
+            ],
+            [
+              0.055,
+              -1.0425301498796942
+            ],
+            [
+              0.06,
+              -0.9992390368205241
+            ],
+            [
+              0.065,
+              -0.9567315793504256
+            ],
+            [
+              0.07,
+              -0.9152726534798729
+            ],
+            [
+              0.075,
+              -0.8750594611553966
+            ],
+            [
+              0.08,
+              -0.8362377234871363
+            ],
+            [
+              0.085,
+              -0.7989140636796117
+            ],
+            [
+              0.09,
+              -0.7631646178109174
+            ],
+            [
+              0.095,
+              -0.729040458236751
+            ],
+            [
+              0.1,
+              -0.6965706845626785
+            ],
+            [
+              0.105,
+              -0.6657641697652508
+            ],
+            [
+              0.11,
+              -0.636610880620521
+            ],
+            [
+              0.115,
+              -0.6090835574016175
+            ],
+            [
+              0.12,
+              -0.5831402254273412
+            ],
+            [
+              0.125,
+              -0.5587273981776628
+            ],
+            [
+              0.13,
+              -0.5357833331484708
+            ],
+            [
+              0.135,
+              -0.514240940439357
+            ]
+          ],
+          "rosenstein_divergence_trajectory": [
+            [
+              0.0,
+              -1.38351094543542
+            ],
+            [
+              1.0,
+              -1.3796169272170264
+            ],
+            [
+              2.0,
+              -1.3675327155618193
+            ],
+            [
+              3.0,
+              -1.3479098400832243
+            ],
+            [
+              4.0,
+              -1.3217180017682046
+            ],
+            [
+              5.0,
+              -1.2900472110169998
+            ],
+            [
+              6.0,
+              -1.2539986600518154
+            ],
+            [
+              7.0,
+              -1.2146432425976752
+            ],
+            [
+              8.0,
+              -1.1729895687146006
+            ],
+            [
+              9.0,
+              -1.1299398964772234
+            ],
+            [
+              10.0,
+              -1.0862521755512788
+            ],
+            [
+              11.0,
+              -1.0425301498796942
+            ],
+            [
+              12.0,
+              -0.9992390368205241
+            ],
+            [
+              13.0,
+              -0.9567315793504256
+            ],
+            [
+              14.0,
+              -0.9152726534798729
+            ],
+            [
+              15.0,
+              -0.8750594611553966
+            ],
+            [
+              16.0,
+              -0.8362377234871363
+            ],
+            [
+              17.0,
+              -0.7989140636796117
+            ],
+            [
+              18.0,
+              -0.7631646178109174
+            ],
+            [
+              19.0,
+              -0.729040458236751
+            ],
+            [
+              20.0,
+              -0.6965706845626785
+            ],
+            [
+              21.0,
+              -0.6657641697652508
+            ],
+            [
+              22.0,
+              -0.636610880620521
+            ],
+            [
+              23.0,
+              -0.6090835574016175
+            ],
+            [
+              24.0,
+              -0.5831402254273412
+            ],
+            [
+              25.0,
+              -0.5587273981776628
+            ],
+            [
+              26.0,
+              -0.5357833331484708
+            ],
+            [
+              27.0,
+              -0.514240940439357
+            ]
+          ],
+          "rosenstein_fit_r2": 0.9893862141041158,
+          "rosenstein_method": "nolds.lyap_r (Rosenstein et al. 1993)",
+          "rosenstein_parameters": {
+            "emb_dim": 5,
+            "fit": "poly",
+            "fit_offset": 8,
+            "lag": 5,
+            "min_neighbors": 20,
+            "min_tsep": 10,
+            "random_seed": 20260728,
+            "trajectory_len": 28
+          },
+          "rosenstein_slope_per_sample": 0.03509095283087679,
+          "sample_count": 4096,
+          "sample_interval": 0.005,
+          "sample_rate": 200.0,
+          "sequence_first": 2001,
+          "sequence_last": 6096,
+          "signal_sha256_float64_le": "4548dffd4df0242006e5d022a0093f8279b080c69153be36a8101e98ce5f24ba",
+          "spectrum": [
+            1.492240237317632,
+            0.15136828013123238,
+            -7.537159946659291,
+            -17.353261890204486,
+            -131.2394440188447
+          ],
+          "spectrum_status": "exploratory_nolds_eckmann_scalar_reconstruction",
+          "spectrum_sum": -154.4862573382596,
+          "time_unit": "model_time",
+          "warnings": [
+            "Finite-time estimates reconstructed from one scalar observable.",
+            "Results depend on sampling, delay embedding, neighborhood, and fit parameters.",
+            "The nolds Eckmann spectrum and derived Kaplan-Yorke dimension are exploratory.",
+            "These diagnostics do not certify chaos, asymptotic exponents, or hiddenness."
+          ],
+          "window_index": 0,
+          "window_role": "primary"
+        },
+        {
+          "analysis_id": "primary_window_2",
+          "backend": "nolds",
+          "backend_version": "0.6.3",
+          "eckmann_method": "nolds.lyap_e (Eckmann et al. 1986)",
+          "eckmann_parameters": {
+            "emb_dim": 5,
+            "matrix_dim": 5,
+            "min_neighbors": 8,
+            "min_tsep": 10
+          },
+          "estimated_pairwise_matrix_bytes": 132910208,
+          "evidence_status": "finite_time_time_series_diagnostic",
+          "exponent_unit": "model_time^-1",
+          "kaplan_yorke_dimension": 2.286449140293354,
+          "kaplan_yorke_status": "computed_from_exploratory_eckmann_spectrum",
+          "largest_exponent": 6.00862246996508,
+          "largest_sign_agrees_with_spectrum": true,
+          "model_time_span": 20.475,
+          "n_samples": 4096,
+          "observable": "x",
+          "parameter_contract": {
+            "eckmann_emb_dim": 5,
+            "eckmann_matrix_dim": 5,
+            "eckmann_min_neighbors": 8,
+            "eckmann_min_tsep": 10,
+            "rosenstein_emb_dim": 5,
+            "rosenstein_fit": "poly",
+            "rosenstein_fit_offset": 8,
+            "rosenstein_lag": 5,
+            "rosenstein_min_neighbors": 20,
+            "rosenstein_min_tsep": 10,
+            "rosenstein_trajectory_len": 28
+          },
+          "rosenstein_divergence_index_unit": "retained_sample_offset",
+          "rosenstein_divergence_time_trajectory": [
+            [
+              0.0,
+              -1.7550684170232953
+            ],
+            [
+              0.005,
+              -1.751986154003584
+            ],
+            [
+              0.01,
+              -1.7428889933619967
+            ],
+            [
+              0.015,
+              -1.7281643242493405
+            ],
+            [
+              0.02,
+              -1.7084053825105006
+            ],
+            [
+              0.025,
+              -1.6843191507356972
+            ],
+            [
+              0.03,
+              -1.6566589190163703
+            ],
+            [
+              0.035,
+              -1.6261788307827638
+            ],
+            [
+              0.04,
+              -1.5935980753560823
+            ],
+            [
+              0.045,
+              -1.5595772389292417
+            ],
+            [
+              0.05,
+              -1.524701356714538
+            ],
+            [
+              0.055,
+              -1.4894555803660772
+            ],
+            [
+              0.06,
+              -1.4542162780497037
+            ],
+            [
+              0.065,
+              -1.4192707139127574
+            ],
+            [
+              0.07,
+              -1.3848425152764854
+            ],
+            [
+              0.075,
+              -1.3511095624196634
+            ],
+            [
+              0.08,
+              -1.318215347267587
+            ],
+            [
+              0.085,
+              -1.2862766496449896
+            ],
+            [
+              0.09,
+              -1.2553889040880615
+            ],
+            [
+              0.095,
+              -1.225629461342673
+            ],
+            [
+              0.1,
+              -1.1970590078914165
+            ],
+            [
+              0.105,
+              -1.1697217029636633
+            ],
+            [
+              0.11,
+              -1.1436445861112756
+            ],
+            [
+              0.115,
+              -1.1188370535075625
+            ],
+            [
+              0.12,
+              -1.0952910257019763
+            ],
+            [
+              0.125,
+              -1.0729824380591375
+            ],
+            [
+              0.13,
+              -1.0518740309164927
+            ],
+            [
+              0.135,
+              -1.0319185271325464
+            ]
+          ],
+          "rosenstein_divergence_trajectory": [
+            [
+              0.0,
+              -1.7550684170232953
+            ],
+            [
+              1.0,
+              -1.751986154003584
+            ],
+            [
+              2.0,
+              -1.7428889933619967
+            ],
+            [
+              3.0,
+              -1.7281643242493405
+            ],
+            [
+              4.0,
+              -1.7084053825105006
+            ],
+            [
+              5.0,
+              -1.6843191507356972
+            ],
+            [
+              6.0,
+              -1.6566589190163703
+            ],
+            [
+              7.0,
+              -1.6261788307827638
+            ],
+            [
+              8.0,
+              -1.5935980753560823
+            ],
+            [
+              9.0,
+              -1.5595772389292417
+            ],
+            [
+              10.0,
+              -1.524701356714538
+            ],
+            [
+              11.0,
+              -1.4894555803660772
+            ],
+            [
+              12.0,
+              -1.4542162780497037
+            ],
+            [
+              13.0,
+              -1.4192707139127574
+            ],
+            [
+              14.0,
+              -1.3848425152764854
+            ],
+            [
+              15.0,
+              -1.3511095624196634
+            ],
+            [
+              16.0,
+              -1.318215347267587
+            ],
+            [
+              17.0,
+              -1.2862766496449896
+            ],
+            [
+              18.0,
+              -1.2553889040880615
+            ],
+            [
+              19.0,
+              -1.225629461342673
+            ],
+            [
+              20.0,
+              -1.1970590078914165
+            ],
+            [
+              21.0,
+              -1.1697217029636633
+            ],
+            [
+              22.0,
+              -1.1436445861112756
+            ],
+            [
+              23.0,
+              -1.1188370535075625
+            ],
+            [
+              24.0,
+              -1.0952910257019763
+            ],
+            [
+              25.0,
+              -1.0729824380591375
+            ],
+            [
+              26.0,
+              -1.0518740309164927
+            ],
+            [
+              27.0,
+              -1.0319185271325464
+            ]
+          ],
+          "rosenstein_fit_r2": 0.9933319693379523,
+          "rosenstein_method": "nolds.lyap_r (Rosenstein et al. 1993)",
+          "rosenstein_parameters": {
+            "emb_dim": 5,
+            "fit": "poly",
+            "fit_offset": 8,
+            "lag": 5,
+            "min_neighbors": 20,
+            "min_tsep": 10,
+            "random_seed": 20260729,
+            "trajectory_len": 28
+          },
+          "rosenstein_slope_per_sample": 0.0300431123498254,
+          "sample_count": 4096,
+          "sample_interval": 0.005,
+          "sample_rate": 200.0,
+          "sequence_first": 6097,
+          "sequence_last": 10192,
+          "signal_sha256_float64_le": "ee511d1168c34f66890d292c13fbf9f7a95d4227ed4c197ced5f7d2b83b8bdc7",
+          "spectrum": [
+            1.5074079744819402,
+            0.2743306804216461,
+            -6.220087283483893,
+            -17.048650234336446,
+            -132.08048424790442
+          ],
+          "spectrum_status": "exploratory_nolds_eckmann_scalar_reconstruction",
+          "spectrum_sum": -153.56748311082117,
+          "time_unit": "model_time",
+          "warnings": [
+            "Finite-time estimates reconstructed from one scalar observable.",
+            "Results depend on sampling, delay embedding, neighborhood, and fit parameters.",
+            "The nolds Eckmann spectrum and derived Kaplan-Yorke dimension are exploratory.",
+            "These diagnostics do not certify chaos, asymptotic exponents, or hiddenness."
+          ],
+          "window_index": 1,
+          "window_role": "nonoverlapping_replication"
+        },
+        {
+          "analysis_id": "parameter_sensitivity_window_1",
+          "backend": "nolds",
+          "backend_version": "0.6.3",
+          "eckmann_method": "nolds.lyap_e (Eckmann et al. 1986)",
+          "eckmann_parameters": {
+            "emb_dim": 5,
+            "matrix_dim": 5,
+            "min_neighbors": 8,
+            "min_tsep": 20
+          },
+          "estimated_pairwise_matrix_bytes": 131609088,
+          "evidence_status": "finite_time_time_series_diagnostic",
+          "exponent_unit": "model_time^-1",
+          "kaplan_yorke_dimension": 2.2329253514118976,
+          "kaplan_yorke_status": "computed_from_exploratory_eckmann_spectrum",
+          "largest_exponent": 2.902783788801521,
+          "largest_sign_agrees_with_spectrum": true,
+          "model_time_span": 20.475,
+          "n_samples": 4096,
+          "observable": "x",
+          "parameter_contract": {
+            "eckmann_emb_dim": 5,
+            "eckmann_matrix_dim": 5,
+            "eckmann_min_neighbors": 8,
+            "eckmann_min_tsep": 20,
+            "rosenstein_emb_dim": 5,
+            "rosenstein_fit": "poly",
+            "rosenstein_fit_offset": 16,
+            "rosenstein_lag": 10,
+            "rosenstein_min_neighbors": 20,
+            "rosenstein_min_tsep": 20,
+            "rosenstein_trajectory_len": 56
+          },
+          "rosenstein_divergence_index_unit": "retained_sample_offset",
+          "rosenstein_divergence_time_trajectory": [
+            [
+              0.0,
+              -0.9989614313793168
+            ],
+            [
+              0.005,
+              -0.9981567401961788
+            ],
+            [
+              0.01,
+              -0.9952176892288629
+            ],
+            [
+              0.015,
+              -0.9901900753316488
+            ],
+            [
+              0.02,
+              -0.9831570176677141
+            ],
+            [
+              0.025,
+              -0.974231087240999
+            ],
+            [
+              0.03,
+              -0.9635486068179775
+            ],
+            [
+              0.035,
+              -0.9512667112558981
+            ],
+            [
+              0.04,
+              -0.9375608913715248
+            ],
+            [
+              0.045,
+              -0.9226201268425521
+            ],
+            [
+              0.05,
+              -0.9066388461802651
+            ],
+            [
+              0.055,
+              -0.8898079969904252
+            ],
+            [
+              0.06,
+              -0.8723081581475882
+            ],
+            [
+              0.065,
+              -0.854305374178716
+            ],
+            [
+              0.07,
+              -0.8359487269189891
+            ],
+            [
+              0.075,
+              -0.8173689947654077
+            ],
+            [
+              0.08,
+              -0.79867848307846
+            ],
+            [
+              0.085,
+              -0.779972100836825
+            ],
+            [
+              0.09,
+              -0.7613292332110669
+            ],
+            [
+              0.095,
+              -0.7428158012863224
+            ],
+            [
+              0.1,
+              -0.7244860688993139
+            ],
+            [
+              0.105,
+              -0.7063841299600173
+            ],
+            [
+              0.11,
+              -0.6885449883013706
+            ],
+            [
+              0.115,
+              -0.6709953888604314
+            ],
+            [
+              0.12,
+              -0.6537544306839945
+            ],
+            [
+              0.125,
+              -0.63683415980471
+            ],
+            [
+              0.13,
+              -0.6202401601290161
+            ],
+            [
+              0.135,
+              -0.6039722231124036
+            ],
+            [
+              0.14,
+              -0.5880251188231754
+            ],
+            [
+              0.145,
+              -0.5723894104613622
+            ],
+            [
+              0.15,
+              -0.5570522322066738
+            ],
+            [
+              0.155,
+              -0.5419980828766767
+            ],
+            [
+              0.16,
+              -0.5272095014825454
+            ],
+            [
+              0.165,
+              -0.5126677152678926
+            ],
+            [
+              0.17,
+              -0.49835318751429436
+            ],
+            [
+              0.17500000000000002,
+              -0.4842461227933492
+            ],
+            [
+              0.18,
+              -0.47032688105439296
+            ],
+            [
+              0.185,
+              -0.45657629621015156
+            ],
+            [
+              0.19,
+              -0.4429759525071381
+            ],
+            [
+              0.195,
+              -0.42950838510666617
+            ],
+            [
+              0.2,
+              -0.41615721605507555
+            ],
+            [
+              0.20500000000000002,
+              -0.40290727525641035
+            ],
+            [
+              0.21,
+              -0.3897446541841529
+            ],
+            [
+              0.215,
+              -0.37665676642907164
+            ],
+            [
+              0.22,
+              -0.3636323670384843
+            ],
+            [
+              0.225,
+              -0.3506616065609193
+            ],
+            [
+              0.23,
+              -0.3377360656701707
+            ],
+            [
+              0.23500000000000001,
+              -0.3248487948098356
+            ],
+            [
+              0.24,
+              -0.3119943729240059
+            ],
+            [
+              0.245,
+              -0.29916893536643213
+            ],
+            [
+              0.25,
+              -0.28637014197905514
+            ],
+            [
+              0.255,
+              -0.273597152928586
+            ],
+            [
+              0.26,
+              -0.2608505205752884
+            ],
+            [
+              0.265,
+              -0.24813201166062226
+            ],
+            [
+              0.27,
+              -0.23544438566378104
+            ],
+            [
+              0.275,
+              -0.22279112596656062
+            ]
+          ],
+          "rosenstein_divergence_trajectory": [
+            [
+              0.0,
+              -0.9989614313793168
+            ],
+            [
+              1.0,
+              -0.9981567401961788
+            ],
+            [
+              2.0,
+              -0.9952176892288629
+            ],
+            [
+              3.0,
+              -0.9901900753316488
+            ],
+            [
+              4.0,
+              -0.9831570176677141
+            ],
+            [
+              5.0,
+              -0.974231087240999
+            ],
+            [
+              6.0,
+              -0.9635486068179775
+            ],
+            [
+              7.0,
+              -0.9512667112558981
+            ],
+            [
+              8.0,
+              -0.9375608913715248
+            ],
+            [
+              9.0,
+              -0.9226201268425521
+            ],
+            [
+              10.0,
+              -0.9066388461802651
+            ],
+            [
+              11.0,
+              -0.8898079969904252
+            ],
+            [
+              12.0,
+              -0.8723081581475882
+            ],
+            [
+              13.0,
+              -0.854305374178716
+            ],
+            [
+              14.0,
+              -0.8359487269189891
+            ],
+            [
+              15.0,
+              -0.8173689947654077
+            ],
+            [
+              16.0,
+              -0.79867848307846
+            ],
+            [
+              17.0,
+              -0.779972100836825
+            ],
+            [
+              18.0,
+              -0.7613292332110669
+            ],
+            [
+              19.0,
+              -0.7428158012863224
+            ],
+            [
+              20.0,
+              -0.7244860688993139
+            ],
+            [
+              21.0,
+              -0.7063841299600173
+            ],
+            [
+              22.0,
+              -0.6885449883013706
+            ],
+            [
+              23.0,
+              -0.6709953888604314
+            ],
+            [
+              24.0,
+              -0.6537544306839945
+            ],
+            [
+              25.0,
+              -0.63683415980471
+            ],
+            [
+              26.0,
+              -0.6202401601290161
+            ],
+            [
+              27.0,
+              -0.6039722231124036
+            ],
+            [
+              28.0,
+              -0.5880251188231754
+            ],
+            [
+              29.0,
+              -0.5723894104613622
+            ],
+            [
+              30.0,
+              -0.5570522322066738
+            ],
+            [
+              31.0,
+              -0.5419980828766767
+            ],
+            [
+              32.0,
+              -0.5272095014825454
+            ],
+            [
+              33.0,
+              -0.5126677152678926
+            ],
+            [
+              34.0,
+              -0.49835318751429436
+            ],
+            [
+              35.0,
+              -0.4842461227933492
+            ],
+            [
+              36.0,
+              -0.47032688105439296
+            ],
+            [
+              37.0,
+              -0.45657629621015156
+            ],
+            [
+              38.0,
+              -0.4429759525071381
+            ],
+            [
+              39.0,
+              -0.42950838510666617
+            ],
+            [
+              40.0,
+              -0.41615721605507555
+            ],
+            [
+              41.0,
+              -0.40290727525641035
+            ],
+            [
+              42.0,
+              -0.3897446541841529
+            ],
+            [
+              43.0,
+              -0.37665676642907164
+            ],
+            [
+              44.0,
+              -0.3636323670384843
+            ],
+            [
+              45.0,
+              -0.3506616065609193
+            ],
+            [
+              46.0,
+              -0.3377360656701707
+            ],
+            [
+              47.0,
+              -0.3248487948098356
+            ],
+            [
+              48.0,
+              -0.3119943729240059
+            ],
+            [
+              49.0,
+              -0.29916893536643213
+            ],
+            [
+              50.0,
+              -0.28637014197905514
+            ],
+            [
+              51.0,
+              -0.273597152928586
+            ],
+            [
+              52.0,
+              -0.2608505205752884
+            ],
+            [
+              53.0,
+              -0.24813201166062226
+            ],
+            [
+              54.0,
+              -0.23544438566378104
+            ],
+            [
+              55.0,
+              -0.22279112596656062
+            ]
+          ],
+          "rosenstein_fit_r2": 0.995773568829051,
+          "rosenstein_method": "nolds.lyap_r (Rosenstein et al. 1993)",
+          "rosenstein_parameters": {
+            "emb_dim": 5,
+            "fit": "poly",
+            "fit_offset": 16,
+            "lag": 10,
+            "min_neighbors": 20,
+            "min_tsep": 20,
+            "random_seed": 20260730,
+            "trajectory_len": 56
+          },
+          "rosenstein_slope_per_sample": 0.014513918944007605,
+          "sample_count": 4096,
+          "sample_interval": 0.005,
+          "sample_rate": 200.0,
+          "sequence_first": 2001,
+          "sequence_last": 6096,
+          "signal_sha256_float64_le": "4548dffd4df0242006e5d022a0093f8279b080c69153be36a8101e98ce5f24ba",
+          "spectrum": [
+            1.520879265432421,
+            0.22816039297391175,
+            -7.509013715357194,
+            -17.72243944251974,
+            -130.57902796232435
+          ],
+          "spectrum_status": "exploratory_nolds_eckmann_scalar_reconstruction",
+          "spectrum_sum": -154.06144146179494,
+          "time_unit": "model_time",
+          "warnings": [
+            "Finite-time estimates reconstructed from one scalar observable.",
+            "Results depend on sampling, delay embedding, neighborhood, and fit parameters.",
+            "The nolds Eckmann spectrum and derived Kaplan-Yorke dimension are exploratory.",
+            "These diagnostics do not certify chaos, asymptotic exponents, or hiddenness."
+          ],
+          "window_index": 0,
+          "window_role": "parameter_sensitivity"
+        }
+      ],
+      "firmware_source_commit": "66c56aa8a4faa0c7389e224da9aec4721038acb8",
+      "firmware_source_dirty": false,
+      "fractional_order_q": 0.995,
+      "integration_method": "m2sfrk",
+      "interpretation": "exploratory dense-UART finite-time scalar diagnostic; Lorenz failed the frozen ABM qualification",
+      "kind": 1,
+      "model_step": 0.005,
+      "observable": "x",
+      "representation": "float32",
+      "run_json": "validation/results/dense_uart_capture/stm32_dense_lorenz_m2sfrk_4cells_v1/runs/stm32_dense_lorenz_m2sfrk_4cells_v1__r01__lorenz_m2sfrk_f746_float32__da628d3c98__dense-timeseries-pilot/run.json",
+      "run_json_sha256": "bd941cccb0c94033f43a1722cb465255cd0b5c3cfb0561105a67966ed83db24d",
+      "system": "lorenz",
+      "two_window_summary": {
+        "interpretation": "two non-overlapping finite windows; not an uncertainty interval or asymptotic convergence study",
+        "kaplan_yorke_max": 2.286449140293354,
+        "kaplan_yorke_min": 2.2180673528332595,
+        "largest_exponent_max": 7.018190566175359,
+        "largest_exponent_min": 6.00862246996508,
+        "spectrum_component_max": [
+          1.5074079744819402,
+          0.2743306804216461,
+          -6.220087283483893,
+          -17.048650234336446,
+          -131.2394440188447
+        ],
+        "spectrum_component_min": [
+          1.492240237317632,
+          0.15136828013123238,
+          -7.537159946659291,
+          -17.353261890204486,
+          -132.08048424790442
+        ]
+      }
+    },
+    {
+      "board": "f746",
+      "capture_csv": "validation/results/dense_uart_capture/stm32_dense_lorenz_m2sfrk_4cells_v1/runs/stm32_dense_lorenz_m2sfrk_4cells_v1__r01__lorenz_m2sfrk_f746_fixed__11cfcb5da0__dense-timeseries-pilot/capture.csv",
+      "capture_csv_bytes": 2150858,
+      "capture_csv_sha256": "dd9a59e334965e17f430be64f80d2f41e1ae4e8ca5ee28da8dbb5d22356ac871",
+      "capture_manifest_sha256": "e4cb0a7f080ac6b6485209b407f55e72cc76fe370eacec922249bc8f6112575d",
+      "capture_raw": "validation/results/dense_uart_capture/stm32_dense_lorenz_m2sfrk_4cells_v1/runs/stm32_dense_lorenz_m2sfrk_4cells_v1__r01__lorenz_m2sfrk_f746_fixed__11cfcb5da0__dense-timeseries-pilot/capture.bin",
+      "capture_raw_bytes": 480000,
+      "capture_raw_sha256": "be490211b75bf497ca139c70da8e5b0bc669c6b9c5ad0ace03803a78ab8e44cf",
+      "capture_sequence_xyz_bits_sha256_le": "f9befcd1c995ec763e68d0487e20ef9ce701d4f40985a235fb88d8a6bf27df1d",
+      "capture_state_word_samples": 12000,
+      "captured_sequences": [
+        1,
+        12000
+      ],
+      "case_id": "f746_fixed_q14_q30",
+      "claim_eligible": false,
+      "csv_representation": "fixed_q14",
+      "discarded_transient_sequences": [
+        1,
+        2000
+      ],
+      "evaluations": [
+        {
+          "analysis_id": "primary_window_1",
+          "backend": "nolds",
+          "backend_version": "0.6.3",
+          "eckmann_method": "nolds.lyap_e (Eckmann et al. 1986)",
+          "eckmann_parameters": {
+            "emb_dim": 5,
+            "matrix_dim": 5,
+            "min_neighbors": 8,
+            "min_tsep": 10
+          },
+          "estimated_pairwise_matrix_bytes": 132910208,
+          "evidence_status": "finite_time_time_series_diagnostic",
+          "exponent_unit": "model_time^-1",
+          "kaplan_yorke_dimension": 2.4714225220110095,
+          "kaplan_yorke_status": "computed_from_exploratory_eckmann_spectrum",
+          "largest_exponent": 5.6480990171773495,
+          "largest_sign_agrees_with_spectrum": true,
+          "model_time_span": 20.475,
+          "n_samples": 4096,
+          "observable": "x",
+          "parameter_contract": {
+            "eckmann_emb_dim": 5,
+            "eckmann_matrix_dim": 5,
+            "eckmann_min_neighbors": 8,
+            "eckmann_min_tsep": 10,
+            "rosenstein_emb_dim": 5,
+            "rosenstein_fit": "poly",
+            "rosenstein_fit_offset": 8,
+            "rosenstein_lag": 5,
+            "rosenstein_min_neighbors": 20,
+            "rosenstein_min_tsep": 10,
+            "rosenstein_trajectory_len": 28
+          },
+          "rosenstein_divergence_index_unit": "retained_sample_offset",
+          "rosenstein_divergence_time_trajectory": [
+            [
+              0.0,
+              -1.7034572156930226
+            ],
+            [
+              0.005,
+              -1.7001936522599577
+            ],
+            [
+              0.01,
+              -1.6899379455211667
+            ],
+            [
+              0.015,
+              -1.6733761465823014
+            ],
+            [
+              0.02,
+              -1.651551848616836
+            ],
+            [
+              0.025,
+              -1.6255695092982008
+            ],
+            [
+              0.03,
+              -1.5964278567048404
+            ],
+            [
+              0.035,
+              -1.564996932636445
+            ],
+            [
+              0.04,
+              -1.5320311059707867
+            ],
+            [
+              0.045,
+              -1.498158535484435
+            ],
+            [
+              0.05,
+              -1.4638815033896393
+            ],
+            [
+              0.055,
+              -1.4295975638690477
+            ],
+            [
+              0.06,
+              -1.3956276080152936
+            ],
+            [
+              0.065,
+              -1.3622218360376268
+            ],
+            [
+              0.07,
+              -1.3295618607020363
+            ],
+            [
+              0.075,
+              -1.297778020188486
+            ],
+            [
+              0.08,
+              -1.2669638049285594
+            ],
+            [
+              0.085,
+              -1.2371871538526733
+            ],
+            [
+              0.09,
+              -1.2084946775582788
+            ],
+            [
+              0.095,
+              -1.180916038752094
+            ],
+            [
+              0.1,
+              -1.1544711010624162
+            ],
+            [
+              0.105,
+              -1.1291699371769455
+            ],
+            [
+              0.11,
+              -1.1050171988393194
+            ],
+            [
+              0.115,
+              -1.0820111037825744
+            ],
+            [
+              0.12,
+              -1.0601423818790963
+            ],
+            [
+              0.125,
+              -1.0393983729173704
+            ],
+            [
+              0.13,
+              -1.0197560609389449
+            ],
+            [
+              0.135,
+              -1.0011829503114074
+            ]
+          ],
+          "rosenstein_divergence_trajectory": [
+            [
+              0.0,
+              -1.7034572156930226
+            ],
+            [
+              1.0,
+              -1.7001936522599577
+            ],
+            [
+              2.0,
+              -1.6899379455211667
+            ],
+            [
+              3.0,
+              -1.6733761465823014
+            ],
+            [
+              4.0,
+              -1.651551848616836
+            ],
+            [
+              5.0,
+              -1.6255695092982008
+            ],
+            [
+              6.0,
+              -1.5964278567048404
+            ],
+            [
+              7.0,
+              -1.564996932636445
+            ],
+            [
+              8.0,
+              -1.5320311059707867
+            ],
+            [
+              9.0,
+              -1.498158535484435
+            ],
+            [
+              10.0,
+              -1.4638815033896393
+            ],
+            [
+              11.0,
+              -1.4295975638690477
+            ],
+            [
+              12.0,
+              -1.3956276080152936
+            ],
+            [
+              13.0,
+              -1.3622218360376268
+            ],
+            [
+              14.0,
+              -1.3295618607020363
+            ],
+            [
+              15.0,
+              -1.297778020188486
+            ],
+            [
+              16.0,
+              -1.2669638049285594
+            ],
+            [
+              17.0,
+              -1.2371871538526733
+            ],
+            [
+              18.0,
+              -1.2084946775582788
+            ],
+            [
+              19.0,
+              -1.180916038752094
+            ],
+            [
+              20.0,
+              -1.1544711010624162
+            ],
+            [
+              21.0,
+              -1.1291699371769455
+            ],
+            [
+              22.0,
+              -1.1050171988393194
+            ],
+            [
+              23.0,
+              -1.0820111037825744
+            ],
+            [
+              24.0,
+              -1.0601423818790963
+            ],
+            [
+              25.0,
+              -1.0393983729173704
+            ],
+            [
+              26.0,
+              -1.0197560609389449
+            ],
+            [
+              27.0,
+              -1.0011829503114074
+            ]
+          ],
+          "rosenstein_fit_r2": 0.9919798682737305,
+          "rosenstein_method": "nolds.lyap_r (Rosenstein et al. 1993)",
+          "rosenstein_parameters": {
+            "emb_dim": 5,
+            "fit": "poly",
+            "fit_offset": 8,
+            "lag": 5,
+            "min_neighbors": 20,
+            "min_tsep": 10,
+            "random_seed": 20260738,
+            "trajectory_len": 28
+          },
+          "rosenstein_slope_per_sample": 0.028240495085886747,
+          "sample_count": 4096,
+          "sample_interval": 0.005,
+          "sample_rate": 200.0,
+          "sequence_first": 2001,
+          "sequence_last": 6096,
+          "signal_sha256_float64_le": "4ed10d52d1f20e252d8b177a505406097923a07067df431dee45ea21ef7d3c5b",
+          "spectrum": [
+            4.154960208544455,
+            -0.12034858602333763,
+            -8.558376900004989,
+            -53.90483542223504,
+            -126.00052144785067
+          ],
+          "spectrum_status": "exploratory_nolds_eckmann_scalar_reconstruction",
+          "spectrum_sum": -184.4291221475696,
+          "time_unit": "model_time",
+          "warnings": [
+            "Finite-time estimates reconstructed from one scalar observable.",
+            "Results depend on sampling, delay embedding, neighborhood, and fit parameters.",
+            "The nolds Eckmann spectrum and derived Kaplan-Yorke dimension are exploratory.",
+            "These diagnostics do not certify chaos, asymptotic exponents, or hiddenness."
+          ],
+          "window_index": 0,
+          "window_role": "primary"
+        },
+        {
+          "analysis_id": "primary_window_2",
+          "backend": "nolds",
+          "backend_version": "0.6.3",
+          "eckmann_method": "nolds.lyap_e (Eckmann et al. 1986)",
+          "eckmann_parameters": {
+            "emb_dim": 5,
+            "matrix_dim": 5,
+            "min_neighbors": 8,
+            "min_tsep": 10
+          },
+          "estimated_pairwise_matrix_bytes": 132910208,
+          "evidence_status": "finite_time_time_series_diagnostic",
+          "exponent_unit": "model_time^-1",
+          "kaplan_yorke_dimension": 2.910341981968138,
+          "kaplan_yorke_status": "computed_from_exploratory_eckmann_spectrum",
+          "largest_exponent": 6.645303570764549,
+          "largest_sign_agrees_with_spectrum": true,
+          "model_time_span": 20.475,
+          "n_samples": 4096,
+          "observable": "x",
+          "parameter_contract": {
+            "eckmann_emb_dim": 5,
+            "eckmann_matrix_dim": 5,
+            "eckmann_min_neighbors": 8,
+            "eckmann_min_tsep": 10,
+            "rosenstein_emb_dim": 5,
+            "rosenstein_fit": "poly",
+            "rosenstein_fit_offset": 8,
+            "rosenstein_lag": 5,
+            "rosenstein_min_neighbors": 20,
+            "rosenstein_min_tsep": 10,
+            "rosenstein_trajectory_len": 28
+          },
+          "rosenstein_divergence_index_unit": "retained_sample_offset",
+          "rosenstein_divergence_time_trajectory": [
+            [
+              0.0,
+              -1.7387107554055787
+            ],
+            [
+              0.005,
+              -1.7345547936262247
+            ],
+            [
+              0.01,
+              -1.7231623404861005
+            ],
+            [
+              0.015,
+              -1.7050260936550388
+            ],
+            [
+              0.02,
+              -1.6809434213945154
+            ],
+            [
+              0.025,
+              -1.6519012500962225
+            ],
+            [
+              0.03,
+              -1.6189398369619117
+            ],
+            [
+              0.035,
+              -1.583048246216243
+            ],
+            [
+              0.04,
+              -1.5451013954672526
+            ],
+            [
+              0.045,
+              -1.505839369999778
+            ],
+            [
+              0.05,
+              -1.4658781590064538
+            ],
+            [
+              0.055,
+              -1.4257343266899396
+            ],
+            [
+              0.06,
+              -1.3858321338176807
+            ],
+            [
+              0.065,
+              -1.3464943057401493
+            ],
+            [
+              0.07,
+              -1.3079620119007023
+            ],
+            [
+              0.075,
+              -1.2704172805621656
+            ],
+            [
+              0.08,
+              -1.234001515140813
+            ],
+            [
+              0.085,
+              -1.1988209813175328
+            ],
+            [
+              0.09,
+              -1.1649514697011452
+            ],
+            [
+              0.095,
+              -1.1324411715759057
+            ],
+            [
+              0.1,
+              -1.1013185938987609
+            ],
+            [
+              0.105,
+              -1.071594195430082
+            ],
+            [
+              0.11,
+              -1.0432640404145792
+            ],
+            [
+              0.115,
+              -1.0163097743333969
+            ],
+            [
+              0.12,
+              -0.9907005123033605
+            ],
+            [
+              0.125,
+              -0.9663945858722628
+            ],
+            [
+              0.13,
+              -0.94334265674917
+            ],
+            [
+              0.135,
+              -0.9214859005669452
+            ]
+          ],
+          "rosenstein_divergence_trajectory": [
+            [
+              0.0,
+              -1.7387107554055787
+            ],
+            [
+              1.0,
+              -1.7345547936262247
+            ],
+            [
+              2.0,
+              -1.7231623404861005
+            ],
+            [
+              3.0,
+              -1.7050260936550388
+            ],
+            [
+              4.0,
+              -1.6809434213945154
+            ],
+            [
+              5.0,
+              -1.6519012500962225
+            ],
+            [
+              6.0,
+              -1.6189398369619117
+            ],
+            [
+              7.0,
+              -1.583048246216243
+            ],
+            [
+              8.0,
+              -1.5451013954672526
+            ],
+            [
+              9.0,
+              -1.505839369999778
+            ],
+            [
+              10.0,
+              -1.4658781590064538
+            ],
+            [
+              11.0,
+              -1.4257343266899396
+            ],
+            [
+              12.0,
+              -1.3858321338176807
+            ],
+            [
+              13.0,
+              -1.3464943057401493
+            ],
+            [
+              14.0,
+              -1.3079620119007023
+            ],
+            [
+              15.0,
+              -1.2704172805621656
+            ],
+            [
+              16.0,
+              -1.234001515140813
+            ],
+            [
+              17.0,
+              -1.1988209813175328
+            ],
+            [
+              18.0,
+              -1.1649514697011452
+            ],
+            [
+              19.0,
+              -1.1324411715759057
+            ],
+            [
+              20.0,
+              -1.1013185938987609
+            ],
+            [
+              21.0,
+              -1.071594195430082
+            ],
+            [
+              22.0,
+              -1.0432640404145792
+            ],
+            [
+              23.0,
+              -1.0163097743333969
+            ],
+            [
+              24.0,
+              -0.9907005123033605
+            ],
+            [
+              25.0,
+              -0.9663945858722628
+            ],
+            [
+              26.0,
+              -0.94334265674917
+            ],
+            [
+              27.0,
+              -0.9214859005669452
+            ]
+          ],
+          "rosenstein_fit_r2": 0.9919459816363319,
+          "rosenstein_method": "nolds.lyap_r (Rosenstein et al. 1993)",
+          "rosenstein_parameters": {
+            "emb_dim": 5,
+            "fit": "poly",
+            "fit_offset": 8,
+            "lag": 5,
+            "min_neighbors": 20,
+            "min_tsep": 10,
+            "random_seed": 20260739,
+            "trajectory_len": 28
+          },
+          "rosenstein_slope_per_sample": 0.033226517853822746,
+          "sample_count": 4096,
+          "sample_interval": 0.005,
+          "sample_rate": 200.0,
+          "sequence_first": 6097,
+          "sequence_last": 10192,
+          "signal_sha256_float64_le": "abbeae9369f9079a8073d5f89092f88d01317f6adfa435bb8effbf812593c53a",
+          "spectrum": [
+            5.1076251315937915,
+            0.8727507658383232,
+            -6.569372846567706,
+            -53.01470129281274,
+            -139.6787795692951
+          ],
+          "spectrum_status": "exploratory_nolds_eckmann_scalar_reconstruction",
+          "spectrum_sum": -193.28247781124344,
+          "time_unit": "model_time",
+          "warnings": [
+            "Finite-time estimates reconstructed from one scalar observable.",
+            "Results depend on sampling, delay embedding, neighborhood, and fit parameters.",
+            "The nolds Eckmann spectrum and derived Kaplan-Yorke dimension are exploratory.",
+            "These diagnostics do not certify chaos, asymptotic exponents, or hiddenness."
+          ],
+          "window_index": 1,
+          "window_role": "nonoverlapping_replication"
+        },
+        {
+          "analysis_id": "parameter_sensitivity_window_1",
+          "backend": "nolds",
+          "backend_version": "0.6.3",
+          "eckmann_method": "nolds.lyap_e (Eckmann et al. 1986)",
+          "eckmann_parameters": {
+            "emb_dim": 5,
+            "matrix_dim": 5,
+            "min_neighbors": 8,
+            "min_tsep": 20
+          },
+          "estimated_pairwise_matrix_bytes": 131609088,
+          "evidence_status": "finite_time_time_series_diagnostic",
+          "exponent_unit": "model_time^-1",
+          "kaplan_yorke_dimension": 2.4562933516487186,
+          "kaplan_yorke_status": "computed_from_exploratory_eckmann_spectrum",
+          "largest_exponent": 2.659160438936059,
+          "largest_sign_agrees_with_spectrum": true,
+          "model_time_span": 20.475,
+          "n_samples": 4096,
+          "observable": "x",
+          "parameter_contract": {
+            "eckmann_emb_dim": 5,
+            "eckmann_matrix_dim": 5,
+            "eckmann_min_neighbors": 8,
+            "eckmann_min_tsep": 20,
+            "rosenstein_emb_dim": 5,
+            "rosenstein_fit": "poly",
+            "rosenstein_fit_offset": 16,
+            "rosenstein_lag": 10,
+            "rosenstein_min_neighbors": 20,
+            "rosenstein_min_tsep": 20,
+            "rosenstein_trajectory_len": 56
+          },
+          "rosenstein_divergence_index_unit": "retained_sample_offset",
+          "rosenstein_divergence_time_trajectory": [
+            [
+              0.0,
+              -1.3885745988005516
+            ],
+            [
+              0.005,
+              -1.3875707871803202
+            ],
+            [
+              0.01,
+              -1.3846574493586503
+            ],
+            [
+              0.015,
+              -1.3798397719514919
+            ],
+            [
+              0.02,
+              -1.3731837274803154
+            ],
+            [
+              0.025,
+              -1.3648056356660057
+            ],
+            [
+              0.03,
+              -1.3548555779335643
+            ],
+            [
+              0.035,
+              -1.3435024594100795
+            ],
+            [
+              0.04,
+              -1.330921114565581
+            ],
+            [
+              0.045,
+              -1.3172876721800615
+            ],
+            [
+              0.05,
+              -1.302773937640936
+            ],
+            [
+              0.055,
+              -1.287542747686463
+            ],
+            [
+              0.06,
+              -1.271742136321613
+            ],
+            [
+              0.065,
+              -1.255507709636016
+            ],
+            [
+              0.07,
+              -1.2389603136772513
+            ],
+            [
+              0.075,
+              -1.2222076366559664
+            ],
+            [
+              0.08,
+              -1.2053462439186486
+            ],
+            [
+              0.085,
+              -1.1884596612838991
+            ],
+            [
+              0.09,
+              -1.1716189021681098
+            ],
+            [
+              0.095,
+              -1.1548833248271289
+            ],
+            [
+              0.1,
+              -1.1383001389250633
+            ],
+            [
+              0.105,
+              -1.1219065348205357
+            ],
+            [
+              0.11,
+              -1.105729268031549
+            ],
+            [
+              0.115,
+              -1.0897889355305885
+            ],
+            [
+              0.12,
+              -1.0740988855454021
+            ],
+            [
+              0.125,
+              -1.0586689815839678
+            ],
+            [
+              0.13,
+              -1.0435047745918202
+            ],
+            [
+              0.135,
+              -1.0286049664816401
+            ],
+            [
+              0.14,
+              -1.0139671396860437
+            ],
+            [
+              0.145,
+              -0.9995858035302992
+            ],
+            [
+              0.15,
+              -0.9854537202538213
+            ],
+            [
+              0.155,
+              -0.9715622759512392
+            ],
+            [
+              0.16,
+              -0.9578999625855453
+            ],
+            [
+              0.165,
+              -0.9444551722396521
+            ],
+            [
+              0.17,
+              -0.9312139233476711
+            ],
+            [
+              0.17500000000000002,
+              -0.9181639980675703
+            ],
+            [
+              0.18,
+              -0.9052923037398605
+            ],
+            [
+              0.185,
+              -0.8925828334377538
+            ],
+            [
+              0.19,
+              -0.8800213188997627
+            ],
+            [
+              0.195,
+              -0.8675934085609954
+            ],
+            [
+              0.2,
+              -0.8552860773861816
+            ],
+            [
+              0.20500000000000002,
+              -0.8430872972381629
+            ],
+            [
+              0.21,
+              -0.8309856746974315
+            ],
+            [
+              0.215,
+              -0.8189718954383881
+            ],
+            [
+              0.22,
+              -0.8070377300793122
+            ],
+            [
+              0.225,
+              -0.7951781611113998
+            ],
+            [
+              0.23,
+              -0.7833890710035246
+            ],
+            [
+              0.23500000000000001,
+              -0.7716659312129038
+            ],
+            [
+              0.24,
+              -0.7600064545952696
+            ],
+            [
+              0.245,
+              -0.7484092767046995
+            ],
+            [
+              0.25,
+              -0.7368737968409611
+            ],
+            [
+              0.255,
+              -0.7254002990903677
+            ],
+            [
+              0.26,
+              -0.7139874656069982
+            ],
+            [
+              0.265,
+              -0.7026355447813089
+            ],
+            [
+              0.27,
+              -0.6913451855552657
+            ],
+            [
+              0.275,
+              -0.6801160626236183
+            ]
+          ],
+          "rosenstein_divergence_trajectory": [
+            [
+              0.0,
+              -1.3885745988005516
+            ],
+            [
+              1.0,
+              -1.3875707871803202
+            ],
+            [
+              2.0,
+              -1.3846574493586503
+            ],
+            [
+              3.0,
+              -1.3798397719514919
+            ],
+            [
+              4.0,
+              -1.3731837274803154
+            ],
+            [
+              5.0,
+              -1.3648056356660057
+            ],
+            [
+              6.0,
+              -1.3548555779335643
+            ],
+            [
+              7.0,
+              -1.3435024594100795
+            ],
+            [
+              8.0,
+              -1.330921114565581
+            ],
+            [
+              9.0,
+              -1.3172876721800615
+            ],
+            [
+              10.0,
+              -1.302773937640936
+            ],
+            [
+              11.0,
+              -1.287542747686463
+            ],
+            [
+              12.0,
+              -1.271742136321613
+            ],
+            [
+              13.0,
+              -1.255507709636016
+            ],
+            [
+              14.0,
+              -1.2389603136772513
+            ],
+            [
+              15.0,
+              -1.2222076366559664
+            ],
+            [
+              16.0,
+              -1.2053462439186486
+            ],
+            [
+              17.0,
+              -1.1884596612838991
+            ],
+            [
+              18.0,
+              -1.1716189021681098
+            ],
+            [
+              19.0,
+              -1.1548833248271289
+            ],
+            [
+              20.0,
+              -1.1383001389250633
+            ],
+            [
+              21.0,
+              -1.1219065348205357
+            ],
+            [
+              22.0,
+              -1.105729268031549
+            ],
+            [
+              23.0,
+              -1.0897889355305885
+            ],
+            [
+              24.0,
+              -1.0740988855454021
+            ],
+            [
+              25.0,
+              -1.0586689815839678
+            ],
+            [
+              26.0,
+              -1.0435047745918202
+            ],
+            [
+              27.0,
+              -1.0286049664816401
+            ],
+            [
+              28.0,
+              -1.0139671396860437
+            ],
+            [
+              29.0,
+              -0.9995858035302992
+            ],
+            [
+              30.0,
+              -0.9854537202538213
+            ],
+            [
+              31.0,
+              -0.9715622759512392
+            ],
+            [
+              32.0,
+              -0.9578999625855453
+            ],
+            [
+              33.0,
+              -0.9444551722396521
+            ],
+            [
+              34.0,
+              -0.9312139233476711
+            ],
+            [
+              35.0,
+              -0.9181639980675703
+            ],
+            [
+              36.0,
+              -0.9052923037398605
+            ],
+            [
+              37.0,
+              -0.8925828334377538
+            ],
+            [
+              38.0,
+              -0.8800213188997627
+            ],
+            [
+              39.0,
+              -0.8675934085609954
+            ],
+            [
+              40.0,
+              -0.8552860773861816
+            ],
+            [
+              41.0,
+              -0.8430872972381629
+            ],
+            [
+              42.0,
+              -0.8309856746974315
+            ],
+            [
+              43.0,
+              -0.8189718954383881
+            ],
+            [
+              44.0,
+              -0.8070377300793122
+            ],
+            [
+              45.0,
+              -0.7951781611113998
+            ],
+            [
+              46.0,
+              -0.7833890710035246
+            ],
+            [
+              47.0,
+              -0.7716659312129038
+            ],
+            [
+              48.0,
+              -0.7600064545952696
+            ],
+            [
+              49.0,
+              -0.7484092767046995
+            ],
+            [
+              50.0,
+              -0.7368737968409611
+            ],
+            [
+              51.0,
+              -0.7254002990903677
+            ],
+            [
+              52.0,
+              -0.7139874656069982
+            ],
+            [
+              53.0,
+              -0.7026355447813089
+            ],
+            [
+              54.0,
+              -0.6913451855552657
+            ],
+            [
+              55.0,
+              -0.6801160626236183
+            ]
+          ],
+          "rosenstein_fit_r2": 0.9957933649829458,
+          "rosenstein_method": "nolds.lyap_r (Rosenstein et al. 1993)",
+          "rosenstein_parameters": {
+            "emb_dim": 5,
+            "fit": "poly",
+            "fit_offset": 16,
+            "lag": 10,
+            "min_neighbors": 20,
+            "min_tsep": 20,
+            "random_seed": 20260740,
+            "trajectory_len": 56
+          },
+          "rosenstein_slope_per_sample": 0.013295802194680295,
+          "sample_count": 4096,
+          "sample_interval": 0.005,
+          "sample_rate": 200.0,
+          "sequence_first": 2001,
+          "sequence_last": 6096,
+          "signal_sha256_float64_le": "4ed10d52d1f20e252d8b177a505406097923a07067df431dee45ea21ef7d3c5b",
+          "spectrum": [
+            3.918621184998287,
+            -0.021605133301906866,
+            -8.540593540570656,
+            -54.391973035696616,
+            -126.69384931471717
+          ],
+          "spectrum_status": "exploratory_nolds_eckmann_scalar_reconstruction",
+          "spectrum_sum": -185.72939983928808,
+          "time_unit": "model_time",
+          "warnings": [
+            "Finite-time estimates reconstructed from one scalar observable.",
+            "Results depend on sampling, delay embedding, neighborhood, and fit parameters.",
+            "The nolds Eckmann spectrum and derived Kaplan-Yorke dimension are exploratory.",
+            "These diagnostics do not certify chaos, asymptotic exponents, or hiddenness."
+          ],
+          "window_index": 0,
+          "window_role": "parameter_sensitivity"
+        }
+      ],
+      "firmware_source_commit": "66c56aa8a4faa0c7389e224da9aec4721038acb8",
+      "firmware_source_dirty": false,
+      "fractional_order_q": 0.995,
+      "integration_method": "m2sfrk",
+      "interpretation": "exploratory dense-UART finite-time scalar diagnostic; Lorenz failed the frozen ABM qualification",
+      "kind": 3,
+      "model_step": 0.005,
+      "observable": "x",
+      "representation": "fixed_q14_q30",
+      "run_json": "validation/results/dense_uart_capture/stm32_dense_lorenz_m2sfrk_4cells_v1/runs/stm32_dense_lorenz_m2sfrk_4cells_v1__r01__lorenz_m2sfrk_f746_fixed__11cfcb5da0__dense-timeseries-pilot/run.json",
+      "run_json_sha256": "0dcf40b23539df4dcb7a3cfa3dc42c193dbdef3833c2c560aa47899e08947ffe",
+      "system": "lorenz",
+      "two_window_summary": {
+        "interpretation": "two non-overlapping finite windows; not an uncertainty interval or asymptotic convergence study",
+        "kaplan_yorke_max": 2.910341981968138,
+        "kaplan_yorke_min": 2.4714225220110095,
+        "largest_exponent_max": 6.645303570764549,
+        "largest_exponent_min": 5.6480990171773495,
+        "spectrum_component_max": [
+          5.1076251315937915,
+          0.8727507658383232,
+          -6.569372846567706,
+          -53.01470129281274,
+          -126.00052144785067
+        ],
+        "spectrum_component_min": [
+          4.154960208544455,
+          -0.12034858602333763,
+          -8.558376900004989,
+          -53.90483542223504,
+          -139.6787795692951
+        ]
+      }
+    },
+    {
+      "board": "h755",
+      "capture_csv": "validation/results/dense_uart_capture/stm32_dense_lorenz_m2sfrk_4cells_v1/runs/stm32_dense_lorenz_m2sfrk_4cells_v1__r01__lorenz_m2sfrk_h755_float32__18199d4847__dense-timeseries-pilot/capture.csv",
+      "capture_csv_bytes": 1977736,
+      "capture_csv_sha256": "f27800a1bd0961839b3ba08991b33fae7cf528de2b2a0c01172f4588b7b8a5f9",
+      "capture_manifest_sha256": "e4cb0a7f080ac6b6485209b407f55e72cc76fe370eacec922249bc8f6112575d",
+      "capture_raw": "validation/results/dense_uart_capture/stm32_dense_lorenz_m2sfrk_4cells_v1/runs/stm32_dense_lorenz_m2sfrk_4cells_v1__r01__lorenz_m2sfrk_h755_float32__18199d4847__dense-timeseries-pilot/capture.bin",
+      "capture_raw_bytes": 480000,
+      "capture_raw_sha256": "054bc77f34d8b97de322495cfb2ee439878e4e577947724b05fca562082e20a7",
+      "capture_sequence_xyz_bits_sha256_le": "e5c8c371832aa791e5bbb92f698cda92516329718d698c2fb429a8033b18f597",
+      "capture_state_word_samples": 12000,
+      "captured_sequences": [
+        1,
+        12000
+      ],
+      "case_id": "h755_float32",
+      "claim_eligible": false,
+      "csv_representation": "float32",
+      "discarded_transient_sequences": [
+        1,
+        2000
+      ],
+      "evaluations": [
+        {
+          "analysis_id": "primary_window_1",
+          "backend": "nolds",
+          "backend_version": "0.6.3",
+          "eckmann_method": "nolds.lyap_e (Eckmann et al. 1986)",
+          "eckmann_parameters": {
+            "emb_dim": 5,
+            "matrix_dim": 5,
+            "min_neighbors": 8,
+            "min_tsep": 10
+          },
+          "estimated_pairwise_matrix_bytes": 132910208,
+          "evidence_status": "finite_time_time_series_diagnostic",
+          "exponent_unit": "model_time^-1",
+          "kaplan_yorke_dimension": 2.2180673528332595,
+          "kaplan_yorke_status": "computed_from_exploratory_eckmann_spectrum",
+          "largest_exponent": 7.018190566175359,
+          "largest_sign_agrees_with_spectrum": true,
+          "model_time_span": 20.475,
+          "n_samples": 4096,
+          "observable": "x",
+          "parameter_contract": {
+            "eckmann_emb_dim": 5,
+            "eckmann_matrix_dim": 5,
+            "eckmann_min_neighbors": 8,
+            "eckmann_min_tsep": 10,
+            "rosenstein_emb_dim": 5,
+            "rosenstein_fit": "poly",
+            "rosenstein_fit_offset": 8,
+            "rosenstein_lag": 5,
+            "rosenstein_min_neighbors": 20,
+            "rosenstein_min_tsep": 10,
+            "rosenstein_trajectory_len": 28
+          },
+          "rosenstein_divergence_index_unit": "retained_sample_offset",
+          "rosenstein_divergence_time_trajectory": [
+            [
+              0.0,
+              -1.38351094543542
+            ],
+            [
+              0.005,
+              -1.3796169272170264
+            ],
+            [
+              0.01,
+              -1.3675327155618193
+            ],
+            [
+              0.015,
+              -1.3479098400832243
+            ],
+            [
+              0.02,
+              -1.3217180017682046
+            ],
+            [
+              0.025,
+              -1.2900472110169998
+            ],
+            [
+              0.03,
+              -1.2539986600518154
+            ],
+            [
+              0.035,
+              -1.2146432425976752
+            ],
+            [
+              0.04,
+              -1.1729895687146006
+            ],
+            [
+              0.045,
+              -1.1299398964772234
+            ],
+            [
+              0.05,
+              -1.0862521755512788
+            ],
+            [
+              0.055,
+              -1.0425301498796942
+            ],
+            [
+              0.06,
+              -0.9992390368205241
+            ],
+            [
+              0.065,
+              -0.9567315793504256
+            ],
+            [
+              0.07,
+              -0.9152726534798729
+            ],
+            [
+              0.075,
+              -0.8750594611553966
+            ],
+            [
+              0.08,
+              -0.8362377234871363
+            ],
+            [
+              0.085,
+              -0.7989140636796117
+            ],
+            [
+              0.09,
+              -0.7631646178109174
+            ],
+            [
+              0.095,
+              -0.729040458236751
+            ],
+            [
+              0.1,
+              -0.6965706845626785
+            ],
+            [
+              0.105,
+              -0.6657641697652508
+            ],
+            [
+              0.11,
+              -0.636610880620521
+            ],
+            [
+              0.115,
+              -0.6090835574016175
+            ],
+            [
+              0.12,
+              -0.5831402254273412
+            ],
+            [
+              0.125,
+              -0.5587273981776628
+            ],
+            [
+              0.13,
+              -0.5357833331484708
+            ],
+            [
+              0.135,
+              -0.514240940439357
+            ]
+          ],
+          "rosenstein_divergence_trajectory": [
+            [
+              0.0,
+              -1.38351094543542
+            ],
+            [
+              1.0,
+              -1.3796169272170264
+            ],
+            [
+              2.0,
+              -1.3675327155618193
+            ],
+            [
+              3.0,
+              -1.3479098400832243
+            ],
+            [
+              4.0,
+              -1.3217180017682046
+            ],
+            [
+              5.0,
+              -1.2900472110169998
+            ],
+            [
+              6.0,
+              -1.2539986600518154
+            ],
+            [
+              7.0,
+              -1.2146432425976752
+            ],
+            [
+              8.0,
+              -1.1729895687146006
+            ],
+            [
+              9.0,
+              -1.1299398964772234
+            ],
+            [
+              10.0,
+              -1.0862521755512788
+            ],
+            [
+              11.0,
+              -1.0425301498796942
+            ],
+            [
+              12.0,
+              -0.9992390368205241
+            ],
+            [
+              13.0,
+              -0.9567315793504256
+            ],
+            [
+              14.0,
+              -0.9152726534798729
+            ],
+            [
+              15.0,
+              -0.8750594611553966
+            ],
+            [
+              16.0,
+              -0.8362377234871363
+            ],
+            [
+              17.0,
+              -0.7989140636796117
+            ],
+            [
+              18.0,
+              -0.7631646178109174
+            ],
+            [
+              19.0,
+              -0.729040458236751
+            ],
+            [
+              20.0,
+              -0.6965706845626785
+            ],
+            [
+              21.0,
+              -0.6657641697652508
+            ],
+            [
+              22.0,
+              -0.636610880620521
+            ],
+            [
+              23.0,
+              -0.6090835574016175
+            ],
+            [
+              24.0,
+              -0.5831402254273412
+            ],
+            [
+              25.0,
+              -0.5587273981776628
+            ],
+            [
+              26.0,
+              -0.5357833331484708
+            ],
+            [
+              27.0,
+              -0.514240940439357
+            ]
+          ],
+          "rosenstein_fit_r2": 0.9893862141041158,
+          "rosenstein_method": "nolds.lyap_r (Rosenstein et al. 1993)",
+          "rosenstein_parameters": {
+            "emb_dim": 5,
+            "fit": "poly",
+            "fit_offset": 8,
+            "lag": 5,
+            "min_neighbors": 20,
+            "min_tsep": 10,
+            "random_seed": 20260748,
+            "trajectory_len": 28
+          },
+          "rosenstein_slope_per_sample": 0.03509095283087679,
+          "sample_count": 4096,
+          "sample_interval": 0.005,
+          "sample_rate": 200.0,
+          "sequence_first": 2001,
+          "sequence_last": 6096,
+          "signal_sha256_float64_le": "4548dffd4df0242006e5d022a0093f8279b080c69153be36a8101e98ce5f24ba",
+          "spectrum": [
+            1.492240237317632,
+            0.15136828013123238,
+            -7.537159946659291,
+            -17.353261890204486,
+            -131.2394440188447
+          ],
+          "spectrum_status": "exploratory_nolds_eckmann_scalar_reconstruction",
+          "spectrum_sum": -154.4862573382596,
+          "time_unit": "model_time",
+          "warnings": [
+            "Finite-time estimates reconstructed from one scalar observable.",
+            "Results depend on sampling, delay embedding, neighborhood, and fit parameters.",
+            "The nolds Eckmann spectrum and derived Kaplan-Yorke dimension are exploratory.",
+            "These diagnostics do not certify chaos, asymptotic exponents, or hiddenness."
+          ],
+          "window_index": 0,
+          "window_role": "primary"
+        },
+        {
+          "analysis_id": "primary_window_2",
+          "backend": "nolds",
+          "backend_version": "0.6.3",
+          "eckmann_method": "nolds.lyap_e (Eckmann et al. 1986)",
+          "eckmann_parameters": {
+            "emb_dim": 5,
+            "matrix_dim": 5,
+            "min_neighbors": 8,
+            "min_tsep": 10
+          },
+          "estimated_pairwise_matrix_bytes": 132910208,
+          "evidence_status": "finite_time_time_series_diagnostic",
+          "exponent_unit": "model_time^-1",
+          "kaplan_yorke_dimension": 2.286449140293354,
+          "kaplan_yorke_status": "computed_from_exploratory_eckmann_spectrum",
+          "largest_exponent": 6.00862246996508,
+          "largest_sign_agrees_with_spectrum": true,
+          "model_time_span": 20.475,
+          "n_samples": 4096,
+          "observable": "x",
+          "parameter_contract": {
+            "eckmann_emb_dim": 5,
+            "eckmann_matrix_dim": 5,
+            "eckmann_min_neighbors": 8,
+            "eckmann_min_tsep": 10,
+            "rosenstein_emb_dim": 5,
+            "rosenstein_fit": "poly",
+            "rosenstein_fit_offset": 8,
+            "rosenstein_lag": 5,
+            "rosenstein_min_neighbors": 20,
+            "rosenstein_min_tsep": 10,
+            "rosenstein_trajectory_len": 28
+          },
+          "rosenstein_divergence_index_unit": "retained_sample_offset",
+          "rosenstein_divergence_time_trajectory": [
+            [
+              0.0,
+              -1.7550684170232953
+            ],
+            [
+              0.005,
+              -1.751986154003584
+            ],
+            [
+              0.01,
+              -1.7428889933619967
+            ],
+            [
+              0.015,
+              -1.7281643242493405
+            ],
+            [
+              0.02,
+              -1.7084053825105006
+            ],
+            [
+              0.025,
+              -1.6843191507356972
+            ],
+            [
+              0.03,
+              -1.6566589190163703
+            ],
+            [
+              0.035,
+              -1.6261788307827638
+            ],
+            [
+              0.04,
+              -1.5935980753560823
+            ],
+            [
+              0.045,
+              -1.5595772389292417
+            ],
+            [
+              0.05,
+              -1.524701356714538
+            ],
+            [
+              0.055,
+              -1.4894555803660772
+            ],
+            [
+              0.06,
+              -1.4542162780497037
+            ],
+            [
+              0.065,
+              -1.4192707139127574
+            ],
+            [
+              0.07,
+              -1.3848425152764854
+            ],
+            [
+              0.075,
+              -1.3511095624196634
+            ],
+            [
+              0.08,
+              -1.318215347267587
+            ],
+            [
+              0.085,
+              -1.2862766496449896
+            ],
+            [
+              0.09,
+              -1.2553889040880615
+            ],
+            [
+              0.095,
+              -1.225629461342673
+            ],
+            [
+              0.1,
+              -1.1970590078914165
+            ],
+            [
+              0.105,
+              -1.1697217029636633
+            ],
+            [
+              0.11,
+              -1.1436445861112756
+            ],
+            [
+              0.115,
+              -1.1188370535075625
+            ],
+            [
+              0.12,
+              -1.0952910257019763
+            ],
+            [
+              0.125,
+              -1.0729824380591375
+            ],
+            [
+              0.13,
+              -1.0518740309164927
+            ],
+            [
+              0.135,
+              -1.0319185271325464
+            ]
+          ],
+          "rosenstein_divergence_trajectory": [
+            [
+              0.0,
+              -1.7550684170232953
+            ],
+            [
+              1.0,
+              -1.751986154003584
+            ],
+            [
+              2.0,
+              -1.7428889933619967
+            ],
+            [
+              3.0,
+              -1.7281643242493405
+            ],
+            [
+              4.0,
+              -1.7084053825105006
+            ],
+            [
+              5.0,
+              -1.6843191507356972
+            ],
+            [
+              6.0,
+              -1.6566589190163703
+            ],
+            [
+              7.0,
+              -1.6261788307827638
+            ],
+            [
+              8.0,
+              -1.5935980753560823
+            ],
+            [
+              9.0,
+              -1.5595772389292417
+            ],
+            [
+              10.0,
+              -1.524701356714538
+            ],
+            [
+              11.0,
+              -1.4894555803660772
+            ],
+            [
+              12.0,
+              -1.4542162780497037
+            ],
+            [
+              13.0,
+              -1.4192707139127574
+            ],
+            [
+              14.0,
+              -1.3848425152764854
+            ],
+            [
+              15.0,
+              -1.3511095624196634
+            ],
+            [
+              16.0,
+              -1.318215347267587
+            ],
+            [
+              17.0,
+              -1.2862766496449896
+            ],
+            [
+              18.0,
+              -1.2553889040880615
+            ],
+            [
+              19.0,
+              -1.225629461342673
+            ],
+            [
+              20.0,
+              -1.1970590078914165
+            ],
+            [
+              21.0,
+              -1.1697217029636633
+            ],
+            [
+              22.0,
+              -1.1436445861112756
+            ],
+            [
+              23.0,
+              -1.1188370535075625
+            ],
+            [
+              24.0,
+              -1.0952910257019763
+            ],
+            [
+              25.0,
+              -1.0729824380591375
+            ],
+            [
+              26.0,
+              -1.0518740309164927
+            ],
+            [
+              27.0,
+              -1.0319185271325464
+            ]
+          ],
+          "rosenstein_fit_r2": 0.9933319693379523,
+          "rosenstein_method": "nolds.lyap_r (Rosenstein et al. 1993)",
+          "rosenstein_parameters": {
+            "emb_dim": 5,
+            "fit": "poly",
+            "fit_offset": 8,
+            "lag": 5,
+            "min_neighbors": 20,
+            "min_tsep": 10,
+            "random_seed": 20260749,
+            "trajectory_len": 28
+          },
+          "rosenstein_slope_per_sample": 0.0300431123498254,
+          "sample_count": 4096,
+          "sample_interval": 0.005,
+          "sample_rate": 200.0,
+          "sequence_first": 6097,
+          "sequence_last": 10192,
+          "signal_sha256_float64_le": "ee511d1168c34f66890d292c13fbf9f7a95d4227ed4c197ced5f7d2b83b8bdc7",
+          "spectrum": [
+            1.5074079744819402,
+            0.2743306804216461,
+            -6.220087283483893,
+            -17.048650234336446,
+            -132.08048424790442
+          ],
+          "spectrum_status": "exploratory_nolds_eckmann_scalar_reconstruction",
+          "spectrum_sum": -153.56748311082117,
+          "time_unit": "model_time",
+          "warnings": [
+            "Finite-time estimates reconstructed from one scalar observable.",
+            "Results depend on sampling, delay embedding, neighborhood, and fit parameters.",
+            "The nolds Eckmann spectrum and derived Kaplan-Yorke dimension are exploratory.",
+            "These diagnostics do not certify chaos, asymptotic exponents, or hiddenness."
+          ],
+          "window_index": 1,
+          "window_role": "nonoverlapping_replication"
+        },
+        {
+          "analysis_id": "parameter_sensitivity_window_1",
+          "backend": "nolds",
+          "backend_version": "0.6.3",
+          "eckmann_method": "nolds.lyap_e (Eckmann et al. 1986)",
+          "eckmann_parameters": {
+            "emb_dim": 5,
+            "matrix_dim": 5,
+            "min_neighbors": 8,
+            "min_tsep": 20
+          },
+          "estimated_pairwise_matrix_bytes": 131609088,
+          "evidence_status": "finite_time_time_series_diagnostic",
+          "exponent_unit": "model_time^-1",
+          "kaplan_yorke_dimension": 2.2329253514118976,
+          "kaplan_yorke_status": "computed_from_exploratory_eckmann_spectrum",
+          "largest_exponent": 2.902783788801521,
+          "largest_sign_agrees_with_spectrum": true,
+          "model_time_span": 20.475,
+          "n_samples": 4096,
+          "observable": "x",
+          "parameter_contract": {
+            "eckmann_emb_dim": 5,
+            "eckmann_matrix_dim": 5,
+            "eckmann_min_neighbors": 8,
+            "eckmann_min_tsep": 20,
+            "rosenstein_emb_dim": 5,
+            "rosenstein_fit": "poly",
+            "rosenstein_fit_offset": 16,
+            "rosenstein_lag": 10,
+            "rosenstein_min_neighbors": 20,
+            "rosenstein_min_tsep": 20,
+            "rosenstein_trajectory_len": 56
+          },
+          "rosenstein_divergence_index_unit": "retained_sample_offset",
+          "rosenstein_divergence_time_trajectory": [
+            [
+              0.0,
+              -0.9989614313793168
+            ],
+            [
+              0.005,
+              -0.9981567401961788
+            ],
+            [
+              0.01,
+              -0.9952176892288629
+            ],
+            [
+              0.015,
+              -0.9901900753316488
+            ],
+            [
+              0.02,
+              -0.9831570176677141
+            ],
+            [
+              0.025,
+              -0.974231087240999
+            ],
+            [
+              0.03,
+              -0.9635486068179775
+            ],
+            [
+              0.035,
+              -0.9512667112558981
+            ],
+            [
+              0.04,
+              -0.9375608913715248
+            ],
+            [
+              0.045,
+              -0.9226201268425521
+            ],
+            [
+              0.05,
+              -0.9066388461802651
+            ],
+            [
+              0.055,
+              -0.8898079969904252
+            ],
+            [
+              0.06,
+              -0.8723081581475882
+            ],
+            [
+              0.065,
+              -0.854305374178716
+            ],
+            [
+              0.07,
+              -0.8359487269189891
+            ],
+            [
+              0.075,
+              -0.8173689947654077
+            ],
+            [
+              0.08,
+              -0.79867848307846
+            ],
+            [
+              0.085,
+              -0.779972100836825
+            ],
+            [
+              0.09,
+              -0.7613292332110669
+            ],
+            [
+              0.095,
+              -0.7428158012863224
+            ],
+            [
+              0.1,
+              -0.7244860688993139
+            ],
+            [
+              0.105,
+              -0.7063841299600173
+            ],
+            [
+              0.11,
+              -0.6885449883013706
+            ],
+            [
+              0.115,
+              -0.6709953888604314
+            ],
+            [
+              0.12,
+              -0.6537544306839945
+            ],
+            [
+              0.125,
+              -0.63683415980471
+            ],
+            [
+              0.13,
+              -0.6202401601290161
+            ],
+            [
+              0.135,
+              -0.6039722231124036
+            ],
+            [
+              0.14,
+              -0.5880251188231754
+            ],
+            [
+              0.145,
+              -0.5723894104613622
+            ],
+            [
+              0.15,
+              -0.5570522322066738
+            ],
+            [
+              0.155,
+              -0.5419980828766767
+            ],
+            [
+              0.16,
+              -0.5272095014825454
+            ],
+            [
+              0.165,
+              -0.5126677152678926
+            ],
+            [
+              0.17,
+              -0.49835318751429436
+            ],
+            [
+              0.17500000000000002,
+              -0.4842461227933492
+            ],
+            [
+              0.18,
+              -0.47032688105439296
+            ],
+            [
+              0.185,
+              -0.45657629621015156
+            ],
+            [
+              0.19,
+              -0.4429759525071381
+            ],
+            [
+              0.195,
+              -0.42950838510666617
+            ],
+            [
+              0.2,
+              -0.41615721605507555
+            ],
+            [
+              0.20500000000000002,
+              -0.40290727525641035
+            ],
+            [
+              0.21,
+              -0.3897446541841529
+            ],
+            [
+              0.215,
+              -0.37665676642907164
+            ],
+            [
+              0.22,
+              -0.3636323670384843
+            ],
+            [
+              0.225,
+              -0.3506616065609193
+            ],
+            [
+              0.23,
+              -0.3377360656701707
+            ],
+            [
+              0.23500000000000001,
+              -0.3248487948098356
+            ],
+            [
+              0.24,
+              -0.3119943729240059
+            ],
+            [
+              0.245,
+              -0.29916893536643213
+            ],
+            [
+              0.25,
+              -0.28637014197905514
+            ],
+            [
+              0.255,
+              -0.273597152928586
+            ],
+            [
+              0.26,
+              -0.2608505205752884
+            ],
+            [
+              0.265,
+              -0.24813201166062226
+            ],
+            [
+              0.27,
+              -0.23544438566378104
+            ],
+            [
+              0.275,
+              -0.22279112596656062
+            ]
+          ],
+          "rosenstein_divergence_trajectory": [
+            [
+              0.0,
+              -0.9989614313793168
+            ],
+            [
+              1.0,
+              -0.9981567401961788
+            ],
+            [
+              2.0,
+              -0.9952176892288629
+            ],
+            [
+              3.0,
+              -0.9901900753316488
+            ],
+            [
+              4.0,
+              -0.9831570176677141
+            ],
+            [
+              5.0,
+              -0.974231087240999
+            ],
+            [
+              6.0,
+              -0.9635486068179775
+            ],
+            [
+              7.0,
+              -0.9512667112558981
+            ],
+            [
+              8.0,
+              -0.9375608913715248
+            ],
+            [
+              9.0,
+              -0.9226201268425521
+            ],
+            [
+              10.0,
+              -0.9066388461802651
+            ],
+            [
+              11.0,
+              -0.8898079969904252
+            ],
+            [
+              12.0,
+              -0.8723081581475882
+            ],
+            [
+              13.0,
+              -0.854305374178716
+            ],
+            [
+              14.0,
+              -0.8359487269189891
+            ],
+            [
+              15.0,
+              -0.8173689947654077
+            ],
+            [
+              16.0,
+              -0.79867848307846
+            ],
+            [
+              17.0,
+              -0.779972100836825
+            ],
+            [
+              18.0,
+              -0.7613292332110669
+            ],
+            [
+              19.0,
+              -0.7428158012863224
+            ],
+            [
+              20.0,
+              -0.7244860688993139
+            ],
+            [
+              21.0,
+              -0.7063841299600173
+            ],
+            [
+              22.0,
+              -0.6885449883013706
+            ],
+            [
+              23.0,
+              -0.6709953888604314
+            ],
+            [
+              24.0,
+              -0.6537544306839945
+            ],
+            [
+              25.0,
+              -0.63683415980471
+            ],
+            [
+              26.0,
+              -0.6202401601290161
+            ],
+            [
+              27.0,
+              -0.6039722231124036
+            ],
+            [
+              28.0,
+              -0.5880251188231754
+            ],
+            [
+              29.0,
+              -0.5723894104613622
+            ],
+            [
+              30.0,
+              -0.5570522322066738
+            ],
+            [
+              31.0,
+              -0.5419980828766767
+            ],
+            [
+              32.0,
+              -0.5272095014825454
+            ],
+            [
+              33.0,
+              -0.5126677152678926
+            ],
+            [
+              34.0,
+              -0.49835318751429436
+            ],
+            [
+              35.0,
+              -0.4842461227933492
+            ],
+            [
+              36.0,
+              -0.47032688105439296
+            ],
+            [
+              37.0,
+              -0.45657629621015156
+            ],
+            [
+              38.0,
+              -0.4429759525071381
+            ],
+            [
+              39.0,
+              -0.42950838510666617
+            ],
+            [
+              40.0,
+              -0.41615721605507555
+            ],
+            [
+              41.0,
+              -0.40290727525641035
+            ],
+            [
+              42.0,
+              -0.3897446541841529
+            ],
+            [
+              43.0,
+              -0.37665676642907164
+            ],
+            [
+              44.0,
+              -0.3636323670384843
+            ],
+            [
+              45.0,
+              -0.3506616065609193
+            ],
+            [
+              46.0,
+              -0.3377360656701707
+            ],
+            [
+              47.0,
+              -0.3248487948098356
+            ],
+            [
+              48.0,
+              -0.3119943729240059
+            ],
+            [
+              49.0,
+              -0.29916893536643213
+            ],
+            [
+              50.0,
+              -0.28637014197905514
+            ],
+            [
+              51.0,
+              -0.273597152928586
+            ],
+            [
+              52.0,
+              -0.2608505205752884
+            ],
+            [
+              53.0,
+              -0.24813201166062226
+            ],
+            [
+              54.0,
+              -0.23544438566378104
+            ],
+            [
+              55.0,
+              -0.22279112596656062
+            ]
+          ],
+          "rosenstein_fit_r2": 0.995773568829051,
+          "rosenstein_method": "nolds.lyap_r (Rosenstein et al. 1993)",
+          "rosenstein_parameters": {
+            "emb_dim": 5,
+            "fit": "poly",
+            "fit_offset": 16,
+            "lag": 10,
+            "min_neighbors": 20,
+            "min_tsep": 20,
+            "random_seed": 20260750,
+            "trajectory_len": 56
+          },
+          "rosenstein_slope_per_sample": 0.014513918944007605,
+          "sample_count": 4096,
+          "sample_interval": 0.005,
+          "sample_rate": 200.0,
+          "sequence_first": 2001,
+          "sequence_last": 6096,
+          "signal_sha256_float64_le": "4548dffd4df0242006e5d022a0093f8279b080c69153be36a8101e98ce5f24ba",
+          "spectrum": [
+            1.520879265432421,
+            0.22816039297391175,
+            -7.509013715357194,
+            -17.72243944251974,
+            -130.57902796232435
+          ],
+          "spectrum_status": "exploratory_nolds_eckmann_scalar_reconstruction",
+          "spectrum_sum": -154.06144146179494,
+          "time_unit": "model_time",
+          "warnings": [
+            "Finite-time estimates reconstructed from one scalar observable.",
+            "Results depend on sampling, delay embedding, neighborhood, and fit parameters.",
+            "The nolds Eckmann spectrum and derived Kaplan-Yorke dimension are exploratory.",
+            "These diagnostics do not certify chaos, asymptotic exponents, or hiddenness."
+          ],
+          "window_index": 0,
+          "window_role": "parameter_sensitivity"
+        }
+      ],
+      "firmware_source_commit": "66c56aa8a4faa0c7389e224da9aec4721038acb8",
+      "firmware_source_dirty": false,
+      "fractional_order_q": 0.995,
+      "integration_method": "m2sfrk",
+      "interpretation": "exploratory dense-UART finite-time scalar diagnostic; Lorenz failed the frozen ABM qualification",
+      "kind": 1,
+      "model_step": 0.005,
+      "observable": "x",
+      "representation": "float32",
+      "run_json": "validation/results/dense_uart_capture/stm32_dense_lorenz_m2sfrk_4cells_v1/runs/stm32_dense_lorenz_m2sfrk_4cells_v1__r01__lorenz_m2sfrk_h755_float32__18199d4847__dense-timeseries-pilot/run.json",
+      "run_json_sha256": "2a34303eda4f977dc89cee3ce38723d062cd0f4270d2139ad50f7087b95f6486",
+      "system": "lorenz",
+      "two_window_summary": {
+        "interpretation": "two non-overlapping finite windows; not an uncertainty interval or asymptotic convergence study",
+        "kaplan_yorke_max": 2.286449140293354,
+        "kaplan_yorke_min": 2.2180673528332595,
+        "largest_exponent_max": 7.018190566175359,
+        "largest_exponent_min": 6.00862246996508,
+        "spectrum_component_max": [
+          1.5074079744819402,
+          0.2743306804216461,
+          -6.220087283483893,
+          -17.048650234336446,
+          -131.2394440188447
+        ],
+        "spectrum_component_min": [
+          1.492240237317632,
+          0.15136828013123238,
+          -7.537159946659291,
+          -17.353261890204486,
+          -132.08048424790442
+        ]
+      }
+    },
+    {
+      "board": "h755",
+      "capture_csv": "validation/results/dense_uart_capture/stm32_dense_lorenz_m2sfrk_4cells_v1/runs/stm32_dense_lorenz_m2sfrk_4cells_v1__r01__lorenz_m2sfrk_h755_fixed__a03d710f4d__dense-timeseries-pilot/capture.csv",
+      "capture_csv_bytes": 2150858,
+      "capture_csv_sha256": "014db2d9b84b14426d048ebdb21bc4a117d280792708634fdcdf0e55e03e68fa",
+      "capture_manifest_sha256": "e4cb0a7f080ac6b6485209b407f55e72cc76fe370eacec922249bc8f6112575d",
+      "capture_raw": "validation/results/dense_uart_capture/stm32_dense_lorenz_m2sfrk_4cells_v1/runs/stm32_dense_lorenz_m2sfrk_4cells_v1__r01__lorenz_m2sfrk_h755_fixed__a03d710f4d__dense-timeseries-pilot/capture.bin",
+      "capture_raw_bytes": 480000,
+      "capture_raw_sha256": "3c9cf146864d73309bcdd5c68bc341da4a611b0d3a1b42605a9b81b6f862832c",
+      "capture_sequence_xyz_bits_sha256_le": "f9befcd1c995ec763e68d0487e20ef9ce701d4f40985a235fb88d8a6bf27df1d",
+      "capture_state_word_samples": 12000,
+      "captured_sequences": [
+        1,
+        12000
+      ],
+      "case_id": "h755_fixed_q14_q30",
+      "claim_eligible": false,
+      "csv_representation": "fixed_q14",
+      "discarded_transient_sequences": [
+        1,
+        2000
+      ],
+      "evaluations": [
+        {
+          "analysis_id": "primary_window_1",
+          "backend": "nolds",
+          "backend_version": "0.6.3",
+          "eckmann_method": "nolds.lyap_e (Eckmann et al. 1986)",
+          "eckmann_parameters": {
+            "emb_dim": 5,
+            "matrix_dim": 5,
+            "min_neighbors": 8,
+            "min_tsep": 10
+          },
+          "estimated_pairwise_matrix_bytes": 132910208,
+          "evidence_status": "finite_time_time_series_diagnostic",
+          "exponent_unit": "model_time^-1",
+          "kaplan_yorke_dimension": 2.4714225220110095,
+          "kaplan_yorke_status": "computed_from_exploratory_eckmann_spectrum",
+          "largest_exponent": 5.6480990171773495,
+          "largest_sign_agrees_with_spectrum": true,
+          "model_time_span": 20.475,
+          "n_samples": 4096,
+          "observable": "x",
+          "parameter_contract": {
+            "eckmann_emb_dim": 5,
+            "eckmann_matrix_dim": 5,
+            "eckmann_min_neighbors": 8,
+            "eckmann_min_tsep": 10,
+            "rosenstein_emb_dim": 5,
+            "rosenstein_fit": "poly",
+            "rosenstein_fit_offset": 8,
+            "rosenstein_lag": 5,
+            "rosenstein_min_neighbors": 20,
+            "rosenstein_min_tsep": 10,
+            "rosenstein_trajectory_len": 28
+          },
+          "rosenstein_divergence_index_unit": "retained_sample_offset",
+          "rosenstein_divergence_time_trajectory": [
+            [
+              0.0,
+              -1.7034572156930226
+            ],
+            [
+              0.005,
+              -1.7001936522599577
+            ],
+            [
+              0.01,
+              -1.6899379455211667
+            ],
+            [
+              0.015,
+              -1.6733761465823014
+            ],
+            [
+              0.02,
+              -1.651551848616836
+            ],
+            [
+              0.025,
+              -1.6255695092982008
+            ],
+            [
+              0.03,
+              -1.5964278567048404
+            ],
+            [
+              0.035,
+              -1.564996932636445
+            ],
+            [
+              0.04,
+              -1.5320311059707867
+            ],
+            [
+              0.045,
+              -1.498158535484435
+            ],
+            [
+              0.05,
+              -1.4638815033896393
+            ],
+            [
+              0.055,
+              -1.4295975638690477
+            ],
+            [
+              0.06,
+              -1.3956276080152936
+            ],
+            [
+              0.065,
+              -1.3622218360376268
+            ],
+            [
+              0.07,
+              -1.3295618607020363
+            ],
+            [
+              0.075,
+              -1.297778020188486
+            ],
+            [
+              0.08,
+              -1.2669638049285594
+            ],
+            [
+              0.085,
+              -1.2371871538526733
+            ],
+            [
+              0.09,
+              -1.2084946775582788
+            ],
+            [
+              0.095,
+              -1.180916038752094
+            ],
+            [
+              0.1,
+              -1.1544711010624162
+            ],
+            [
+              0.105,
+              -1.1291699371769455
+            ],
+            [
+              0.11,
+              -1.1050171988393194
+            ],
+            [
+              0.115,
+              -1.0820111037825744
+            ],
+            [
+              0.12,
+              -1.0601423818790963
+            ],
+            [
+              0.125,
+              -1.0393983729173704
+            ],
+            [
+              0.13,
+              -1.0197560609389449
+            ],
+            [
+              0.135,
+              -1.0011829503114074
+            ]
+          ],
+          "rosenstein_divergence_trajectory": [
+            [
+              0.0,
+              -1.7034572156930226
+            ],
+            [
+              1.0,
+              -1.7001936522599577
+            ],
+            [
+              2.0,
+              -1.6899379455211667
+            ],
+            [
+              3.0,
+              -1.6733761465823014
+            ],
+            [
+              4.0,
+              -1.651551848616836
+            ],
+            [
+              5.0,
+              -1.6255695092982008
+            ],
+            [
+              6.0,
+              -1.5964278567048404
+            ],
+            [
+              7.0,
+              -1.564996932636445
+            ],
+            [
+              8.0,
+              -1.5320311059707867
+            ],
+            [
+              9.0,
+              -1.498158535484435
+            ],
+            [
+              10.0,
+              -1.4638815033896393
+            ],
+            [
+              11.0,
+              -1.4295975638690477
+            ],
+            [
+              12.0,
+              -1.3956276080152936
+            ],
+            [
+              13.0,
+              -1.3622218360376268
+            ],
+            [
+              14.0,
+              -1.3295618607020363
+            ],
+            [
+              15.0,
+              -1.297778020188486
+            ],
+            [
+              16.0,
+              -1.2669638049285594
+            ],
+            [
+              17.0,
+              -1.2371871538526733
+            ],
+            [
+              18.0,
+              -1.2084946775582788
+            ],
+            [
+              19.0,
+              -1.180916038752094
+            ],
+            [
+              20.0,
+              -1.1544711010624162
+            ],
+            [
+              21.0,
+              -1.1291699371769455
+            ],
+            [
+              22.0,
+              -1.1050171988393194
+            ],
+            [
+              23.0,
+              -1.0820111037825744
+            ],
+            [
+              24.0,
+              -1.0601423818790963
+            ],
+            [
+              25.0,
+              -1.0393983729173704
+            ],
+            [
+              26.0,
+              -1.0197560609389449
+            ],
+            [
+              27.0,
+              -1.0011829503114074
+            ]
+          ],
+          "rosenstein_fit_r2": 0.9919798682737305,
+          "rosenstein_method": "nolds.lyap_r (Rosenstein et al. 1993)",
+          "rosenstein_parameters": {
+            "emb_dim": 5,
+            "fit": "poly",
+            "fit_offset": 8,
+            "lag": 5,
+            "min_neighbors": 20,
+            "min_tsep": 10,
+            "random_seed": 20260758,
+            "trajectory_len": 28
+          },
+          "rosenstein_slope_per_sample": 0.028240495085886747,
+          "sample_count": 4096,
+          "sample_interval": 0.005,
+          "sample_rate": 200.0,
+          "sequence_first": 2001,
+          "sequence_last": 6096,
+          "signal_sha256_float64_le": "4ed10d52d1f20e252d8b177a505406097923a07067df431dee45ea21ef7d3c5b",
+          "spectrum": [
+            4.154960208544455,
+            -0.12034858602333763,
+            -8.558376900004989,
+            -53.90483542223504,
+            -126.00052144785067
+          ],
+          "spectrum_status": "exploratory_nolds_eckmann_scalar_reconstruction",
+          "spectrum_sum": -184.4291221475696,
+          "time_unit": "model_time",
+          "warnings": [
+            "Finite-time estimates reconstructed from one scalar observable.",
+            "Results depend on sampling, delay embedding, neighborhood, and fit parameters.",
+            "The nolds Eckmann spectrum and derived Kaplan-Yorke dimension are exploratory.",
+            "These diagnostics do not certify chaos, asymptotic exponents, or hiddenness."
+          ],
+          "window_index": 0,
+          "window_role": "primary"
+        },
+        {
+          "analysis_id": "primary_window_2",
+          "backend": "nolds",
+          "backend_version": "0.6.3",
+          "eckmann_method": "nolds.lyap_e (Eckmann et al. 1986)",
+          "eckmann_parameters": {
+            "emb_dim": 5,
+            "matrix_dim": 5,
+            "min_neighbors": 8,
+            "min_tsep": 10
+          },
+          "estimated_pairwise_matrix_bytes": 132910208,
+          "evidence_status": "finite_time_time_series_diagnostic",
+          "exponent_unit": "model_time^-1",
+          "kaplan_yorke_dimension": 2.910341981968138,
+          "kaplan_yorke_status": "computed_from_exploratory_eckmann_spectrum",
+          "largest_exponent": 6.645303570764549,
+          "largest_sign_agrees_with_spectrum": true,
+          "model_time_span": 20.475,
+          "n_samples": 4096,
+          "observable": "x",
+          "parameter_contract": {
+            "eckmann_emb_dim": 5,
+            "eckmann_matrix_dim": 5,
+            "eckmann_min_neighbors": 8,
+            "eckmann_min_tsep": 10,
+            "rosenstein_emb_dim": 5,
+            "rosenstein_fit": "poly",
+            "rosenstein_fit_offset": 8,
+            "rosenstein_lag": 5,
+            "rosenstein_min_neighbors": 20,
+            "rosenstein_min_tsep": 10,
+            "rosenstein_trajectory_len": 28
+          },
+          "rosenstein_divergence_index_unit": "retained_sample_offset",
+          "rosenstein_divergence_time_trajectory": [
+            [
+              0.0,
+              -1.7387107554055787
+            ],
+            [
+              0.005,
+              -1.7345547936262247
+            ],
+            [
+              0.01,
+              -1.7231623404861005
+            ],
+            [
+              0.015,
+              -1.7050260936550388
+            ],
+            [
+              0.02,
+              -1.6809434213945154
+            ],
+            [
+              0.025,
+              -1.6519012500962225
+            ],
+            [
+              0.03,
+              -1.6189398369619117
+            ],
+            [
+              0.035,
+              -1.583048246216243
+            ],
+            [
+              0.04,
+              -1.5451013954672526
+            ],
+            [
+              0.045,
+              -1.505839369999778
+            ],
+            [
+              0.05,
+              -1.4658781590064538
+            ],
+            [
+              0.055,
+              -1.4257343266899396
+            ],
+            [
+              0.06,
+              -1.3858321338176807
+            ],
+            [
+              0.065,
+              -1.3464943057401493
+            ],
+            [
+              0.07,
+              -1.3079620119007023
+            ],
+            [
+              0.075,
+              -1.2704172805621656
+            ],
+            [
+              0.08,
+              -1.234001515140813
+            ],
+            [
+              0.085,
+              -1.1988209813175328
+            ],
+            [
+              0.09,
+              -1.1649514697011452
+            ],
+            [
+              0.095,
+              -1.1324411715759057
+            ],
+            [
+              0.1,
+              -1.1013185938987609
+            ],
+            [
+              0.105,
+              -1.071594195430082
+            ],
+            [
+              0.11,
+              -1.0432640404145792
+            ],
+            [
+              0.115,
+              -1.0163097743333969
+            ],
+            [
+              0.12,
+              -0.9907005123033605
+            ],
+            [
+              0.125,
+              -0.9663945858722628
+            ],
+            [
+              0.13,
+              -0.94334265674917
+            ],
+            [
+              0.135,
+              -0.9214859005669452
+            ]
+          ],
+          "rosenstein_divergence_trajectory": [
+            [
+              0.0,
+              -1.7387107554055787
+            ],
+            [
+              1.0,
+              -1.7345547936262247
+            ],
+            [
+              2.0,
+              -1.7231623404861005
+            ],
+            [
+              3.0,
+              -1.7050260936550388
+            ],
+            [
+              4.0,
+              -1.6809434213945154
+            ],
+            [
+              5.0,
+              -1.6519012500962225
+            ],
+            [
+              6.0,
+              -1.6189398369619117
+            ],
+            [
+              7.0,
+              -1.583048246216243
+            ],
+            [
+              8.0,
+              -1.5451013954672526
+            ],
+            [
+              9.0,
+              -1.505839369999778
+            ],
+            [
+              10.0,
+              -1.4658781590064538
+            ],
+            [
+              11.0,
+              -1.4257343266899396
+            ],
+            [
+              12.0,
+              -1.3858321338176807
+            ],
+            [
+              13.0,
+              -1.3464943057401493
+            ],
+            [
+              14.0,
+              -1.3079620119007023
+            ],
+            [
+              15.0,
+              -1.2704172805621656
+            ],
+            [
+              16.0,
+              -1.234001515140813
+            ],
+            [
+              17.0,
+              -1.1988209813175328
+            ],
+            [
+              18.0,
+              -1.1649514697011452
+            ],
+            [
+              19.0,
+              -1.1324411715759057
+            ],
+            [
+              20.0,
+              -1.1013185938987609
+            ],
+            [
+              21.0,
+              -1.071594195430082
+            ],
+            [
+              22.0,
+              -1.0432640404145792
+            ],
+            [
+              23.0,
+              -1.0163097743333969
+            ],
+            [
+              24.0,
+              -0.9907005123033605
+            ],
+            [
+              25.0,
+              -0.9663945858722628
+            ],
+            [
+              26.0,
+              -0.94334265674917
+            ],
+            [
+              27.0,
+              -0.9214859005669452
+            ]
+          ],
+          "rosenstein_fit_r2": 0.9919459816363319,
+          "rosenstein_method": "nolds.lyap_r (Rosenstein et al. 1993)",
+          "rosenstein_parameters": {
+            "emb_dim": 5,
+            "fit": "poly",
+            "fit_offset": 8,
+            "lag": 5,
+            "min_neighbors": 20,
+            "min_tsep": 10,
+            "random_seed": 20260759,
+            "trajectory_len": 28
+          },
+          "rosenstein_slope_per_sample": 0.033226517853822746,
+          "sample_count": 4096,
+          "sample_interval": 0.005,
+          "sample_rate": 200.0,
+          "sequence_first": 6097,
+          "sequence_last": 10192,
+          "signal_sha256_float64_le": "abbeae9369f9079a8073d5f89092f88d01317f6adfa435bb8effbf812593c53a",
+          "spectrum": [
+            5.1076251315937915,
+            0.8727507658383232,
+            -6.569372846567706,
+            -53.01470129281274,
+            -139.6787795692951
+          ],
+          "spectrum_status": "exploratory_nolds_eckmann_scalar_reconstruction",
+          "spectrum_sum": -193.28247781124344,
+          "time_unit": "model_time",
+          "warnings": [
+            "Finite-time estimates reconstructed from one scalar observable.",
+            "Results depend on sampling, delay embedding, neighborhood, and fit parameters.",
+            "The nolds Eckmann spectrum and derived Kaplan-Yorke dimension are exploratory.",
+            "These diagnostics do not certify chaos, asymptotic exponents, or hiddenness."
+          ],
+          "window_index": 1,
+          "window_role": "nonoverlapping_replication"
+        },
+        {
+          "analysis_id": "parameter_sensitivity_window_1",
+          "backend": "nolds",
+          "backend_version": "0.6.3",
+          "eckmann_method": "nolds.lyap_e (Eckmann et al. 1986)",
+          "eckmann_parameters": {
+            "emb_dim": 5,
+            "matrix_dim": 5,
+            "min_neighbors": 8,
+            "min_tsep": 20
+          },
+          "estimated_pairwise_matrix_bytes": 131609088,
+          "evidence_status": "finite_time_time_series_diagnostic",
+          "exponent_unit": "model_time^-1",
+          "kaplan_yorke_dimension": 2.4562933516487186,
+          "kaplan_yorke_status": "computed_from_exploratory_eckmann_spectrum",
+          "largest_exponent": 2.659160438936059,
+          "largest_sign_agrees_with_spectrum": true,
+          "model_time_span": 20.475,
+          "n_samples": 4096,
+          "observable": "x",
+          "parameter_contract": {
+            "eckmann_emb_dim": 5,
+            "eckmann_matrix_dim": 5,
+            "eckmann_min_neighbors": 8,
+            "eckmann_min_tsep": 20,
+            "rosenstein_emb_dim": 5,
+            "rosenstein_fit": "poly",
+            "rosenstein_fit_offset": 16,
+            "rosenstein_lag": 10,
+            "rosenstein_min_neighbors": 20,
+            "rosenstein_min_tsep": 20,
+            "rosenstein_trajectory_len": 56
+          },
+          "rosenstein_divergence_index_unit": "retained_sample_offset",
+          "rosenstein_divergence_time_trajectory": [
+            [
+              0.0,
+              -1.3885745988005516
+            ],
+            [
+              0.005,
+              -1.3875707871803202
+            ],
+            [
+              0.01,
+              -1.3846574493586503
+            ],
+            [
+              0.015,
+              -1.3798397719514919
+            ],
+            [
+              0.02,
+              -1.3731837274803154
+            ],
+            [
+              0.025,
+              -1.3648056356660057
+            ],
+            [
+              0.03,
+              -1.3548555779335643
+            ],
+            [
+              0.035,
+              -1.3435024594100795
+            ],
+            [
+              0.04,
+              -1.330921114565581
+            ],
+            [
+              0.045,
+              -1.3172876721800615
+            ],
+            [
+              0.05,
+              -1.302773937640936
+            ],
+            [
+              0.055,
+              -1.287542747686463
+            ],
+            [
+              0.06,
+              -1.271742136321613
+            ],
+            [
+              0.065,
+              -1.255507709636016
+            ],
+            [
+              0.07,
+              -1.2389603136772513
+            ],
+            [
+              0.075,
+              -1.2222076366559664
+            ],
+            [
+              0.08,
+              -1.2053462439186486
+            ],
+            [
+              0.085,
+              -1.1884596612838991
+            ],
+            [
+              0.09,
+              -1.1716189021681098
+            ],
+            [
+              0.095,
+              -1.1548833248271289
+            ],
+            [
+              0.1,
+              -1.1383001389250633
+            ],
+            [
+              0.105,
+              -1.1219065348205357
+            ],
+            [
+              0.11,
+              -1.105729268031549
+            ],
+            [
+              0.115,
+              -1.0897889355305885
+            ],
+            [
+              0.12,
+              -1.0740988855454021
+            ],
+            [
+              0.125,
+              -1.0586689815839678
+            ],
+            [
+              0.13,
+              -1.0435047745918202
+            ],
+            [
+              0.135,
+              -1.0286049664816401
+            ],
+            [
+              0.14,
+              -1.0139671396860437
+            ],
+            [
+              0.145,
+              -0.9995858035302992
+            ],
+            [
+              0.15,
+              -0.9854537202538213
+            ],
+            [
+              0.155,
+              -0.9715622759512392
+            ],
+            [
+              0.16,
+              -0.9578999625855453
+            ],
+            [
+              0.165,
+              -0.9444551722396521
+            ],
+            [
+              0.17,
+              -0.9312139233476711
+            ],
+            [
+              0.17500000000000002,
+              -0.9181639980675703
+            ],
+            [
+              0.18,
+              -0.9052923037398605
+            ],
+            [
+              0.185,
+              -0.8925828334377538
+            ],
+            [
+              0.19,
+              -0.8800213188997627
+            ],
+            [
+              0.195,
+              -0.8675934085609954
+            ],
+            [
+              0.2,
+              -0.8552860773861816
+            ],
+            [
+              0.20500000000000002,
+              -0.8430872972381629
+            ],
+            [
+              0.21,
+              -0.8309856746974315
+            ],
+            [
+              0.215,
+              -0.8189718954383881
+            ],
+            [
+              0.22,
+              -0.8070377300793122
+            ],
+            [
+              0.225,
+              -0.7951781611113998
+            ],
+            [
+              0.23,
+              -0.7833890710035246
+            ],
+            [
+              0.23500000000000001,
+              -0.7716659312129038
+            ],
+            [
+              0.24,
+              -0.7600064545952696
+            ],
+            [
+              0.245,
+              -0.7484092767046995
+            ],
+            [
+              0.25,
+              -0.7368737968409611
+            ],
+            [
+              0.255,
+              -0.7254002990903677
+            ],
+            [
+              0.26,
+              -0.7139874656069982
+            ],
+            [
+              0.265,
+              -0.7026355447813089
+            ],
+            [
+              0.27,
+              -0.6913451855552657
+            ],
+            [
+              0.275,
+              -0.6801160626236183
+            ]
+          ],
+          "rosenstein_divergence_trajectory": [
+            [
+              0.0,
+              -1.3885745988005516
+            ],
+            [
+              1.0,
+              -1.3875707871803202
+            ],
+            [
+              2.0,
+              -1.3846574493586503
+            ],
+            [
+              3.0,
+              -1.3798397719514919
+            ],
+            [
+              4.0,
+              -1.3731837274803154
+            ],
+            [
+              5.0,
+              -1.3648056356660057
+            ],
+            [
+              6.0,
+              -1.3548555779335643
+            ],
+            [
+              7.0,
+              -1.3435024594100795
+            ],
+            [
+              8.0,
+              -1.330921114565581
+            ],
+            [
+              9.0,
+              -1.3172876721800615
+            ],
+            [
+              10.0,
+              -1.302773937640936
+            ],
+            [
+              11.0,
+              -1.287542747686463
+            ],
+            [
+              12.0,
+              -1.271742136321613
+            ],
+            [
+              13.0,
+              -1.255507709636016
+            ],
+            [
+              14.0,
+              -1.2389603136772513
+            ],
+            [
+              15.0,
+              -1.2222076366559664
+            ],
+            [
+              16.0,
+              -1.2053462439186486
+            ],
+            [
+              17.0,
+              -1.1884596612838991
+            ],
+            [
+              18.0,
+              -1.1716189021681098
+            ],
+            [
+              19.0,
+              -1.1548833248271289
+            ],
+            [
+              20.0,
+              -1.1383001389250633
+            ],
+            [
+              21.0,
+              -1.1219065348205357
+            ],
+            [
+              22.0,
+              -1.105729268031549
+            ],
+            [
+              23.0,
+              -1.0897889355305885
+            ],
+            [
+              24.0,
+              -1.0740988855454021
+            ],
+            [
+              25.0,
+              -1.0586689815839678
+            ],
+            [
+              26.0,
+              -1.0435047745918202
+            ],
+            [
+              27.0,
+              -1.0286049664816401
+            ],
+            [
+              28.0,
+              -1.0139671396860437
+            ],
+            [
+              29.0,
+              -0.9995858035302992
+            ],
+            [
+              30.0,
+              -0.9854537202538213
+            ],
+            [
+              31.0,
+              -0.9715622759512392
+            ],
+            [
+              32.0,
+              -0.9578999625855453
+            ],
+            [
+              33.0,
+              -0.9444551722396521
+            ],
+            [
+              34.0,
+              -0.9312139233476711
+            ],
+            [
+              35.0,
+              -0.9181639980675703
+            ],
+            [
+              36.0,
+              -0.9052923037398605
+            ],
+            [
+              37.0,
+              -0.8925828334377538
+            ],
+            [
+              38.0,
+              -0.8800213188997627
+            ],
+            [
+              39.0,
+              -0.8675934085609954
+            ],
+            [
+              40.0,
+              -0.8552860773861816
+            ],
+            [
+              41.0,
+              -0.8430872972381629
+            ],
+            [
+              42.0,
+              -0.8309856746974315
+            ],
+            [
+              43.0,
+              -0.8189718954383881
+            ],
+            [
+              44.0,
+              -0.8070377300793122
+            ],
+            [
+              45.0,
+              -0.7951781611113998
+            ],
+            [
+              46.0,
+              -0.7833890710035246
+            ],
+            [
+              47.0,
+              -0.7716659312129038
+            ],
+            [
+              48.0,
+              -0.7600064545952696
+            ],
+            [
+              49.0,
+              -0.7484092767046995
+            ],
+            [
+              50.0,
+              -0.7368737968409611
+            ],
+            [
+              51.0,
+              -0.7254002990903677
+            ],
+            [
+              52.0,
+              -0.7139874656069982
+            ],
+            [
+              53.0,
+              -0.7026355447813089
+            ],
+            [
+              54.0,
+              -0.6913451855552657
+            ],
+            [
+              55.0,
+              -0.6801160626236183
+            ]
+          ],
+          "rosenstein_fit_r2": 0.9957933649829458,
+          "rosenstein_method": "nolds.lyap_r (Rosenstein et al. 1993)",
+          "rosenstein_parameters": {
+            "emb_dim": 5,
+            "fit": "poly",
+            "fit_offset": 16,
+            "lag": 10,
+            "min_neighbors": 20,
+            "min_tsep": 20,
+            "random_seed": 20260760,
+            "trajectory_len": 56
+          },
+          "rosenstein_slope_per_sample": 0.013295802194680295,
+          "sample_count": 4096,
+          "sample_interval": 0.005,
+          "sample_rate": 200.0,
+          "sequence_first": 2001,
+          "sequence_last": 6096,
+          "signal_sha256_float64_le": "4ed10d52d1f20e252d8b177a505406097923a07067df431dee45ea21ef7d3c5b",
+          "spectrum": [
+            3.918621184998287,
+            -0.021605133301906866,
+            -8.540593540570656,
+            -54.391973035696616,
+            -126.69384931471717
+          ],
+          "spectrum_status": "exploratory_nolds_eckmann_scalar_reconstruction",
+          "spectrum_sum": -185.72939983928808,
+          "time_unit": "model_time",
+          "warnings": [
+            "Finite-time estimates reconstructed from one scalar observable.",
+            "Results depend on sampling, delay embedding, neighborhood, and fit parameters.",
+            "The nolds Eckmann spectrum and derived Kaplan-Yorke dimension are exploratory.",
+            "These diagnostics do not certify chaos, asymptotic exponents, or hiddenness."
+          ],
+          "window_index": 0,
+          "window_role": "parameter_sensitivity"
+        }
+      ],
+      "firmware_source_commit": "66c56aa8a4faa0c7389e224da9aec4721038acb8",
+      "firmware_source_dirty": false,
+      "fractional_order_q": 0.995,
+      "integration_method": "m2sfrk",
+      "interpretation": "exploratory dense-UART finite-time scalar diagnostic; Lorenz failed the frozen ABM qualification",
+      "kind": 3,
+      "model_step": 0.005,
+      "observable": "x",
+      "representation": "fixed_q14_q30",
+      "run_json": "validation/results/dense_uart_capture/stm32_dense_lorenz_m2sfrk_4cells_v1/runs/stm32_dense_lorenz_m2sfrk_4cells_v1__r01__lorenz_m2sfrk_h755_fixed__a03d710f4d__dense-timeseries-pilot/run.json",
+      "run_json_sha256": "4de9bb26026a21243713f9daa179add638e5fa369286e57a8ac7ac1ecfaf7441",
+      "system": "lorenz",
+      "two_window_summary": {
+        "interpretation": "two non-overlapping finite windows; not an uncertainty interval or asymptotic convergence study",
+        "kaplan_yorke_max": 2.910341981968138,
+        "kaplan_yorke_min": 2.4714225220110095,
+        "largest_exponent_max": 6.645303570764549,
+        "largest_exponent_min": 5.6480990171773495,
+        "spectrum_component_max": [
+          5.1076251315937915,
+          0.8727507658383232,
+          -6.569372846567706,
+          -53.01470129281274,
+          -126.00052144785067
+        ],
+        "spectrum_component_min": [
+          4.154960208544455,
+          -0.12034858602333763,
+          -8.558376900004989,
+          -53.90483542223504,
+          -139.6787795692951
+        ]
+      }
+    }
+  ],
+  "estimator_contract": {
+    "max_pairwise_matrix_bytes": 268435456,
+    "primary_parameter_provenance": "documented nolds Lorenz example",
+    "primary_parameter_reference": "https://cschoel.github.io/nolds/nolds.html#nolds.lyap_r",
+    "primary_parameters": {
+      "eckmann_emb_dim": 5,
+      "eckmann_matrix_dim": 5,
+      "eckmann_min_neighbors": 8,
+      "eckmann_min_tsep": 10,
+      "rosenstein_emb_dim": 5,
+      "rosenstein_fit": "poly",
+      "rosenstein_fit_offset": 8,
+      "rosenstein_lag": 5,
+      "rosenstein_min_neighbors": 20,
+      "rosenstein_min_tsep": 10,
+      "rosenstein_trajectory_len": 28
+    },
+    "protocols": [
+      {
+        "analysis_id": "primary_window_1",
+        "window_index": 0,
+        "window_role": "primary"
+      },
+      {
+        "analysis_id": "primary_window_2",
+        "window_index": 1,
+        "window_role": "nonoverlapping_replication"
+      },
+      {
+        "analysis_id": "parameter_sensitivity_window_1",
+        "window_index": 0,
+        "window_role": "parameter_sensitivity"
+      }
+    ],
+    "random_seed_base": 20260728,
+    "sensitivity_parameters": {
+      "eckmann_emb_dim": 5,
+      "eckmann_matrix_dim": 5,
+      "eckmann_min_neighbors": 8,
+      "eckmann_min_tsep": 20,
+      "rosenstein_emb_dim": 5,
+      "rosenstein_fit": "poly",
+      "rosenstein_fit_offset": 16,
+      "rosenstein_lag": 10,
+      "rosenstein_min_neighbors": 20,
+      "rosenstein_min_tsep": 20,
+      "rosenstein_trajectory_len": 56
+    }
+  },
+  "numerical_contract": {
+    "embedded_integrator": "M2sFRK",
+    "fractional_order_q": 0.995,
+    "kaplan_yorke_source": "ordered exploratory five-component Eckmann spectrum",
+    "model_step": 0.005,
+    "state_representations": [
+      "float32",
+      "fixed_q14_q30"
+    ],
+    "system": "lorenz",
+    "time_series_estimators": [
+      "Rosenstein largest Lyapunov exponent",
+      "Eckmann five-component scalar-reconstruction spectrum"
+    ]
+  },
+  "sampling_contract": {
+    "analysis_windows": [
+      {
+        "samples": 4096,
+        "sequence_first": 2001,
+        "sequence_last": 6096,
+        "window_index": 0
+      },
+      {
+        "samples": 4096,
+        "sequence_first": 6097,
+        "sequence_last": 10192,
+        "window_index": 1
+      }
+    ],
+    "capture_samples": 12000,
+    "capture_sequence_first": 1,
+    "capture_sequence_last": 12000,
+    "cross_lane_harmonization": false,
+    "decimation": false,
+    "discarded_transient_samples": 2000,
+    "endpoint_name": "dense_timeseries_pilot",
+    "host_reception_time_used": false,
+    "interpolation": false,
+    "observable": "x",
+    "required_case_ids": [
+      "f746_float32",
+      "f746_fixed_q14_q30",
+      "h755_float32",
+      "h755_fixed_q14_q30"
+    ],
+    "required_runs": 4,
+    "resampling": false,
+    "sample_interval": 0.005,
+    "sequence_increment": 1,
+    "spacing_statement": "sampling spacing is corrected at acquisition by buffering consecutive solver states before UART drain",
+    "time_unit": "model_time"
+  },
+  "schema": "stm32-dense-uart-time-series-lyapunov-v1",
+  "scientific_claims": {
+    "asymptotic_lyapunov_spectrum_claims": 0,
+    "cryptographic_claims": 0,
+    "formal_chaos_claims": 0,
+    "hiddenness_claims": 0,
+    "primary_kaplan_yorke_claims": 0,
+    "randomness_claims": 0,
+    "reason": "Lorenz failed the frozen ABM qualification; all reported quantities are finite-time scalar-reconstruction diagnostics."
+  },
+  "software": {
+    "api_function": "hidden_attractors.analysis.estimate_time_series_lyapunov",
+    "availability_statement": "hidden-attractors-fo is available from PyPI; this analysis records the exact local development revision that provides the scalar time-series API used here.",
+    "backend": "nolds",
+    "backend_version": "0.6.3",
+    "package_name": "hidden-attractors-fo",
+    "package_version": "1.0.0",
+    "pypi_url": "https://pypi.org/project/hidden-attractors-fo/",
+    "source_revision": "e7cf1b74d0cd7fa520aeaa69407565ce1fe8673c",
+    "source_root": "C:\\Users\\moren\\Desktop\\Codes\\Hidden Attractors Fractional Order\\version_2",
+    "time_series_module": "C:\\Users\\moren\\Desktop\\Codes\\Hidden Attractors Fractional Order\\version_2\\hidden_attractors\\analysis\\time_series_lyapunov.py",
+    "time_series_module_sha256": "663abee8c9758781b9e83c48928c425574afa0a00a62739019e073a5e94322fe",
+    "time_series_source_dirty": false
+  }
+}

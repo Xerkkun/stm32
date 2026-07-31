@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "grid_id": "abm_literature_replacements_v1",
+  "status": "predeclared_before_replacement_exploration",
+  "declared_date": "2026-07-28",
+  "evidence_layer": "exploratory_candidate_search",
+  "purpose": "Evaluate one exact, literature-supported Caputo contract for each manifest that failed the first long-horizon screen. This search is separate from formal manifest qualification.",
+  "frozen_inputs": {
+    "criteria_source": "validation/long_horizon_criteria.json",
+    "criteria_sha256": "a605769988aceb85368472b0ffb42b06c8503962d867a53ec73e4b4954012881",
+    "baseline_manifest_source": "validation/candidate_manifests.json",
+    "baseline_manifest_sha256": "2c1b2ea27dc796920f993b5e748afd24524549839fad9ca846704ffbeaaecf11",
+    "baseline_qualification_source": "validation/results/abm_long_horizon/qualification.json",
+    "baseline_qualification_sha256": "dcf8b38a3a736d0bb9497509b53ee1ff44a85faaba7167fac02102761774f9b9",
+    "failed_manifest_ids": [
+      "lorenz_caputo_v1",
+      "rossler_caputo_v1"
+    ]
+  },
+  "selection_rule": {
+    "pre_run_basis": "One candidate per failed system was chosen before execution because the cited primary source reports the complete operator, vector field, q, h, and initial-state contract. No candidate was added or removed based on dynamic-screen results.",
+    "replacement_eligible": "The candidate must pass every unchanged long-horizon screen at both frozen resolution divisors and the unchanged cross-resolution screen.",
+    "on_pass": "Freeze the exact candidate as that system's v2 manifest. Preserve the already-qualified Chen manifest unchanged.",
+    "on_failure": "Do not replace that system's manifest and record an explicit qualification blocker.",
+    "threshold_policy": "No threshold, horizon, transient, resolution divisor, or diagnostic definition may be changed during or after this exploration."
+  },
+  "candidates": [
+    {
+      "candidate_id": "lorenz_feng2023_caputo_abm_v2",
+      "replaces_manifest_id": "lorenz_caputo_v1",
+      "manifest": {
+        "manifest_id": "lorenz_caputo_v2",
+        "system": "lorenz",
+        "parameters": [
+          10.0,
+          28.0,
+          2.6666666666666665
+        ],
+        "initial_state": [
+          0.3,
+          0.3,
+          0.3
+        ],
+        "q": 0.995,
+        "h": 0.001,
+        "memory_seconds": 10.0,
+        "memory_increments": 10000
+      },
+      "source": {
+        "citation": "Feng et al., Fractal and Fractional 7 (2023) 887",
+        "doi": "10.3390/fractalfract7120887",
+        "url": "https://doi.org/10.3390/fractalfract7120887",
+        "evidence": [
+          "Equation (1) gives the standard Lorenz vector field with Caputo derivatives.",
+          "The numerical method is Adams-Bashforth-Moulton predictor-corrector.",
+          "The paper sets h=0.001 and reports q=0.995 with parameters (10,28,8/3).",
+          "The first of the four explicitly listed initial states is (0.3,0.3,0.3); it was selected before execution."
+        ],
+        "contract_is_explicit": true
+      }
+    },
+    {
+      "candidate_id": "rossler_wang2024_caputo_fig2_v2",
+      "replaces_manifest_id": "rossler_caputo_v1",
+      "manifest": {
+        "manifest_id": "rossler_caputo_v2",
+        "system": "rossler",
+        "parameters": [
+          0.5,
+          0.2,
+          10.0
+        ],
+        "initial_state": [
+          0.5,
+          1.5,
+          0.1
+        ],
+        "q": 0.9,
+        "h": 0.01,
+        "memory_seconds": 10.0,
+        "memory_increments": 1000
+      },
+      "source": {
+        "citation": "Wang, Wang, and Li, Journal of Low Frequency Noise, Vibration and Active Control 43 (2024) 609-616",
+        "doi": "10.1177/14613484231224611",
+        "url": "https://journals.sagepub.com/doi/10.1177/14613484231224611",
+        "evidence": [
+          "Equation (1) gives the Rossler vector field with Caputo derivatives.",
+          "The numerical-experiment section fixes initial state (0.5,1.5,0.1) and h=0.01.",
+          "The immediately following Figure 2 experiment sets q=(0.9,0.9,0.9), parameters (0.5,0.2,10), and T=500."
+        ],
+        "contract_is_explicit": true
+      }
+    }
+  ],
+  "does_not_establish": [
+    "formal qualification of any replacement manifest",
+    "a proof of chaos",
+    "hidden-attractor status",
+    "equivalence to the embedded finite-memory implementation",
+    "STM32 timing, energy, or randomness"
+  ]
+}

@@ -154,7 +154,9 @@
         "-System",
         "${input:system}",
         "-Method",
-        "${input:method}"
+        "${input:method}",
+        "-ProbeSerial",
+        "${input:probeSerial}"
       ],
       "options": {
         "cwd": "${workspaceFolder}"
@@ -240,6 +242,11 @@
         "gl"
       ],
       "default": "efork3"
+    },
+    {
+      "id": "probeSerial",
+      "type": "promptString",
+      "description": "Número de serie ST-LINK de la placa seleccionada (obligatorio)"
     },
     {
       "id": "serialPort",

@@ -1,0 +1,36 @@
+Dependencias verificadas:
+  STM32CubeH7 v1.13.0  5abb9764b32e11a6557b90bf39531528019b5761
+  CMSIS H7              8f922cdc7cc6de2344e75ddd657889f4ff761790
+  HAL H7                a1996eed9172b59887bafaaa0ea1816ea14d48b5
+  GCC                    C:\Users\moren\AppData\Local\STM32Cube\bundles\gnu-tools-for-stm32\14.3.1+st.2\bin\arm-none-eabi-gcc.exe
+  Ninja                  C:\Users\moren\AppData\Local\STM32Cube\bundles\ninja\1.13.2+st.1\bin\ninja.exe
+  Programmer             C:\Users\moren\AppData\Local\STM32Cube\bundles\programmer\2.23.0\bin\STM32_Programmer_CLI.exe
+-- Configuring done (0.0s)
+-- Generating done (0.1s)
+-- Build files have been written to: C:/Users/moren/Desktop/Codes/STM32/FractionalChaos/build/campaign/h755/benchmark-10000-release
+[1/18] Building ASM object platform/h755/CMakeFiles/h755_m7_chen_gl.dir/11530af472f058e75af8712327c3e4c5/Device/ST/STM32H7xx/Source/Templates/gcc/startup_stm32h755xx.s.obj
+[2/18] Building C object platform/h755/CMakeFiles/h755_m7_chen_gl.dir/shared/h755_shared_memory.c.obj
+[3/18] Building C object platform/h755/CMakeFiles/h755_m7_chen_gl.dir/shared/h755_syscalls.c.obj
+[4/18] Building C object platform/h755/CMakeFiles/h755_m7_chen_gl.dir/__/__/transport/fc_shared_queue.c.obj
+[5/18] Building C object platform/h755/CMakeFiles/h755_m7_chen_gl.dir/__/__/generated/fc_chen_gl.c.obj
+[6/18] Building C object platform/h755/CMakeFiles/h755_m7_chen_gl.dir/cm7/src/main.c.obj
+[7/18] Building C object platform/h755/CMakeFiles/h755_m7_chen_gl.dir/cm7/src/stm32h7xx_it.c.obj
+[8/18] Building C object platform/h755/CMakeFiles/h755_m7_chen_gl.dir/__/__/common/fractional_chaos.c.obj
+[9/18] Building C object platform/h755/CMakeFiles/h755_m7_chen_gl.dir/__/__/vendor/STM32CubeH7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_hsem.c.obj
+[10/18] Building C object platform/h755/CMakeFiles/h755_m7_chen_gl.dir/__/__/vendor/STM32CubeH7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pwr_ex.c.obj
+[11/18] Building C object platform/h755/CMakeFiles/h755_m7_chen_gl.dir/__/__/vendor/STM32CubeH7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal.c.obj
+[12/18] Building C object platform/h755/CMakeFiles/h755_m7_chen_gl.dir/__/__/common/fractional_chaos_fixed.c.obj
+[13/18] Building C object platform/h755/CMakeFiles/h755_m7_chen_gl.dir/__/__/vendor/STM32CubeH7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_cortex.c.obj
+[14/18] Building C object platform/h755/CMakeFiles/h755_m7_chen_gl.dir/__/__/vendor/STM32CubeH7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc.c.obj
+[15/18] Building C object platform/h755/CMakeFiles/h755_m7_chen_gl.dir/1a7d00ebe76312479178771431c7c7a6/Source/Templates/system_stm32h7xx_dualcore_boot_cm4_cm7.c.obj
+[16/18] Building C object platform/h755/CMakeFiles/h755_m7_chen_gl.dir/__/__/vendor/STM32CubeH7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pwr.c.obj
+[17/18] Building C object platform/h755/CMakeFiles/h755_m7_chen_gl.dir/__/__/vendor/STM32CubeH7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc_ex.c.obj
+[18/18] Linking C executable h755_m7_chen_gl.elf
+Memory region         Used Size  Region Size  %age Used
+           FLASH:       16468 B         1 MB      1.57%
+         DTCMRAM:       48160 B       128 KB     36.74%
+          RAM_D1:       44160 B       512 KB      8.42%
+           SRAM4:        1632 B        64 KB      2.49%
+   text	   data	    bss	    dec	    hex	filename
+  16460	      8	  93920	 110388	  1af34	C:/Users/moren/Desktop/Codes/STM32/FractionalChaos/build/campaign/h755/benchmark-10000-release/h755_m7_chen_gl.elf
+Build de campaÃ±a listo: C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\build\campaign\h755\benchmark-10000-release [h755_m7_chen_gl, h755_m4_uart].

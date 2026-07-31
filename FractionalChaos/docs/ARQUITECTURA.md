@@ -66,10 +66,13 @@ unidireccional CM7→CM4.
 
 ## Núcleo numérico común
 
-Se utiliza `float` IEEE-754 binario de 32 bits en todos los estados,
-coeficientes y pesos. Esta elección se corresponde con la unidad de coma
-flotante de precisión simple de los núcleos utilizados y evita el costo y la
-variación de una emulación de `double`.
+La vía flotante utiliza IEEE-754 binario de 32 bits en estados, coeficientes y
+pesos. La vía fija primaria utiliza Q1.14.14 para estados y parámetros, y
+Q1.30 para \(h^q\), coeficientes y pesos. Esta precisión mixta evita anular los
+términos pequeños de la memoria fraccionaria. Los productos intermedios usan
+`int64_t`, redondeo al más cercano con empates alejándose de cero y saturación
+contabilizada. Las dos representaciones conservan el orden de operaciones
+entre placas y se compilan como objetivos separados.
 
 Se aplican las siguientes decisiones:
 
@@ -171,23 +174,30 @@ Cada trama ocupa 40 bytes y se codifica en orden *little-endian*:
 |---:|---:|---|---|
 | 0 | 4 | `sync` | `FCC1`, palabra `0x31434346` |
 | 4 | 1 | `version` | Versión 1 |
-| 5 | 1 | `kind` | Estado = 1 |
+| 5 | 1 | `kind` | Estado `float32` = 1; estado Q1.14.14 = 3; bloque DWT = 4 |
 | 6 | 1 | `board_id` | F746 = 1, H755 = 2 |
 | 7 | 1 | `system_id` | Lorenz = 0, Rössler = 1, Chen = 2 |
-| 8 | 1 | `method_id` | EFORK3 = 0, GL-Caputo = 1 |
+| 8 | 1 | `method_id` | EFORK3 = 0, GL-Caputo = 1, M2sFRK = 2 |
 | 9 | 1 | `status` | Correcto, no finito o cola |
 | 10 | 2 | `payload_bytes` | 24 |
 | 12 | 4 | `sequence` | Índice de paso |
 | 16 | 4 | `cycles` | Ciclos del núcleo numérico |
 | 20 | 4 | `dropped` | Muestras no transmitidas |
-| 24 | 4 | `x_bits` | Palabra IEEE-754 de \(x\) |
-| 28 | 4 | `y_bits` | Palabra IEEE-754 de \(y\) |
-| 32 | 4 | `z_bits` | Palabra IEEE-754 de \(z\) |
+| 24 | 4 | `x_bits` | Palabra IEEE-754 o entero Q1.14.14 crudo de \(x\) |
+| 28 | 4 | `y_bits` | Palabra IEEE-754 o entero Q1.14.14 crudo de \(y\) |
+| 32 | 4 | `z_bits` | Palabra IEEE-754 o entero Q1.14.14 crudo de \(z\) |
 | 36 | 4 | `crc32` | CRC-32/ISO-HDLC de los bytes 0–35 |
 
 Se conservan simultáneamente el valor real reconstruido y la palabra
 hexadecimal al convertir una captura a CSV. De esta forma se permite revisar
 la trayectoria y reproducir exactamente la extracción posterior de bits.
+
+En `kind=4`, `sequence` es el índice base cero del primer paso medido y
+`cycles`, `x_bits`, `y_bits`, `z_bits` son cuatro conteos DWT `uint32_t`
+consecutivos. El firmware acumula primero 10 000 valores con UART inactiva y
+emite 2500 bloques sólo después de cerrar la ventana. Este modo conserva la
+distribución cruda de timing; no transporta estados ni alimenta el extractor
+LSB.
 
 ## Recursos inicializados
 
@@ -222,4 +232,3 @@ No se sustituye el tercer o cuarto nivel por los dos primeros. El código se
 encuentra dispuesto para las dos placas, mientras que las cifras publicables
 se aceptan cuando se completa la ejecución física bajo el protocolo
 experimental.
-

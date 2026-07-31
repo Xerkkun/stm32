@@ -1,0 +1,50 @@
+{
+  "arithmetic_contract_passed": true,
+  "bitstream_bytes": 768,
+  "bitstream_includes_initial_state": false,
+  "bitstream_sha256": "ccd285936faddc7f97e0313c5cac4a9652e7f6b8b939c311a3082b4b67c678a7",
+  "coefficient_and_weight_representation": "Q1.30",
+  "coefficient_saturation_count": 0,
+  "component_rmse": [
+    0.0966077487520165,
+    0.18232689940184515,
+    0.12366012147142778
+  ],
+  "eligible_as_primary_hardware_evidence": false,
+  "final_error_norm": 0.503641890723827,
+  "h": 0.01,
+  "ineligibility_reason": "host short-transient diagnostic; not a physical-board run",
+  "initial_fixed_decoded": [
+    0.20001220703125,
+    0.0,
+    0.5
+  ],
+  "initial_float": [
+    0.2,
+    0.0,
+    0.5
+  ],
+  "initial_quantization_error": [
+    1.2207031249988898e-05,
+    0.0,
+    0.0
+  ],
+  "lsb_extractor": "8 LSB from x, then y, then z; 24 bits/iteration",
+  "max_abs_error": 0.4939816633207701,
+  "method": "efork3",
+  "nonzero_coefficients_rounded_to_zero": 0,
+  "normalized_component_rmse": [
+    0.15126284920844443,
+    0.16712116329652424,
+    0.1952300858888933
+  ],
+  "overflow": "saturating",
+  "physical_horizon": 2.56,
+  "q": 0.92,
+  "rmse": 0.13888602162294997,
+  "rounding": "nearest, ties away from zero",
+  "saturation_count": 0,
+  "state_and_parameter_representation": "Q1.14.14",
+  "steps": 256,
+  "system": "liu"
+}

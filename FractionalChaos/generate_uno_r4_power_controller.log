@@ -1,0 +1,21 @@
+WARNING: fp-lib-table file was not found. Component footprints are not available.
+WARNING: fp-lib-table file was not found. Component footprints are not available.
+WARNING: fp-lib-table file was not found. Component footprints are not available.
+WARNING: fp-lib-table file was not found. Component footprints are not available.
+WARNING: fp-lib-table file was not found. Component footprints are not available.
+WARNING: Missing tag on  instantiated at C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\<frozen importlib._bootstrap>:241.
+INFO: 6 warnings found while generating netlist.
+INFO: 0 errors found while generating netlist.
+
+INFO:   [auto_stub] power:  @ [C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\hardware\power_cycle_controller_uno\schematics\src\generate_uno_r4_power_controller.py:574=>C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\hardware\power_cycle_controller_uno\schematics\src\generate_uno_r4_power_controller.py:546]
+INFO:   [auto_stub] deferred fanout>=5: __NOCONNECT(6) @ [C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\hardware\power_cycle_controller_uno\schematics\src\generate_uno_r4_power_controller.py:574=>C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\hardware\power_cycle_controller_uno\schematics\src\generate_uno_r4_power_controller.py:546]
+INFO:   [selective_routing] Stubbed 4 complex/distant nets after placement @ [C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\hardware\power_cycle_controller_uno\schematics\src\generate_uno_r4_power_controller.py:574=>C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\hardware\power_cycle_controller_uno\schematics\src\generate_uno_r4_power_controller.py:546]
+WARNING: KiCad ERC found issues in C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\hardware\power_cycle_controller_uno\schematics\kicad\uno_r4_power_controller.kicad_sch:
+18:42:15: Error: Can't create registry key 'HKCU\Software\kicad-cli' (error 5: Access is denied.)
+18:42:15: Error: Can't open registry key 'HKCU\Software\kicad-cli' (error 2: The system cannot find the file specified.)
+ @ [C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\hardware\power_cycle_controller_uno\schematics\src\generate_uno_r4_power_controller.py:574=>C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\hardware\power_cycle_controller_uno\schematics\src\generate_uno_r4_power_controller.py:546]
+INFO: Schematic written to C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\hardware\power_cycle_controller_uno\schematics\kicad\uno_r4_power_controller.kicad_sch @ [C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\hardware\power_cycle_controller_uno\schematics\src\generate_uno_r4_power_controller.py:574=>C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\hardware\power_cycle_controller_uno\schematics\src\generate_uno_r4_power_controller.py:546]
+INFO: ERC clean after 1 iteration(s) @ [C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\hardware\power_cycle_controller_uno\schematics\src\generate_uno_r4_power_controller.py:574=>C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\hardware\power_cycle_controller_uno\schematics\src\generate_uno_r4_power_controller.py:546]
+INFO: 7 warnings found while generating schematic.
+INFO: 0 errors found while generating schematic.
+

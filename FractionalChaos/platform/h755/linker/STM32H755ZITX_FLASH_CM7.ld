@@ -1,6 +1,10 @@
 ENTRY(Reset_Handler)
 
 _estack = ORIGIN(RAM_D1) + LENGTH(RAM_D1);
+__stack_probe_size__ =
+    DEFINED(FC_RUNTIME_PROBE_ENABLED) ? 0x8000 : 0;
+__stack_probe_start__ = _estack - __stack_probe_size__;
+__stack_probe_end__ = _estack;
 _Min_Heap_Size = 0x0;
 _Min_Stack_Size = 0x1000;
 
@@ -40,6 +44,7 @@ SECTIONS
     . = ALIGN(4);
     *(.rodata)
     *(.rodata*)
+    KEEP(*(.fc_manifest_hash))
     . = ALIGN(4);
   } > FLASH
 
@@ -107,6 +112,20 @@ SECTIONS
   } > RAM_D1
 
   /*
+   * Buffer opcional de adquisicion one-shot. CM7 lo llena antes de publicar
+   * estados hacia SRAM4, de modo que no comparte trafico con el integrador.
+   */
+  .capture ALIGN(32) (NOLOAD) :
+  {
+    . = ALIGN(32);
+    __capture_start__ = .;
+    KEEP(*(.capture))
+    KEEP(*(.capture.*))
+    . = ALIGN(32);
+    __capture_end__ = .;
+  } > RAM_D1
+
+  /*
    * El historial del integrador se mantiene en DTCM: acceso determinista del
    * CM7 y sin tráfico en la matriz AXI durante la suma fraccionaria.
    */
@@ -144,6 +163,7 @@ SECTIONS
     . = . + _Min_Heap_Size;
     . = . + _Min_Stack_Size;
     . = ALIGN(8);
+    __heap_stack_reservation_end__ = .;
   } > RAM_D1
 
   /DISCARD/ :
@@ -162,3 +182,9 @@ ASSERT(SIZEOF(.shared) <= LENGTH(SRAM4),
        "La región compartida excede SRAM4")
 ASSERT(SIZEOF(.solver) <= LENGTH(DTCMRAM),
        "El workspace fraccionario excede DTCM")
+ASSERT((ADDR(.capture) & 31) == 0,
+       "La seccion de captura no esta alineada a cache")
+ASSERT(__heap_stack_reservation_end__ <= __stack_probe_start__,
+       "RAM_D1 static allocations overlap the 32 KiB CM7 stack probe")
+ASSERT(__stack_probe_end__ == _estack,
+       "The CM7 stack probe must end at the initial MSP")

@@ -1,0 +1,30 @@
+{
+  "calibrated_cells": 4,
+  "campaign_id": "stm32_dense_rossler_chen_m2sfrk_f746_v1",
+  "cold_starts_per_cell": 30,
+  "dense_capture_cell_count": 4,
+  "dense_capture_cells": [
+    "rossler_m2sfrk_f746_float32",
+    "rossler_m2sfrk_f746_fixed",
+    "chen_m2sfrk_f746_float32",
+    "chen_m2sfrk_f746_fixed"
+  ],
+  "dense_capture_eligible_as_primary_benchmark": false,
+  "dense_capture_evidence_level": "dense_consecutive_state_series_under_stlink_hardware_reset",
+  "dense_timeseries_pilot_ready": true,
+  "executable_endpoint": "benchmark_reset_pilot",
+  "manifest_sha256": "4ced5aab7d6ed557d3dd42956a47934cd08459021ab47010b78a247be517334b",
+  "matrix_cells": 36,
+  "pilot_evidence_level": "solver_only_timing_under_stlink_hardware_reset",
+  "primary_benchmark_ready": false,
+  "primary_blocking_reasons": [
+    "The current reset contract is an ST-LINK hardware reset, not a demonstrated board power cycle."
+  ],
+  "randomization": "randomized_complete_blocks",
+  "randomization_algorithm": "sha256_rank_v1",
+  "schedule_sha256": "1b4a7334c82ca688384f19e2c235d7718c633bc25ff2ffcfb12728a333d6bf67",
+  "scheduled_runs": 1080,
+  "schema": "fractional-chaos-physical-campaign-plan-v1",
+  "seed": 20260728,
+  "uncalibrated_cells": 32
+}

@@ -1,0 +1,795 @@
+finite_file_adapter=testu01_file_batteries_v1
+testu01_version=1.2.3
+battery=rabbit
+input=C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\hardware_smoke\h755_lorenz_m2sfrk_float32_dec1024_1mbit_evidence\h755_lorenz_m2sfrk_fixed-point_lsb.bin
+input_bytes=131595
+requested_bits=1052760
+input_repetition_or_recycling=disabled
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+          Starting Rabbit:   nb = 1052760
+          Version: TestU01 1.2.3
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\hardware_smoke\h755_lorenz_m2sfrk_float32_dec1024_1mbit_evidence\h755_lorenz_m2sfrk_fixed-point_lsb.
+
+
+smultin_MultinomialBitsOver test:
+-----------------------------------------------
+   N =  1,  n = 1052736,  r =  0,   s = 32,   L =   32,
+       Sparse =   TRUE
+
+       Number of bits = n = 1052736
+       Number of cells = 2^L =         4294967296
+       Expected number per cell =  1 /  4079.8142
+       EColl = n^2 / (2k) =  129.0176396
+       Hashing =   TRUE
+
+       Collision test
+       CollisionOver:   density = n / k =  1 /    4079.81
+       Expected number of collisions = Mu =     129.00
+
+
+-----------------------------------------------
+Results of CollisionOver test:
+
+POISSON approximation                 :
+Expected number of collisions = N*Mu  :      129.00
+Observed number of collisions         :      108
+p-value of test                       :    0.97
+
+-----------------------------
+Total number of cells containing j balls
+
+  j =  0                              :       4293914668
+  j =  1                              :          1052520
+  j =  2                              :              108
+  j =  3                              :                0
+  j =  4                              :                0
+  j =  5                              :                0
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.26
+
+Generator state:
+ 1052736  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\hardware_smoke\h755_lorenz_m2sfrk_float32_dec1024_1mbit_evidence\h755_lorenz_m2sfrk_fixed-point_lsb.
+
+
+snpair_ClosePairsBitMatch test:
+-----------------------------------------------
+   N =  1,  n = 16449,  r =  0,  t = 2
+
+
+-----------------------------------------------
+Max of all bit distances              :   13.00
+p-value of test                       :    0.40
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1052736  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\hardware_smoke\h755_lorenz_m2sfrk_float32_dec1024_1mbit_evidence\h755_lorenz_m2sfrk_fixed-point_lsb.
+
+
+snpair_ClosePairsBitMatch test:
+-----------------------------------------------
+   N =  1,  n = 8224,  r =  0,  t = 4
+
+
+-----------------------------------------------
+Max of all bit distances              :    7.00
+p-value of test                       :  7.8e-3
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1052672  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\hardware_smoke\h755_lorenz_m2sfrk_float32_dec1024_1mbit_evidence\h755_lorenz_m2sfrk_fixed-point_lsb.
+
+
+svaria_AppearanceSpacings test:
+-----------------------------------------------
+   N =  1,   Q = 49347,   K = 49347,   r = 0,   s = 30,   L = 10
+
+   Sequences of n = (K + Q)L =       986940 bits
+   Q = 49347 initialization blocks
+   K = 49347 blocks for the test
+   the blocks have L = 10 bits
+
+
+
+-----------------------------------------------
+Normal statistic                      :   -1.26
+p-value of test                       :    0.90
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1052736  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\hardware_smoke\h755_lorenz_m2sfrk_float32_dec1024_1mbit_evidence\h755_lorenz_m2sfrk_fixed-point_lsb.
+
+
+scomp_LinearComp test:
+-----------------------------------------------
+   N =  1,  n = 12032,  r =  0,    s = 32
+
+
+
+-----------------------------------------------
+Number of degrees of freedom          :    7
+Chi2 statistic for size of jumps      :    8.77
+p-value of test                       :    0.27
+
+
+-----------------------------------------------
+Normal statistic for number of jumps  :    0.33
+p-value of test                       :    0.37
+
+
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.07
+
+Generator state:
+ 12032  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\hardware_smoke\h755_lorenz_m2sfrk_float32_dec1024_1mbit_evidence\h755_lorenz_m2sfrk_fixed-point_lsb.
+
+
+scomp_LempelZiv test:
+-----------------------------------------------
+   N =  1,  n = 1048576,  r =  0,   s =   32,   k =   20
+
+
+-----------------------------------------------
+Normal statistic                      :    0.22
+p-value of test                       :    0.41
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.01
+
+Generator state:
+ 1048576  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\hardware_smoke\h755_lorenz_m2sfrk_float32_dec1024_1mbit_evidence\h755_lorenz_m2sfrk_fixed-point_lsb.
+
+
+sspectral_Fourier1 test:
+-----------------------------------------------
+   N =  1,  n = 1048576,  r =  0,   s =   32,   k =   20
+
+
+-----------------------------------------------
+Normal statistic                      :    1.83
+p-value of test                       :    0.03
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.10
+
+Generator state:
+ 1048576  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\hardware_smoke\h755_lorenz_m2sfrk_float32_dec1024_1mbit_evidence\h755_lorenz_m2sfrk_fixed-point_lsb.
+
+
+sspectral_Fourier3 test:
+-----------------------------------------------
+   N = 1935,  n = 512,  r =  0,   s =   32,   k =    9
+
+
+-----------------------------------------------
+
+Kolmogorov-Smirnov+ statistic = D+    :   0.085
+p-value of test                       :    0.15
+
+Kolmogorov-Smirnov- statistic = D-    :   0.028
+p-value of test                       :    0.80
+
+Anderson-Darling statistic = A2       :    1.19
+p-value of test                       :    0.27
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.01
+
+Generator state:
+ 1052640  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\hardware_smoke\h755_lorenz_m2sfrk_float32_dec1024_1mbit_evidence\h755_lorenz_m2sfrk_fixed-point_lsb.
+
+
+sstring_LongestHeadRun test:
+-----------------------------------------------
+   N =  1,  n = 60,  r =  0,   s = 32,   L = 17536
+
+
+-----------------------------------------------
+Number of degrees of freedom          :    3
+Chi-square statistic                  :    1.99
+p-value of test                       :    0.57
+
+-----------------------------------------------
+Global longest run of 1               :   18.00
+p-value of test                       :    0.63
+
+
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1052160  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\hardware_smoke\h755_lorenz_m2sfrk_float32_dec1024_1mbit_evidence\h755_lorenz_m2sfrk_fixed-point_lsb.
+
+
+sstring_PeriodsInStrings test:
+-----------------------------------------------
+   N =  1,  n = 32898,  r =  0,   s =   31
+
+
+-----------------------------------------------
+Number of degrees of freedom          :   45
+Chi-square statistic                  :   70.02
+p-value of test                       :  9.9e-3
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1052736  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\hardware_smoke\h755_lorenz_m2sfrk_float32_dec1024_1mbit_evidence\h755_lorenz_m2sfrk_fixed-point_lsb.
+
+
+sstring_HammingWeight test:
+-----------------------------------------------
+   N =  1,  n = 32898,  r =  0,   s = 32,   L = 32
+
+
+-----------------------------------------------
+Number of degrees of freedom          :   18
+Chi-square statistic                  :   15.24
+p-value of test                       :    0.65
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1052736  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\hardware_smoke\h755_lorenz_m2sfrk_float32_dec1024_1mbit_evidence\h755_lorenz_m2sfrk_fixed-point_lsb.
+
+
+sstring_HammingCorr test:
+-----------------------------------------------
+   N =  1,  n = 32898,  r =  0,   s = 32,   L = 32
+
+
+
+-----------------------------------------------
+Normal statistic                      :    1.58
+p-value of test                       :    0.06
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1052736  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\hardware_smoke\h755_lorenz_m2sfrk_float32_dec1024_1mbit_evidence\h755_lorenz_m2sfrk_fixed-point_lsb.
+
+
+sstring_HammingCorr test:
+-----------------------------------------------
+   N =  1,  n = 16449,  r =  0,   s = 32,   L = 64
+
+
+
+-----------------------------------------------
+Normal statistic                      :    1.19
+p-value of test                       :    0.12
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1052736  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\hardware_smoke\h755_lorenz_m2sfrk_float32_dec1024_1mbit_evidence\h755_lorenz_m2sfrk_fixed-point_lsb.
+
+
+sstring_HammingCorr test:
+-----------------------------------------------
+   N =  1,  n = 8224,  r =  0,   s = 32,   L = 128
+
+
+
+-----------------------------------------------
+Normal statistic                      :    0.60
+p-value of test                       :    0.27
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1052672  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\hardware_smoke\h755_lorenz_m2sfrk_float32_dec1024_1mbit_evidence\h755_lorenz_m2sfrk_fixed-point_lsb.
+
+
+sstring_HammingIndep test:
+-----------------------------------------------
+   N =  1,  n = 32898,  r =  0,   s = 32,   L = 16,   d = 0
+
+
+
+Counters with expected numbers >= 10
+-----------------------------------------------
+Number of degrees of freedom          :  121
+Chi-square statistic                  :  128.94
+p-value of test                       :    0.29
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1052736  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\hardware_smoke\h755_lorenz_m2sfrk_float32_dec1024_1mbit_evidence\h755_lorenz_m2sfrk_fixed-point_lsb.
+
+
+sstring_HammingIndep test:
+-----------------------------------------------
+   N =  1,  n = 16449,  r =  0,   s = 32,   L = 32,   d = 0
+
+
+
+Counters with expected numbers >= 10
+-----------------------------------------------
+Number of degrees of freedom          :  177
+Chi-square statistic                  :  176.09
+p-value of test                       :    0.51
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1052736  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\hardware_smoke\h755_lorenz_m2sfrk_float32_dec1024_1mbit_evidence\h755_lorenz_m2sfrk_fixed-point_lsb.
+
+
+sstring_HammingIndep test:
+-----------------------------------------------
+   N =  1,  n = 8224,  r =  0,   s = 32,   L = 64,   d = 0
+
+
+
+Counters with expected numbers >= 10
+-----------------------------------------------
+Number of degrees of freedom          :  213
+Chi-square statistic                  :  178.94
+p-value of test                       :    0.96
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1052672  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\hardware_smoke\h755_lorenz_m2sfrk_float32_dec1024_1mbit_evidence\h755_lorenz_m2sfrk_fixed-point_lsb.
+
+
+sstring_AutoCor test:
+-----------------------------------------------
+   N =  1,  n = 1052673,  r =  0,   s = 32,   d = 1
+
+
+-----------------------------------------------
+Normal statistic                      :    0.50
+p-value of test                       :    0.31
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.01
+
+Generator state:
+ 1052704  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\hardware_smoke\h755_lorenz_m2sfrk_float32_dec1024_1mbit_evidence\h755_lorenz_m2sfrk_fixed-point_lsb.
+
+
+sstring_AutoCor test:
+-----------------------------------------------
+   N =  1,  n = 1052674,  r =  0,   s = 32,   d = 2
+
+
+-----------------------------------------------
+Normal statistic                      :    1.60
+p-value of test                       :    0.05
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1052704  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\hardware_smoke\h755_lorenz_m2sfrk_float32_dec1024_1mbit_evidence\h755_lorenz_m2sfrk_fixed-point_lsb.
+
+
+sstring_Run test:
+-----------------------------------------------
+   N =  1,  n = 210547,  r =  0,   s =   32
+
+
+-----------------------------------------------
+Total number of 1 runs:  210547
+
+Number of degrees of freedom          :   28
+Chi2 statistic for number of runs     :   23.40
+p-value of test                       :    0.71
+
+
+-----------------------------------------------
+Total number of bits:  841792
+
+Normal statistic for number of bits   :   -0.31
+p-value of test                       :    0.62
+
+
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 841792  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\hardware_smoke\h755_lorenz_m2sfrk_float32_dec1024_1mbit_evidence\h755_lorenz_m2sfrk_fixed-point_lsb.
+
+
+smarsa_MatrixRank test:
+-----------------------------------------------
+   N =  1,  n = 1028,  r =  0,    s = 32,    L = 32,    k = 32
+
+
+-----------------------------------------------
+Number of degrees of freedom          :    2
+Chi-square statistic                  :    5.72
+p-value of test                       :    0.06
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1052672  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\hardware_smoke\h755_lorenz_m2sfrk_float32_dec1024_1mbit_evidence\h755_lorenz_m2sfrk_fixed-point_lsb.
+
+
+swalk_RandomWalk1 test:
+-----------------------------------------------
+   N =  1,  n = 8224,  r =  0,   s = 32,   L0 =  128,   L1 =  128
+
+
+
+-----------------------------------------------
+Test on the values of the Statistic H
+
+Number of degrees of freedom          :   34
+ChiSquare statistic                   :   24.30
+p-value of test                       :    0.89
+
+
+-----------------------------------------------
+Test on the values of the Statistic M
+
+Number of degrees of freedom          :   34
+ChiSquare statistic                   :   41.84
+p-value of test                       :    0.17
+
+
+-----------------------------------------------
+Test on the values of the Statistic J
+
+Number of degrees of freedom          :   64
+ChiSquare statistic                   :   63.02
+p-value of test                       :    0.51
+
+
+-----------------------------------------------
+Test on the values of the Statistic R
+
+Number of degrees of freedom          :   30
+ChiSquare statistic                   :   29.37
+p-value of test                       :    0.50
+
+
+-----------------------------------------------
+Test on the values of the Statistic C
+
+Number of degrees of freedom          :   17
+ChiSquare statistic                   :   24.70
+p-value of test                       :    0.10
+
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1052672  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\hardware_smoke\h755_lorenz_m2sfrk_float32_dec1024_1mbit_evidence\h755_lorenz_m2sfrk_fixed-point_lsb.
+
+
+swalk_RandomWalk1 test:
+-----------------------------------------------
+   N =  1,  n = 1028,  r =  0,   s = 32,   L0 = 1024,   L1 = 1024
+
+
+
+-----------------------------------------------
+Test on the values of the Statistic H
+
+Number of degrees of freedom          :   56
+ChiSquare statistic                   :   40.00
+p-value of test                       :    0.95
+
+
+-----------------------------------------------
+Test on the values of the Statistic M
+
+Number of degrees of freedom          :   55
+ChiSquare statistic                   :   55.10
+p-value of test                       :    0.47
+
+
+-----------------------------------------------
+Test on the values of the Statistic J
+
+Number of degrees of freedom          :   88
+ChiSquare statistic                   :   88.51
+p-value of test                       :    0.46
+
+
+-----------------------------------------------
+Test on the values of the Statistic R
+
+Number of degrees of freedom          :   55
+ChiSquare statistic                   :   50.27
+p-value of test                       :    0.66
+
+
+-----------------------------------------------
+Test on the values of the Statistic C
+
+Number of degrees of freedom          :   33
+ChiSquare statistic                   :   22.59
+p-value of test                       :    0.91
+
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1052672  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\hardware_smoke\h755_lorenz_m2sfrk_float32_dec1024_1mbit_evidence\h755_lorenz_m2sfrk_fixed-point_lsb.
+
+
+swalk_RandomWalk1 test:
+-----------------------------------------------
+   N =  1,  n = 105,  r =  0,   s = 32,   L0 = 10016,   L1 = 10016
+
+
+
+-----------------------------------------------
+Test on the values of the Statistic H
+
+Number of degrees of freedom          :    9
+ChiSquare statistic                   :    7.29
+p-value of test                       :    0.61
+
+
+-----------------------------------------------
+Test on the values of the Statistic M
+
+Number of degrees of freedom          :    9
+ChiSquare statistic                   :    5.43
+p-value of test                       :    0.79
+
+
+-----------------------------------------------
+Test on the values of the Statistic J
+
+Number of degrees of freedom          :    9
+ChiSquare statistic                   :    5.96
+p-value of test                       :    0.74
+
+
+-----------------------------------------------
+Test on the values of the Statistic R
+
+Number of degrees of freedom          :    9
+ChiSquare statistic                   :    7.73
+p-value of test                       :    0.56
+
+
+-----------------------------------------------
+Test on the values of the Statistic C
+
+Number of degrees of freedom          :    8
+ChiSquare statistic                   :    4.89
+p-value of test                       :    0.77
+
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1051680  bits have been read.
+
+
+
+
+
+========= Summary results of Rabbit =========
+
+ Version:          TestU01 1.2.3
+ File:             C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\hardware_smoke\h755_lorenz_m2sfrk_float32_dec1024_1mbit_evidence\h755_lorenz_m2sfrk_fixed-point_lsb.bin
+ Number of bits:   1052736
+ Number of statistics:  38
+ Total CPU time:   00:00:00.50
+
+ All tests were passed
+
+
+

@@ -31,14 +31,19 @@ int main(int argc, char **argv)
     }
 
     for (system = 0u; system < FC_SYSTEM_COUNT; ++system) {
-        for (method = 0u; method < 2u; ++method) {
+        for (method = 0u; method < 3u; ++method) {
             if (fc_config_from_manifest(
                     (fc_system_t)system,
                     (fc_method_t)method,
                     &config) != FC_OK) {
                 return 3;
             }
-            if (fc_solver_init(&solver, &workspace, &config) != FC_OK) {
+            if (fc_solver_init(
+                    &solver,
+                    (method == (uint32_t)FC_METHOD_M2SFRK) ?
+                        NULL :
+                        &workspace,
+                    &config) != FC_OK) {
                 return 4;
             }
             for (step = 0u; step < steps; ++step) {

@@ -5,6 +5,10 @@ ENTRY(Reset_Handler)
  * primeros 256 bytes físicos (0x30000000) para un búfer visible por DMA1.
  */
 _estack = 0x10048000;
+__stack_probe_size__ =
+    DEFINED(FC_RUNTIME_PROBE_ENABLED) ? 0x2000 : 0;
+__stack_probe_start__ = _estack - __stack_probe_size__;
+__stack_probe_end__ = _estack;
 _Min_Heap_Size = 0x0;
 _Min_Stack_Size = 0x800;
 
@@ -44,6 +48,7 @@ SECTIONS
     . = ALIGN(4);
     *(.rodata)
     *(.rodata*)
+    KEEP(*(.fc_manifest_hash))
     . = ALIGN(4);
   } > FLASH
 
@@ -140,6 +145,7 @@ SECTIONS
     . = . + _Min_Heap_Size;
     . = . + _Min_Stack_Size;
     . = ALIGN(8);
+    __heap_stack_reservation_end__ = .;
   } > RAM_D2_ALIAS
 
   /DISCARD/ :
@@ -160,3 +166,7 @@ ASSERT(ADDR(.shared) == 0x38000000,
        "La cola compartida debe comenzar en SRAM4")
 ASSERT(SIZEOF(.shared) <= LENGTH(SRAM4),
        "La región compartida excede SRAM4")
+ASSERT(__heap_stack_reservation_end__ <= __stack_probe_start__,
+       "RAM_D2 static allocations overlap the 8 KiB CM4 stack probe")
+ASSERT(__stack_probe_end__ == _estack,
+       "The CM4 stack probe must end at the initial MSP")

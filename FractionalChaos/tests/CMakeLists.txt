@@ -30,26 +30,38 @@ add_library(fractional_chaos STATIC
     ../common/fractional_chaos.c
 )
 
+add_library(fractional_chaos_fixed STATIC
+    ../common/fractional_chaos_fixed.c
+)
+
 target_include_directories(fractional_chaos PUBLIC
     ../common
 )
 
+target_include_directories(fractional_chaos_fixed PUBLIC
+    ../common
+)
+
 target_compile_features(fractional_chaos PUBLIC c_std_11)
+target_compile_features(fractional_chaos_fixed PUBLIC c_std_11)
 
 if(MSVC)
     target_compile_options(fractional_chaos PRIVATE /W4)
+    target_compile_options(fractional_chaos_fixed PRIVATE /W4 /WX)
 else()
-    target_compile_options(fractional_chaos PRIVATE
-        -Wall
-        -Wextra
-        -Wpedantic
-        -Wconversion
-        -Wshadow
-        -Wdouble-promotion
-        -Werror
-        -fno-fast-math
-        -ffp-contract=off
-    )
+    foreach(target fractional_chaos fractional_chaos_fixed)
+        target_compile_options(${target} PRIVATE
+            -Wall
+            -Wextra
+            -Wpedantic
+            -Wconversion
+            -Wshadow
+            -Wdouble-promotion
+            -Werror
+            -fno-fast-math
+            -ffp-contract=off
+        )
+    endforeach()
 endif()
 
 add_executable(fractional_chaos_tests
@@ -57,10 +69,38 @@ add_executable(fractional_chaos_tests
 )
 target_link_libraries(fractional_chaos_tests PRIVATE fractional_chaos)
 
+add_executable(fractional_chaos_fixed_tests
+    test_fractional_chaos_fixed.c
+)
+target_link_libraries(
+    fractional_chaos_fixed_tests PRIVATE fractional_chaos_fixed)
+
+add_executable(fractional_fixed_reference_dump
+    fixed_reference_dump.c
+)
+target_link_libraries(
+    fractional_fixed_reference_dump PRIVATE fractional_chaos_fixed)
+
 add_executable(fractional_reference_dump
     reference_dump.c
 )
 target_link_libraries(fractional_reference_dump PRIVATE fractional_chaos)
+
+add_executable(fractional_rhs_contract_dump
+    rhs_contract_dump.c
+)
+target_link_libraries(
+    fractional_rhs_contract_dump PRIVATE fractional_chaos)
+
+add_executable(fractional_embedded_trajectory_dump
+    embedded_trajectory_dump.c
+)
+target_link_libraries(
+    fractional_embedded_trajectory_dump
+    PRIVATE
+        fractional_chaos
+        fractional_chaos_fixed
+)
 
 add_executable(fractional_transport_tests
     test_transport.c
@@ -72,15 +112,45 @@ target_include_directories(fractional_transport_tests PRIVATE
 )
 target_compile_features(fractional_transport_tests PRIVATE c_std_11)
 
+add_executable(fractional_start_handshake_tests
+    test_start_handshake.c
+    ../transport/fc_start_handshake.c
+)
+target_include_directories(fractional_start_handshake_tests PRIVATE
+    ../transport
+)
+target_compile_features(fractional_start_handshake_tests PRIVATE c_std_11)
+
+add_executable(fractional_runtime_probe_tests
+    test_runtime_probe.c
+    ../transport/fc_runtime_probe.c
+)
+target_include_directories(fractional_runtime_probe_tests PRIVATE
+    ../transport
+)
+target_compile_features(fractional_runtime_probe_tests PRIVATE c_std_11)
+
 if(MSVC)
     target_compile_options(fractional_chaos_tests PRIVATE /W4)
+    target_compile_options(fractional_chaos_fixed_tests PRIVATE /W4 /WX)
+    target_compile_options(
+        fractional_fixed_reference_dump PRIVATE /W4 /WX)
     target_compile_options(fractional_reference_dump PRIVATE /W4)
+    target_compile_options(fractional_rhs_contract_dump PRIVATE /W4)
     target_compile_options(fractional_transport_tests PRIVATE /W4)
+    target_compile_options(fractional_start_handshake_tests PRIVATE /W4)
+    target_compile_options(fractional_runtime_probe_tests PRIVATE /W4)
 else()
     foreach(target
             fractional_chaos_tests
+            fractional_chaos_fixed_tests
+            fractional_fixed_reference_dump
             fractional_reference_dump
-            fractional_transport_tests)
+            fractional_rhs_contract_dump
+            fractional_embedded_trajectory_dump
+            fractional_transport_tests
+            fractional_start_handshake_tests
+            fractional_runtime_probe_tests)
         target_compile_options(${target} PRIVATE
             -Wall
             -Wextra
@@ -97,6 +167,7 @@ endif()
 
 if(NOT MSVC)
     target_link_libraries(fractional_chaos PUBLIC m)
+    target_link_libraries(fractional_chaos_fixed PUBLIC m)
 endif()
 
 if(FC_ENABLE_SANITIZERS AND
@@ -105,7 +176,16 @@ if(FC_ENABLE_SANITIZERS AND
         -fsanitize=address,undefined
         -fno-omit-frame-pointer
     )
-    foreach(target fractional_chaos_tests fractional_reference_dump)
+    target_compile_options(fractional_chaos_fixed PRIVATE
+        -fsanitize=address,undefined
+        -fno-omit-frame-pointer
+    )
+    foreach(target
+            fractional_chaos_tests
+            fractional_chaos_fixed_tests
+            fractional_fixed_reference_dump
+            fractional_reference_dump
+            fractional_rhs_contract_dump)
         target_compile_options(${target} PRIVATE
             -fsanitize=address,undefined
             -fno-omit-frame-pointer
@@ -120,8 +200,17 @@ enable_testing()
 add_test(NAME fractional_chaos_c
     COMMAND fractional_chaos_tests
 )
+add_test(NAME fractional_chaos_fixed_c
+    COMMAND fractional_chaos_fixed_tests
+)
 add_test(NAME fractional_transport_c
     COMMAND fractional_transport_tests
+)
+add_test(NAME fractional_start_handshake_c
+    COMMAND fractional_start_handshake_tests
+)
+add_test(NAME fractional_runtime_probe_c
+    COMMAND fractional_runtime_probe_tests
 )
 
 find_package(Python3 COMPONENTS Interpreter)
@@ -132,14 +221,145 @@ if(Python3_Interpreter_FOUND)
             ${CMAKE_CURRENT_SOURCE_DIR}/reference_check.py
             $<TARGET_FILE:fractional_reference_dump>
     )
+    add_test(NAME fractional_rhs_python_contract
+        COMMAND
+            ${Python3_EXECUTABLE}
+            ${CMAKE_CURRENT_SOURCE_DIR}/rhs_contract_check.py
+            $<TARGET_FILE:fractional_rhs_contract_dump>
+    )
+    add_test(NAME fractional_fixed_python_reference
+        COMMAND
+            ${Python3_EXECUTABLE}
+            ${CMAKE_CURRENT_SOURCE_DIR}/fixed_reference_check.py
+            $<TARGET_FILE:fractional_fixed_reference_dump>
+            ${CMAKE_CURRENT_SOURCE_DIR}/../validation/candidate_manifests_rossler_classic_v2.json
+    )
     add_test(NAME fractional_uart_decoder
         COMMAND
             ${Python3_EXECUTABLE}
             ${CMAKE_CURRENT_SOURCE_DIR}/test_decode_uart.py
     )
+    add_test(NAME fractional_physical_campaign
+        COMMAND
+            ${Python3_EXECUTABLE}
+            -m pytest
+            -q
+            ${CMAKE_CURRENT_SOURCE_DIR}/test_physical_campaign.py
+            --basetemp
+            ${CMAKE_BINARY_DIR}/pytest-physical-campaign
+    )
     add_test(NAME fractional_generated_tables
         COMMAND
             ${Python3_EXECUTABLE}
             ${CMAKE_CURRENT_SOURCE_DIR}/check_generated_tables.py
+    )
+    add_test(NAME fractional_abm_oracle
+        COMMAND
+            ${Python3_EXECUTABLE}
+            ${CMAKE_CURRENT_SOURCE_DIR}/test_abm_oracle.py
+    )
+    add_test(NAME fractional_abm_long_horizon_artifacts
+        COMMAND
+            ${Python3_EXECUTABLE}
+            ${CMAKE_CURRENT_SOURCE_DIR}/test_abm_long_horizon_qualification.py
+    )
+    add_test(NAME fractional_fixed_point_oracle
+        COMMAND
+            ${Python3_EXECUTABLE}
+            -m pytest
+            -q
+            ${CMAKE_CURRENT_SOURCE_DIR}/test_fixed_point_comparison.py
+            --basetemp
+            ${CMAKE_BINARY_DIR}/pytest-fixed
+    )
+    add_test(NAME fractional_capture_analysis
+        COMMAND
+            ${Python3_EXECUTABLE}
+            -m pytest
+            -q
+            ${CMAKE_CURRENT_SOURCE_DIR}/test_analyze_capture.py
+            --basetemp
+            ${CMAKE_BINARY_DIR}/pytest-capture
+    )
+    add_test(NAME fractional_dynamics_density_analysis
+        COMMAND
+            ${Python3_EXECUTABLE}
+            -m pytest
+            -q
+            ${CMAKE_CURRENT_SOURCE_DIR}/test_analyze_dynamics_density.py
+            --basetemp
+            ${CMAKE_BINARY_DIR}/pytest-dynamics-density
+    )
+    add_test(NAME fractional_fixed_capture_parity
+        COMMAND
+            ${Python3_EXECUTABLE}
+            -m pytest
+            -q
+            ${CMAKE_CURRENT_SOURCE_DIR}/test_compare_fixed_captures.py
+            --basetemp
+            ${CMAKE_BINARY_DIR}/pytest-fixed-capture-parity
+    )
+    add_test(NAME fractional_dense_capture_parity
+        COMMAND
+            ${Python3_EXECUTABLE}
+            -m pytest
+            -q
+            ${CMAKE_CURRENT_SOURCE_DIR}/test_compare_dense_capture_parity.py
+            --basetemp
+            ${CMAKE_BINARY_DIR}/pytest-dense-capture-parity
+    )
+    add_test(NAME fractional_statistical_battery_runner
+        COMMAND
+            ${Python3_EXECUTABLE}
+            -m pytest
+            -q
+            ${CMAKE_CURRENT_SOURCE_DIR}/test_statistical_battery_runner.py
+            --basetemp
+            ${CMAKE_BINARY_DIR}/pytest-statistical-batteries
+    )
+    add_test(NAME fractional_embedded_vs_abm_helpers
+        COMMAND
+            ${Python3_EXECUTABLE}
+            -m pytest
+            -q
+            ${CMAKE_CURRENT_SOURCE_DIR}/test_embedded_vs_abm.py
+            --basetemp
+            ${CMAKE_BINARY_DIR}/pytest-embedded-vs-abm
+    )
+    add_test(NAME fractional_resource_usage_helpers
+        COMMAND
+            ${Python3_EXECUTABLE}
+            -m pytest
+            -q
+            ${CMAKE_CURRENT_SOURCE_DIR}/test_resource_usage.py
+            --basetemp
+            ${CMAKE_BINARY_DIR}/pytest-resource-usage
+    )
+    add_test(NAME fractional_ina226_energy_helpers
+        COMMAND
+            ${Python3_EXECUTABLE}
+            -m pytest
+            -q
+            ${CMAKE_CURRENT_SOURCE_DIR}/test_ina226_energy.py
+            --basetemp
+            ${CMAKE_BINARY_DIR}/pytest-ina226-energy
+    )
+    add_test(NAME fractional_power_controller_host_helpers
+        COMMAND
+            ${Python3_EXECUTABLE}
+            -m pytest
+            -q
+            ${CMAKE_SOURCE_DIR}/hardware/power_cycle_controller_uno/tests
+            --basetemp
+            ${CMAKE_BINARY_DIR}/pytest-power-controller
+    )
+    add_test(NAME fractional_runtime_probe_helpers
+        COMMAND
+            ${Python3_EXECUTABLE}
+            -m pytest
+            -q
+            ${CMAKE_CURRENT_SOURCE_DIR}/test_runtime_probe.py
+            --basetemp
+            ${CMAKE_BINARY_DIR}/pytest-runtime-probe
     )
 endif()

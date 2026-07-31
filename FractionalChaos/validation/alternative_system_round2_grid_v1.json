@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "grid_id": "abm_alternative_systems_round2_v1",
+  "status": "predeclared_before_round2_numerical_execution",
+  "declared_date": "2026-07-29",
+  "evidence_layer": "literature_complete_candidate_search_round2",
+  "purpose": "Evaluate three source-complete three-dimensional Caputo PECE candidates for the one alternative hardware slot left vacant after the Lu provenance correction failed. Candidate choice is based on published contract completeness, not on unpublished numerical results.",
+  "selection_rule": {
+    "candidate_order_does_not_determine_selection": true,
+    "eligibility": "A candidate must pass every unchanged long-horizon screen at h/2 and h/4 and the unchanged cross-resolution screen.",
+    "ranking": "Among eligible candidates, rank by the largest minimum normalized continuous acceptance margin across the required screens. Activity and finiteness remain eligibility gates but do not enter the ranking score.",
+    "promotion_count": 1,
+    "tie_breaker": "lexicographic candidate_id",
+    "insufficient_passes": "Leave the hardware slot vacant; do not relax thresholds or introduce a post-hoc candidate.",
+    "reporting": "Preserve and report every candidate result, including failures and exact failure reasons."
+  },
+  "integration_policy": {
+    "operator": "caputo",
+    "commensurate_order": true,
+    "base_step_s": 0.01,
+    "step_basis": "Every primary source explicitly reports h=0.01 for the selected contract; qualification runs h/2 and h/4.",
+    "physical_horizon_s": 50.0,
+    "transient_s": 10.0,
+    "diagnostic_sample_period_s": 0.05,
+    "memory_policy": "full_history",
+    "embedded_window_for_later_port_s": 10.0
+  },
+  "candidates": [
+    {
+      "candidate_id": "hammouch_mekkaoui_2018_caputo_v1",
+      "manifest": {
+        "manifest_id": "hammouch_mekkaoui_caputo_v1",
+        "system": "hammouch_mekkaoui",
+        "parameters": [],
+        "initial_state": [0.7, 0.1, 0.0],
+        "q": 0.98,
+        "h": 0.01,
+        "memory_seconds": 10.0,
+        "memory_increments": 1000
+      },
+      "equations": [
+        "C D^q x = -2 x - y^2",
+        "C D^q y = -4 x z + 3 y - z^2",
+        "C D^q z = 4 x y - 7 z + y z"
+      ],
+      "source": {
+        "citation": "Hammouch and Mekkaoui, Complex and Intelligent Systems 4 (2018) 251-260",
+        "doi": "10.1007/s40747-018-0070-3",
+        "url": "https://link.springer.com/article/10.1007/s40747-018-0070-3",
+        "contract_evidence": [
+          "The paper derives a Caputo PECE Adams-Bashforth-Moulton method from the equivalent Volterra equation and prints its history weights.",
+          "The selected system uses q=0.98, initial state (0.7,0.1,0), and h=0.01."
+        ],
+        "caveats": [
+          "The paper supports the chaotic case mainly with phase portraits and an analog circuit comparison rather than a reported Lyapunov exponent or 0-1 value for this contract.",
+          "The analog frequency-domain circuit is not a samplewise oracle for the full-memory ABM trajectory."
+        ]
+      }
+    },
+    {
+      "candidate_id": "munoz_pacheco_hidden_2018_caputo_v1",
+      "manifest": {
+        "manifest_id": "munoz_pacheco_hidden_caputo_v1",
+        "system": "munoz_pacheco_hidden",
+        "parameters": [0.35],
+        "initial_state": [1.0, 1.0, 1.0],
+        "q": 0.97,
+        "h": 0.01,
+        "memory_seconds": 10.0,
+        "memory_increments": 1000
+      },
+      "equations": [
+        "C D^q x = y z + x(y-a)",
+        "C D^q y = 1 - |x|",
+        "C D^q z = -x y - z"
+      ],
+      "source": {
+        "citation": "Munoz-Pacheco et al., Entropy 20 (2018) 564",
+        "doi": "10.3390/e20080564",
+        "url": "https://www.mdpi.com/1099-4300/20/8/564",
+        "contract_evidence": [
+          "The paper defines the Caputo operator and uses the full-history Adams-Bashforth-Moulton predictor-corrector scheme.",
+          "The selected hidden-attractor case uses q=0.97, a=0.35, initial state (1,1,1), and h=0.01.",
+          "The source reports a 0-1 test value K=0.9985 for this case in addition to Lyapunov, bifurcation, and entropy evidence."
+        ],
+        "caveats": [
+          "The reported chaotic q window is narrow and the no-equilibrium attractor is basin-dependent, so the initial condition is part of the immutable contract.",
+          "The absolute-value operation requires an exact Python/C convention and widened fixed-point handling for the most-negative integer."
+        ]
+      }
+    },
+    {
+      "candidate_id": "glucose_insulin_2020_caputo_v1",
+      "manifest": {
+        "manifest_id": "glucose_insulin_caputo_v1",
+        "system": "glucose_insulin",
+        "parameters": [1.3, 2.01, 0.22, 0.3],
+        "initial_state": [0.5, 1.2, 1.0],
+        "q": 0.9,
+        "h": 0.01,
+        "memory_seconds": 10.0,
+        "memory_increments": 1000
+      },
+      "equations": [
+        "C D^q x = -a1*x + 0.1*x*y + 1.09*y^2 - 1.08*y^3 + 0.03*z - 0.06*z^2 + a7*z^3 - 0.19",
+        "C D^q y = -a8*x*y + 3.84*x^2 + 1.2*x^3 + 0.3*y*(1-y) - 1.37*z + 0.3*z^2 - 0.22*z^3 - 0.56",
+        "C D^q z = a15*y - 1.35*y^2 + 0.5*y^3 + 0.42*z + 0.15*y*z"
+      ],
+      "source": {
+        "citation": "Munoz-Pacheco, Posadas-Castillo, and Zambrano-Serrano, Symmetry 12 (2020) 1395",
+        "doi": "10.3390/sym12091395",
+        "url": "https://www.mdpi.com/2073-8994/12/9/1395",
+        "contract_evidence": [
+          "The paper defines a Caputo commensurate model and applies the full-history Adams-Bashforth-Moulton predictor-corrector scheme.",
+          "Its baseline attractor uses q=0.9, parameters (a1,a7,a8,a15)=(1.3,2.01,0.22,0.3), initial state (0.5,1.2,1), and h=0.01.",
+          "The source reports Lyapunov and bifurcation evidence and an ARM BCM2837B0 digital realization."
+        ],
+        "caveats": [
+          "Cubic terms require widened fixed-point intermediates and a frozen operation order.",
+          "The published ARM realization is not evidence of equivalence to this STM32 firmware or its Q14/Q30 path.",
+          "This work treats the equations only as a numerical benchmark and does not make a medical claim."
+        ]
+      }
+    }
+  ],
+  "does_not_establish": [
+    "formal qualification before the frozen screen is executed",
+    "a proof of chaos or a positive Lyapunov exponent",
+    "hidden-attractor status under this execution",
+    "equivalence to a finite-memory embedded implementation",
+    "STM32 timing, energy, or randomness",
+    "automatic inclusion in the primary hardware matrix"
+  ]
+}

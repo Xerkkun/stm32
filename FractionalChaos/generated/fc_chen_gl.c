@@ -510,6 +510,7 @@ const fc_precomputed_tables_t FC_CHEN_GL_TABLES = {
     0x1.cccccc0000000p-1f, 0x1.47ae140000000p-8f, 2000u,
     0x1.164e680000000p-7f,
     {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
+    {0.0f, 0.0f},
     {NULL, NULL, NULL},
     fc_chen_gl_w,
     "ea052d9f89f404b18f7aa84938535bb55689933c781b551e8137aeebc2192a50"

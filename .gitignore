@@ -14,7 +14,19 @@
 
 # Python caches used by host-side tooling
 __pycache__/
+**/__pycache__/
 *.py[cod]
+.pytest_cache/
+**/.pytest_cache/
+**/.pytest_*/
+.benchmarks/
+**/.benchmarks/
+
+# CMake and host-side build trees
+**/build/
+
+# Runtime coordination files
+**/.locks/
 
 # Operating-system and editor noise
 .DS_Store

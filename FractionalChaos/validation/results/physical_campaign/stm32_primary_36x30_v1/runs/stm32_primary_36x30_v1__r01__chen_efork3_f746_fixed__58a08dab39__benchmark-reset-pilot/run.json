@@ -1,0 +1,137 @@
+{
+  "build": {
+    "benchmark_mode": true,
+    "calibration_basis": "compile_time_kind4_timing_endpoint",
+    "decimation": 512,
+    "directory": "C:\\Users\\moren\\Desktop\\Codes\\STM32\\FractionalChaos\\build\\campaign\\f746\\benchmark-10000-release",
+    "images": [
+      {
+        "path": "C:\\Users\\moren\\Desktop\\Codes\\STM32\\FractionalChaos\\build\\campaign\\f746\\benchmark-10000-release\\f746_chen_efork3_fixed.hex",
+        "sha256": "dec4d31f4d4d2760f66c5b577eb11d2098de2127586aef62d5de87c763f146d5"
+      }
+    ],
+    "maps": [
+      {
+        "path": "C:\\Users\\moren\\Desktop\\Codes\\STM32\\FractionalChaos\\build\\campaign\\f746\\benchmark-10000-release\\f746_chen_efork3_fixed.map",
+        "sha256": "b26a421ae5308e3af3912c94dab881965ef04f244d526c7190c2cf749c90025a"
+      }
+    ],
+    "target": "f746_chen_efork3_fixed"
+  },
+  "campaign_id": "stm32_primary_36x30_v1",
+  "capture": {
+    "capture_wall_time_s": 20.577999999994063,
+    "csv_path": "capture.csv",
+    "program_wall_time_s": 1.8910000000032596,
+    "raw_path": "capture.bin",
+    "raw_sha256": "877441deb5b971653c7b2df363183b36fbb6208d21af6a7a9e305617de4cc830",
+    "reset_wall_time_s": 0.8910000000032596,
+    "timing_cycles_path": "timing_cycles.csv",
+    "timing_cycles_sha256": "de2e69a40e68b297dad936c943da9147bc1b6fa9a125948ebca9407a6098ff37"
+  },
+  "cell": {
+    "block_id": "block-01",
+    "board": "f746",
+    "cell_id": "chen_efork3_f746_fixed",
+    "cold_start_id": 1,
+    "method": "efork3",
+    "order_index": 29,
+    "representation": "fixed_q14_q30",
+    "system": "chen"
+  },
+  "eligible_as_paper_cold_start": false,
+  "eligible_as_primary_benchmark": false,
+  "endpoint": {
+    "complete": true,
+    "expected_blocks": 2500,
+    "expected_first_sequence": 0,
+    "expected_last_sequence": 9996,
+    "first_sequence": 0,
+    "frame_kind": 4,
+    "last_sequence": 9996,
+    "received_blocks": 2500,
+    "rule": "complete_kind4_block_set_not_duration",
+    "values_per_frame": 4,
+    "watchdog_s": 180
+  },
+  "endpoint_name": "benchmark_reset_pilot",
+  "evidence_level": "solver_only_timing_under_stlink_hardware_reset",
+  "experimental_unit": "stlink_hardware_reset_repetition",
+  "finished_utc": "2026-07-28T23:29:14.254568Z",
+  "hardware": {
+    "baud": 921600,
+    "board_name": "NUCLEO-F746ZG",
+    "mcu": "STM32F746ZG",
+    "port": "COM7",
+    "power_removed": false,
+    "probe_serial": "066AFF504955657867165348",
+    "reset_mode": "stlink_hardware_reset",
+    "reset_preparation": "program_verify_halt_open_and_flush_uart_then_hardware_reset"
+  },
+  "manifest_sha256": "658d1695e6d1f5d312f314c0bfd2cb13a2ff1f1fa964da7b543c677121b0281f",
+  "method_contract": {
+    "wire_id": 0,
+    "wire_name": "efork3"
+  },
+  "representation_contract": {
+    "decoder_name": "fixed_q14",
+    "flash_name": "fixed",
+    "target_suffix": "_fixed",
+    "wire_kind": 3
+  },
+  "reset": {
+    "eligible_as_paper_cold_start": false,
+    "hardware_reset_repetition_id": 1,
+    "mode": "stlink_hardware_reset",
+    "power_removed": false,
+    "preparation": "program_verify_halt_open_and_flush_uart_then_hardware_reset"
+  },
+  "run_id": "stm32_primary_36x30_v1__r01__chen_efork3_f746_fixed__58a08dab39__benchmark-reset-pilot",
+  "scheduled_primary_run_id": "stm32_primary_36x30_v1__r01__chen_efork3_f746_fixed__58a08dab39",
+  "schema": "fractional-chaos-physical-run-v1",
+  "source": {
+    "commit": "1d392de31dba2f9bed190dc47f630481771e5d2a",
+    "dirty": true,
+    "status_sha256": "062a6a147ca7428ef956adbfd83ee21be6b352498eb0242ad21a84a60cac4bc0"
+  },
+  "started_utc": "2026-07-28T23:28:47.434568Z",
+  "system_contract": {
+    "contract_status": "pre_registered_candidate",
+    "dt_s": 0.005,
+    "history_states": 2001,
+    "initial_state_words_hex": [
+      "0x3DCCCCCD",
+      "0x3DCCCCCD",
+      "0x3DCCCCCD"
+    ],
+    "manifest_id": "chen_caputo_v1",
+    "memory_increments": 2000,
+    "memory_s": 10,
+    "observation_steps": 8000,
+    "q": 0.9,
+    "transient_steps": 2000,
+    "wire_id": 2
+  },
+  "timing": {
+    "accepted_as_solver_timing": true,
+    "all_cycles_nonzero": true,
+    "received_cycle_values": 10000,
+    "required_cycle_values": 10000,
+    "solver_only_window": true,
+    "uart_active_during_timed_window": false,
+    "warmup_steps": 2000
+  },
+  "transport": {
+    "accepted": true,
+    "bytes_received": 100000,
+    "crc_errors": 0,
+    "identity_mismatches": 0,
+    "invalid_headers": 0,
+    "matching_frames": 2500,
+    "noise_bytes": 0,
+    "nonzero_dropped_frames": 0,
+    "nonzero_status_frames": 0,
+    "trailing_bytes": 0,
+    "valid_frames": 2500
+  }
+}

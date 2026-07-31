@@ -1515,6 +1515,7 @@ const fc_precomputed_tables_t FC_LORENZ_EFORK_TABLES = {
     0x1.fd70a40000000p-1f, 0x1.47ae140000000p-8f, 2000u,
     0x1.507a0c0000000p-8f,
     {0x1.ff4cfc0000000p-2f, 0x1.fd85dc0000000p-3f, 0x1.01149a0000000p-1f, 0x1.01926c0000000p-1f, -0x1.02103e0000000p-2f, 0x1.56191c0000000p-1f, 0x1.ad12ec0000000p+0f, -0x1.5795520000000p+0f},
+    {0.0f, 0.0f},
     {fc_lorenz_efork_w1, fc_lorenz_efork_w2, fc_lorenz_efork_w3},
     NULL,
     "43cad4b11a06d85d563e14cc1fee55c1750e4471c235e2d42543495c6b9f9a92"

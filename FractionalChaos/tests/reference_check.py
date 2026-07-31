@@ -3,10 +3,12 @@
 
 from __future__ import annotations
 
+import json
 import math
 import subprocess
 import sys
 from dataclasses import dataclass
+from pathlib import Path
 
 
 @dataclass(frozen=True)
@@ -14,25 +16,79 @@ class Manifest:
     q: float
     h: float
     memory: int
-    parameters: tuple[float, float, float]
+    parameters: tuple[float, ...]
     initial: tuple[float, float, float]
 
 
-MANIFESTS = (
-    Manifest(0.995, 0.005, 2000, (10.0, 28.0, 8.0 / 3.0), (0.1, 0.1, 0.1)),
-    Manifest(0.970, 0.010, 1000, (0.2, 0.2, 6.0), (0.5, 1.5, 0.1)),
-    Manifest(0.900, 0.005, 2000, (35.0, 3.0, 28.0), (0.1, 0.1, 0.1)),
-)
+def load_manifests() -> tuple[Manifest, ...]:
+    historical_path = (
+        Path(__file__).resolve().parents[1]
+        / "validation"
+        / "candidate_manifests_rossler_classic_v2.json"
+    )
+    selected_path = (
+        Path(__file__).resolve().parents[1]
+        / "validation"
+        / "selected_system_manifests_v1.json"
+    )
+    historical = json.loads(
+        historical_path.read_text(encoding="utf-8")
+    )["manifests"]
+    selected_payload = json.loads(
+        selected_path.read_text(encoding="utf-8")
+    )
+    selected = [
+        entry["contract"] for entry in selected_payload["systems"]
+    ]
+    additions = [
+        item
+        for item in selected
+        if item["system"] in {"liu", "hammouch_mekkaoui"}
+    ]
+    return tuple(
+        Manifest(
+            q=float(item["q"]),
+            h=float(item["h"]),
+            memory=int(item["memory_increments"]),
+            parameters=tuple(float(value) for value in item["parameters"]),
+            initial=tuple(float(value) for value in item["initial_state"]),
+        )
+        for item in historical + additions
+    )
+
+
+MANIFESTS = load_manifests()
 
 
 def rhs(system: int, parameters: tuple[float, ...], state: tuple[float, ...]):
     x, y, z = state
-    p0, p1, p2 = parameters
     if system == 0:
+        p0, p1, p2 = parameters
         return p0 * (y - x), x * (p1 - z) - y, x * y - p2 * z
     if system == 1:
+        p0, p1, p2 = parameters
         return -y - z, x + p0 * y, p1 + z * (x - p2)
-    return p0 * (y - x), (p2 - p0) * x - x * z + p2 * y, x * y - p1 * z
+    if system == 2:
+        p0, p1, p2 = parameters
+        return (
+            p0 * (y - x),
+            (p2 - p0) * x - x * z + p2 * y,
+            x * y - p1 * z,
+        )
+    if system == 3:
+        p0, p1, p2, p3, p4, p5 = parameters
+        return (
+            -p0 * x - p3 * y * y,
+            p1 * y - p4 * x * z,
+            -p2 * z + p5 * x * y,
+        )
+    if system == 4:
+        return (
+            -2.0 * x - y * y,
+            -4.0 * x * z + 3.0 * y - z * z,
+            4.0 * x * y - 7.0 * z + y * z,
+        )
+    raise ValueError(f"unsupported system id: {system}")
 
 
 def efork_coefficients(q: float):
@@ -131,6 +187,31 @@ def gl_reference(system: int, manifest: Manifest, steps: int):
     return state
 
 
+def m2sfrk_reference(system: int, manifest: Manifest, steps: int):
+    hq = manifest.h**manifest.q
+    c2 = hq / math.gamma(manifest.q + 1.0)
+    c4 = (
+        hq
+        * math.gamma(manifest.q + 1.0)
+        / math.gamma(2.0 * manifest.q + 1.0)
+    )
+    state = manifest.initial
+    for _ in range(steps):
+        derivative = rhs(system, manifest.parameters, state)
+        predictor = tuple(
+            state[index] + c4 * derivative[index]
+            for index in range(3)
+        )
+        predicted_derivative = rhs(
+            system, manifest.parameters, predictor
+        )
+        state = tuple(
+            state[index] + c2 * predicted_derivative[index]
+            for index in range(3)
+        )
+    return state
+
+
 def main() -> int:
     if len(sys.argv) != 2:
         print("usage: reference_check.py <reference_dump>", file=sys.stderr)
@@ -151,12 +232,13 @@ def main() -> int:
 
     failures = 0
     for system, manifest in enumerate(MANIFESTS):
-        for method in range(2):
-            reference = (
-                efork_reference(system, manifest, 16)
-                if method == 0
-                else gl_reference(system, manifest, 16)
-            )
+        for method in range(3):
+            if method == 0:
+                reference = efork_reference(system, manifest, 16)
+            elif method == 1:
+                reference = gl_reference(system, manifest, 16)
+            else:
+                reference = m2sfrk_reference(system, manifest, 16)
             actual = observed[(system, method)]
             for component, (got, expected) in enumerate(zip(actual, reference)):
                 tolerance = 5.0e-4 * max(1.0, abs(expected))

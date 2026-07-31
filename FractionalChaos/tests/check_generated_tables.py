@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Comprueba que las seis tablas versionadas coincidan con el generador."""
+"""Comprueba que las nueve tablas versionadas coincidan con el generador."""
 
 from __future__ import annotations
 
@@ -19,10 +19,13 @@ import generate_tables  # noqa: E402
 JOBS = (
     ("lorenz", "efork", "fc_lorenz_efork3.c"),
     ("lorenz", "gl", "fc_lorenz_gl.c"),
+    ("lorenz", "m2sfrk", "fc_lorenz_m2sfrk.c"),
     ("rossler", "efork", "fc_rossler_efork3.c"),
     ("rossler", "gl", "fc_rossler_gl.c"),
+    ("rossler", "m2sfrk", "fc_rossler_m2sfrk.c"),
     ("chen", "efork", "fc_chen_efork3.c"),
     ("chen", "gl", "fc_chen_gl.c"),
+    ("chen", "m2sfrk", "fc_chen_m2sfrk.c"),
 )
 
 
@@ -48,7 +51,7 @@ def main() -> int:
             print(f"  {path}", file=sys.stderr)
         return 1
 
-    print("Se verifican las seis tablas float32 generadas.")
+    print("Se verifican las nueve tablas float32 generadas.")
     return 0
 
 

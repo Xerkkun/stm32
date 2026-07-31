@@ -3,6 +3,8 @@
 
 void DMA1_Stream0_IRQHandler(void);
 void USART3_IRQHandler(void);
+void CM7_SEV_IRQHandler(void);
 void SysTick_Handler(void);
+void HardFault_Handler(void);
 
 #endif

@@ -13,6 +13,15 @@ extern const fc_precomputed_tables_t FC_ROSSLER_EFORK_TABLES;
 extern const fc_precomputed_tables_t FC_ROSSLER_GL_TABLES;
 extern const fc_precomputed_tables_t FC_CHEN_EFORK_TABLES;
 extern const fc_precomputed_tables_t FC_CHEN_GL_TABLES;
+extern const fc_precomputed_tables_t FC_LIU_EFORK_TABLES;
+extern const fc_precomputed_tables_t FC_LIU_GL_TABLES;
+extern const fc_precomputed_tables_t FC_HAMMOUCH_MEKKAOUI_EFORK_TABLES;
+extern const fc_precomputed_tables_t FC_HAMMOUCH_MEKKAOUI_GL_TABLES;
+extern const fc_precomputed_tables_t FC_LORENZ_M2SFRK_TABLES;
+extern const fc_precomputed_tables_t FC_ROSSLER_M2SFRK_TABLES;
+extern const fc_precomputed_tables_t FC_CHEN_M2SFRK_TABLES;
+extern const fc_precomputed_tables_t FC_LIU_M2SFRK_TABLES;
+extern const fc_precomputed_tables_t FC_HAMMOUCH_MEKKAOUI_M2SFRK_TABLES;
 
 #ifdef __cplusplus
 }

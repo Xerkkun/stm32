@@ -1,0 +1,89 @@
+{
+  "comparison": "cross_board_exact_dense_uart_word_parity",
+  "comparison_fields": [
+    "sequence",
+    "x_word",
+    "y_word",
+    "z_word",
+    "status",
+    "dropped"
+  ],
+  "cycles_compared": false,
+  "failures": [],
+  "identity": {
+    "kind": "3",
+    "method": "m2sfrk",
+    "representation": "fixed_q14",
+    "system": "rossler",
+    "version": "1"
+  },
+  "interpretation": {
+    "does_not_establish": [
+      "cycle-count equality",
+      "timing equivalence",
+      "equivalence outside the captured interval",
+      "chaos",
+      "randomness"
+    ],
+    "evidence_layer": "observed_cross_board_dense_uart_parity",
+    "statement": "The report compares the declared words and transport-state fields for the captured row interval."
+  },
+  "left": {
+    "board": "f746",
+    "comparison_payload_sha256": "6ae93dca2da099e7e58f2250a1a9a99fccd3527120ca0f3040506354abda5182",
+    "dropped_counts": {
+      "0": 12000
+    },
+    "path": "validation/results/dense_uart_capture/stm32_dense_rossler_classic_q09877_m2sfrk_4cells_v1/runs/stm32_dense_rossler_classic_q09877_m2sfrk_4cells_v1__r01__rossler_m2sfrk_f746_fixed__1d70a2721f__dense-timeseries-pilot/capture.csv",
+    "rows": 12000,
+    "sequence_first": 1,
+    "sequence_increment": 1,
+    "sequence_last": 12000,
+    "sha256": "68a31b6d93d9eb44cfeafb73d5cdfbf7aa530b153703b4dcf7d683dcee604cc6",
+    "status_counts": {
+      "0": 12000
+    }
+  },
+  "requirements": {
+    "all_compared_fields_equal": true,
+    "all_dropped_zero": true,
+    "all_status_zero": true,
+    "boards_distinct": true,
+    "both_sequences_consecutive": true,
+    "identities_equal": true,
+    "row_counts_equal": true,
+    "sequence_vectors_equal": true
+  },
+  "result": {
+    "comparison_payload_hashes_equal": true,
+    "first_disagreement": null,
+    "mismatch_counts_by_field": {
+      "dropped": 0,
+      "sequence": 0,
+      "status": 0,
+      "x_word": 0,
+      "y_word": 0,
+      "z_word": 0
+    },
+    "mismatch_rows": 0,
+    "rows_compared": 12000
+  },
+  "right": {
+    "board": "h755",
+    "comparison_payload_sha256": "6ae93dca2da099e7e58f2250a1a9a99fccd3527120ca0f3040506354abda5182",
+    "dropped_counts": {
+      "0": 12000
+    },
+    "path": "validation/results/dense_uart_capture/stm32_dense_rossler_classic_q09877_m2sfrk_4cells_v1/runs/stm32_dense_rossler_classic_q09877_m2sfrk_4cells_v1__r01__rossler_m2sfrk_h755_fixed__1ba3b605d2__dense-timeseries-pilot/capture.csv",
+    "rows": 12000,
+    "sequence_first": 1,
+    "sequence_increment": 1,
+    "sequence_last": 12000,
+    "sha256": "456fa8ae4bc21564597698005e860ef27b9c65f91bbf9753c73ed319eae1518f",
+    "status_counts": {
+      "0": 12000
+    }
+  },
+  "schema": "fractional-chaos-dense-capture-parity-v1",
+  "status": "passed"
+}

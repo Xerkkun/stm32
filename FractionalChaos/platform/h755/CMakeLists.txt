@@ -9,6 +9,84 @@ option(FC_H755_CLOCK_480
 option(FC_H755_LDO_MODIFICATION_CONFIRMED
     "Confirmación explícita de que NUCLEO-H755ZI-Q se modificó físicamente a LDO"
     OFF)
+option(FC_H755_SMOKE_DIAGNOSTICS
+    "Instrumentar CM4 en SRAM4 para diagnosticar UART; no usar en mediciones"
+    OFF)
+option(FC_H755_BENCHMARK_MODE
+    "Guardar 10000 conteos DWT y emitirlos después como bloques de timing"
+    OFF)
+option(FC_H755_ENERGY_MARKER
+    "Mantener PE0/D34 alto sólo durante la ventana de benchmark"
+    OFF)
+set(FC_H755_ENERGY_WORK_MULTIPLIER
+    "1"
+    CACHE STRING
+    "Pasos de energia como multiplo de los 10000 conteos DWT retenidos")
+option(FC_H755_CLOCK_REFERENCE
+    "Emit a 100 ms DWT-clocked pulse on PA0/D32 after START/READY"
+    OFF)
+option(FC_H755_RUNTIME_PROBE
+    "Paint and report dedicated CM7/CM4 stack-watermark regions"
+    OFF)
+option(FC_H755_PRIMARY_HANDSHAKE
+    "Esperar START del host antes de un benchmark primario"
+    OFF)
+option(FC_H755_BUFFERED_CAPTURE_MODE
+    "Retener cada paso en RAM y transmitirlo despues por UART"
+    OFF)
+set(FC_H755_BUFFERED_CAPTURE_SAMPLES
+    "12000"
+    CACHE STRING
+    "Numero de estados consecutivos del modo de captura en RAM")
+set(FC_H755_OUTPUT_DECIMATION
+    "512"
+    CACHE STRING
+    "Transmitir una muestra por cada N pasos del solucionador")
+
+if(NOT FC_H755_OUTPUT_DECIMATION MATCHES "^[1-9][0-9]*$")
+    message(FATAL_ERROR
+        "FC_H755_OUTPUT_DECIMATION debe ser un entero positivo")
+endif()
+if(NOT FC_H755_BUFFERED_CAPTURE_SAMPLES MATCHES "^[1-9][0-9]*$")
+    message(FATAL_ERROR
+        "FC_H755_BUFFERED_CAPTURE_SAMPLES debe ser un entero positivo")
+endif()
+if(NOT FC_H755_ENERGY_WORK_MULTIPLIER MATCHES "^[1-9][0-9]*$" OR
+        FC_H755_ENERGY_WORK_MULTIPLIER GREATER 512)
+    message(FATAL_ERROR
+        "FC_H755_ENERGY_WORK_MULTIPLIER debe estar entre 1 y 512")
+endif()
+if(NOT FC_H755_ENERGY_MARKER AND
+        NOT FC_H755_ENERGY_WORK_MULTIPLIER STREQUAL "1")
+    message(FATAL_ERROR
+        "FC_H755_ENERGY_WORK_MULTIPLIER requiere FC_H755_ENERGY_MARKER")
+endif()
+if(NOT FC_H755_PRIMARY_HANDSHAKE AND
+        NOT FC_H755_ENERGY_WORK_MULTIPLIER STREQUAL "1")
+    message(FATAL_ERROR
+        "La ventana energetica ampliada requiere FC_H755_PRIMARY_HANDSHAKE")
+endif()
+if(FC_H755_BUFFERED_CAPTURE_MODE AND FC_H755_BENCHMARK_MODE)
+    message(FATAL_ERROR
+        "La captura en RAM y el benchmark son mutuamente excluyentes")
+endif()
+if(FC_H755_PRIMARY_HANDSHAKE AND NOT FC_H755_BENCHMARK_MODE)
+    message(FATAL_ERROR
+        "FC_H755_PRIMARY_HANDSHAKE requiere FC_H755_BENCHMARK_MODE")
+endif()
+if(FC_H755_CLOCK_REFERENCE AND NOT FC_H755_PRIMARY_HANDSHAKE)
+    message(FATAL_ERROR
+        "FC_H755_CLOCK_REFERENCE requires FC_H755_PRIMARY_HANDSHAKE")
+endif()
+if(FC_H755_RUNTIME_PROBE AND NOT FC_H755_PRIMARY_HANDSHAKE)
+    message(FATAL_ERROR
+        "FC_H755_RUNTIME_PROBE requires FC_H755_PRIMARY_HANDSHAKE")
+endif()
+if(FC_H755_BUFFERED_CAPTURE_MODE AND
+        NOT FC_H755_OUTPUT_DECIMATION STREQUAL "1")
+    message(FATAL_ERROR
+        "La captura en RAM representa cada paso y requiere decimacion 1")
+endif()
 
 if(FC_H755_CLOCK_480 AND NOT FC_H755_LDO_MODIFICATION_CONFIRMED)
     message(FATAL_ERROR
@@ -71,7 +149,9 @@ set(_fc_h755_cm7_sources
     "${CMAKE_CURRENT_LIST_DIR}/shared/h755_shared_memory.c"
     "${CMAKE_CURRENT_LIST_DIR}/shared/h755_syscalls.c"
     "${FC_H755_ROOT}/common/fractional_chaos.c"
+    "${FC_H755_ROOT}/common/fractional_chaos_fixed.c"
     "${FC_H755_ROOT}/transport/fc_shared_queue.c"
+    "${FC_H755_ROOT}/transport/fc_runtime_probe.c"
     "${_fc_h755_startup}"
     "${_fc_h755_system}"
     ${_fc_h755_hal_common})
@@ -83,7 +163,9 @@ set(_fc_h755_cm4_sources
     "${CMAKE_CURRENT_LIST_DIR}/shared/h755_shared_memory.c"
     "${CMAKE_CURRENT_LIST_DIR}/shared/h755_syscalls.c"
     "${FC_H755_ROOT}/transport/fc_protocol.c"
+    "${FC_H755_ROOT}/transport/fc_start_handshake.c"
     "${FC_H755_ROOT}/transport/fc_shared_queue.c"
+    "${FC_H755_ROOT}/transport/fc_runtime_probe.c"
     "${_fc_h755_startup}"
     "${_fc_h755_system}"
     ${_fc_h755_hal_common}
@@ -134,6 +216,7 @@ function(fc_h755_apply_common target core linker_script)
     target_link_options(${target} PRIVATE
         ${_core_options}
         "-T${linker_script}"
+        $<$<BOOL:${FC_H755_RUNTIME_PROBE}>:-Wl,--defsym=FC_RUNTIME_PROBE_ENABLED=1>
         "-Wl,-Map=$<TARGET_FILE_DIR:${target}>/${target}.map"
         "-Wl,--cref"
         "-Wl,--print-memory-usage")
@@ -159,13 +242,23 @@ function(fc_h755_apply_common target core linker_script)
 endfunction()
 
 function(fc_h755_add_m7_target
-        target system_id method_id table_source table_symbol)
+        target system_id method_id table_source table_symbol fixed_point)
     add_executable(${target}
         ${_fc_h755_cm7_sources}
         "${FC_H755_ROOT}/generated/${table_source}")
     target_compile_definitions(${target} PRIVATE
         FC_SYSTEM_ID=${system_id}
         FC_METHOD_ID=${method_id}
+        FC_H755_FIXED_POINT=${fixed_point}
+        FC_H755_OUTPUT_DECIMATION=${FC_H755_OUTPUT_DECIMATION}
+        FC_H755_BUFFERED_CAPTURE_MODE=$<BOOL:${FC_H755_BUFFERED_CAPTURE_MODE}>
+        FC_H755_BUFFERED_CAPTURE_SAMPLES=${FC_H755_BUFFERED_CAPTURE_SAMPLES}
+        FC_H755_BENCHMARK_MODE=$<BOOL:${FC_H755_BENCHMARK_MODE}>
+        FC_H755_ENERGY_MARKER=$<BOOL:${FC_H755_ENERGY_MARKER}>
+        FC_H755_ENERGY_WORK_MULTIPLIER=${FC_H755_ENERGY_WORK_MULTIPLIER}
+        FC_H755_CLOCK_REFERENCE=$<BOOL:${FC_H755_CLOCK_REFERENCE}>
+        FC_H755_RUNTIME_PROBE=$<BOOL:${FC_H755_RUNTIME_PROBE}>
+        FC_H755_PRIMARY_HANDSHAKE=$<BOOL:${FC_H755_PRIMARY_HANDSHAKE}>
         FC_REQUIRE_PRECOMPUTED_TABLES=1
         FC_PRECOMPUTED_TABLES_SYMBOL=${table_symbol})
     target_link_libraries(${target} PRIVATE m)
@@ -177,24 +270,114 @@ endfunction()
 
 fc_h755_add_m7_target(
     h755_m7_lorenz_efork3 0 0
-    fc_lorenz_efork3.c FC_LORENZ_EFORK_TABLES)
+    fc_lorenz_efork3.c FC_LORENZ_EFORK_TABLES 0)
 fc_h755_add_m7_target(
     h755_m7_lorenz_gl 0 1
-    fc_lorenz_gl.c FC_LORENZ_GL_TABLES)
+    fc_lorenz_gl.c FC_LORENZ_GL_TABLES 0)
+fc_h755_add_m7_target(
+    h755_m7_lorenz_m2sfrk 0 2
+    fc_lorenz_m2sfrk.c FC_LORENZ_M2SFRK_TABLES 0)
 fc_h755_add_m7_target(
     h755_m7_rossler_efork3 1 0
-    fc_rossler_efork3.c FC_ROSSLER_EFORK_TABLES)
+    fc_rossler_efork3.c FC_ROSSLER_EFORK_TABLES 0)
 fc_h755_add_m7_target(
     h755_m7_rossler_gl 1 1
-    fc_rossler_gl.c FC_ROSSLER_GL_TABLES)
+    fc_rossler_gl.c FC_ROSSLER_GL_TABLES 0)
+fc_h755_add_m7_target(
+    h755_m7_rossler_m2sfrk 1 2
+    fc_rossler_m2sfrk.c FC_ROSSLER_M2SFRK_TABLES 0)
 fc_h755_add_m7_target(
     h755_m7_chen_efork3 2 0
-    fc_chen_efork3.c FC_CHEN_EFORK_TABLES)
+    fc_chen_efork3.c FC_CHEN_EFORK_TABLES 0)
 fc_h755_add_m7_target(
     h755_m7_chen_gl 2 1
-    fc_chen_gl.c FC_CHEN_GL_TABLES)
+    fc_chen_gl.c FC_CHEN_GL_TABLES 0)
+fc_h755_add_m7_target(
+    h755_m7_chen_m2sfrk 2 2
+    fc_chen_m2sfrk.c FC_CHEN_M2SFRK_TABLES 0)
+fc_h755_add_m7_target(
+    h755_m7_liu_efork3 3 0
+    fc_liu_efork3.c FC_LIU_EFORK_TABLES 0)
+fc_h755_add_m7_target(
+    h755_m7_liu_gl 3 1
+    fc_liu_gl.c FC_LIU_GL_TABLES 0)
+fc_h755_add_m7_target(
+    h755_m7_liu_m2sfrk 3 2
+    fc_liu_m2sfrk.c FC_LIU_M2SFRK_TABLES 0)
+fc_h755_add_m7_target(
+    h755_m7_hammouch_mekkaoui_efork3 4 0
+    fc_hammouch_mekkaoui_efork3.c
+    FC_HAMMOUCH_MEKKAOUI_EFORK_TABLES 0)
+fc_h755_add_m7_target(
+    h755_m7_hammouch_mekkaoui_gl 4 1
+    fc_hammouch_mekkaoui_gl.c
+    FC_HAMMOUCH_MEKKAOUI_GL_TABLES 0)
+fc_h755_add_m7_target(
+    h755_m7_hammouch_mekkaoui_m2sfrk 4 2
+    fc_hammouch_mekkaoui_m2sfrk.c
+    FC_HAMMOUCH_MEKKAOUI_M2SFRK_TABLES 0)
+
+fc_h755_add_m7_target(
+    h755_m7_lorenz_efork3_fixed 0 0
+    fc_lorenz_efork3.c FC_LORENZ_EFORK_TABLES 1)
+fc_h755_add_m7_target(
+    h755_m7_lorenz_gl_fixed 0 1
+    fc_lorenz_gl.c FC_LORENZ_GL_TABLES 1)
+fc_h755_add_m7_target(
+    h755_m7_lorenz_m2sfrk_fixed 0 2
+    fc_lorenz_m2sfrk.c FC_LORENZ_M2SFRK_TABLES 1)
+fc_h755_add_m7_target(
+    h755_m7_rossler_efork3_fixed 1 0
+    fc_rossler_efork3.c FC_ROSSLER_EFORK_TABLES 1)
+fc_h755_add_m7_target(
+    h755_m7_rossler_gl_fixed 1 1
+    fc_rossler_gl.c FC_ROSSLER_GL_TABLES 1)
+fc_h755_add_m7_target(
+    h755_m7_rossler_m2sfrk_fixed 1 2
+    fc_rossler_m2sfrk.c FC_ROSSLER_M2SFRK_TABLES 1)
+fc_h755_add_m7_target(
+    h755_m7_chen_efork3_fixed 2 0
+    fc_chen_efork3.c FC_CHEN_EFORK_TABLES 1)
+fc_h755_add_m7_target(
+    h755_m7_chen_gl_fixed 2 1
+    fc_chen_gl.c FC_CHEN_GL_TABLES 1)
+fc_h755_add_m7_target(
+    h755_m7_chen_m2sfrk_fixed 2 2
+    fc_chen_m2sfrk.c FC_CHEN_M2SFRK_TABLES 1)
+fc_h755_add_m7_target(
+    h755_m7_liu_efork3_fixed 3 0
+    fc_liu_efork3.c FC_LIU_EFORK_TABLES 1)
+fc_h755_add_m7_target(
+    h755_m7_liu_gl_fixed 3 1
+    fc_liu_gl.c FC_LIU_GL_TABLES 1)
+fc_h755_add_m7_target(
+    h755_m7_liu_m2sfrk_fixed 3 2
+    fc_liu_m2sfrk.c FC_LIU_M2SFRK_TABLES 1)
+fc_h755_add_m7_target(
+    h755_m7_hammouch_mekkaoui_efork3_fixed 4 0
+    fc_hammouch_mekkaoui_efork3.c
+    FC_HAMMOUCH_MEKKAOUI_EFORK_TABLES 1)
+fc_h755_add_m7_target(
+    h755_m7_hammouch_mekkaoui_gl_fixed 4 1
+    fc_hammouch_mekkaoui_gl.c
+    FC_HAMMOUCH_MEKKAOUI_GL_TABLES 1)
+fc_h755_add_m7_target(
+    h755_m7_hammouch_mekkaoui_m2sfrk_fixed 4 2
+    fc_hammouch_mekkaoui_m2sfrk.c
+    FC_HAMMOUCH_MEKKAOUI_M2SFRK_TABLES 1)
 
 add_executable(h755_m4_uart ${_fc_h755_cm4_sources})
+if(FC_H755_SMOKE_DIAGNOSTICS)
+    target_compile_definitions(h755_m4_uart PRIVATE
+        FC_H755_SMOKE_DIAGNOSTICS=1)
+else()
+    target_compile_definitions(h755_m4_uart PRIVATE
+        FC_H755_SMOKE_DIAGNOSTICS=0)
+endif()
+target_compile_definitions(h755_m4_uart PRIVATE
+    FC_H755_PRIMARY_HANDSHAKE=$<BOOL:${FC_H755_PRIMARY_HANDSHAKE}>
+    FC_H755_BENCHMARK_MODE=$<BOOL:${FC_H755_BENCHMARK_MODE}>
+    FC_H755_RUNTIME_PROBE=$<BOOL:${FC_H755_RUNTIME_PROBE}>)
 fc_h755_apply_common(
     h755_m4_uart
     cm4

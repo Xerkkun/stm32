@@ -1,0 +1,1817 @@
+{
+  "candidate_grid_snapshot": {
+    "candidates": [
+      {
+        "candidate_id": "lu_yadav2019_caputo_v1",
+        "equations": [
+          "C D^q x = a(y-x)",
+          "C D^q y = c y - x z",
+          "C D^q z = x y - b z"
+        ],
+        "manifest": {
+          "h": 0.01,
+          "initial_state": [
+            0.2,
+            0.5,
+            0.3
+          ],
+          "manifest_id": "lu_caputo_v1",
+          "memory_increments": 1000,
+          "memory_seconds": 10.0,
+          "parameters": [
+            36.0,
+            3.0,
+            20.0
+          ],
+          "q": 0.96,
+          "system": "lu"
+        },
+        "source": {
+          "citation": "Yadav, Kumar, Leung, and Das, Chinese Journal of Physics 57 (2019) 282-308",
+          "contract_evidence": [
+            "The paper defines the Caputo derivative and uses Adams-Bashforth-Moulton numerical simulations.",
+            "The unperturbed Lu case uses q=0.96, parameters (36,3,20), and initial state (0.2,0.5,0.3).",
+            "The base step h=0.01 is selected uniformly by this protocol rather than inferred from the paper."
+          ],
+          "doi": "10.1016/j.cjph.2018.12.001",
+          "url": "https://doi.org/10.1016/j.cjph.2018.12.001"
+        }
+      },
+      {
+        "candidate_id": "genesio_tesi_mao2025_simplified_caputo_v1",
+        "equations": [
+          "C D^q x = y",
+          "C D^q y = z",
+          "C D^q z = -a x - b y - c z + x^2"
+        ],
+        "manifest": {
+          "h": 0.01,
+          "initial_state": [
+            -0.1,
+            0.5,
+            0.2
+          ],
+          "manifest_id": "genesio_tesi_simplified_caputo_v1",
+          "memory_increments": 1000,
+          "memory_seconds": 10.0,
+          "parameters": [
+            1.05,
+            1.1,
+            0.45
+          ],
+          "q": 0.9,
+          "system": "genesio_tesi_simplified"
+        },
+        "source": {
+          "citation": "Mao et al., Fractal and Fractional 9 (2025) 74",
+          "contract_evidence": [
+            "The paper declares the Caputo operator and the simplified Genesio-Tesi vector field.",
+            "Its reported attractor uses h=0.01 s, initial state (-0.1,0.5,0.2), a=1.05, fixed b=1.1, fixed c=0.45, and q=0.9."
+          ],
+          "doi": "10.3390/fractalfract9020074",
+          "url": "https://doi.org/10.3390/fractalfract9020074"
+        }
+      },
+      {
+        "candidate_id": "shimizu_morioka_wei2021_caputo_v1",
+        "equations": [
+          "C D^q x = y",
+          "C D^q y = x - beta y - x z",
+          "C D^q z = -alpha z + x^2"
+        ],
+        "manifest": {
+          "h": 0.01,
+          "initial_state": [
+            1.0,
+            1.0,
+            2.0
+          ],
+          "manifest_id": "shimizu_morioka_caputo_v1",
+          "memory_increments": 1000,
+          "memory_seconds": 10.0,
+          "parameters": [
+            0.45,
+            0.75
+          ],
+          "q": 0.99,
+          "system": "shimizu_morioka"
+        },
+        "source": {
+          "citation": "Wei and Zhang, Frontiers in Physics 9 (2021) 636173",
+          "contract_evidence": [
+            "The paper gives the Caputo predictor-corrector equations for the Shimizu-Morioka vector field.",
+            "The commensurate experiment reports alpha=0.45, beta=0.75, initial state (1,1,2), and chaotic cases including q=0.99.",
+            "The base step h=0.01 is selected uniformly by this protocol rather than inferred from the paper."
+          ],
+          "doi": "10.3389/fphy.2021.636173",
+          "url": "https://doi.org/10.3389/fphy.2021.636173"
+        }
+      },
+      {
+        "candidate_id": "liu_bhalekar2010_caputo_v1",
+        "equations": [
+          "C D^q x = -a x - e y^2",
+          "C D^q y = b y - k x z",
+          "C D^q z = -c z + m x y"
+        ],
+        "manifest": {
+          "h": 0.01,
+          "initial_state": [
+            0.2,
+            0.0,
+            0.5
+          ],
+          "manifest_id": "liu_caputo_v1",
+          "memory_increments": 1000,
+          "memory_seconds": 10.0,
+          "parameters": [
+            1.0,
+            2.5,
+            5.0,
+            1.0,
+            4.0,
+            4.0
+          ],
+          "q": 0.92,
+          "system": "liu"
+        },
+        "source": {
+          "citation": "V. Daftardar-Gejji and S. Bhalekar, Computers and Mathematics with Applications 59 (2010) 1117-1127",
+          "contract_evidence": [
+            "The primary paper defines the Caputo derivative and uses the fractional Adams-Bashforth-Moulton method.",
+            "The Liu case uses parameters a=e=1, b=2.5, c=5, k=m=4 and initial state (0.2,0,0.5).",
+            "The reported lowest commensurate effective order 2.76 corresponds to q=0.92, and the numerical experiments use h=0.01."
+          ],
+          "doi": "10.1016/j.camwa.2009.07.003",
+          "url": "https://doi.org/10.1016/j.camwa.2009.07.003"
+        }
+      }
+    ],
+    "declared_date": "2026-07-29",
+    "does_not_establish": [
+      "formal qualification before the frozen screen is executed",
+      "a proof of chaos or a positive Lyapunov exponent",
+      "equivalence to a finite-memory embedded implementation",
+      "STM32 timing, energy, or randomness",
+      "automatic inclusion in the primary hardware matrix"
+    ],
+    "evidence_layer": "exploratory_candidate_search",
+    "grid_id": "abm_alternative_systems_v1",
+    "integration_policy": {
+      "base_step_s": 0.01,
+      "commensurate_order": true,
+      "diagnostic_sample_period_s": 0.05,
+      "embedded_window_for_later_port_s": 10.0,
+      "memory_policy": "full_history",
+      "operator": "caputo",
+      "physical_horizon_s": 50.0,
+      "step_basis": "A uniform protocol-selected base step is used for all four candidates; the qualification itself runs h/2 and h/4.",
+      "transient_s": 10.0
+    },
+    "purpose": "Screen four published three-dimensional commensurate Caputo systems as possible replacements for the Lorenz and Rossler primary slots without changing the previously frozen dynamic criteria.",
+    "schema_version": 1,
+    "selection_rule": {
+      "candidate_order_does_not_determine_selection": true,
+      "eligibility": "A candidate must pass every unchanged long-horizon screen at h/2 and h/4 and the unchanged cross-resolution screen.",
+      "insufficient_passes": "Promote only the number that qualify; do not relax thresholds or add a post-hoc candidate to fill a slot.",
+      "promotion_count": 2,
+      "ranking": "Among eligible candidates, rank by the largest minimum normalized continuous acceptance margin across the required screens. Activity and finiteness remain eligibility gates but do not enter the ranking score.",
+      "reporting": "Preserve and report every candidate result, including failures and exact failure reasons.",
+      "tie_breaker": "lexicographic candidate_id"
+    },
+    "status": "predeclared_before_alternative_system_exploration"
+  },
+  "criteria": {
+    "criteria_id": "abm_caputo_alternative_systems_long_horizon_v1",
+    "decision_rule": {
+      "not_qualified": "Any required dynamic screen or numerical integration fails. A failed screen is reported without changing the criteria.",
+      "prerequisite": "The separate alternative-system ABM validation report must pass and its oracle, vector-field, candidate-grid, and manifest hashes must match the current inputs.",
+      "qualified": "Every resolution passes observed boundedness, activity, the nonperiodicity screen, and within-resolution stability, and the h/2 versus h/4 distributional comparison passes."
+    },
+    "source": "validation/alternative_system_criteria_v1.json",
+    "source_sha256": "59bf7d2cec5702d87af5c84d2886977baaeb4b6e35bccbdd745d7d1ac0c60681",
+    "status": "predeclared_before_first_qualification_run"
+  },
+  "criteria_snapshot": {
+    "criteria_id": "abm_caputo_alternative_systems_long_horizon_v1",
+    "cross_resolution_stability": {
+      "maximum_mean_difference_in_pooled_std": 0.75,
+      "maximum_permutation_entropy_difference": 0.25,
+      "maximum_quantile_difference_in_pooled_std": 1.0,
+      "maximum_symmetric_std_ratio": 2.5,
+      "quantiles": [
+        0.05,
+        0.25,
+        0.5,
+        0.75,
+        0.95
+      ]
+    },
+    "decision_rule": {
+      "not_qualified": "Any required dynamic screen or numerical integration fails. A failed screen is reported without changing the criteria.",
+      "prerequisite": "The separate alternative-system ABM validation report must pass and its oracle, vector-field, candidate-grid, and manifest hashes must match the current inputs.",
+      "qualified": "Every resolution passes observed boundedness, activity, the nonperiodicity screen, and within-resolution stability, and the h/2 versus h/4 distributional comparison passes."
+    },
+    "declared_date": "2026-07-29",
+    "does_not_establish": [
+      "mathematical boundedness outside the observed horizon",
+      "a proof of chaos or a positive Lyapunov exponent",
+      "hidden-attractor status",
+      "pointwise convergence of long chaotic trajectories",
+      "equivalence to an embedded finite-memory implementation",
+      "STM32 timing, energy, or randomness",
+      "automatic inclusion in the primary hardware matrix"
+    ],
+    "inputs": {
+      "candidate_grid_sha256": "ae8f455ad8d8b8ca0c5e8d38c0515198814f02d4f2c1a32fb79cfff0b0a4a415",
+      "candidate_manifest_sha256": "26c0b74e20a1aed734110a1efe0e37f0bf0d8450bb899e7ead57bee270b822fc",
+      "manifest_ids": [
+        "lu_caputo_v1",
+        "genesio_tesi_simplified_caputo_v1",
+        "shimizu_morioka_caputo_v1",
+        "liu_caputo_v1"
+      ]
+    },
+    "integration": {
+      "arithmetic": "IEEE-754 float64",
+      "diagnostic_sample_period_s": 0.05,
+      "memory_policy": "full_history",
+      "operator": "caputo",
+      "physical_horizon_s": 50.0,
+      "resolution_divisors": [
+        2,
+        4
+      ],
+      "transient_s": 10.0
+    },
+    "nonperiodicity_screen": {
+      "lag_window_s": [
+        1.0,
+        15.0
+      ],
+      "minimum_normalized_lag_rmse": 0.05,
+      "minimum_normalized_permutation_entropy": 0.25,
+      "permutation_entropy_delay_s": 0.1,
+      "permutation_entropy_order": 5
+    },
+    "observed_boundedness": {
+      "maximum_absolute_state": 1000.0,
+      "minimum_active_components": 3,
+      "minimum_component_peak_to_peak": 0.01,
+      "minimum_component_standard_deviation": 0.001
+    },
+    "schema_version": 1,
+    "scope": "Observed long-horizon dynamic qualification of four published alternative three-dimensional Caputo candidates using the independently validated full-memory ABM oracle.",
+    "selection_rule": {
+      "promotion_count": 2,
+      "ranking": "Descending minimum normalized continuous acceptance margin among qualified candidates.",
+      "report_all_candidates": true,
+      "tie_breaker": "lexicographic candidate_id"
+    },
+    "status": "predeclared_before_first_qualification_run",
+    "within_resolution_stability": {
+      "maximum_block_mean_shift_in_global_std": 1.5,
+      "maximum_block_to_global_std_ratio": 4.0,
+      "minimum_block_to_global_std_ratio": 0.25,
+      "post_transient_blocks": 4
+    }
+  },
+  "does_not_establish": [
+    "mathematical boundedness outside the observed horizon",
+    "a proof of chaos or a positive Lyapunov exponent",
+    "hidden-attractor status",
+    "pointwise convergence of long chaotic trajectories",
+    "equivalence to an embedded finite-memory implementation",
+    "STM32 timing, energy, or randomness",
+    "automatic inclusion in the primary hardware matrix"
+  ],
+  "evidence_layer": "dynamic_manifest_qualification",
+  "execution": {
+    "completed_utc": "2026-07-29T07:20:58.464223+00:00",
+    "numpy_version": "2.3.5",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "python_version": "3.12.12",
+    "started_utc": "2026-07-29T07:20:44.046489+00:00",
+    "wall_time_s": 14.414999399999942
+  },
+  "implementation_validation_prerequisite": {
+    "checks": {
+      "abm_oracle_source_sha256_matches_report": true,
+      "algorithm_validation_passed": true,
+      "alternative_rhs_source_sha256_matches_report": true,
+      "candidate_grid_sha256_matches_report": true,
+      "candidate_manifest_sha256_matches_report": true,
+      "grid_matches_predeclared_criteria": true,
+      "manifest_matches_predeclared_criteria": true,
+      "status_passed": true
+    },
+    "current": {
+      "abm_oracle_source_sha256": "5608dc119e85a01accc4ae8b58f83e13c79b230a7731953c280330e16bcb2aca",
+      "alternative_rhs_source_sha256": "4aad013e3f362189183ad76ab8e451758c040547445999aa6116a3a744ad4af4",
+      "candidate_grid_sha256": "ae8f455ad8d8b8ca0c5e8d38c0515198814f02d4f2c1a32fb79cfff0b0a4a415",
+      "candidate_manifest_sha256": "26c0b74e20a1aed734110a1efe0e37f0bf0d8450bb899e7ead57bee270b822fc"
+    },
+    "passed": true,
+    "source": "validation/results/alternative_system_oracle_validation_v1.json",
+    "source_sha256": "accb5ab6a26cf21360ff833bbb7d2b9f0d9797e2caf708631a3682e2a50a99eb"
+  },
+  "manifests": [
+    {
+      "candidate_id": "lu_yadav2019_caputo_v1",
+      "cross_resolution_stability": {
+        "checks": {
+          "mean_difference": true,
+          "permutation_entropy_difference": true,
+          "quantile_difference": true,
+          "standard_deviation_ratio": true
+        },
+        "interpretation": "Distributional h/2 versus h/4 stability; pointwise trajectory agreement is intentionally not required at long horizon.",
+        "maximum_mean_difference_in_pooled_std": 0.10274896206221558,
+        "maximum_quantile_difference_in_pooled_std": 0.1323988629856206,
+        "maximum_symmetric_std_ratio": 1.0169937635142645,
+        "mean_difference_in_pooled_std_by_component": [
+          0.10274896206221558,
+          0.09949651194822469,
+          0.013791544420910082
+        ],
+        "passed": true,
+        "permutation_entropy_difference": 0.0063699770841600944,
+        "symmetric_std_ratio_by_component": [
+          1.001007959435644,
+          1.0017320891601778,
+          1.0169937635142645
+        ],
+        "thresholds": {
+          "maximum_mean_difference_in_pooled_std": 0.75,
+          "maximum_permutation_entropy_difference": 0.25,
+          "maximum_quantile_difference_in_pooled_std": 1.0,
+          "maximum_symmetric_std_ratio": 2.5
+        }
+      },
+      "decision": "qualified_observed_long_horizon_screen",
+      "failure_reasons": [],
+      "manifest": {
+        "candidate_id": "lu_yadav2019_caputo_v1",
+        "h": 0.01,
+        "initial_state": [
+          0.2,
+          0.5,
+          0.3
+        ],
+        "manifest_id": "lu_caputo_v1",
+        "memory_increments": 1000,
+        "memory_seconds": 10.0,
+        "parameters": [
+          36.0,
+          3.0,
+          20.0
+        ],
+        "q": 0.96,
+        "system": "lu"
+      },
+      "manifest_id": "lu_caputo_v1",
+      "resolutions": [
+        {
+          "diagnostics": {
+            "activity": {
+              "active_components": 3,
+              "checks": {
+                "minimum_active_components": true
+              },
+              "minimum_required": 3,
+              "passed": true
+            },
+            "analysis_window_s": [
+              10.0,
+              50.0
+            ],
+            "component_summary": {
+              "maximum": [
+                20.190232575839346,
+                22.561263169422634,
+                35.40826000562875
+              ],
+              "mean": [
+                0.17381102336624518,
+                0.17471226613012206,
+                18.82443849875764
+              ],
+              "minimum": [
+                -19.683961884005125,
+                -21.873731226462656,
+                5.898774249432941
+              ],
+              "peak_to_peak": [
+                39.874194459844475,
+                44.43499439588529,
+                29.509485756195808
+              ],
+              "quantile_probabilities": [
+                0.05,
+                0.25,
+                0.5,
+                0.75,
+                0.95
+              ],
+              "quantiles": [
+                [
+                  -12.471489554899929,
+                  -13.10346581590006,
+                  9.638744650525759
+                ],
+                [
+                  -4.633074994183362,
+                  -4.64035872909459,
+                  14.85274902997585
+                ],
+                [
+                  0.16154879091160115,
+                  0.12596846419838448,
+                  18.258811629939522
+                ],
+                [
+                  4.9642496148381206,
+                  4.99628943047763,
+                  23.12052871959049
+                ],
+                [
+                  12.484444544611685,
+                  13.102274525194778,
+                  28.441088170631932
+                ]
+              ],
+              "standard_deviation": [
+                7.472974502597022,
+                7.785214313941484,
+                5.67544142896667
+              ]
+            },
+            "diagnostic_sample_period_s": 0.05,
+            "diagnostic_samples": 801,
+            "nonperiodicity_screen": {
+              "checks": {
+                "minimum_normalized_lag_rmse": true,
+                "minimum_normalized_permutation_entropy": true
+              },
+              "interpretation": "Observed no-near-period recurrence and complexity screen; not a proof of chaos.",
+              "lag_at_minimum_s": 1.5,
+              "lag_window_s": [
+                1.0,
+                15.0
+              ],
+              "minimum_normalized_lag_rmse": 1.1728630853502715,
+              "normalized_permutation_entropy": 0.7023268300717835,
+              "passed": true,
+              "permutation_entropy_component": 1,
+              "permutation_entropy_delay_samples": 2,
+              "permutation_entropy_order": 5,
+              "thresholds": {
+                "minimum_normalized_lag_rmse": 0.05,
+                "minimum_normalized_permutation_entropy": 0.25
+              }
+            },
+            "observed_boundedness": {
+              "checks": {
+                "all_finite": true,
+                "maximum_absolute_state": true
+              },
+              "maximum_absolute_state": 40.93463894532096,
+              "passed": true,
+              "threshold": 1000.0
+            },
+            "post_transient_samples": 8001,
+            "within_resolution_stability": {
+              "checks": {
+                "maximum_mean_shift": true,
+                "maximum_std_ratio": true,
+                "minimum_std_ratio": true
+              },
+              "maximum_block_mean_shift_in_global_std": 0.12685731014154175,
+              "maximum_block_to_global_std_ratio": 1.0446514042286053,
+              "minimum_block_to_global_std_ratio": 0.9719704862205154,
+              "passed": true,
+              "thresholds": {
+                "maximum_block_mean_shift_in_global_std": 1.5,
+                "maximum_block_to_global_std_ratio": 4.0,
+                "minimum_block_to_global_std_ratio": 0.25
+              }
+            }
+          },
+          "h": 0.005,
+          "integration_status": "completed",
+          "resolution_divisor": 2,
+          "rhs_evaluations": 20001,
+          "runtime_s": 0.9300679999996646,
+          "steps": 10000,
+          "trajectory_float64_le_sha256": "56fbd7486eea52a45ea6a2a326d5e34a5e4f78de231992a8c509b7781942d688"
+        },
+        {
+          "diagnostics": {
+            "activity": {
+              "active_components": 3,
+              "checks": {
+                "minimum_active_components": true
+              },
+              "minimum_required": 3,
+              "passed": true
+            },
+            "analysis_window_s": [
+              10.0,
+              50.0
+            ],
+            "component_summary": {
+              "maximum": [
+                19.0645712756488,
+                21.11920296278119,
+                35.56228128082669
+              ],
+              "mean": [
+                -0.5936428613482249,
+                -0.5992200129793379,
+                18.902060392215745
+              ],
+              "minimum": [
+                -20.33556266004151,
+                -22.74145468197325,
+                5.651807649371392
+              ],
+              "peak_to_peak": [
+                39.400133935690306,
+                43.86065764475444,
+                29.910473631455297
+              ],
+              "quantile_probabilities": [
+                0.05,
+                0.25,
+                0.5,
+                0.75,
+                0.95
+              ],
+              "quantiles": [
+                [
+                  -12.572038584989233,
+                  -13.207194436518103,
+                  10.189963143021014
+                ],
+                [
+                  -5.378635482709101,
+                  -5.35669149538288,
+                  14.84956980068982
+                ],
+                [
+                  -0.827366519673896,
+                  -0.8125084251003887,
+                  18.27429068123113
+                ],
+                [
+                  4.137739532466879,
+                  4.103173151860354,
+                  23.22806999875594
+                ],
+                [
+                  12.73160308478278,
+                  13.373291714190028,
+                  28.257413238063027
+                ]
+              ],
+              "standard_deviation": [
+                7.465449632198921,
+                7.771752944910027,
+                5.58060593150045
+              ]
+            },
+            "diagnostic_sample_period_s": 0.05,
+            "diagnostic_samples": 801,
+            "nonperiodicity_screen": {
+              "checks": {
+                "minimum_normalized_lag_rmse": true,
+                "minimum_normalized_permutation_entropy": true
+              },
+              "interpretation": "Observed no-near-period recurrence and complexity screen; not a proof of chaos.",
+              "lag_at_minimum_s": 1.9500000000000002,
+              "lag_window_s": [
+                1.0,
+                15.0
+              ],
+              "minimum_normalized_lag_rmse": 1.2299936596614438,
+              "normalized_permutation_entropy": 0.6959568529876234,
+              "passed": true,
+              "permutation_entropy_component": 1,
+              "permutation_entropy_delay_samples": 2,
+              "permutation_entropy_order": 5,
+              "thresholds": {
+                "minimum_normalized_lag_rmse": 0.05,
+                "minimum_normalized_permutation_entropy": 0.25
+              }
+            },
+            "observed_boundedness": {
+              "checks": {
+                "all_finite": true,
+                "maximum_absolute_state": true
+              },
+              "maximum_absolute_state": 40.76625996956101,
+              "passed": true,
+              "threshold": 1000.0
+            },
+            "post_transient_samples": 16001,
+            "within_resolution_stability": {
+              "checks": {
+                "maximum_mean_shift": true,
+                "maximum_std_ratio": true,
+                "minimum_std_ratio": true
+              },
+              "maximum_block_mean_shift_in_global_std": 0.12848904003209058,
+              "maximum_block_to_global_std_ratio": 1.0142449090219159,
+              "minimum_block_to_global_std_ratio": 0.9804626222597046,
+              "passed": true,
+              "thresholds": {
+                "maximum_block_mean_shift_in_global_std": 1.5,
+                "maximum_block_to_global_std_ratio": 4.0,
+                "minimum_block_to_global_std_ratio": 0.25
+              }
+            }
+          },
+          "h": 0.0025,
+          "integration_status": "completed",
+          "resolution_divisor": 4,
+          "rhs_evaluations": 40001,
+          "runtime_s": 2.5330125000000407,
+          "steps": 20000,
+          "trajectory_float64_le_sha256": "172cdd77f55d2c47372b6a69d35bc3d2af843628f1212d7de4179aab97dfb9e4"
+        }
+      ],
+      "selection": {
+        "candidate_id": "lu_yadav2019_caputo_v1",
+        "continuous_margins": {
+          "cross.mean_difference": 7.299343807929341,
+          "cross.permutation_entropy_difference": 39.24660900612383,
+          "cross.quantile_difference": 7.552934953139339,
+          "cross.standard_deviation_ratio": 2.458225497235249,
+          "h_over_2.block_mean_shift": 11.824308731805575,
+          "h_over_2.boundedness": 24.429188231897307,
+          "h_over_2.lag_rmse": 23.45726170700543,
+          "h_over_2.maximum_block_std_ratio": 3.8290285006161384,
+          "h_over_2.minimum_block_std_ratio": 3.8878819448820616,
+          "h_over_2.permutation_entropy": 2.809307320287134,
+          "h_over_4.block_mean_shift": 11.674147457443606,
+          "h_over_4.boundedness": 24.530089361807317,
+          "h_over_4.lag_rmse": 24.599873193228873,
+          "h_over_4.maximum_block_std_ratio": 3.9438206338717423,
+          "h_over_4.minimum_block_std_ratio": 3.9218504890388184,
+          "h_over_4.permutation_entropy": 2.7838274119504938
+        },
+        "eligible": true,
+        "manifest_id": "lu_caputo_v1",
+        "minimum_normalized_continuous_margin": 2.458225497235249,
+        "selected_for_formal_followup": true
+      },
+      "system": "lu"
+    },
+    {
+      "candidate_id": "genesio_tesi_mao2025_simplified_caputo_v1",
+      "cross_resolution_stability": {
+        "checks": {
+          "mean_difference": true,
+          "permutation_entropy_difference": true,
+          "quantile_difference": true,
+          "standard_deviation_ratio": true
+        },
+        "interpretation": "Distributional h/2 versus h/4 stability; pointwise trajectory agreement is intentionally not required at long horizon.",
+        "maximum_mean_difference_in_pooled_std": 3.961034909631192e-05,
+        "maximum_quantile_difference_in_pooled_std": 0.0012343292726352745,
+        "maximum_symmetric_std_ratio": 1.0001185457981727,
+        "mean_difference_in_pooled_std_by_component": [
+          2.0280275523099523e-05,
+          5.27914120539799e-06,
+          3.961034909631192e-05
+        ],
+        "passed": true,
+        "permutation_entropy_difference": 0.0,
+        "symmetric_std_ratio_by_component": [
+          1.0001000097604482,
+          1.000025220309108,
+          1.0001185457981727
+        ],
+        "thresholds": {
+          "maximum_mean_difference_in_pooled_std": 0.75,
+          "maximum_permutation_entropy_difference": 0.25,
+          "maximum_quantile_difference_in_pooled_std": 1.0,
+          "maximum_symmetric_std_ratio": 2.5
+        }
+      },
+      "decision": "qualified_observed_long_horizon_screen",
+      "failure_reasons": [],
+      "manifest": {
+        "candidate_id": "genesio_tesi_mao2025_simplified_caputo_v1",
+        "h": 0.01,
+        "initial_state": [
+          -0.1,
+          0.5,
+          0.2
+        ],
+        "manifest_id": "genesio_tesi_simplified_caputo_v1",
+        "memory_increments": 1000,
+        "memory_seconds": 10.0,
+        "parameters": [
+          1.05,
+          1.1,
+          0.45
+        ],
+        "q": 0.9,
+        "system": "genesio_tesi_simplified"
+      },
+      "manifest_id": "genesio_tesi_simplified_caputo_v1",
+      "resolutions": [
+        {
+          "diagnostics": {
+            "activity": {
+              "active_components": 3,
+              "checks": {
+                "minimum_active_components": true
+              },
+              "minimum_required": 3,
+              "passed": true
+            },
+            "analysis_window_s": [
+              10.0,
+              50.0
+            ],
+            "component_summary": {
+              "maximum": [
+                0.2731120563328693,
+                0.29393597828684237,
+                0.35708157125435636
+              ],
+              "mean": [
+                0.016497702676779778,
+                0.007933322325260865,
+                -0.0020860246929952134
+              ],
+              "minimum": [
+                -0.218408395774632,
+                -0.2588108652333502,
+                -0.30848414488614223
+              ],
+              "peak_to_peak": [
+                0.4915204521075013,
+                0.5527468435201925,
+                0.6655657161404986
+              ],
+              "quantile_probabilities": [
+                0.05,
+                0.25,
+                0.5,
+                0.75,
+                0.95
+              ],
+              "quantiles": [
+                [
+                  -0.1542431226328836,
+                  -0.19748980149427842,
+                  -0.23781228673831173
+                ],
+                [
+                  -0.0801682457376324,
+                  -0.1025884171770659,
+                  -0.12484377184007778
+                ],
+                [
+                  0.01509318270670569,
+                  0.012894933534608743,
+                  -0.006381879213631564
+                ],
+                [
+                  0.10192067299611615,
+                  0.10893266237208804,
+                  0.12005293832132909
+                ],
+                [
+                  0.20681465930040202,
+                  0.21700609663190895,
+                  0.2420031985898874
+                ]
+              ],
+              "standard_deviation": [
+                0.11208845190403507,
+                0.12968494083664966,
+                0.1500569019511879
+              ]
+            },
+            "diagnostic_sample_period_s": 0.05,
+            "diagnostic_samples": 801,
+            "nonperiodicity_screen": {
+              "checks": {
+                "minimum_normalized_lag_rmse": true,
+                "minimum_normalized_permutation_entropy": true
+              },
+              "interpretation": "Observed no-near-period recurrence and complexity screen; not a proof of chaos.",
+              "lag_at_minimum_s": 5.3500000000000005,
+              "lag_window_s": [
+                1.0,
+                15.0
+              ],
+              "minimum_normalized_lag_rmse": 0.15903503144174497,
+              "normalized_permutation_entropy": 0.25491133264253024,
+              "passed": true,
+              "permutation_entropy_component": 2,
+              "permutation_entropy_delay_samples": 2,
+              "permutation_entropy_order": 5,
+              "thresholds": {
+                "minimum_normalized_lag_rmse": 0.05,
+                "minimum_normalized_permutation_entropy": 0.25
+              }
+            },
+            "observed_boundedness": {
+              "checks": {
+                "all_finite": true,
+                "maximum_absolute_state": true
+              },
+              "maximum_absolute_state": 0.5310188084910102,
+              "passed": true,
+              "threshold": 1000.0
+            },
+            "post_transient_samples": 8001,
+            "within_resolution_stability": {
+              "checks": {
+                "maximum_mean_shift": true,
+                "maximum_std_ratio": true,
+                "minimum_std_ratio": true
+              },
+              "maximum_block_mean_shift_in_global_std": 0.24462318199331276,
+              "maximum_block_to_global_std_ratio": 1.423033616752082,
+              "minimum_block_to_global_std_ratio": 0.5924978822842146,
+              "passed": true,
+              "thresholds": {
+                "maximum_block_mean_shift_in_global_std": 1.5,
+                "maximum_block_to_global_std_ratio": 4.0,
+                "minimum_block_to_global_std_ratio": 0.25
+              }
+            }
+          },
+          "h": 0.005,
+          "integration_status": "completed",
+          "resolution_divisor": 2,
+          "rhs_evaluations": 20001,
+          "runtime_s": 1.0009499999996478,
+          "steps": 10000,
+          "trajectory_float64_le_sha256": "e449076b49d018b6f6d0bfdcec66a0af246e5a4202e270819b9bf8eae8f38a0d"
+        },
+        {
+          "diagnostics": {
+            "activity": {
+              "active_components": 3,
+              "checks": {
+                "minimum_active_components": true
+              },
+              "minimum_required": 3,
+              "passed": true
+            },
+            "analysis_window_s": [
+              10.0,
+              50.0
+            ],
+            "component_summary": {
+              "maximum": [
+                0.27310185197985615,
+                0.2939264874467028,
+                0.3570722517654899
+              ],
+              "mean": [
+                0.01649997574781123,
+                0.00793263770877893,
+                -0.0020919681470113805
+              ],
+              "minimum": [
+                -0.21840826435499056,
+                -0.2588021556355289,
+                -0.30847576760078316
+              ],
+              "peak_to_peak": [
+                0.4915101163348467,
+                0.5527286430822317,
+                0.6655480193662731
+              ],
+              "quantile_probabilities": [
+                0.05,
+                0.25,
+                0.5,
+                0.75,
+                0.95
+              ],
+              "quantiles": [
+                [
+                  -0.15427528828067294,
+                  -0.19745507276419327,
+                  -0.23778625266604003
+                ],
+                [
+                  -0.08016113149530102,
+                  -0.1025563404639207,
+                  -0.12483161701781637
+                ],
+                [
+                  0.015056187651532923,
+                  0.012917838262652359,
+                  -0.006567087863393245
+                ],
+                [
+                  0.10193120831564312,
+                  0.10889948197762006,
+                  0.12000613611645518
+                ],
+                [
+                  0.2068028816629394,
+                  0.21697990998257322,
+                  0.24213669185649528
+                ]
+              ],
+              "standard_deviation": [
+                0.11207724308580237,
+                0.12968167022484095,
+                0.1500391154444904
+              ]
+            },
+            "diagnostic_sample_period_s": 0.05,
+            "diagnostic_samples": 801,
+            "nonperiodicity_screen": {
+              "checks": {
+                "minimum_normalized_lag_rmse": true,
+                "minimum_normalized_permutation_entropy": true
+              },
+              "interpretation": "Observed no-near-period recurrence and complexity screen; not a proof of chaos.",
+              "lag_at_minimum_s": 5.3500000000000005,
+              "lag_window_s": [
+                1.0,
+                15.0
+              ],
+              "minimum_normalized_lag_rmse": 0.15904918320541678,
+              "normalized_permutation_entropy": 0.25491133264253024,
+              "passed": true,
+              "permutation_entropy_component": 2,
+              "permutation_entropy_delay_samples": 2,
+              "permutation_entropy_order": 5,
+              "thresholds": {
+                "minimum_normalized_lag_rmse": 0.05,
+                "minimum_normalized_permutation_entropy": 0.25
+              }
+            },
+            "observed_boundedness": {
+              "checks": {
+                "all_finite": true,
+                "maximum_absolute_state": true
+              },
+              "maximum_absolute_state": 0.5310169430520648,
+              "passed": true,
+              "threshold": 1000.0
+            },
+            "post_transient_samples": 16001,
+            "within_resolution_stability": {
+              "checks": {
+                "maximum_mean_shift": true,
+                "maximum_std_ratio": true,
+                "minimum_std_ratio": true
+              },
+              "maximum_block_mean_shift_in_global_std": 0.24509544252678842,
+              "maximum_block_to_global_std_ratio": 1.4231184612184369,
+              "minimum_block_to_global_std_ratio": 0.5924564925571244,
+              "passed": true,
+              "thresholds": {
+                "maximum_block_mean_shift_in_global_std": 1.5,
+                "maximum_block_to_global_std_ratio": 4.0,
+                "minimum_block_to_global_std_ratio": 0.25
+              }
+            }
+          },
+          "h": 0.0025,
+          "integration_status": "completed",
+          "resolution_divisor": 4,
+          "rhs_evaluations": 40001,
+          "runtime_s": 2.4765323999999964,
+          "steps": 20000,
+          "trajectory_float64_le_sha256": "f53e07a21491039cfaa54feb26db538e40c683e3c72ad087d0a887e44d1cdbe1"
+        }
+      ],
+      "selection": {
+        "candidate_id": "genesio_tesi_mao2025_simplified_caputo_v1",
+        "continuous_margins": {
+          "cross.mean_difference": 18934.445595932193,
+          "cross.permutation_entropy_difference": 249999999999999.97,
+          "cross.quantile_difference": 810.1565944920151,
+          "cross.standard_deviation_ratio": 2.4997036706331697,
+          "h_over_2.block_mean_shift": 6.131880011441456,
+          "h_over_2.boundedness": 1883.1724677355364,
+          "h_over_2.lag_rmse": 3.180700628834899,
+          "h_over_2.maximum_block_std_ratio": 2.810896350523019,
+          "h_over_2.minimum_block_std_ratio": 2.3699915291368585,
+          "h_over_2.permutation_entropy": 1.019645330570121,
+          "h_over_4.block_mean_shift": 6.12006483897004,
+          "h_over_4.boundedness": 1883.1790832368085,
+          "h_over_4.lag_rmse": 3.1809836641083353,
+          "h_over_4.maximum_block_std_ratio": 2.810728768549109,
+          "h_over_4.minimum_block_std_ratio": 2.3698259702284976,
+          "h_over_4.permutation_entropy": 1.019645330570121
+        },
+        "eligible": true,
+        "manifest_id": "genesio_tesi_simplified_caputo_v1",
+        "minimum_normalized_continuous_margin": 1.019645330570121,
+        "selected_for_formal_followup": false
+      },
+      "system": "genesio_tesi_simplified"
+    },
+    {
+      "candidate_id": "shimizu_morioka_wei2021_caputo_v1",
+      "cross_resolution_stability": {
+        "checks": {
+          "mean_difference": true,
+          "permutation_entropy_difference": true,
+          "quantile_difference": true,
+          "standard_deviation_ratio": true
+        },
+        "interpretation": "Distributional h/2 versus h/4 stability; pointwise trajectory agreement is intentionally not required at long horizon.",
+        "maximum_mean_difference_in_pooled_std": 1.6459700481106062e-05,
+        "maximum_quantile_difference_in_pooled_std": 0.0011206681838786207,
+        "maximum_symmetric_std_ratio": 1.0000372574478684,
+        "mean_difference_in_pooled_std_by_component": [
+          1.1388698019696975e-05,
+          2.8850038841578937e-06,
+          1.6459700481106062e-05
+        ],
+        "passed": true,
+        "permutation_entropy_difference": 0.0,
+        "symmetric_std_ratio_by_component": [
+          1.0000177086623339,
+          1.0000011417044243,
+          1.0000372574478684
+        ],
+        "thresholds": {
+          "maximum_mean_difference_in_pooled_std": 0.75,
+          "maximum_permutation_entropy_difference": 0.25,
+          "maximum_quantile_difference_in_pooled_std": 1.0,
+          "maximum_symmetric_std_ratio": 2.5
+        }
+      },
+      "decision": "not_qualified_dynamic_screen_failed",
+      "failure_reasons": [
+        "h/2 failed within_resolution_stability",
+        "h/2 failed nonperiodicity_screen",
+        "h/4 failed within_resolution_stability",
+        "h/4 failed nonperiodicity_screen"
+      ],
+      "manifest": {
+        "candidate_id": "shimizu_morioka_wei2021_caputo_v1",
+        "h": 0.01,
+        "initial_state": [
+          1.0,
+          1.0,
+          2.0
+        ],
+        "manifest_id": "shimizu_morioka_caputo_v1",
+        "memory_increments": 1000,
+        "memory_seconds": 10.0,
+        "parameters": [
+          0.45,
+          0.75
+        ],
+        "q": 0.99,
+        "system": "shimizu_morioka"
+      },
+      "manifest_id": "shimizu_morioka_caputo_v1",
+      "resolutions": [
+        {
+          "diagnostics": {
+            "activity": {
+              "active_components": 3,
+              "checks": {
+                "minimum_active_components": true
+              },
+              "minimum_required": 3,
+              "passed": true
+            },
+            "analysis_window_s": [
+              10.0,
+              50.0
+            ],
+            "component_summary": {
+              "maximum": [
+                1.1135218620427865,
+                0.5839920341551974,
+                1.818402286724026
+              ],
+              "mean": [
+                -0.3928140775539751,
+                0.01734643282175563,
+                0.9921083848363924
+              ],
+              "minimum": [
+                -1.151651660693628,
+                -0.5279434546246515,
+                0.40323076368901245
+              ],
+              "peak_to_peak": [
+                2.2651735227364145,
+                1.111935488779849,
+                1.4151715230350135
+              ],
+              "quantile_probabilities": [
+                0.05,
+                0.25,
+                0.5,
+                0.75,
+                0.95
+              ],
+              "quantiles": [
+                [
+                  -0.9152780865599461,
+                  -0.3376526526409436,
+                  0.47179851873639733
+                ],
+                [
+                  -0.7183755667941776,
+                  -0.07816462187280626,
+                  0.7852654609510261
+                ],
+                [
+                  -0.6039471606771403,
+                  0.0030808549565974896,
+                  0.9688003300511658
+                ],
+                [
+                  -0.271199510809468,
+                  0.13800228595224429,
+                  1.1527644383458089
+                ],
+                [
+                  0.902009764670409,
+                  0.3409146453733751,
+                  1.6789088906115135
+                ]
+              ],
+              "standard_deviation": [
+                0.5412990265675361,
+                0.20696011676180828,
+                0.3273451293999212
+              ]
+            },
+            "diagnostic_sample_period_s": 0.05,
+            "diagnostic_samples": 801,
+            "nonperiodicity_screen": {
+              "checks": {
+                "minimum_normalized_lag_rmse": true,
+                "minimum_normalized_permutation_entropy": false
+              },
+              "interpretation": "Observed no-near-period recurrence and complexity screen; not a proof of chaos.",
+              "lag_at_minimum_s": 1.0,
+              "lag_window_s": [
+                1.0,
+                15.0
+              ],
+              "minimum_normalized_lag_rmse": 0.6559324083479143,
+              "normalized_permutation_entropy": 0.21509790935308387,
+              "passed": false,
+              "permutation_entropy_component": 0,
+              "permutation_entropy_delay_samples": 2,
+              "permutation_entropy_order": 5,
+              "thresholds": {
+                "minimum_normalized_lag_rmse": 0.05,
+                "minimum_normalized_permutation_entropy": 0.25
+              }
+            },
+            "observed_boundedness": {
+              "checks": {
+                "all_finite": true,
+                "maximum_absolute_state": true
+              },
+              "maximum_absolute_state": 2.484857346142693,
+              "passed": true,
+              "threshold": 1000.0
+            },
+            "post_transient_samples": 8001,
+            "within_resolution_stability": {
+              "checks": {
+                "maximum_mean_shift": true,
+                "maximum_std_ratio": true,
+                "minimum_std_ratio": false
+              },
+              "maximum_block_mean_shift_in_global_std": 1.4318274144745184,
+              "maximum_block_to_global_std_ratio": 1.5873208614323489,
+              "minimum_block_to_global_std_ratio": 0.08544859000708553,
+              "passed": false,
+              "thresholds": {
+                "maximum_block_mean_shift_in_global_std": 1.5,
+                "maximum_block_to_global_std_ratio": 4.0,
+                "minimum_block_to_global_std_ratio": 0.25
+              }
+            }
+          },
+          "h": 0.005,
+          "integration_status": "completed",
+          "resolution_divisor": 2,
+          "rhs_evaluations": 20001,
+          "runtime_s": 0.901753799999824,
+          "steps": 10000,
+          "trajectory_float64_le_sha256": "391573bca135bbb7a0b264d72596ab5b55acab125bae1c86d86f0898e30e5fe0"
+        },
+        {
+          "diagnostics": {
+            "activity": {
+              "active_components": 3,
+              "checks": {
+                "minimum_active_components": true
+              },
+              "minimum_required": 3,
+              "passed": true
+            },
+            "analysis_window_s": [
+              10.0,
+              50.0
+            ],
+            "component_summary": {
+              "maximum": [
+                1.113767674710735,
+                0.583743796160536,
+                1.8180910675830715
+              ],
+              "mean": [
+                -0.3928202422997115,
+                0.01734702990215551,
+                0.992102996733236
+              ],
+              "minimum": [
+                -1.151483294816249,
+                -0.5282941188364172,
+                0.40346910152537196
+              ],
+              "peak_to_peak": [
+                2.265250969526984,
+                1.1120379149969533,
+                1.4146219660576995
+              ],
+              "quantile_probabilities": [
+                0.05,
+                0.25,
+                0.5,
+                0.75,
+                0.95
+              ],
+              "quantiles": [
+                [
+                  -0.9157107599562029,
+                  -0.33755165410901844,
+                  0.47146201774693197
+                ],
+                [
+                  -0.718378427001982,
+                  -0.07809944102359134,
+                  0.7851036857346745
+                ],
+                [
+                  -0.6040260118271228,
+                  0.0031042035360144826,
+                  0.9688935799746459
+                ],
+                [
+                  -0.2713064998756203,
+                  0.1380534696857757,
+                  1.1528162680409562
+                ],
+                [
+                  0.9020818244785366,
+                  0.3409778222553611,
+                  1.6792757427171026
+                ]
+              ],
+              "standard_deviation": [
+                0.5413086122492193,
+                0.2069598804747971,
+                0.3273573254440148
+              ]
+            },
+            "diagnostic_sample_period_s": 0.05,
+            "diagnostic_samples": 801,
+            "nonperiodicity_screen": {
+              "checks": {
+                "minimum_normalized_lag_rmse": true,
+                "minimum_normalized_permutation_entropy": false
+              },
+              "interpretation": "Observed no-near-period recurrence and complexity screen; not a proof of chaos.",
+              "lag_at_minimum_s": 1.0,
+              "lag_window_s": [
+                1.0,
+                15.0
+              ],
+              "minimum_normalized_lag_rmse": 0.6559221046424778,
+              "normalized_permutation_entropy": 0.21509790935308387,
+              "passed": false,
+              "permutation_entropy_component": 0,
+              "permutation_entropy_delay_samples": 2,
+              "permutation_entropy_order": 5,
+              "thresholds": {
+                "minimum_normalized_lag_rmse": 0.05,
+                "minimum_normalized_permutation_entropy": 0.25
+              }
+            },
+            "observed_boundedness": {
+              "checks": {
+                "all_finite": true,
+                "maximum_absolute_state": true
+              },
+              "maximum_absolute_state": 2.4848533030070854,
+              "passed": true,
+              "threshold": 1000.0
+            },
+            "post_transient_samples": 16001,
+            "within_resolution_stability": {
+              "checks": {
+                "maximum_mean_shift": true,
+                "maximum_std_ratio": true,
+                "minimum_std_ratio": false
+              },
+              "maximum_block_mean_shift_in_global_std": 1.431847836791379,
+              "maximum_block_to_global_std_ratio": 1.5874854391855173,
+              "minimum_block_to_global_std_ratio": 0.08542696249843773,
+              "passed": false,
+              "thresholds": {
+                "maximum_block_mean_shift_in_global_std": 1.5,
+                "maximum_block_to_global_std_ratio": 4.0,
+                "minimum_block_to_global_std_ratio": 0.25
+              }
+            }
+          },
+          "h": 0.0025,
+          "integration_status": "completed",
+          "resolution_divisor": 4,
+          "rhs_evaluations": 40001,
+          "runtime_s": 3.0564005000005636,
+          "steps": 20000,
+          "trajectory_float64_le_sha256": "73c5774ef5a2d7f2f68ecaa9b445f17c38f5544da6d98863c86605ff01910ac0"
+        }
+      ],
+      "selection": {
+        "eligible": false,
+        "minimum_normalized_continuous_margin": null,
+        "selected_for_formal_followup": false
+      },
+      "system": "shimizu_morioka"
+    },
+    {
+      "candidate_id": "liu_bhalekar2010_caputo_v1",
+      "cross_resolution_stability": {
+        "checks": {
+          "mean_difference": true,
+          "permutation_entropy_difference": true,
+          "quantile_difference": true,
+          "standard_deviation_ratio": true
+        },
+        "interpretation": "Distributional h/2 versus h/4 stability; pointwise trajectory agreement is intentionally not required at long horizon.",
+        "maximum_mean_difference_in_pooled_std": 0.02585213126002358,
+        "maximum_quantile_difference_in_pooled_std": 0.14604471415510395,
+        "maximum_symmetric_std_ratio": 1.014140149484078,
+        "mean_difference_in_pooled_std_by_component": [
+          0.005985506022142922,
+          0.02585213126002358,
+          0.025649510208217888
+        ],
+        "passed": true,
+        "permutation_entropy_difference": 0.006901335194696323,
+        "symmetric_std_ratio_by_component": [
+          1.014140149484078,
+          1.0122158427203123,
+          1.012431909921307
+        ],
+        "thresholds": {
+          "maximum_mean_difference_in_pooled_std": 0.75,
+          "maximum_permutation_entropy_difference": 0.25,
+          "maximum_quantile_difference_in_pooled_std": 1.0,
+          "maximum_symmetric_std_ratio": 2.5
+        }
+      },
+      "decision": "qualified_observed_long_horizon_screen",
+      "failure_reasons": [],
+      "manifest": {
+        "candidate_id": "liu_bhalekar2010_caputo_v1",
+        "h": 0.01,
+        "initial_state": [
+          0.2,
+          0.0,
+          0.5
+        ],
+        "manifest_id": "liu_caputo_v1",
+        "memory_increments": 1000,
+        "memory_seconds": 10.0,
+        "parameters": [
+          1.0,
+          2.5,
+          5.0,
+          1.0,
+          4.0,
+          4.0
+        ],
+        "q": 0.92,
+        "system": "liu"
+      },
+      "manifest_id": "liu_caputo_v1",
+      "resolutions": [
+        {
+          "diagnostics": {
+            "activity": {
+              "active_components": 3,
+              "checks": {
+                "minimum_active_components": true
+              },
+              "minimum_required": 3,
+              "passed": true
+            },
+            "analysis_window_s": [
+              10.0,
+              50.0
+            ],
+            "component_summary": {
+              "maximum": [
+                -0.2370111355524584,
+                1.8689919126123649,
+                1.409330093957013
+              ],
+              "mean": [
+                -0.7776181286479038,
+                0.36861204315603685,
+                -0.2618764255437296
+              ],
+              "minimum": [
+                -1.3823757321220231,
+                -1.9161836846368039,
+                -1.3682034792683886
+              ],
+              "peak_to_peak": [
+                1.1453645965695647,
+                3.785175597249169,
+                2.7775335732254014
+              ],
+              "quantile_probabilities": [
+                0.05,
+                0.25,
+                0.5,
+                0.75,
+                0.95
+              ],
+              "quantiles": [
+                [
+                  -1.1996322561758952,
+                  -1.330899020233002,
+                  -1.0010027895488842
+                ],
+                [
+                  -0.9892658362135132,
+                  -0.12811556494067974,
+                  -0.6485916333280948
+                ],
+                [
+                  -0.760718806261963,
+                  0.5348879007822572,
+                  -0.3558948975917432
+                ],
+                [
+                  -0.5909250290200805,
+                  0.9589506649231285,
+                  0.06375568460587172
+                ],
+                [
+                  -0.3268452487450097,
+                  1.4114467156310604,
+                  0.8885478883124671
+                ]
+              ],
+              "standard_deviation": [
+                0.2593623698552926,
+                0.7986987532072775,
+                0.5439793665110778
+              ]
+            },
+            "diagnostic_sample_period_s": 0.05,
+            "diagnostic_samples": 801,
+            "nonperiodicity_screen": {
+              "checks": {
+                "minimum_normalized_lag_rmse": true,
+                "minimum_normalized_permutation_entropy": true
+              },
+              "interpretation": "Observed no-near-period recurrence and complexity screen; not a proof of chaos.",
+              "lag_at_minimum_s": 7.050000000000001,
+              "lag_window_s": [
+                1.0,
+                15.0
+              ],
+              "minimum_normalized_lag_rmse": 0.9941244553064382,
+              "normalized_permutation_entropy": 0.3794225947655712,
+              "passed": true,
+              "permutation_entropy_component": 1,
+              "permutation_entropy_delay_samples": 2,
+              "permutation_entropy_order": 5,
+              "thresholds": {
+                "minimum_normalized_lag_rmse": 0.05,
+                "minimum_normalized_permutation_entropy": 0.25
+              }
+            },
+            "observed_boundedness": {
+              "checks": {
+                "all_finite": true,
+                "maximum_absolute_state": true
+              },
+              "maximum_absolute_state": 2.243878727705199,
+              "passed": true,
+              "threshold": 1000.0
+            },
+            "post_transient_samples": 8001,
+            "within_resolution_stability": {
+              "checks": {
+                "maximum_mean_shift": true,
+                "maximum_std_ratio": true,
+                "minimum_std_ratio": true
+              },
+              "maximum_block_mean_shift_in_global_std": 0.8485371973045367,
+              "maximum_block_to_global_std_ratio": 1.248892970417521,
+              "minimum_block_to_global_std_ratio": 0.3188498715964435,
+              "passed": true,
+              "thresholds": {
+                "maximum_block_mean_shift_in_global_std": 1.5,
+                "maximum_block_to_global_std_ratio": 4.0,
+                "minimum_block_to_global_std_ratio": 0.25
+              }
+            }
+          },
+          "h": 0.005,
+          "integration_status": "completed",
+          "resolution_divisor": 2,
+          "rhs_evaluations": 20001,
+          "runtime_s": 0.9902841000002809,
+          "steps": 10000,
+          "trajectory_float64_le_sha256": "05cc918f1ef18410a0cd8caf22b54eb904888cec19c180df52a3c7643f4bf4c9"
+        },
+        {
+          "diagnostics": {
+            "activity": {
+              "active_components": 3,
+              "checks": {
+                "minimum_active_components": true
+              },
+              "minimum_required": 3,
+              "passed": true
+            },
+            "analysis_window_s": [
+              10.0,
+              50.0
+            ],
+            "component_summary": {
+              "maximum": [
+                -0.1428901019085388,
+                2.014135959937447,
+                1.2322126459945482
+              ],
+              "mean": [
+                -0.7791597590077333,
+                0.34783747857974223,
+                -0.24783662333900008
+              ],
+              "minimum": [
+                -1.432527338398167,
+                -1.6963424058921506,
+                -1.4849943983559577
+              ],
+              "peak_to_peak": [
+                1.2896372364896282,
+                3.7104783658295974,
+                2.7172070443505056
+              ],
+              "quantile_probabilities": [
+                0.05,
+                0.25,
+                0.5,
+                0.75,
+                0.95
+              ],
+              "quantiles": [
+                [
+                  -1.1620168959371435,
+                  -1.26217503785831,
+                  -1.0019818659282738
+                ],
+                [
+                  -0.9869671161079989,
+                  -0.23853451061543485,
+                  -0.6469473409828799
+                ],
+                [
+                  -0.7659089593798751,
+                  0.5336642484010563,
+                  -0.3539986295931934
+                ],
+                [
+                  -0.6159746176453154,
+                  0.9577309774000711,
+                  0.1261296298433467
+                ],
+                [
+                  -0.30291385246782115,
+                  1.4147314330173086,
+                  0.8618439410790484
+                ]
+              ],
+              "standard_deviation": [
+                0.25574608202548493,
+                0.808455531557367,
+                0.5507420689945932
+              ]
+            },
+            "diagnostic_sample_period_s": 0.05,
+            "diagnostic_samples": 801,
+            "nonperiodicity_screen": {
+              "checks": {
+                "minimum_normalized_lag_rmse": true,
+                "minimum_normalized_permutation_entropy": true
+              },
+              "interpretation": "Observed no-near-period recurrence and complexity screen; not a proof of chaos.",
+              "lag_at_minimum_s": 1.9500000000000002,
+              "lag_window_s": [
+                1.0,
+                15.0
+              ],
+              "minimum_normalized_lag_rmse": 0.9570075316035702,
+              "normalized_permutation_entropy": 0.3725212595708749,
+              "passed": true,
+              "permutation_entropy_component": 1,
+              "permutation_entropy_delay_samples": 2,
+              "permutation_entropy_order": 5,
+              "thresholds": {
+                "minimum_normalized_lag_rmse": 0.05,
+                "minimum_normalized_permutation_entropy": 0.25
+              }
+            },
+            "observed_boundedness": {
+              "checks": {
+                "all_finite": true,
+                "maximum_absolute_state": true
+              },
+              "maximum_absolute_state": 2.2434719847042586,
+              "passed": true,
+              "threshold": 1000.0
+            },
+            "post_transient_samples": 16001,
+            "within_resolution_stability": {
+              "checks": {
+                "maximum_mean_shift": true,
+                "maximum_std_ratio": true,
+                "minimum_std_ratio": true
+              },
+              "maximum_block_mean_shift_in_global_std": 0.9110281639872557,
+              "maximum_block_to_global_std_ratio": 1.2296613794144784,
+              "minimum_block_to_global_std_ratio": 0.3154679576691072,
+              "passed": true,
+              "thresholds": {
+                "maximum_block_mean_shift_in_global_std": 1.5,
+                "maximum_block_to_global_std_ratio": 4.0,
+                "minimum_block_to_global_std_ratio": 0.25
+              }
+            }
+          },
+          "h": 0.0025,
+          "integration_status": "completed",
+          "resolution_divisor": 4,
+          "rhs_evaluations": 40001,
+          "runtime_s": 2.5098778999999922,
+          "steps": 20000,
+          "trajectory_float64_le_sha256": "0c6218f6c20cc243e66163a27cbbad11feb901195cfa622477f3d8a3ea1531da"
+        }
+      ],
+      "selection": {
+        "candidate_id": "liu_bhalekar2010_caputo_v1",
+        "continuous_margins": {
+          "cross.mean_difference": 29.011147764043805,
+          "cross.permutation_entropy_difference": 36.22487431013712,
+          "cross.quantile_difference": 6.847218030349044,
+          "cross.standard_deviation_ratio": 2.465142516319683,
+          "h_over_2.block_mean_shift": 1.7677480784164796,
+          "h_over_2.boundedness": 445.65688316974865,
+          "h_over_2.lag_rmse": 19.882489106128762,
+          "h_over_2.maximum_block_std_ratio": 3.2028365078095913,
+          "h_over_2.minimum_block_std_ratio": 1.275399486385774,
+          "h_over_2.permutation_entropy": 1.5176903790622849,
+          "h_over_4.block_mean_shift": 1.6464913592078405,
+          "h_over_4.boundedness": 445.73768106661834,
+          "h_over_4.lag_rmse": 19.140150632071403,
+          "h_over_4.maximum_block_std_ratio": 3.252928055612074,
+          "h_over_4.minimum_block_std_ratio": 1.2618718306764287,
+          "h_over_4.permutation_entropy": 1.4900850382834996
+        },
+        "eligible": true,
+        "manifest_id": "liu_caputo_v1",
+        "minimum_normalized_continuous_margin": 1.2618718306764287,
+        "selected_for_formal_followup": true
+      },
+      "system": "liu"
+    }
+  ],
+  "provenance": {
+    "abm_oracle_source": "validation/abm_oracle.py",
+    "abm_oracle_source_sha256": "5608dc119e85a01accc4ae8b58f83e13c79b230a7731953c280330e16bcb2aca",
+    "alternative_rhs_source": "validation/alternative_systems.py",
+    "alternative_rhs_source_sha256": "4aad013e3f362189183ad76ab8e451758c040547445999aa6116a3a744ad4af4",
+    "candidate_grid_sha256": "ae8f455ad8d8b8ca0c5e8d38c0515198814f02d4f2c1a32fb79cfff0b0a4a415",
+    "candidate_grid_source": "validation/alternative_system_candidate_grid_v1.json",
+    "candidate_manifest_sha256": "26c0b74e20a1aed734110a1efe0e37f0bf0d8450bb899e7ead57bee270b822fc",
+    "candidate_manifest_source": "validation/alternative_system_manifests_v1.json",
+    "qualification_source": "validation/qualify_alternative_systems.py",
+    "qualification_source_sha256": "81cc7bd575a16ed2b494eccf55086332ecaa72d7c1db0b4d185b4b70af0b41e3"
+  },
+  "qualified_manifest_ids": [
+    "lu_caputo_v1",
+    "genesio_tesi_simplified_caputo_v1",
+    "liu_caputo_v1"
+  ],
+  "schema_version": 1,
+  "scope": "Observed long-horizon dynamic qualification of four published alternative three-dimensional Caputo candidates using the independently validated full-memory ABM oracle.",
+  "selection": {
+    "actual_selection_count": 2,
+    "eligible_ranked": [
+      {
+        "candidate_id": "lu_yadav2019_caputo_v1",
+        "continuous_margins": {
+          "cross.mean_difference": 7.299343807929341,
+          "cross.permutation_entropy_difference": 39.24660900612383,
+          "cross.quantile_difference": 7.552934953139339,
+          "cross.standard_deviation_ratio": 2.458225497235249,
+          "h_over_2.block_mean_shift": 11.824308731805575,
+          "h_over_2.boundedness": 24.429188231897307,
+          "h_over_2.lag_rmse": 23.45726170700543,
+          "h_over_2.maximum_block_std_ratio": 3.8290285006161384,
+          "h_over_2.minimum_block_std_ratio": 3.8878819448820616,
+          "h_over_2.permutation_entropy": 2.809307320287134,
+          "h_over_4.block_mean_shift": 11.674147457443606,
+          "h_over_4.boundedness": 24.530089361807317,
+          "h_over_4.lag_rmse": 24.599873193228873,
+          "h_over_4.maximum_block_std_ratio": 3.9438206338717423,
+          "h_over_4.minimum_block_std_ratio": 3.9218504890388184,
+          "h_over_4.permutation_entropy": 2.7838274119504938
+        },
+        "manifest_id": "lu_caputo_v1",
+        "minimum_normalized_continuous_margin": 2.458225497235249
+      },
+      {
+        "candidate_id": "liu_bhalekar2010_caputo_v1",
+        "continuous_margins": {
+          "cross.mean_difference": 29.011147764043805,
+          "cross.permutation_entropy_difference": 36.22487431013712,
+          "cross.quantile_difference": 6.847218030349044,
+          "cross.standard_deviation_ratio": 2.465142516319683,
+          "h_over_2.block_mean_shift": 1.7677480784164796,
+          "h_over_2.boundedness": 445.65688316974865,
+          "h_over_2.lag_rmse": 19.882489106128762,
+          "h_over_2.maximum_block_std_ratio": 3.2028365078095913,
+          "h_over_2.minimum_block_std_ratio": 1.275399486385774,
+          "h_over_2.permutation_entropy": 1.5176903790622849,
+          "h_over_4.block_mean_shift": 1.6464913592078405,
+          "h_over_4.boundedness": 445.73768106661834,
+          "h_over_4.lag_rmse": 19.140150632071403,
+          "h_over_4.maximum_block_std_ratio": 3.252928055612074,
+          "h_over_4.minimum_block_std_ratio": 1.2618718306764287,
+          "h_over_4.permutation_entropy": 1.4900850382834996
+        },
+        "manifest_id": "liu_caputo_v1",
+        "minimum_normalized_continuous_margin": 1.2618718306764287
+      },
+      {
+        "candidate_id": "genesio_tesi_mao2025_simplified_caputo_v1",
+        "continuous_margins": {
+          "cross.mean_difference": 18934.445595932193,
+          "cross.permutation_entropy_difference": 249999999999999.97,
+          "cross.quantile_difference": 810.1565944920151,
+          "cross.standard_deviation_ratio": 2.4997036706331697,
+          "h_over_2.block_mean_shift": 6.131880011441456,
+          "h_over_2.boundedness": 1883.1724677355364,
+          "h_over_2.lag_rmse": 3.180700628834899,
+          "h_over_2.maximum_block_std_ratio": 2.810896350523019,
+          "h_over_2.minimum_block_std_ratio": 2.3699915291368585,
+          "h_over_2.permutation_entropy": 1.019645330570121,
+          "h_over_4.block_mean_shift": 6.12006483897004,
+          "h_over_4.boundedness": 1883.1790832368085,
+          "h_over_4.lag_rmse": 3.1809836641083353,
+          "h_over_4.maximum_block_std_ratio": 2.810728768549109,
+          "h_over_4.minimum_block_std_ratio": 2.3698259702284976,
+          "h_over_4.permutation_entropy": 1.019645330570121
+        },
+        "manifest_id": "genesio_tesi_simplified_caputo_v1",
+        "minimum_normalized_continuous_margin": 1.019645330570121
+      }
+    ],
+    "requested_promotion_count": 2,
+    "rule": {
+      "promotion_count": 2,
+      "ranking": "Descending minimum normalized continuous acceptance margin among qualified candidates.",
+      "report_all_candidates": true,
+      "tie_breaker": "lexicographic candidate_id"
+    },
+    "selected_manifest_ids": [
+      "lu_caputo_v1",
+      "liu_caputo_v1"
+    ],
+    "thresholds_unchanged": true
+  },
+  "status": "alternative_system_qualification_completed"
+}

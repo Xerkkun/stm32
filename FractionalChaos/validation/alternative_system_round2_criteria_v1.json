@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "criteria_id": "abm_caputo_alternative_systems_round2_v1",
+  "status": "predeclared_before_first_qualification_run",
+  "declared_date": "2026-07-29",
+  "scope": "Observed long-horizon qualification of three source-complete three-dimensional Caputo PECE candidates for one vacant hardware-followup slot.",
+  "round_context": "This is a new candidate round after the source-corrected Lu contract failed. Candidate selection was frozen from operator, method, step, parameter, and initial-condition completeness before computing these trajectories.",
+  "inputs": {
+    "manifest_ids": [
+      "hammouch_mekkaoui_caputo_v1",
+      "munoz_pacheco_hidden_caputo_v1",
+      "glucose_insulin_caputo_v1"
+    ],
+    "candidate_manifest_sha256": "ebfad80fbcdbb5a0438527deca98b0aed59979c30b26f15e69ce6a2ca4d18c39",
+    "candidate_grid_sha256": "513646675c44857837c34778ef8fc4ca2ba48a50f8cc70eedd58c55154e24951"
+  },
+  "integration": {
+    "resolution_divisors": [
+      2,
+      4
+    ],
+    "physical_horizon_s": 50.0,
+    "transient_s": 10.0,
+    "diagnostic_sample_period_s": 0.05,
+    "operator": "caputo",
+    "memory_policy": "full_history",
+    "arithmetic": "IEEE-754 float64"
+  },
+  "observed_boundedness": {
+    "maximum_absolute_state": 1000.0,
+    "minimum_active_components": 3,
+    "minimum_component_standard_deviation": 0.001,
+    "minimum_component_peak_to_peak": 0.01
+  },
+  "nonperiodicity_screen": {
+    "lag_window_s": [
+      1.0,
+      15.0
+    ],
+    "minimum_normalized_lag_rmse": 0.05,
+    "permutation_entropy_order": 5,
+    "permutation_entropy_delay_s": 0.1,
+    "minimum_normalized_permutation_entropy": 0.25
+  },
+  "within_resolution_stability": {
+    "post_transient_blocks": 4,
+    "maximum_block_mean_shift_in_global_std": 1.5,
+    "minimum_block_to_global_std_ratio": 0.25,
+    "maximum_block_to_global_std_ratio": 4.0
+  },
+  "cross_resolution_stability": {
+    "maximum_mean_difference_in_pooled_std": 0.75,
+    "maximum_symmetric_std_ratio": 2.5,
+    "maximum_quantile_difference_in_pooled_std": 1.0,
+    "maximum_permutation_entropy_difference": 0.25,
+    "quantiles": [
+      0.05,
+      0.25,
+      0.5,
+      0.75,
+      0.95
+    ]
+  },
+  "decision_rule": {
+    "qualified": "Every resolution passes observed boundedness, activity, the nonperiodicity screen, and within-resolution stability, and the h/2 versus h/4 distributional comparison passes.",
+    "not_qualified": "Any required dynamic screen or numerical integration fails. A failed screen is reported without changing the criteria.",
+    "prerequisite": "The separate alternative-system ABM validation report must pass and its oracle, vector-field, candidate-grid, and manifest hashes must match the current inputs."
+  },
+  "selection_rule": {
+    "promotion_count": 1,
+    "ranking": "Descending minimum normalized continuous acceptance margin among qualified candidates.",
+    "tie_breaker": "lexicographic candidate_id",
+    "report_all_candidates": true
+  },
+  "does_not_establish": [
+    "mathematical boundedness outside the observed horizon",
+    "a proof of chaos or a positive Lyapunov exponent",
+    "hidden-attractor status",
+    "clinical validity of the glucose-insulin benchmark",
+    "pointwise convergence of long chaotic trajectories",
+    "equivalence to an embedded finite-memory implementation",
+    "STM32 timing, energy, or randomness",
+    "automatic inclusion in the primary hardware matrix"
+  ]
+}

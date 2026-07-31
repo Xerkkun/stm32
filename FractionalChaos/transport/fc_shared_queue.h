@@ -31,6 +31,12 @@ bool fc_shared_queue_push(
     fc_shared_queue_t *queue,
     const fc_sample_t *sample);
 
+/*
+ * Consulta no destructiva para el productor único. Permite esperar espacio
+ * antes de publicar bloques de benchmark, sin incrementar dropped.
+ */
+bool fc_shared_queue_has_space(const fc_shared_queue_t *queue);
+
 bool fc_shared_queue_pop(
     fc_shared_queue_t *queue,
     fc_sample_t *sample);

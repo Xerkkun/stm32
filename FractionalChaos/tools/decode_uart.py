@@ -16,19 +16,48 @@ from typing import BinaryIO, Iterator
 
 SYNC = b"FCC1"
 FRAME = struct.Struct("<I6BH7I")
-SYSTEMS = {0: "lorenz", 1: "rossler", 2: "chen"}
-METHODS = {0: "efork3", 1: "gl_caputo"}
+SYSTEMS = {
+    0: "lorenz",
+    1: "rossler",
+    2: "chen",
+    3: "liu",
+    4: "hammouch_mekkaoui",
+}
+METHODS = {0: "efork3", 1: "gl_caputo", 2: "m2sfrk"}
 BOARDS = {1: "f746", 2: "h755"}
+FRAME_STATE_FLOAT = 1
+FRAME_STATE_FIXED = 3
+FRAME_TIMING_BLOCK = 4
+STATUS_NONFINITE = 0x01
+STATUS_QUEUE = 0x02
+STATUS_FIXED_STATE_SATURATION = 0x04
+STATUS_FIXED_COEFFICIENT_SATURATION = 0x08
+STATUS_FIXED_COEFFICIENT_ZEROED = 0x10
+STATUS_KNOWN_MASK = 0x1F
+STATUS_FLAGS = (
+    (STATUS_NONFINITE, "nonfinite"),
+    (STATUS_QUEUE, "queue"),
+    (STATUS_FIXED_STATE_SATURATION, "fixed_state_saturation"),
+    (
+        STATUS_FIXED_COEFFICIENT_SATURATION,
+        "fixed_coefficient_saturation",
+    ),
+    (
+        STATUS_FIXED_COEFFICIENT_ZEROED,
+        "fixed_coefficient_zeroed",
+    ),
+)
 
 
 def valid_header(values: tuple[int, ...]) -> bool:
     return (
         values[1] == 1
-        and values[2] == 1
+        and values[2]
+        in (FRAME_STATE_FLOAT, FRAME_STATE_FIXED, FRAME_TIMING_BLOCK)
         and values[3] in BOARDS
         and values[4] in SYSTEMS
         and values[5] in METHODS
-        and values[6] in (0, 1, 2)
+        and (values[6] & ~STATUS_KNOWN_MASK) == 0
         and values[7] == 24
     )
 
@@ -80,6 +109,14 @@ def word_to_float(word: int) -> float:
     return struct.unpack("<f", struct.pack("<I", word))[0]
 
 
+def word_to_signed(word: int) -> int:
+    return struct.unpack("<i", struct.pack("<I", word))[0]
+
+
+def status_names(status: int) -> tuple[str, ...]:
+    return tuple(name for flag, name in STATUS_FLAGS if status & flag)
+
+
 def rows(frames: Iterator[tuple[int, ...]]) -> Iterator[dict[str, object]]:
     for values in frames:
         (
@@ -99,20 +136,54 @@ def rows(frames: Iterator[tuple[int, ...]]) -> Iterator[dict[str, object]]:
             z_bits,
             crc32,
         ) = values
+        fixed = kind == FRAME_STATE_FIXED
+        timing = kind == FRAME_TIMING_BLOCK
+        raw_values = tuple(word_to_signed(word) for word in (x_bits, y_bits, z_bits))
+        if timing:
+            decoded_values: tuple[float | str, ...] = ("", "", "")
+        elif fixed:
+            decoded_values = tuple(value / 16384.0 for value in raw_values)
+        else:
+            decoded_values = tuple(
+                word_to_float(word) for word in (x_bits, y_bits, z_bits)
+            )
+        decoded_status = status_names(status)
         yield {
             "version": version,
             "kind": kind,
             "board": BOARDS.get(board, f"unknown_{board}"),
             "system": SYSTEMS.get(system, f"unknown_{system}"),
             "method": METHODS.get(method, f"unknown_{method}"),
+            "representation": (
+                "cycle_block_u32"
+                if timing
+                else ("fixed_q14" if fixed else "float32")
+            ),
             "status": status,
+            "status_flags": "|".join(decoded_status) if decoded_status else "ok",
+            "fixed_state_saturation": int(
+                bool(status & STATUS_FIXED_STATE_SATURATION)
+            ),
+            "fixed_coefficient_saturation": int(
+                bool(status & STATUS_FIXED_COEFFICIENT_SATURATION)
+            ),
+            "fixed_coefficient_zeroed": int(
+                bool(status & STATUS_FIXED_COEFFICIENT_ZEROED)
+            ),
             "payload_bytes": payload_bytes,
             "sequence": sequence,
             "cycles": cycles,
             "dropped": dropped,
-            "x": word_to_float(x_bits),
-            "y": word_to_float(y_bits),
-            "z": word_to_float(z_bits),
+            "x": decoded_values[0],
+            "y": decoded_values[1],
+            "z": decoded_values[2],
+            "x_raw": raw_values[0] if fixed else "",
+            "y_raw": raw_values[1] if fixed else "",
+            "z_raw": raw_values[2] if fixed else "",
+            "cycle_0": cycles if timing else "",
+            "cycle_1": x_bits if timing else "",
+            "cycle_2": y_bits if timing else "",
+            "cycle_3": z_bits if timing else "",
             "x_bits": f"0x{x_bits:08X}",
             "y_bits": f"0x{y_bits:08X}",
             "z_bits": f"0x{z_bits:08X}",
@@ -168,7 +239,12 @@ def main() -> int:
         "board",
         "system",
         "method",
+        "representation",
         "status",
+        "status_flags",
+        "fixed_state_saturation",
+        "fixed_coefficient_saturation",
+        "fixed_coefficient_zeroed",
         "payload_bytes",
         "sequence",
         "cycles",
@@ -176,6 +252,13 @@ def main() -> int:
         "x",
         "y",
         "z",
+        "x_raw",
+        "y_raw",
+        "z_raw",
+        "cycle_0",
+        "cycle_1",
+        "cycle_2",
+        "cycle_3",
         "x_bits",
         "y_bits",
         "z_bits",

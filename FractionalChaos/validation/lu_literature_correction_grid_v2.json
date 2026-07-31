@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "grid_id": "lu_literature_contract_correction_v2",
+  "status": "declared_after_v1_literature_audit_before_corrective_run",
+  "declared_date": "2026-07-29",
+  "evidence_layer": "literature_contract_correction",
+  "purpose": "Replace the dynamically selected Yadav-2019 Lu configuration with a Lu contract whose source explicitly reports Caputo predictor-corrector ABM and h=0.01. This correction is motivated by provenance, not by the observed v1 numerical score.",
+  "supersedes_for_formal_followup": {
+    "candidate_id": "lu_yadav2019_caputo_v1",
+    "manifest_id": "lu_caputo_v1",
+    "reason": "The source reports the state-space parameters but its printed numerical procedure is an ordinary four-step ABM method without the fractional history convolution and it does not report h. The v1 trajectory remains preserved as an independently integrated IVP, but it is not treated as a closed reproduction contract."
+  },
+  "selection_rule": {
+    "eligibility": "The corrective candidate must pass every unchanged long-horizon screen at h/2 and h/4 and the unchanged cross-resolution screen.",
+    "promotion_count": 1,
+    "ranking": "Use the same minimum normalized continuous acceptance margin as v1; with one corrective candidate, ranking cannot change its eligibility.",
+    "tie_breaker": "lexicographic candidate_id",
+    "insufficient_passes": "Do not relax thresholds or introduce another candidate after observing this run.",
+    "reporting": "Preserve the corrective result whether it passes or fails."
+  },
+  "integration_policy": {
+    "operator": "caputo",
+    "commensurate_order": true,
+    "base_step_s": 0.01,
+    "step_basis": "The cited source explicitly reports a Caputo predictor-corrector algorithm with fixed step h=0.01; qualification runs h/2 and h/4.",
+    "physical_horizon_s": 50.0,
+    "transient_s": 10.0,
+    "diagnostic_sample_period_s": 0.05,
+    "memory_policy": "full_history",
+    "embedded_window_for_later_port_s": 10.0
+  },
+  "candidates": [
+    {
+      "candidate_id": "lu_chen2012_caputo_v2",
+      "manifest": {
+        "manifest_id": "lu_caputo_v2",
+        "system": "lu",
+        "parameters": [35.0, 3.0, 28.0],
+        "initial_state": [0.0, 3.0, 9.0],
+        "q": 0.9,
+        "h": 0.01,
+        "memory_seconds": 10.0,
+        "memory_increments": 1000
+      },
+      "equations": [
+        "C D^q x = a(y-x)",
+        "C D^q y = c y - x z",
+        "C D^q z = x y - b z"
+      ],
+      "source": {
+        "citation": "Chen, Zhang, Sprott, and Ma, Nonlinear Dynamics 70 (2012) 1549-1561",
+        "doi": "10.1007/s11071-012-0555-3",
+        "url": "https://sprott.physics.wisc.edu/pubs/paper462.pdf",
+        "contract_evidence": [
+          "The paper states that the simulations use the Caputo version and a predictor-corrector generalization of Adams-Bashforth-Moulton with fixed step h=0.01.",
+          "Its fractional Lu case uses q1=q2=q3=0.90, parameters (a,b,c)=(35,3,28), and initial state (0,3,9)."
+        ]
+      }
+    }
+  ],
+  "does_not_establish": [
+    "that the v1 Yadav configuration is an invalid mathematical initial-value problem",
+    "a proof of chaos or a positive Lyapunov exponent",
+    "equivalence to a finite-memory embedded implementation",
+    "STM32 timing, energy, or randomness",
+    "automatic inclusion in the primary hardware matrix before firmware validation"
+  ]
+}

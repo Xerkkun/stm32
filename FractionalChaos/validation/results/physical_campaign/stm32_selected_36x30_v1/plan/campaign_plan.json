@@ -1,0 +1,20 @@
+{
+  "calibrated_cells": 0,
+  "campaign_id": "stm32_selected_36x30_v1",
+  "cold_starts_per_cell": 30,
+  "executable_endpoint": "benchmark_reset_pilot",
+  "manifest_sha256": "4e1c59f038aa45d4f178e209805601bb57ef42c17efcc817ecefc0184866ce5e",
+  "matrix_cells": 36,
+  "pilot_evidence_level": "solver_only_timing_under_stlink_hardware_reset",
+  "primary_benchmark_ready": false,
+  "primary_blocking_reasons": [
+    "The current reset contract is an ST-LINK hardware reset, not a demonstrated board power cycle."
+  ],
+  "randomization": "randomized_complete_blocks",
+  "randomization_algorithm": "sha256_rank_v1",
+  "schedule_sha256": "9a5855656e88d7c124bbd99213fc00c390bcb8ff4618c307c99481bfb53a367d",
+  "scheduled_runs": 1080,
+  "schema": "fractional-chaos-physical-campaign-plan-v1",
+  "seed": 20260729,
+  "uncalibrated_cells": 36
+}

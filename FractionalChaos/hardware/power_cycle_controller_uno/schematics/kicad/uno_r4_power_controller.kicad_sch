@@ -1,0 +1,145 @@
+(kicad_sch
+  (version 20230409)
+  (generator "skidl")
+  (generator_version "2.3.0")
+  (uuid 59bf2c08-750f-4a3d-8c7f-1f29ca25684a)
+  (paper "A4")
+  (title_block
+    (title "UNO R4 + STM32 power-cycle controller")
+    (date "2026-07-30")
+    (company "")
+    (comment 1 "Generated with SKiDL")
+    (comment 2 "")
+    (comment 3 "")
+    (comment 4 ""))
+  (lib_symbols)
+  (sheet
+    (at 133.86 96.52)
+    (size 29.46 17.78)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (stroke
+      (width 0.1524)
+      (type solid))
+    (fill
+      (color 0 0 0 0.0))
+    (uuid 8dec3f1c-f10b-52a5-8062-894615ec7db1)
+    (property "Sheetname" "control_uno_r4"
+      (at 133.86 95.81 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left bottom)))
+    (property "Sheetfile" "uno_r4_power_controller_control_uno_r4.kicad_sch"
+      (at 133.86 114.88 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left top))))
+  (sheet
+    (at 134.37 119.38)
+    (size 28.45 17.78)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (stroke
+      (width 0.1524)
+      (type solid))
+    (fill
+      (color 0 0 0 0.0))
+    (uuid c2b09c4e-c49b-5f52-8e6a-996f0aeae572)
+    (property "Sheetname" "senales_f746"
+      (at 134.37 118.67 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left bottom)))
+    (property "Sheetfile" "uno_r4_power_controller_senales_f746.kicad_sch"
+      (at 134.37 137.74 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left top))))
+  (sheet
+    (at 134.37 142.24)
+    (size 28.45 17.78)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (stroke
+      (width 0.1524)
+      (type solid))
+    (fill
+      (color 0 0 0 0.0))
+    (uuid c15da776-147e-50a0-8673-71362dff848b)
+    (property "Sheetname" "senales_h755"
+      (at 134.37 141.53 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left bottom)))
+    (property "Sheetfile" "uno_r4_power_controller_senales_h755.kicad_sch"
+      (at 134.37 160.6 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left top))))
+  (sheet
+    (at 134.11 50.8)
+    (size 28.96 17.78)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (stroke
+      (width 0.1524)
+      (type solid))
+    (fill
+      (color 0 0 0 0.0))
+    (uuid acfd5537-5c95-5a8c-a996-27880dff88f0)
+    (property "Sheetname" "potencia_f746"
+      (at 134.11 50.09 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left bottom)))
+    (property "Sheetfile" "uno_r4_power_controller_potencia_f746.kicad_sch"
+      (at 134.11 69.16 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left top))))
+  (sheet
+    (at 134.11 73.66)
+    (size 28.96 17.78)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (stroke
+      (width 0.1524)
+      (type solid))
+    (fill
+      (color 0 0 0 0.0))
+    (uuid b4243c46-fb2e-52a0-a41b-2ec5c4ca350e)
+    (property "Sheetname" "potencia_h755"
+      (at 134.11 72.95 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left bottom)))
+    (property "Sheetfile" "uno_r4_power_controller_potencia_h755.kicad_sch"
+      (at 134.11 92.02 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left top)))))

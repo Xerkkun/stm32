@@ -5,6 +5,27 @@
 
 #define FC_SOLVER_MAGIC (0x46434348u)
 
+#ifndef FC_SELECTED_SYSTEM_MANIFEST_SHA256
+#error "The selected-system manifest SHA-256 must be supplied by CMake"
+#endif
+
+#if defined(__GNUC__) && defined(__ELF__)
+#define FC_RETAINED_DATA \
+    __attribute__((used, section(".fc_manifest_hash")))
+#elif defined(__GNUC__)
+#define FC_RETAINED_DATA __attribute__((used))
+#else
+#define FC_RETAINED_DATA
+#endif
+
+FC_RETAINED_DATA
+const char FC_SELECTED_SYSTEM_MANIFEST_SHA256_TEXT[65] =
+    FC_SELECTED_SYSTEM_MANIFEST_SHA256;
+
+_Static_assert(
+    sizeof(FC_SELECTED_SYSTEM_MANIFEST_SHA256_TEXT) == 65u,
+    "The selected-system manifest SHA-256 must contain 64 characters");
+
 const fc_manifest_t FC_MANIFESTS[FC_SYSTEM_COUNT] = {
     {
         FC_SYSTEM_LORENZ,
@@ -13,18 +34,18 @@ const fc_manifest_t FC_MANIFESTS[FC_SYSTEM_COUNT] = {
         0.005f,
         10.0f,
         2000u,
-        {10.0f, 28.0f, 8.0f / 3.0f},
+        {10.0f, 28.0f, 8.0f / 3.0f, 0.0f, 0.0f, 0.0f},
         {{0.1f, 0.1f, 0.1f}}
     },
     {
         FC_SYSTEM_ROSSLER,
         "rossler",
-        0.970f,
+        0.9877f,
         0.010f,
         10.0f,
         1000u,
-        {0.2f, 0.2f, 6.0f},
-        {{0.5f, 1.5f, 0.1f}}
+        {0.2f, 0.2f, 5.7f, 0.0f, 0.0f, 0.0f},
+        {{1.0f, 0.0f, 0.0f}}
     },
     {
         FC_SYSTEM_CHEN,
@@ -33,8 +54,28 @@ const fc_manifest_t FC_MANIFESTS[FC_SYSTEM_COUNT] = {
         0.005f,
         10.0f,
         2000u,
-        {35.0f, 3.0f, 28.0f},
+        {35.0f, 3.0f, 28.0f, 0.0f, 0.0f, 0.0f},
         {{0.1f, 0.1f, 0.1f}}
+    },
+    {
+        FC_SYSTEM_LIU,
+        "liu",
+        0.920f,
+        0.010f,
+        10.0f,
+        1000u,
+        {1.0f, 2.5f, 5.0f, 1.0f, 4.0f, 4.0f},
+        {{0.2f, 0.0f, 0.5f}}
+    },
+    {
+        FC_SYSTEM_HAMMOUCH_MEKKAOUI,
+        "hammouch_mekkaoui",
+        0.980f,
+        0.010f,
+        10.0f,
+        1000u,
+        {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
+        {{0.7f, 0.1f, 0.0f}}
     }
 };
 
@@ -46,7 +87,8 @@ static int fc_valid_system(fc_system_t system)
 static int fc_valid_method(fc_method_t method)
 {
     return (method == FC_METHOD_EFORK3) ||
-           (method == FC_METHOD_GL_CAPUTO);
+           (method == FC_METHOD_GL_CAPUTO) ||
+           (method == FC_METHOD_M2SFRK);
 }
 
 static int fc_vec_isfinite(const fc_vec3f_t *value)
@@ -160,7 +202,7 @@ fc_status_t fc_config_from_manifest(
     config->memory_length = manifest->memory_length;
     config->initial_state = manifest->initial_state;
     config->precomputed_tables = NULL;
-    for (component = 0u; component < FC_STATE_DIMENSION; ++component) {
+    for (component = 0u; component < FC_PARAMETER_COUNT; ++component) {
         config->parameters[component] = manifest->parameters[component];
     }
     return FC_OK;
@@ -168,7 +210,7 @@ fc_status_t fc_config_from_manifest(
 
 fc_status_t fc_rhs(
     fc_system_t system,
-    const fc_real_t parameters[FC_STATE_DIMENSION],
+    const fc_real_t parameters[FC_PARAMETER_COUNT],
     const fc_vec3f_t *state,
     fc_vec3f_t *derivative)
 {
@@ -178,6 +220,9 @@ fc_status_t fc_rhs(
     fc_real_t p0;
     fc_real_t p1;
     fc_real_t p2;
+    fc_real_t p3;
+    fc_real_t p4;
+    fc_real_t p5;
 
     if ((parameters == NULL) || (state == NULL) || (derivative == NULL)) {
         return FC_ERR_NULL;
@@ -192,6 +237,9 @@ fc_status_t fc_rhs(
     p0 = parameters[0];
     p1 = parameters[1];
     p2 = parameters[2];
+    p3 = parameters[3];
+    p4 = parameters[4];
+    p5 = parameters[5];
 
     switch (system) {
     case FC_SYSTEM_LORENZ:
@@ -211,6 +259,22 @@ fc_status_t fc_rhs(
             z,
             fmaf(p2 - p0, x, p2 * y));
         derivative->v[2] = fmaf(x, y, -(p1 * z));
+        break;
+    case FC_SYSTEM_LIU:
+        derivative->v[0] = fmaf(-p0, x, -(p3 * y * y));
+        derivative->v[1] = fmaf(-p4 * x, z, p1 * y);
+        derivative->v[2] = fmaf(p5 * x, y, -(p2 * z));
+        break;
+    case FC_SYSTEM_HAMMOUCH_MEKKAOUI:
+        derivative->v[0] = fmaf(-2.0f, x, -(y * y));
+        derivative->v[1] = fmaf(
+            -4.0f * x,
+            z,
+            fmaf(3.0f, y, -(z * z)));
+        derivative->v[2] = fmaf(
+            4.0f * x,
+            y,
+            fmaf(y, z, -7.0f * z));
         break;
     default:
         return FC_ERR_CONFIG;
@@ -236,6 +300,9 @@ size_t fc_active_workspace_bytes(
         return ((size_t)memory_length * sizeof(fc_vec3f_t)) +
                (((size_t)memory_length + 1u) * sizeof(fc_real_t));
     }
+    if (method == FC_METHOD_M2SFRK) {
+        return 0u;
+    }
     return 0u;
 }
 
@@ -257,7 +324,7 @@ static int fc_config_is_valid(const fc_config_t *config)
         return 0;
     }
 
-    for (component = 0u; component < FC_STATE_DIMENSION; ++component) {
+    for (component = 0u; component < FC_PARAMETER_COUNT; ++component) {
         if (!isfinite(config->parameters[component])) {
             return 0;
         }
@@ -502,6 +569,22 @@ static fc_status_t fc_copy_precomputed_gl(
     return FC_OK;
 }
 
+static fc_status_t fc_copy_precomputed_m2sfrk(
+    fc_solver_t *solver,
+    const fc_precomputed_tables_t *tables)
+{
+    if (!fc_precomputed_header_is_valid(&solver->config, tables) ||
+        !isfinite(tables->m2sfrk.c2) ||
+        !isfinite(tables->m2sfrk.c4) ||
+        (tables->m2sfrk.c2 <= 0.0f) ||
+        (tables->m2sfrk.c4 <= 0.0f)) {
+        return FC_ERR_COEFFICIENT;
+    }
+    solver->h_to_q = tables->h_to_q;
+    solver->m2sfrk = tables->m2sfrk;
+    return FC_OK;
+}
+
 fc_status_t fc_solver_init(
     fc_solver_t *solver,
     fc_workspace_t *workspace,
@@ -509,11 +592,15 @@ fc_status_t fc_solver_init(
 {
     fc_status_t status;
 
-    if ((solver == NULL) || (workspace == NULL) || (config == NULL)) {
+    if ((solver == NULL) || (config == NULL)) {
         return FC_ERR_NULL;
     }
     if (!fc_config_is_valid(config)) {
         return FC_ERR_CONFIG;
+    }
+    if ((workspace == NULL) &&
+        (config->method != FC_METHOD_M2SFRK)) {
+        return FC_ERR_WORKSPACE;
     }
 
     solver->magic = 0u;
@@ -526,6 +613,9 @@ fc_status_t fc_solver_init(
                 solver, config->precomputed_tables);
         } else if (config->method == FC_METHOD_GL_CAPUTO) {
             status = fc_copy_precomputed_gl(
+                solver, config->precomputed_tables);
+        } else if (config->method == FC_METHOD_M2SFRK) {
+            status = fc_copy_precomputed_m2sfrk(
                 solver, config->precomputed_tables);
         } else {
             return FC_ERR_METHOD;
@@ -543,6 +633,22 @@ fc_status_t fc_solver_init(
             status = fc_prepare_efork(solver);
         } else if (config->method == FC_METHOD_GL_CAPUTO) {
             status = fc_prepare_gl(solver);
+        } else if (config->method == FC_METHOD_M2SFRK) {
+            const fc_real_t gamma_1 = tgammaf(1.0f + config->q);
+            const fc_real_t gamma_2 = tgammaf(1.0f + (2.0f * config->q));
+            if (!isfinite(gamma_1) ||
+                !isfinite(gamma_2) ||
+                (gamma_1 <= 0.0f) ||
+                (gamma_2 <= 0.0f)) {
+                return FC_ERR_COEFFICIENT;
+            }
+            solver->m2sfrk.c2 = solver->h_to_q / gamma_1;
+            solver->m2sfrk.c4 =
+                (solver->h_to_q * gamma_1) / gamma_2;
+            status =
+                (isfinite(solver->m2sfrk.c2) &&
+                 isfinite(solver->m2sfrk.c4)) ?
+                FC_OK : FC_ERR_COEFFICIENT;
         } else {
             return FC_ERR_METHOD;
         }
@@ -563,7 +669,8 @@ fc_status_t fc_solver_reset(fc_solver_t *solver)
         return FC_ERR_NULL;
     }
     if ((solver->magic != FC_SOLVER_MAGIC) ||
-        (solver->workspace == NULL)) {
+        ((solver->workspace == NULL) &&
+         (solver->config.method != FC_METHOD_M2SFRK))) {
         return FC_ERR_NOT_INITIALIZED;
     }
 
@@ -913,6 +1020,63 @@ static fc_status_t fc_step_gl(
     return FC_OK;
 }
 
+static fc_status_t fc_step_m2sfrk(
+    fc_solver_t *solver,
+    fc_vec3f_t *output)
+{
+    fc_vec3f_t rhs;
+    fc_vec3f_t stage_state;
+    fc_vec3f_t next_state;
+    uint32_t component;
+    fc_status_t status;
+
+    status = fc_rhs(
+        solver->config.system,
+        solver->config.parameters,
+        &solver->state,
+        &rhs);
+    if (status != FC_OK) {
+        return status;
+    }
+    for (component = 0u; component < FC_STATE_DIMENSION; ++component) {
+        stage_state.v[component] = fmaf(
+            solver->m2sfrk.c4,
+            rhs.v[component],
+            solver->state.v[component]);
+    }
+
+    status = fc_rhs(
+        solver->config.system,
+        solver->config.parameters,
+        &stage_state,
+        &rhs);
+    if (status != FC_OK) {
+        return status;
+    }
+    for (component = 0u; component < FC_STATE_DIMENSION; ++component) {
+        next_state.v[component] = fmaf(
+            solver->m2sfrk.c2,
+            rhs.v[component],
+            solver->state.v[component]);
+    }
+    if (!fc_vec_isfinite(&next_state)) {
+        return FC_ERR_NONFINITE;
+    }
+
+    solver->state = next_state;
+    ++solver->step_index;
+    solver->diagnostics.steps_completed = solver->step_index;
+    solver->diagnostics.active_memory_terms = 0u;
+    solver->diagnostics.last_history_abs_max = 0.0f;
+    solver->diagnostics.max_abs_state =
+        fc_vec_max_abs(&solver->state);
+    solver->diagnostics.last_status = FC_OK;
+    if (output != NULL) {
+        *output = solver->state;
+    }
+    return FC_OK;
+}
+
 fc_status_t fc_solver_step(
     fc_solver_t *solver,
     fc_vec3f_t *output)
@@ -923,7 +1087,8 @@ fc_status_t fc_solver_step(
         return FC_ERR_NULL;
     }
     if ((solver->magic != FC_SOLVER_MAGIC) ||
-        (solver->workspace == NULL)) {
+        ((solver->workspace == NULL) &&
+         (solver->config.method != FC_METHOD_M2SFRK))) {
         return FC_ERR_NOT_INITIALIZED;
     }
 
@@ -931,6 +1096,8 @@ fc_status_t fc_solver_step(
         status = fc_step_efork(solver, output);
     } else if (solver->config.method == FC_METHOD_GL_CAPUTO) {
         status = fc_step_gl(solver, output);
+    } else if (solver->config.method == FC_METHOD_M2SFRK) {
+        status = fc_step_m2sfrk(solver, output);
     } else {
         status = FC_ERR_METHOD;
     }

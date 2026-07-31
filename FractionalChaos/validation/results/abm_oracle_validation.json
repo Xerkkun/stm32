@@ -1,0 +1,222 @@
+{
+  "algorithm_validation": {
+    "constant": {
+      "case": "constant",
+      "h": 0.015625,
+      "max_abs_error": 0.0,
+      "passed": true,
+      "q": 0.73,
+      "steps": 64,
+      "threshold": 1e-14
+    },
+    "manufactured_power": {
+      "case": "manufactured_power_state_dependent",
+      "cases": [
+        {
+          "accepted_order_floor": 1.15,
+          "expected_asymptotic_order": 1.5,
+          "meshes": [
+            {
+              "h": 0.025,
+              "max_abs_error": 0.00527490709784928,
+              "observed_order": null,
+              "steps": 40
+            },
+            {
+              "h": 0.0125,
+              "max_abs_error": 0.0017215193500126347,
+              "observed_order": 1.6154632881608644,
+              "steps": 80
+            },
+            {
+              "h": 0.00625,
+              "max_abs_error": 0.0005726569289026262,
+              "observed_order": 1.587939393397105,
+              "steps": 160
+            },
+            {
+              "h": 0.003125,
+              "max_abs_error": 0.0001934929788944828,
+              "observed_order": 1.5653898809513302,
+              "steps": 320
+            }
+          ],
+          "monotone_error_reduction": true,
+          "passed": true,
+          "power": 4.0,
+          "q": 0.5
+        },
+        {
+          "accepted_order_floor": 1.4500000000000002,
+          "expected_asymptotic_order": 1.8,
+          "meshes": [
+            {
+              "h": 0.025,
+              "max_abs_error": 0.0016433361673982017,
+              "observed_order": null,
+              "steps": 40
+            },
+            {
+              "h": 0.0125,
+              "max_abs_error": 0.00044917812968625626,
+              "observed_order": 1.871268043643651,
+              "steps": 80
+            },
+            {
+              "h": 0.00625,
+              "max_abs_error": 0.00012383123020187625,
+              "observed_order": 1.8589124774413137,
+              "steps": 160
+            },
+            {
+              "h": 0.003125,
+              "max_abs_error": 3.436334737139113e-05,
+              "observed_order": 1.8494327247877707,
+              "steps": 320
+            }
+          ],
+          "monotone_error_reduction": true,
+          "passed": true,
+          "power": 4.0,
+          "q": 0.8
+        },
+        {
+          "accepted_order_floor": 1.645,
+          "expected_asymptotic_order": 1.995,
+          "meshes": [
+            {
+              "h": 0.025,
+              "max_abs_error": 0.0009718340162225836,
+              "observed_order": null,
+              "steps": 40
+            },
+            {
+              "h": 0.0125,
+              "max_abs_error": 0.00024260121791885858,
+              "observed_order": 2.0021231375150066,
+              "steps": 80
+            },
+            {
+              "h": 0.00625,
+              "max_abs_error": 6.065854600101339e-05,
+              "observed_order": 1.99980397140228,
+              "steps": 160
+            },
+            {
+              "h": 0.003125,
+              "max_abs_error": 1.5179325925984699e-05,
+              "observed_order": 1.9986031907755542,
+              "steps": 320
+            }
+          ],
+          "monotone_error_reduction": true,
+          "passed": true,
+          "power": 4.0,
+          "q": 0.995
+        }
+      ],
+      "equation": "CaputoD(q)x=-x+CaputoD(q)t^4+t^4",
+      "exact_solution": "x(t)=t^4",
+      "passed": true
+    },
+    "passed": true
+  },
+  "arithmetic": {
+    "claim": "higher precision than the embedded primary arithmetic",
+    "embedded_comparison_dtype": "IEEE-754 float32",
+    "state_dtype": "IEEE-754 float64"
+  },
+  "candidate_smoke": {
+    "cases": [
+      {
+        "all_finite": true,
+        "manifest_id": "lorenz_caputo_v1",
+        "max_abs_state_h_over_4": 47.945481628840994,
+        "normalized_rmse_h_over_2_vs_h_over_4": [
+          8.259318133747195e-05,
+          0.00010657209361866962,
+          9.104967033727782e-05
+        ],
+        "normalized_rmse_h_vs_h_over_2": [
+          0.00034867563345799944,
+          0.00044003656570431996,
+          0.00036413053523736235
+        ],
+        "physical_horizon_s": 1.0,
+        "steps": [
+          200,
+          400,
+          800
+        ],
+        "system": "lorenz"
+      },
+      {
+        "all_finite": true,
+        "manifest_id": "rossler_caputo_v1",
+        "max_abs_state_h_over_4": 1.6990021661352275,
+        "normalized_rmse_h_over_2_vs_h_over_4": [
+          2.5621336108772277e-06,
+          4.17168539428298e-06,
+          2.5250009665482984e-05
+        ],
+        "normalized_rmse_h_vs_h_over_2": [
+          9.947177178241384e-06,
+          1.5893740802400487e-05,
+          0.00010175198695436465
+        ],
+        "physical_horizon_s": 1.0,
+        "steps": [
+          100,
+          200,
+          400
+        ],
+        "system": "rossler"
+      },
+      {
+        "all_finite": true,
+        "manifest_id": "chen_caputo_v1",
+        "max_abs_state_h_over_4": 44.1419287406715,
+        "normalized_rmse_h_over_2_vs_h_over_4": [
+          0.00670721612283905,
+          0.00698734945424806,
+          0.00779482419859369
+        ],
+        "normalized_rmse_h_vs_h_over_2": [
+          0.053715043032715924,
+          0.04695337311377174,
+          0.05968698052394799
+        ],
+        "physical_horizon_s": 1.0,
+        "steps": [
+          200,
+          400,
+          800
+        ],
+        "system": "chen"
+      }
+    ],
+    "purpose": "Exercise all three candidate vector fields and h, h/2, h/4 without claiming long-horizon boundedness or nonperiodicity.",
+    "status": "short_horizon_smoke_only_not_manifest_qualification"
+  },
+  "does_not_establish": [
+    "chaos",
+    "hidden attractors",
+    "long-horizon manifest qualification",
+    "STM32 timing, energy, or randomness"
+  ],
+  "method": {
+    "corrector_evaluations": 1,
+    "memory_policy": "full_history",
+    "name": "Diethelm Adams-Bashforth-Moulton PECE",
+    "operator": "Caputo"
+  },
+  "provenance": {
+    "candidate_manifest_sha256": "2c1b2ea27dc796920f993b5e748afd24524549839fad9ca846704ffbeaaecf11",
+    "candidate_manifest_source": "validation/candidate_manifests.json",
+    "oracle_source": "validation/abm_oracle.py",
+    "oracle_source_sha256": "5608dc119e85a01accc4ae8b58f83e13c79b230a7731953c280330e16bcb2aca"
+  },
+  "schema_version": 1,
+  "scope": "Independent host validation of the full-memory commensurate Caputo ABM PECE implementation.",
+  "status": "passed_abm_implementation_validation"
+}

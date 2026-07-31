@@ -1,0 +1,2888 @@
+{
+  "analysis_status": "completed_exploratory_diagnostic",
+  "cases": [
+    {
+      "backend": "nolds",
+      "backend_version": "0.6.3",
+      "board": "f746",
+      "case_id": "f746_float32",
+      "claim_eligible": false,
+      "discard_raw_rows": 64,
+      "eckmann_method": "nolds.lyap_e (Eckmann et al. 1986)",
+      "eckmann_parameters": {
+        "emb_dim": 9,
+        "matrix_dim": 3,
+        "min_neighbors": 6,
+        "min_tsep": 10
+      },
+      "estimated_pairwise_matrix_bytes": 133628552,
+      "evidence_status": "finite_time_time_series_diagnostic",
+      "exponent_unit": "model_time^-1",
+      "fractional_order_q": 0.995,
+      "harmonization_stride": 2,
+      "integration_method": "m2sfrk",
+      "interpretation": "exploratory UART-derived finite-time diagnostic; Lorenz failed the frozen ABM qualification",
+      "kaplan_yorke_dimension": 2.5080127900585514,
+      "kaplan_yorke_status": "computed_from_exploratory_eckmann_spectrum",
+      "largest_exponent": 0.007973319406665383,
+      "largest_sign_agrees_with_spectrum": true,
+      "model_step": 0.005,
+      "model_time_span": 20966.4,
+      "n_samples": 4096,
+      "observable": "x",
+      "raw_decimation": 512,
+      "representation": "float32",
+      "rosenstein_divergence_index_unit": "retained_sample_offset",
+      "rosenstein_divergence_time_trajectory": [
+        [
+          0.0,
+          2.423114169835913
+        ],
+        [
+          5.12,
+          2.644378647782458
+        ],
+        [
+          10.24,
+          2.8167668749064894
+        ],
+        [
+          15.36,
+          2.955590022795336
+        ],
+        [
+          20.48,
+          3.068464269251147
+        ],
+        [
+          25.6,
+          3.1647970446983926
+        ],
+        [
+          30.72,
+          3.248102271220802
+        ],
+        [
+          35.84,
+          3.322962454137647
+        ],
+        [
+          40.96,
+          3.38990622593171
+        ],
+        [
+          46.08,
+          3.447738472445517
+        ],
+        [
+          51.2,
+          3.4994175960781746
+        ],
+        [
+          56.32,
+          3.502500820640436
+        ],
+        [
+          61.44,
+          3.5046125769160748
+        ],
+        [
+          66.56,
+          3.5042877167440576
+        ],
+        [
+          71.68,
+          3.5044900547950517
+        ],
+        [
+          76.8,
+          3.504260241531656
+        ],
+        [
+          81.92,
+          3.505555833340213
+        ],
+        [
+          87.04,
+          3.505926362204006
+        ],
+        [
+          92.16,
+          3.504923239117576
+        ],
+        [
+          97.28,
+          3.5041745062138183
+        ]
+      ],
+      "rosenstein_divergence_trajectory": [
+        [
+          0.0,
+          2.423114169835913
+        ],
+        [
+          1.0,
+          2.644378647782458
+        ],
+        [
+          2.0,
+          2.8167668749064894
+        ],
+        [
+          3.0,
+          2.955590022795336
+        ],
+        [
+          4.0,
+          3.068464269251147
+        ],
+        [
+          5.0,
+          3.1647970446983926
+        ],
+        [
+          6.0,
+          3.248102271220802
+        ],
+        [
+          7.0,
+          3.322962454137647
+        ],
+        [
+          8.0,
+          3.38990622593171
+        ],
+        [
+          9.0,
+          3.447738472445517
+        ],
+        [
+          10.0,
+          3.4994175960781746
+        ],
+        [
+          11.0,
+          3.502500820640436
+        ],
+        [
+          12.0,
+          3.5046125769160748
+        ],
+        [
+          13.0,
+          3.5042877167440576
+        ],
+        [
+          14.0,
+          3.5044900547950517
+        ],
+        [
+          15.0,
+          3.504260241531656
+        ],
+        [
+          16.0,
+          3.505555833340213
+        ],
+        [
+          17.0,
+          3.505926362204006
+        ],
+        [
+          18.0,
+          3.504923239117576
+        ],
+        [
+          19.0,
+          3.5041745062138183
+        ]
+      ],
+      "rosenstein_fit_r2": 0.7336129752646185,
+      "rosenstein_method": "nolds.lyap_r (Rosenstein et al. 1993)",
+      "rosenstein_parameters": {
+        "emb_dim": 10,
+        "fit": "poly",
+        "fit_offset": 1,
+        "lag": 1,
+        "min_neighbors": 20,
+        "min_tsep": 10,
+        "random_seed": 20260728,
+        "trajectory_len": 20
+      },
+      "rosenstein_slope_per_sample": 0.040823395362126765,
+      "sample_interval": 5.12,
+      "sample_rate": 0.1953125,
+      "sensitivity_runs": [
+        {
+          "backend": "nolds",
+          "backend_version": "0.6.3",
+          "eckmann_method": "nolds.lyap_e (Eckmann et al. 1986)",
+          "eckmann_parameters": {
+            "emb_dim": 9,
+            "matrix_dim": 3,
+            "min_neighbors": 6,
+            "min_tsep": 10
+          },
+          "estimated_pairwise_matrix_bytes": 133628552,
+          "evidence_status": "finite_time_time_series_diagnostic",
+          "exponent_unit": "model_time^-1",
+          "kaplan_yorke_dimension": 2.559644378844795,
+          "kaplan_yorke_status": "computed_from_exploratory_eckmann_spectrum",
+          "largest_exponent": 0.007698323366291159,
+          "largest_sign_agrees_with_spectrum": true,
+          "n_samples": 4096,
+          "observable": "x",
+          "parameter_overrides": {},
+          "rosenstein_divergence_index_unit": "retained_sample_offset",
+          "rosenstein_divergence_time_trajectory": [
+            [
+              0.0,
+              2.4521776015639363
+            ],
+            [
+              5.12,
+              2.6792439489976982
+            ],
+            [
+              10.24,
+              2.855308320157589
+            ],
+            [
+              15.36,
+              2.9905368412302398
+            ],
+            [
+              20.48,
+              3.10307394845157
+            ],
+            [
+              25.6,
+              3.199197247691262
+            ],
+            [
+              30.72,
+              3.278505846572665
+            ],
+            [
+              35.84,
+              3.350156570921807
+            ],
+            [
+              40.96,
+              3.412172832430908
+            ],
+            [
+              46.08,
+              3.4678771081327593
+            ],
+            [
+              51.2,
+              3.5195776510613106
+            ],
+            [
+              56.32,
+              3.520454151188043
+            ],
+            [
+              61.44,
+              3.519367155285283
+            ],
+            [
+              66.56,
+              3.5206173639478626
+            ],
+            [
+              71.68,
+              3.5197467513263714
+            ],
+            [
+              76.8,
+              3.519262720883649
+            ],
+            [
+              81.92,
+              3.5194339872536125
+            ],
+            [
+              87.04,
+              3.518306251713981
+            ],
+            [
+              92.16,
+              3.521949939314374
+            ],
+            [
+              97.28,
+              3.5234071489879715
+            ]
+          ],
+          "rosenstein_divergence_trajectory": [
+            [
+              0.0,
+              2.4521776015639363
+            ],
+            [
+              1.0,
+              2.6792439489976982
+            ],
+            [
+              2.0,
+              2.855308320157589
+            ],
+            [
+              3.0,
+              2.9905368412302398
+            ],
+            [
+              4.0,
+              3.10307394845157
+            ],
+            [
+              5.0,
+              3.199197247691262
+            ],
+            [
+              6.0,
+              3.278505846572665
+            ],
+            [
+              7.0,
+              3.350156570921807
+            ],
+            [
+              8.0,
+              3.412172832430908
+            ],
+            [
+              9.0,
+              3.4678771081327593
+            ],
+            [
+              10.0,
+              3.5195776510613106
+            ],
+            [
+              11.0,
+              3.520454151188043
+            ],
+            [
+              12.0,
+              3.519367155285283
+            ],
+            [
+              13.0,
+              3.5206173639478626
+            ],
+            [
+              14.0,
+              3.5197467513263714
+            ],
+            [
+              15.0,
+              3.519262720883649
+            ],
+            [
+              16.0,
+              3.5194339872536125
+            ],
+            [
+              17.0,
+              3.518306251713981
+            ],
+            [
+              18.0,
+              3.521949939314374
+            ],
+            [
+              19.0,
+              3.5234071489879715
+            ]
+          ],
+          "rosenstein_fit_r2": 0.7261377982408946,
+          "rosenstein_method": "nolds.lyap_r (Rosenstein et al. 1993)",
+          "rosenstein_parameters": {
+            "emb_dim": 10,
+            "fit": "poly",
+            "fit_offset": 1,
+            "lag": 1,
+            "min_neighbors": 20,
+            "min_tsep": 10,
+            "random_seed": 20260828,
+            "trajectory_len": 20
+          },
+          "rosenstein_slope_per_sample": 0.03941541563541073,
+          "sample_interval": 5.12,
+          "sample_rate": 0.1953125,
+          "sensitivity_id": "next_nonoverlapping_window",
+          "sequence_first": 20916224,
+          "sequence_last": 25109504,
+          "spectrum": [
+            0.017986007125629238,
+            -0.0009074226721758085,
+            -0.030516851591910286
+          ],
+          "spectrum_status": "exploratory_nolds_eckmann_scalar_reconstruction",
+          "spectrum_sum": -0.013438267138456857,
+          "time_unit": "model_time",
+          "warnings": [
+            "Finite-time estimates reconstructed from one scalar observable.",
+            "Results depend on sampling, delay embedding, neighborhood, and fit parameters.",
+            "The nolds Eckmann spectrum and derived Kaplan-Yorke dimension are exploratory.",
+            "These diagnostics do not certify chaos, asymptotic exponents, or hiddenness."
+          ],
+          "window_offset_samples": 4096
+        },
+        {
+          "backend": "nolds",
+          "backend_version": "0.6.3",
+          "eckmann_method": "nolds.lyap_e (Eckmann et al. 1986)",
+          "eckmann_parameters": {
+            "emb_dim": 9,
+            "matrix_dim": 3,
+            "min_neighbors": 6,
+            "min_tsep": 20
+          },
+          "estimated_pairwise_matrix_bytes": 133040672,
+          "evidence_status": "finite_time_time_series_diagnostic",
+          "exponent_unit": "model_time^-1",
+          "kaplan_yorke_dimension": 2.5065452510163175,
+          "kaplan_yorke_status": "computed_from_exploratory_eckmann_spectrum",
+          "largest_exponent": 0.003982960177185916,
+          "largest_sign_agrees_with_spectrum": true,
+          "n_samples": 4096,
+          "observable": "x",
+          "parameter_overrides": {
+            "eckmann_min_tsep": 20,
+            "rosenstein_lag": 2,
+            "rosenstein_min_tsep": 20
+          },
+          "rosenstein_divergence_index_unit": "retained_sample_offset",
+          "rosenstein_divergence_time_trajectory": [
+            [
+              0.0,
+              2.477478246383939
+            ],
+            [
+              5.12,
+              3.4821532904298245
+            ],
+            [
+              10.24,
+              2.6933051038761464
+            ],
+            [
+              15.36,
+              3.487739813519665
+            ],
+            [
+              20.48,
+              2.8637822818702134
+            ],
+            [
+              25.6,
+              3.493264145594325
+            ],
+            [
+              30.72,
+              2.9967163677580104
+            ],
+            [
+              35.84,
+              3.4962552640786186
+            ],
+            [
+              40.96,
+              3.1055568667888296
+            ],
+            [
+              46.08,
+              3.4986981714261227
+            ],
+            [
+              51.2,
+              3.1978526829439757
+            ],
+            [
+              56.32,
+              3.500412811273085
+            ],
+            [
+              61.44,
+              3.273866734964637
+            ],
+            [
+              66.56,
+              3.503745124537602
+            ],
+            [
+              71.68,
+              3.3397210289048083
+            ],
+            [
+              76.8,
+              3.5087199729152045
+            ],
+            [
+              81.92,
+              3.400475056540517
+            ],
+            [
+              87.04,
+              3.512546008541376
+            ],
+            [
+              92.16,
+              3.454548330158528
+            ],
+            [
+              97.28,
+              3.518822559196426
+            ]
+          ],
+          "rosenstein_divergence_trajectory": [
+            [
+              0.0,
+              2.477478246383939
+            ],
+            [
+              1.0,
+              3.4821532904298245
+            ],
+            [
+              2.0,
+              2.6933051038761464
+            ],
+            [
+              3.0,
+              3.487739813519665
+            ],
+            [
+              4.0,
+              2.8637822818702134
+            ],
+            [
+              5.0,
+              3.493264145594325
+            ],
+            [
+              6.0,
+              2.9967163677580104
+            ],
+            [
+              7.0,
+              3.4962552640786186
+            ],
+            [
+              8.0,
+              3.1055568667888296
+            ],
+            [
+              9.0,
+              3.4986981714261227
+            ],
+            [
+              10.0,
+              3.1978526829439757
+            ],
+            [
+              11.0,
+              3.500412811273085
+            ],
+            [
+              12.0,
+              3.273866734964637
+            ],
+            [
+              13.0,
+              3.503745124537602
+            ],
+            [
+              14.0,
+              3.3397210289048083
+            ],
+            [
+              15.0,
+              3.5087199729152045
+            ],
+            [
+              16.0,
+              3.400475056540517
+            ],
+            [
+              17.0,
+              3.512546008541376
+            ],
+            [
+              18.0,
+              3.454548330158528
+            ],
+            [
+              19.0,
+              3.518822559196426
+            ]
+          ],
+          "rosenstein_fit_r2": 0.21237831059990697,
+          "rosenstein_method": "nolds.lyap_r (Rosenstein et al. 1993)",
+          "rosenstein_parameters": {
+            "emb_dim": 10,
+            "fit": "poly",
+            "fit_offset": 1,
+            "lag": 2,
+            "min_neighbors": 20,
+            "min_tsep": 20,
+            "random_seed": 20260829,
+            "trajectory_len": 20
+          },
+          "rosenstein_slope_per_sample": 0.02039275610719189,
+          "sample_interval": 5.12,
+          "sample_rate": 0.1953125,
+          "sensitivity_id": "lag2_theiler20_primary_window",
+          "sequence_first": 16721920,
+          "sequence_last": 20915200,
+          "spectrum": [
+            0.01707212693615371,
+            -0.001503638718370709,
+            -0.03073464450914671
+          ],
+          "spectrum_status": "exploratory_nolds_eckmann_scalar_reconstruction",
+          "spectrum_sum": -0.015166156291363708,
+          "time_unit": "model_time",
+          "warnings": [
+            "Finite-time estimates reconstructed from one scalar observable.",
+            "Results depend on sampling, delay embedding, neighborhood, and fit parameters.",
+            "The nolds Eckmann spectrum and derived Kaplan-Yorke dimension are exploratory.",
+            "These diagnostics do not certify chaos, asymptotic exponents, or hiddenness."
+          ],
+          "window_offset_samples": 0
+        }
+      ],
+      "sensitivity_summary": {
+        "evaluations": 3,
+        "interpretation": "limited two-window/parameter sensitivity only; not an uncertainty interval or asymptotic convergence study",
+        "kaplan_yorke_max": 2.559644378844795,
+        "kaplan_yorke_min": 2.5065452510163175,
+        "largest_exponent_all_positive": true,
+        "largest_exponent_max": 0.007973319406665383,
+        "largest_exponent_min": 0.003982960177185916,
+        "minimum_rosenstein_fit_r2": 0.21237831059990697,
+        "spectrum_component_max": [
+          0.017986007125629238,
+          -0.0009074226721758085,
+          -0.030516851591910286
+        ],
+        "spectrum_component_min": [
+          0.01707212693615371,
+          -0.001503638718370709,
+          -0.030950218723332815
+        ],
+        "spectrum_largest_all_positive": true,
+        "spectrum_sum_all_negative": true
+      },
+      "sequence_first": 16721920,
+      "sequence_last": 20915200,
+      "source": "validation/results/hardware_smoke/f746_lorenz_m2sfrk_float32_dec512_1mbit.csv",
+      "source_bytes": 7296079,
+      "source_raw_rows": 44339,
+      "source_sha256": "7aa26e7f2aa0641314f71bd287b012af462c157ef0b222ed2f97e789e7b14858",
+      "spectrum": [
+        0.017225060704932914,
+        -0.0015019537383701936,
+        -0.030950218723332815
+      ],
+      "spectrum_status": "exploratory_nolds_eckmann_scalar_reconstruction",
+      "spectrum_sum": -0.015227111756770096,
+      "system": "lorenz",
+      "target_decimation": 1024,
+      "time_unit": "model_time",
+      "warnings": [
+        "Finite-time estimates reconstructed from one scalar observable.",
+        "Results depend on sampling, delay embedding, neighborhood, and fit parameters.",
+        "The nolds Eckmann spectrum and derived Kaplan-Yorke dimension are exploratory.",
+        "These diagnostics do not certify chaos, asymptotic exponents, or hiddenness."
+      ],
+      "window_samples": 4096
+    },
+    {
+      "backend": "nolds",
+      "backend_version": "0.6.3",
+      "board": "f746",
+      "case_id": "f746_fixed_q14_q30",
+      "claim_eligible": false,
+      "discard_raw_rows": 64,
+      "eckmann_method": "nolds.lyap_e (Eckmann et al. 1986)",
+      "eckmann_parameters": {
+        "emb_dim": 9,
+        "matrix_dim": 3,
+        "min_neighbors": 6,
+        "min_tsep": 10
+      },
+      "estimated_pairwise_matrix_bytes": 133628552,
+      "evidence_status": "finite_time_time_series_diagnostic",
+      "exponent_unit": "model_time^-1",
+      "fractional_order_q": 0.995,
+      "harmonization_stride": 2,
+      "integration_method": "m2sfrk",
+      "interpretation": "exploratory UART-derived finite-time diagnostic; Lorenz failed the frozen ABM qualification",
+      "kaplan_yorke_dimension": 2.5365517959778154,
+      "kaplan_yorke_status": "computed_from_exploratory_eckmann_spectrum",
+      "largest_exponent": 0.007686878332365656,
+      "largest_sign_agrees_with_spectrum": true,
+      "model_step": 0.005,
+      "model_time_span": 20966.4,
+      "n_samples": 4096,
+      "observable": "x",
+      "raw_decimation": 512,
+      "representation": "fixed_q14",
+      "rosenstein_divergence_index_unit": "retained_sample_offset",
+      "rosenstein_divergence_time_trajectory": [
+        [
+          0.0,
+          2.4468131150075467
+        ],
+        [
+          5.12,
+          2.6753047743651175
+        ],
+        [
+          10.24,
+          2.8556752466679423
+        ],
+        [
+          15.36,
+          2.993703450040371
+        ],
+        [
+          20.48,
+          3.104759204961701
+        ],
+        [
+          25.6,
+          3.2013846332683826
+        ],
+        [
+          30.72,
+          3.281949156295852
+        ],
+        [
+          35.84,
+          3.3532889148309803
+        ],
+        [
+          40.96,
+          3.417000692117389
+        ],
+        [
+          46.08,
+          3.4732897020942293
+        ],
+        [
+          51.2,
+          3.523685467732719
+        ],
+        [
+          56.32,
+          3.5224258884045465
+        ],
+        [
+          61.44,
+          3.5209284044021376
+        ],
+        [
+          66.56,
+          3.5222303437575384
+        ],
+        [
+          71.68,
+          3.5217069208206615
+        ],
+        [
+          76.8,
+          3.522427538435941
+        ],
+        [
+          81.92,
+          3.5217143016666332
+        ],
+        [
+          87.04,
+          3.52062989633491
+        ],
+        [
+          92.16,
+          3.5206931379684403
+        ],
+        [
+          97.28,
+          3.5191898197966798
+        ]
+      ],
+      "rosenstein_divergence_trajectory": [
+        [
+          0.0,
+          2.4468131150075467
+        ],
+        [
+          1.0,
+          2.6753047743651175
+        ],
+        [
+          2.0,
+          2.8556752466679423
+        ],
+        [
+          3.0,
+          2.993703450040371
+        ],
+        [
+          4.0,
+          3.104759204961701
+        ],
+        [
+          5.0,
+          3.2013846332683826
+        ],
+        [
+          6.0,
+          3.281949156295852
+        ],
+        [
+          7.0,
+          3.3532889148309803
+        ],
+        [
+          8.0,
+          3.417000692117389
+        ],
+        [
+          9.0,
+          3.4732897020942293
+        ],
+        [
+          10.0,
+          3.523685467732719
+        ],
+        [
+          11.0,
+          3.5224258884045465
+        ],
+        [
+          12.0,
+          3.5209284044021376
+        ],
+        [
+          13.0,
+          3.5222303437575384
+        ],
+        [
+          14.0,
+          3.5217069208206615
+        ],
+        [
+          15.0,
+          3.522427538435941
+        ],
+        [
+          16.0,
+          3.5217143016666332
+        ],
+        [
+          17.0,
+          3.52062989633491
+        ],
+        [
+          18.0,
+          3.5206931379684403
+        ],
+        [
+          19.0,
+          3.5191898197966798
+        ]
+      ],
+      "rosenstein_fit_r2": 0.7194998595750173,
+      "rosenstein_method": "nolds.lyap_r (Rosenstein et al. 1993)",
+      "rosenstein_parameters": {
+        "emb_dim": 10,
+        "fit": "poly",
+        "fit_offset": 1,
+        "lag": 1,
+        "min_neighbors": 20,
+        "min_tsep": 10,
+        "random_seed": 20260729,
+        "trajectory_len": 20
+      },
+      "rosenstein_slope_per_sample": 0.03935681706171216,
+      "sample_interval": 5.12,
+      "sample_rate": 0.1953125,
+      "sensitivity_runs": [
+        {
+          "backend": "nolds",
+          "backend_version": "0.6.3",
+          "eckmann_method": "nolds.lyap_e (Eckmann et al. 1986)",
+          "eckmann_parameters": {
+            "emb_dim": 9,
+            "matrix_dim": 3,
+            "min_neighbors": 6,
+            "min_tsep": 10
+          },
+          "estimated_pairwise_matrix_bytes": 133628552,
+          "evidence_status": "finite_time_time_series_diagnostic",
+          "exponent_unit": "model_time^-1",
+          "kaplan_yorke_dimension": 2.567611132265801,
+          "kaplan_yorke_status": "computed_from_exploratory_eckmann_spectrum",
+          "largest_exponent": 0.0076974916683120835,
+          "largest_sign_agrees_with_spectrum": true,
+          "n_samples": 4096,
+          "observable": "x",
+          "parameter_overrides": {},
+          "rosenstein_divergence_index_unit": "retained_sample_offset",
+          "rosenstein_divergence_time_trajectory": [
+            [
+              0.0,
+              2.438005801577493
+            ],
+            [
+              5.12,
+              2.663520503509858
+            ],
+            [
+              10.24,
+              2.8416940756189546
+            ],
+            [
+              15.36,
+              2.9827337892328853
+            ],
+            [
+              20.48,
+              3.0912925972389114
+            ],
+            [
+              25.6,
+              3.183679438027056
+            ],
+            [
+              30.72,
+              3.2636014169186143
+            ],
+            [
+              35.84,
+              3.333098655339901
+            ],
+            [
+              40.96,
+              3.396230858733394
+            ],
+            [
+              46.08,
+              3.453073141110921
+            ],
+            [
+              51.2,
+              3.5052790273549266
+            ],
+            [
+              56.32,
+              3.5075113806649343
+            ],
+            [
+              61.44,
+              3.5054794315484044
+            ],
+            [
+              66.56,
+              3.5026780678107667
+            ],
+            [
+              71.68,
+              3.503628819399366
+            ],
+            [
+              76.8,
+              3.5048060123493103
+            ],
+            [
+              81.92,
+              3.506468040321993
+            ],
+            [
+              87.04,
+              3.5076218308713694
+            ],
+            [
+              92.16,
+              3.50863802111761
+            ],
+            [
+              97.28,
+              3.509756399811403
+            ]
+          ],
+          "rosenstein_divergence_trajectory": [
+            [
+              0.0,
+              2.438005801577493
+            ],
+            [
+              1.0,
+              2.663520503509858
+            ],
+            [
+              2.0,
+              2.8416940756189546
+            ],
+            [
+              3.0,
+              2.9827337892328853
+            ],
+            [
+              4.0,
+              3.0912925972389114
+            ],
+            [
+              5.0,
+              3.183679438027056
+            ],
+            [
+              6.0,
+              3.2636014169186143
+            ],
+            [
+              7.0,
+              3.333098655339901
+            ],
+            [
+              8.0,
+              3.396230858733394
+            ],
+            [
+              9.0,
+              3.453073141110921
+            ],
+            [
+              10.0,
+              3.5052790273549266
+            ],
+            [
+              11.0,
+              3.5075113806649343
+            ],
+            [
+              12.0,
+              3.5054794315484044
+            ],
+            [
+              13.0,
+              3.5026780678107667
+            ],
+            [
+              14.0,
+              3.503628819399366
+            ],
+            [
+              15.0,
+              3.5048060123493103
+            ],
+            [
+              16.0,
+              3.506468040321993
+            ],
+            [
+              17.0,
+              3.5076218308713694
+            ],
+            [
+              18.0,
+              3.50863802111761
+            ],
+            [
+              19.0,
+              3.509756399811403
+            ]
+          ],
+          "rosenstein_fit_r2": 0.7280590879637603,
+          "rosenstein_method": "nolds.lyap_r (Rosenstein et al. 1993)",
+          "rosenstein_parameters": {
+            "emb_dim": 10,
+            "fit": "poly",
+            "fit_offset": 1,
+            "lag": 1,
+            "min_neighbors": 20,
+            "min_tsep": 10,
+            "random_seed": 20260838,
+            "trajectory_len": 20
+          },
+          "rosenstein_slope_per_sample": 0.03941115734175787,
+          "sample_interval": 5.12,
+          "sample_rate": 0.1953125,
+          "sensitivity_id": "next_nonoverlapping_window",
+          "sequence_first": 13146624,
+          "sequence_last": 17339904,
+          "spectrum": [
+            0.017224494590204753,
+            8.205219193268935e-06,
+            -0.030360045513216433
+          ],
+          "spectrum_status": "exploratory_nolds_eckmann_scalar_reconstruction",
+          "spectrum_sum": -0.013127345703818412,
+          "time_unit": "model_time",
+          "warnings": [
+            "Finite-time estimates reconstructed from one scalar observable.",
+            "Results depend on sampling, delay embedding, neighborhood, and fit parameters.",
+            "The nolds Eckmann spectrum and derived Kaplan-Yorke dimension are exploratory.",
+            "These diagnostics do not certify chaos, asymptotic exponents, or hiddenness."
+          ],
+          "window_offset_samples": 4096
+        },
+        {
+          "backend": "nolds",
+          "backend_version": "0.6.3",
+          "eckmann_method": "nolds.lyap_e (Eckmann et al. 1986)",
+          "eckmann_parameters": {
+            "emb_dim": 9,
+            "matrix_dim": 3,
+            "min_neighbors": 6,
+            "min_tsep": 20
+          },
+          "estimated_pairwise_matrix_bytes": 133040672,
+          "evidence_status": "finite_time_time_series_diagnostic",
+          "exponent_unit": "model_time^-1",
+          "kaplan_yorke_dimension": 2.5381549134217924,
+          "kaplan_yorke_status": "computed_from_exploratory_eckmann_spectrum",
+          "largest_exponent": 0.004057929608816147,
+          "largest_sign_agrees_with_spectrum": true,
+          "n_samples": 4096,
+          "observable": "x",
+          "parameter_overrides": {
+            "eckmann_min_tsep": 20,
+            "rosenstein_lag": 2,
+            "rosenstein_min_tsep": 20
+          },
+          "rosenstein_divergence_index_unit": "retained_sample_offset",
+          "rosenstein_divergence_time_trajectory": [
+            [
+              0.0,
+              2.4910713998417764
+            ],
+            [
+              5.12,
+              3.501295848682629
+            ],
+            [
+              10.24,
+              2.7094292632237966
+            ],
+            [
+              15.36,
+              3.504583830206786
+            ],
+            [
+              20.48,
+              2.8739000359010394
+            ],
+            [
+              25.6,
+              3.5088450391463777
+            ],
+            [
+              30.72,
+              3.007276362892407
+            ],
+            [
+              35.84,
+              3.5124338350089603
+            ],
+            [
+              40.96,
+              3.1169303812536446
+            ],
+            [
+              46.08,
+              3.517897182766219
+            ],
+            [
+              51.2,
+              3.2099621787277153
+            ],
+            [
+              56.32,
+              3.521408777862065
+            ],
+            [
+              61.44,
+              3.2909875222587828
+            ],
+            [
+              66.56,
+              3.526729136347068
+            ],
+            [
+              71.68,
+              3.3594836981720326
+            ],
+            [
+              76.8,
+              3.529956466279938
+            ],
+            [
+              81.92,
+              3.4219191947958874
+            ],
+            [
+              87.04,
+              3.533784508161156
+            ],
+            [
+              92.16,
+              3.4763256866503447
+            ],
+            [
+              97.28,
+              3.535303896015988
+            ]
+          ],
+          "rosenstein_divergence_trajectory": [
+            [
+              0.0,
+              2.4910713998417764
+            ],
+            [
+              1.0,
+              3.501295848682629
+            ],
+            [
+              2.0,
+              2.7094292632237966
+            ],
+            [
+              3.0,
+              3.504583830206786
+            ],
+            [
+              4.0,
+              2.8739000359010394
+            ],
+            [
+              5.0,
+              3.5088450391463777
+            ],
+            [
+              6.0,
+              3.007276362892407
+            ],
+            [
+              7.0,
+              3.5124338350089603
+            ],
+            [
+              8.0,
+              3.1169303812536446
+            ],
+            [
+              9.0,
+              3.517897182766219
+            ],
+            [
+              10.0,
+              3.2099621787277153
+            ],
+            [
+              11.0,
+              3.521408777862065
+            ],
+            [
+              12.0,
+              3.2909875222587828
+            ],
+            [
+              13.0,
+              3.526729136347068
+            ],
+            [
+              14.0,
+              3.3594836981720326
+            ],
+            [
+              15.0,
+              3.529956466279938
+            ],
+            [
+              16.0,
+              3.4219191947958874
+            ],
+            [
+              17.0,
+              3.533784508161156
+            ],
+            [
+              18.0,
+              3.4763256866503447
+            ],
+            [
+              19.0,
+              3.535303896015988
+            ]
+          ],
+          "rosenstein_fit_r2": 0.21568254903779827,
+          "rosenstein_method": "nolds.lyap_r (Rosenstein et al. 1993)",
+          "rosenstein_parameters": {
+            "emb_dim": 10,
+            "fit": "poly",
+            "fit_offset": 1,
+            "lag": 2,
+            "min_neighbors": 20,
+            "min_tsep": 20,
+            "random_seed": 20260839,
+            "trajectory_len": 20
+          },
+          "rosenstein_slope_per_sample": 0.02077659959713867,
+          "sample_interval": 5.12,
+          "sample_rate": 0.1953125,
+          "sensitivity_id": "lag2_theiler20_primary_window",
+          "sequence_first": 8952320,
+          "sequence_last": 13145600,
+          "spectrum": [
+            0.017681361547265267,
+            -0.0009591245283912254,
+            -0.03107327760430122
+          ],
+          "spectrum_status": "exploratory_nolds_eckmann_scalar_reconstruction",
+          "spectrum_sum": -0.014351040585427178,
+          "time_unit": "model_time",
+          "warnings": [
+            "Finite-time estimates reconstructed from one scalar observable.",
+            "Results depend on sampling, delay embedding, neighborhood, and fit parameters.",
+            "The nolds Eckmann spectrum and derived Kaplan-Yorke dimension are exploratory.",
+            "These diagnostics do not certify chaos, asymptotic exponents, or hiddenness."
+          ],
+          "window_offset_samples": 0
+        }
+      ],
+      "sensitivity_summary": {
+        "evaluations": 3,
+        "interpretation": "limited two-window/parameter sensitivity only; not an uncertainty interval or asymptotic convergence study",
+        "kaplan_yorke_max": 2.567611132265801,
+        "kaplan_yorke_min": 2.5365517959778154,
+        "largest_exponent_all_positive": true,
+        "largest_exponent_max": 0.0076974916683120835,
+        "largest_exponent_min": 0.004057929608816147,
+        "minimum_rosenstein_fit_r2": 0.21568254903779827,
+        "spectrum_component_max": [
+          0.017681361547265267,
+          8.205219193268935e-06,
+          -0.030360045513216433
+        ],
+        "spectrum_component_min": [
+          0.017224494590204753,
+          -0.001039845807458458,
+          -0.03107327760430122
+        ],
+        "spectrum_largest_all_positive": true,
+        "spectrum_sum_all_negative": true
+      },
+      "sequence_first": 8952320,
+      "sequence_last": 13145600,
+      "source": "validation/results/hardware_smoke/f746_lorenz_m2sfrk_fixed_dec512_1mbit_telemetry.csv",
+      "source_bytes": 7755709,
+      "source_raw_rows": 43520,
+      "source_sha256": "b20e3024ffb249e9a67ff66b439d83729f5fdf959200843ccfd9d71c17606f6d",
+      "spectrum": [
+        0.017607818931065913,
+        -0.001039845807458458,
+        -0.03087860901371856
+      ],
+      "spectrum_status": "exploratory_nolds_eckmann_scalar_reconstruction",
+      "spectrum_sum": -0.014310635890111105,
+      "system": "lorenz",
+      "target_decimation": 1024,
+      "time_unit": "model_time",
+      "warnings": [
+        "Finite-time estimates reconstructed from one scalar observable.",
+        "Results depend on sampling, delay embedding, neighborhood, and fit parameters.",
+        "The nolds Eckmann spectrum and derived Kaplan-Yorke dimension are exploratory.",
+        "These diagnostics do not certify chaos, asymptotic exponents, or hiddenness."
+      ],
+      "window_samples": 4096
+    },
+    {
+      "backend": "nolds",
+      "backend_version": "0.6.3",
+      "board": "h755",
+      "case_id": "h755_float32",
+      "claim_eligible": false,
+      "discard_raw_rows": 64,
+      "eckmann_method": "nolds.lyap_e (Eckmann et al. 1986)",
+      "eckmann_parameters": {
+        "emb_dim": 9,
+        "matrix_dim": 3,
+        "min_neighbors": 6,
+        "min_tsep": 10
+      },
+      "estimated_pairwise_matrix_bytes": 133628552,
+      "evidence_status": "finite_time_time_series_diagnostic",
+      "exponent_unit": "model_time^-1",
+      "fractional_order_q": 0.995,
+      "harmonization_stride": 1,
+      "integration_method": "m2sfrk",
+      "interpretation": "exploratory UART-derived finite-time diagnostic; Lorenz failed the frozen ABM qualification",
+      "kaplan_yorke_dimension": 2.541471400759081,
+      "kaplan_yorke_status": "computed_from_exploratory_eckmann_spectrum",
+      "largest_exponent": 0.007813457322217108,
+      "largest_sign_agrees_with_spectrum": true,
+      "model_step": 0.005,
+      "model_time_span": 20966.4,
+      "n_samples": 4096,
+      "observable": "x",
+      "raw_decimation": 1024,
+      "representation": "float32",
+      "rosenstein_divergence_index_unit": "retained_sample_offset",
+      "rosenstein_divergence_time_trajectory": [
+        [
+          0.0,
+          2.4341200042663442
+        ],
+        [
+          5.12,
+          2.6646111072032572
+        ],
+        [
+          10.24,
+          2.8407080369182482
+        ],
+        [
+          15.36,
+          2.9791695884752287
+        ],
+        [
+          20.48,
+          3.0959133828181535
+        ],
+        [
+          25.6,
+          3.192393371983728
+        ],
+        [
+          30.72,
+          3.27675030318728
+        ],
+        [
+          35.84,
+          3.3472483713565975
+        ],
+        [
+          40.96,
+          3.408730602484662
+        ],
+        [
+          46.08,
+          3.466359227632467
+        ],
+        [
+          51.2,
+          3.517782976595073
+        ],
+        [
+          56.32,
+          3.5196846960418675
+        ],
+        [
+          61.44,
+          3.520268552783195
+        ],
+        [
+          66.56,
+          3.5223678757387367
+        ],
+        [
+          71.68,
+          3.5218105525625285
+        ],
+        [
+          76.8,
+          3.519758310324447
+        ],
+        [
+          81.92,
+          3.5184950729766635
+        ],
+        [
+          87.04,
+          3.517373706395639
+        ],
+        [
+          92.16,
+          3.5178649696111286
+        ],
+        [
+          97.28,
+          3.516143757188142
+        ]
+      ],
+      "rosenstein_divergence_trajectory": [
+        [
+          0.0,
+          2.4341200042663442
+        ],
+        [
+          1.0,
+          2.6646111072032572
+        ],
+        [
+          2.0,
+          2.8407080369182482
+        ],
+        [
+          3.0,
+          2.9791695884752287
+        ],
+        [
+          4.0,
+          3.0959133828181535
+        ],
+        [
+          5.0,
+          3.192393371983728
+        ],
+        [
+          6.0,
+          3.27675030318728
+        ],
+        [
+          7.0,
+          3.3472483713565975
+        ],
+        [
+          8.0,
+          3.408730602484662
+        ],
+        [
+          9.0,
+          3.466359227632467
+        ],
+        [
+          10.0,
+          3.517782976595073
+        ],
+        [
+          11.0,
+          3.5196846960418675
+        ],
+        [
+          12.0,
+          3.520268552783195
+        ],
+        [
+          13.0,
+          3.5223678757387367
+        ],
+        [
+          14.0,
+          3.5218105525625285
+        ],
+        [
+          15.0,
+          3.519758310324447
+        ],
+        [
+          16.0,
+          3.5184950729766635
+        ],
+        [
+          17.0,
+          3.517373706395639
+        ],
+        [
+          18.0,
+          3.5178649696111286
+        ],
+        [
+          19.0,
+          3.516143757188142
+        ]
+      ],
+      "rosenstein_fit_r2": 0.7224096705577685,
+      "rosenstein_method": "nolds.lyap_r (Rosenstein et al. 1993)",
+      "rosenstein_parameters": {
+        "emb_dim": 10,
+        "fit": "poly",
+        "fit_offset": 1,
+        "lag": 1,
+        "min_neighbors": 20,
+        "min_tsep": 10,
+        "random_seed": 20260730,
+        "trajectory_len": 20
+      },
+      "rosenstein_slope_per_sample": 0.040004901489751596,
+      "sample_interval": 5.12,
+      "sample_rate": 0.1953125,
+      "sensitivity_runs": [
+        {
+          "backend": "nolds",
+          "backend_version": "0.6.3",
+          "eckmann_method": "nolds.lyap_e (Eckmann et al. 1986)",
+          "eckmann_parameters": {
+            "emb_dim": 9,
+            "matrix_dim": 3,
+            "min_neighbors": 6,
+            "min_tsep": 10
+          },
+          "estimated_pairwise_matrix_bytes": 133628552,
+          "evidence_status": "finite_time_time_series_diagnostic",
+          "exponent_unit": "model_time^-1",
+          "kaplan_yorke_dimension": 2.525633422462789,
+          "kaplan_yorke_status": "computed_from_exploratory_eckmann_spectrum",
+          "largest_exponent": 0.007838903426729372,
+          "largest_sign_agrees_with_spectrum": true,
+          "n_samples": 4096,
+          "observable": "x",
+          "parameter_overrides": {},
+          "rosenstein_divergence_index_unit": "retained_sample_offset",
+          "rosenstein_divergence_time_trajectory": [
+            [
+              0.0,
+              2.435452975944292
+            ],
+            [
+              5.12,
+              2.6587443133105024
+            ],
+            [
+              10.24,
+              2.8324905688983266
+            ],
+            [
+              15.36,
+              2.9768477052196003
+            ],
+            [
+              20.48,
+              3.0894346178529233
+            ],
+            [
+              25.6,
+              3.186874176411325
+            ],
+            [
+              30.72,
+              3.270192614155223
+            ],
+            [
+              35.84,
+              3.3447361332563137
+            ],
+            [
+              40.96,
+              3.4106289159475374
+            ],
+            [
+              46.08,
+              3.469370579664377
+            ],
+            [
+              51.2,
+              3.5189217136791884
+            ],
+            [
+              56.32,
+              3.521007597238029
+            ],
+            [
+              61.44,
+              3.522831504012608
+            ],
+            [
+              66.56,
+              3.5185515592080807
+            ],
+            [
+              71.68,
+              3.518309516316216
+            ],
+            [
+              76.8,
+              3.516617610799938
+            ],
+            [
+              81.92,
+              3.5153466871058523
+            ],
+            [
+              87.04,
+              3.514330097828686
+            ],
+            [
+              92.16,
+              3.513805892425566
+            ],
+            [
+              97.28,
+              3.510967730690692
+            ]
+          ],
+          "rosenstein_divergence_trajectory": [
+            [
+              0.0,
+              2.435452975944292
+            ],
+            [
+              1.0,
+              2.6587443133105024
+            ],
+            [
+              2.0,
+              2.8324905688983266
+            ],
+            [
+              3.0,
+              2.9768477052196003
+            ],
+            [
+              4.0,
+              3.0894346178529233
+            ],
+            [
+              5.0,
+              3.186874176411325
+            ],
+            [
+              6.0,
+              3.270192614155223
+            ],
+            [
+              7.0,
+              3.3447361332563137
+            ],
+            [
+              8.0,
+              3.4106289159475374
+            ],
+            [
+              9.0,
+              3.469370579664377
+            ],
+            [
+              10.0,
+              3.5189217136791884
+            ],
+            [
+              11.0,
+              3.521007597238029
+            ],
+            [
+              12.0,
+              3.522831504012608
+            ],
+            [
+              13.0,
+              3.5185515592080807
+            ],
+            [
+              14.0,
+              3.518309516316216
+            ],
+            [
+              15.0,
+              3.516617610799938
+            ],
+            [
+              16.0,
+              3.5153466871058523
+            ],
+            [
+              17.0,
+              3.514330097828686
+            ],
+            [
+              18.0,
+              3.513805892425566
+            ],
+            [
+              19.0,
+              3.510967730690692
+            ]
+          ],
+          "rosenstein_fit_r2": 0.717367207804688,
+          "rosenstein_method": "nolds.lyap_r (Rosenstein et al. 1993)",
+          "rosenstein_parameters": {
+            "emb_dim": 10,
+            "fit": "poly",
+            "fit_offset": 1,
+            "lag": 1,
+            "min_neighbors": 20,
+            "min_tsep": 10,
+            "random_seed": 20260848,
+            "trajectory_len": 20
+          },
+          "rosenstein_slope_per_sample": 0.04013518554485439,
+          "sample_interval": 5.12,
+          "sample_rate": 0.1953125,
+          "sensitivity_id": "next_nonoverlapping_window",
+          "sequence_first": 34511872,
+          "sequence_last": 38705152,
+          "spectrum": [
+            0.017543490560417103,
+            -0.0013299036974309324,
+            -0.030845806545214453
+          ],
+          "spectrum_status": "exploratory_nolds_eckmann_scalar_reconstruction",
+          "spectrum_sum": -0.014632219682228283,
+          "time_unit": "model_time",
+          "warnings": [
+            "Finite-time estimates reconstructed from one scalar observable.",
+            "Results depend on sampling, delay embedding, neighborhood, and fit parameters.",
+            "The nolds Eckmann spectrum and derived Kaplan-Yorke dimension are exploratory.",
+            "These diagnostics do not certify chaos, asymptotic exponents, or hiddenness."
+          ],
+          "window_offset_samples": 4096
+        },
+        {
+          "backend": "nolds",
+          "backend_version": "0.6.3",
+          "eckmann_method": "nolds.lyap_e (Eckmann et al. 1986)",
+          "eckmann_parameters": {
+            "emb_dim": 9,
+            "matrix_dim": 3,
+            "min_neighbors": 6,
+            "min_tsep": 20
+          },
+          "estimated_pairwise_matrix_bytes": 133040672,
+          "evidence_status": "finite_time_time_series_diagnostic",
+          "exponent_unit": "model_time^-1",
+          "kaplan_yorke_dimension": 2.5467359258871727,
+          "kaplan_yorke_status": "computed_from_exploratory_eckmann_spectrum",
+          "largest_exponent": 0.004006148591949678,
+          "largest_sign_agrees_with_spectrum": true,
+          "n_samples": 4096,
+          "observable": "x",
+          "parameter_overrides": {
+            "eckmann_min_tsep": 20,
+            "rosenstein_lag": 2,
+            "rosenstein_min_tsep": 20
+          },
+          "rosenstein_divergence_index_unit": "retained_sample_offset",
+          "rosenstein_divergence_time_trajectory": [
+            [
+              0.0,
+              2.487818911579012
+            ],
+            [
+              5.12,
+              3.4895727403528105
+            ],
+            [
+              10.24,
+              2.7043823355325443
+            ],
+            [
+              15.36,
+              3.49677364406296
+            ],
+            [
+              20.48,
+              2.8731134837192434
+            ],
+            [
+              25.6,
+              3.5058665721049533
+            ],
+            [
+              30.72,
+              3.008927300157702
+            ],
+            [
+              35.84,
+              3.509569474266166
+            ],
+            [
+              40.96,
+              3.11427610410538
+            ],
+            [
+              46.08,
+              3.513833337816761
+            ],
+            [
+              51.2,
+              3.204218873739402
+            ],
+            [
+              56.32,
+              3.514944933939475
+            ],
+            [
+              61.44,
+              3.2834054583620014
+            ],
+            [
+              66.56,
+              3.5158959020948886
+            ],
+            [
+              71.68,
+              3.3518958338555196
+            ],
+            [
+              76.8,
+              3.5177795826949594
+            ],
+            [
+              81.92,
+              3.4145030561401706
+            ],
+            [
+              87.04,
+              3.523817800320285
+            ],
+            [
+              92.16,
+              3.4691278553435874
+            ],
+            [
+              97.28,
+              3.528033250138066
+            ]
+          ],
+          "rosenstein_divergence_trajectory": [
+            [
+              0.0,
+              2.487818911579012
+            ],
+            [
+              1.0,
+              3.4895727403528105
+            ],
+            [
+              2.0,
+              2.7043823355325443
+            ],
+            [
+              3.0,
+              3.49677364406296
+            ],
+            [
+              4.0,
+              2.8731134837192434
+            ],
+            [
+              5.0,
+              3.5058665721049533
+            ],
+            [
+              6.0,
+              3.008927300157702
+            ],
+            [
+              7.0,
+              3.509569474266166
+            ],
+            [
+              8.0,
+              3.11427610410538
+            ],
+            [
+              9.0,
+              3.513833337816761
+            ],
+            [
+              10.0,
+              3.204218873739402
+            ],
+            [
+              11.0,
+              3.514944933939475
+            ],
+            [
+              12.0,
+              3.2834054583620014
+            ],
+            [
+              13.0,
+              3.5158959020948886
+            ],
+            [
+              14.0,
+              3.3518958338555196
+            ],
+            [
+              15.0,
+              3.5177795826949594
+            ],
+            [
+              16.0,
+              3.4145030561401706
+            ],
+            [
+              17.0,
+              3.523817800320285
+            ],
+            [
+              18.0,
+              3.4691278553435874
+            ],
+            [
+              19.0,
+              3.528033250138066
+            ]
+          ],
+          "rosenstein_fit_r2": 0.21374427436772003,
+          "rosenstein_method": "nolds.lyap_r (Rosenstein et al. 1993)",
+          "rosenstein_parameters": {
+            "emb_dim": 10,
+            "fit": "poly",
+            "fit_offset": 1,
+            "lag": 2,
+            "min_neighbors": 20,
+            "min_tsep": 20,
+            "random_seed": 20260849,
+            "trajectory_len": 20
+          },
+          "rosenstein_slope_per_sample": 0.02051148079078235,
+          "sample_interval": 5.12,
+          "sample_rate": 0.1953125,
+          "sensitivity_id": "lag2_theiler20_primary_window",
+          "sequence_first": 30317568,
+          "sequence_last": 34510848,
+          "spectrum": [
+            0.018545170068007495,
+            -0.0017413488620827496,
+            -0.03073480342206829
+          ],
+          "spectrum_status": "exploratory_nolds_eckmann_scalar_reconstruction",
+          "spectrum_sum": -0.013930982216143546,
+          "time_unit": "model_time",
+          "warnings": [
+            "Finite-time estimates reconstructed from one scalar observable.",
+            "Results depend on sampling, delay embedding, neighborhood, and fit parameters.",
+            "The nolds Eckmann spectrum and derived Kaplan-Yorke dimension are exploratory.",
+            "These diagnostics do not certify chaos, asymptotic exponents, or hiddenness."
+          ],
+          "window_offset_samples": 0
+        }
+      ],
+      "sensitivity_summary": {
+        "evaluations": 3,
+        "interpretation": "limited two-window/parameter sensitivity only; not an uncertainty interval or asymptotic convergence study",
+        "kaplan_yorke_max": 2.5467359258871727,
+        "kaplan_yorke_min": 2.525633422462789,
+        "largest_exponent_all_positive": true,
+        "largest_exponent_max": 0.007838903426729372,
+        "largest_exponent_min": 0.004006148591949678,
+        "minimum_rosenstein_fit_r2": 0.21374427436772003,
+        "spectrum_component_max": [
+          0.018545170068007495,
+          -0.0013299036974309324,
+          -0.03073480342206829
+        ],
+        "spectrum_component_min": [
+          0.017543490560417103,
+          -0.0017413488620827496,
+          -0.03102413088532734
+        ],
+        "spectrum_largest_all_positive": true,
+        "spectrum_sum_all_negative": true
+      },
+      "sequence_first": 30317568,
+      "sequence_last": 34510848,
+      "source": "validation/results/hardware_smoke/h755_lorenz_m2sfrk_float32_dec1024_1mbit.csv",
+      "source_bytes": 7228378,
+      "source_raw_rows": 43929,
+      "source_sha256": "c83b0f3039ecb6eca598beb890dff3e0f05281143ee5fdc057e3813b269d0830",
+      "spectrum": [
+        0.01840644831808669,
+        -0.0016077687102754256,
+        -0.03102413088532734
+      ],
+      "spectrum_status": "exploratory_nolds_eckmann_scalar_reconstruction",
+      "spectrum_sum": -0.014225451277516073,
+      "system": "lorenz",
+      "target_decimation": 1024,
+      "time_unit": "model_time",
+      "warnings": [
+        "Finite-time estimates reconstructed from one scalar observable.",
+        "Results depend on sampling, delay embedding, neighborhood, and fit parameters.",
+        "The nolds Eckmann spectrum and derived Kaplan-Yorke dimension are exploratory.",
+        "These diagnostics do not certify chaos, asymptotic exponents, or hiddenness."
+      ],
+      "window_samples": 4096
+    },
+    {
+      "backend": "nolds",
+      "backend_version": "0.6.3",
+      "board": "h755",
+      "case_id": "h755_fixed_q14_q30",
+      "claim_eligible": false,
+      "discard_raw_rows": 64,
+      "eckmann_method": "nolds.lyap_e (Eckmann et al. 1986)",
+      "eckmann_parameters": {
+        "emb_dim": 9,
+        "matrix_dim": 3,
+        "min_neighbors": 6,
+        "min_tsep": 10
+      },
+      "estimated_pairwise_matrix_bytes": 133628552,
+      "evidence_status": "finite_time_time_series_diagnostic",
+      "exponent_unit": "model_time^-1",
+      "fractional_order_q": 0.995,
+      "harmonization_stride": 2,
+      "integration_method": "m2sfrk",
+      "interpretation": "exploratory UART-derived finite-time diagnostic; Lorenz failed the frozen ABM qualification",
+      "kaplan_yorke_dimension": 2.530682814211638,
+      "kaplan_yorke_status": "computed_from_exploratory_eckmann_spectrum",
+      "largest_exponent": 0.007872862458836047,
+      "largest_sign_agrees_with_spectrum": true,
+      "model_step": 0.005,
+      "model_time_span": 20966.4,
+      "n_samples": 4096,
+      "observable": "x",
+      "raw_decimation": 512,
+      "representation": "fixed_q14",
+      "rosenstein_divergence_index_unit": "retained_sample_offset",
+      "rosenstein_divergence_time_trajectory": [
+        [
+          0.0,
+          2.4299011732767273
+        ],
+        [
+          5.12,
+          2.6499027705846148
+        ],
+        [
+          10.24,
+          2.8216930258815753
+        ],
+        [
+          15.36,
+          2.962526367013922
+        ],
+        [
+          20.48,
+          3.077181757048446
+        ],
+        [
+          25.6,
+          3.1732353112317364
+        ],
+        [
+          30.72,
+          3.2545261446045584
+        ],
+        [
+          35.84,
+          3.3272841121211902
+        ],
+        [
+          40.96,
+          3.3904316520266096
+        ],
+        [
+          46.08,
+          3.4477739114888446
+        ],
+        [
+          51.2,
+          3.5012544338998834
+        ],
+        [
+          56.32,
+          3.504302198305475
+        ],
+        [
+          61.44,
+          3.5040431432597536
+        ],
+        [
+          66.56,
+          3.5030320139105675
+        ],
+        [
+          71.68,
+          3.500887370481037
+        ],
+        [
+          76.8,
+          3.5022136475601178
+        ],
+        [
+          81.92,
+          3.5042067162784436
+        ],
+        [
+          87.04,
+          3.506212669811292
+        ],
+        [
+          92.16,
+          3.5049069968924202
+        ],
+        [
+          97.28,
+          3.5055877258090478
+        ]
+      ],
+      "rosenstein_divergence_trajectory": [
+        [
+          0.0,
+          2.4299011732767273
+        ],
+        [
+          1.0,
+          2.6499027705846148
+        ],
+        [
+          2.0,
+          2.8216930258815753
+        ],
+        [
+          3.0,
+          2.962526367013922
+        ],
+        [
+          4.0,
+          3.077181757048446
+        ],
+        [
+          5.0,
+          3.1732353112317364
+        ],
+        [
+          6.0,
+          3.2545261446045584
+        ],
+        [
+          7.0,
+          3.3272841121211902
+        ],
+        [
+          8.0,
+          3.3904316520266096
+        ],
+        [
+          9.0,
+          3.4477739114888446
+        ],
+        [
+          10.0,
+          3.5012544338998834
+        ],
+        [
+          11.0,
+          3.504302198305475
+        ],
+        [
+          12.0,
+          3.5040431432597536
+        ],
+        [
+          13.0,
+          3.5030320139105675
+        ],
+        [
+          14.0,
+          3.500887370481037
+        ],
+        [
+          15.0,
+          3.5022136475601178
+        ],
+        [
+          16.0,
+          3.5042067162784436
+        ],
+        [
+          17.0,
+          3.506212669811292
+        ],
+        [
+          18.0,
+          3.5049069968924202
+        ],
+        [
+          19.0,
+          3.5055877258090478
+        ]
+      ],
+      "rosenstein_fit_r2": 0.7301620757028789,
+      "rosenstein_method": "nolds.lyap_r (Rosenstein et al. 1993)",
+      "rosenstein_parameters": {
+        "emb_dim": 10,
+        "fit": "poly",
+        "fit_offset": 1,
+        "lag": 1,
+        "min_neighbors": 20,
+        "min_tsep": 10,
+        "random_seed": 20260731,
+        "trajectory_len": 20
+      },
+      "rosenstein_slope_per_sample": 0.04030905578924056,
+      "sample_interval": 5.12,
+      "sample_rate": 0.1953125,
+      "sensitivity_runs": [
+        {
+          "backend": "nolds",
+          "backend_version": "0.6.3",
+          "eckmann_method": "nolds.lyap_e (Eckmann et al. 1986)",
+          "eckmann_parameters": {
+            "emb_dim": 9,
+            "matrix_dim": 3,
+            "min_neighbors": 6,
+            "min_tsep": 10
+          },
+          "estimated_pairwise_matrix_bytes": 133628552,
+          "evidence_status": "finite_time_time_series_diagnostic",
+          "exponent_unit": "model_time^-1",
+          "kaplan_yorke_dimension": 2.5038281548021915,
+          "kaplan_yorke_status": "computed_from_exploratory_eckmann_spectrum",
+          "largest_exponent": 0.007968052808819962,
+          "largest_sign_agrees_with_spectrum": true,
+          "n_samples": 4096,
+          "observable": "x",
+          "parameter_overrides": {},
+          "rosenstein_divergence_index_unit": "retained_sample_offset",
+          "rosenstein_divergence_time_trajectory": [
+            [
+              0.0,
+              2.4216502415674044
+            ],
+            [
+              5.12,
+              2.6471467287307986
+            ],
+            [
+              10.24,
+              2.822516214944923
+            ],
+            [
+              15.36,
+              2.964317994748952
+            ],
+            [
+              20.48,
+              3.0774820899908817
+            ],
+            [
+              25.6,
+              3.171210711168253
+            ],
+            [
+              30.72,
+              3.254188841878314
+            ],
+            [
+              35.84,
+              3.327045503051819
+            ],
+            [
+              40.96,
+              3.3896349793469587
+            ],
+            [
+              46.08,
+              3.4458827627121122
+            ],
+            [
+              51.2,
+              3.498103073423647
+            ],
+            [
+              56.32,
+              3.499884523092783
+            ],
+            [
+              61.44,
+              3.5003875310956922
+            ],
+            [
+              66.56,
+              3.5016837394580937
+            ],
+            [
+              71.68,
+              3.5046756800881402
+            ],
+            [
+              76.8,
+              3.5070868016455043
+            ],
+            [
+              81.92,
+              3.5075907757025035
+            ],
+            [
+              87.04,
+              3.5092379010393517
+            ],
+            [
+              92.16,
+              3.5151383013501136
+            ],
+            [
+              97.28,
+              3.5179409275523037
+            ]
+          ],
+          "rosenstein_divergence_trajectory": [
+            [
+              0.0,
+              2.4216502415674044
+            ],
+            [
+              1.0,
+              2.6471467287307986
+            ],
+            [
+              2.0,
+              2.822516214944923
+            ],
+            [
+              3.0,
+              2.964317994748952
+            ],
+            [
+              4.0,
+              3.0774820899908817
+            ],
+            [
+              5.0,
+              3.171210711168253
+            ],
+            [
+              6.0,
+              3.254188841878314
+            ],
+            [
+              7.0,
+              3.327045503051819
+            ],
+            [
+              8.0,
+              3.3896349793469587
+            ],
+            [
+              9.0,
+              3.4458827627121122
+            ],
+            [
+              10.0,
+              3.498103073423647
+            ],
+            [
+              11.0,
+              3.499884523092783
+            ],
+            [
+              12.0,
+              3.5003875310956922
+            ],
+            [
+              13.0,
+              3.5016837394580937
+            ],
+            [
+              14.0,
+              3.5046756800881402
+            ],
+            [
+              15.0,
+              3.5070868016455043
+            ],
+            [
+              16.0,
+              3.5075907757025035
+            ],
+            [
+              17.0,
+              3.5092379010393517
+            ],
+            [
+              18.0,
+              3.5151383013501136
+            ],
+            [
+              19.0,
+              3.5179409275523037
+            ]
+          ],
+          "rosenstein_fit_r2": 0.7414974583144013,
+          "rosenstein_method": "nolds.lyap_r (Rosenstein et al. 1993)",
+          "rosenstein_parameters": {
+            "emb_dim": 10,
+            "fit": "poly",
+            "fit_offset": 1,
+            "lag": 1,
+            "min_neighbors": 20,
+            "min_tsep": 10,
+            "random_seed": 20260858,
+            "trajectory_len": 20
+          },
+          "rosenstein_slope_per_sample": 0.040796430381158204,
+          "sample_interval": 5.12,
+          "sample_rate": 0.1953125,
+          "sensitivity_id": "next_nonoverlapping_window",
+          "sequence_first": 33832960,
+          "sequence_last": 38026240,
+          "spectrum": [
+            0.017619201579954002,
+            -0.0023878408122140087,
+            -0.030231261636658624
+          ],
+          "spectrum_status": "exploratory_nolds_eckmann_scalar_reconstruction",
+          "spectrum_sum": -0.01499990086891863,
+          "time_unit": "model_time",
+          "warnings": [
+            "Finite-time estimates reconstructed from one scalar observable.",
+            "Results depend on sampling, delay embedding, neighborhood, and fit parameters.",
+            "The nolds Eckmann spectrum and derived Kaplan-Yorke dimension are exploratory.",
+            "These diagnostics do not certify chaos, asymptotic exponents, or hiddenness."
+          ],
+          "window_offset_samples": 4096
+        },
+        {
+          "backend": "nolds",
+          "backend_version": "0.6.3",
+          "eckmann_method": "nolds.lyap_e (Eckmann et al. 1986)",
+          "eckmann_parameters": {
+            "emb_dim": 9,
+            "matrix_dim": 3,
+            "min_neighbors": 6,
+            "min_tsep": 20
+          },
+          "estimated_pairwise_matrix_bytes": 133040672,
+          "evidence_status": "finite_time_time_series_diagnostic",
+          "exponent_unit": "model_time^-1",
+          "kaplan_yorke_dimension": 2.5324607003818045,
+          "kaplan_yorke_status": "computed_from_exploratory_eckmann_spectrum",
+          "largest_exponent": 0.004185854700669693,
+          "largest_sign_agrees_with_spectrum": true,
+          "n_samples": 4096,
+          "observable": "x",
+          "parameter_overrides": {
+            "eckmann_min_tsep": 20,
+            "rosenstein_lag": 2,
+            "rosenstein_min_tsep": 20
+          },
+          "rosenstein_divergence_index_unit": "retained_sample_offset",
+          "rosenstein_divergence_time_trajectory": [
+            [
+              0.0,
+              2.488014521348635
+            ],
+            [
+              5.12,
+              3.4765574648105573
+            ],
+            [
+              10.24,
+              2.7002354943769604
+            ],
+            [
+              15.36,
+              3.4821373050912743
+            ],
+            [
+              20.48,
+              2.8658897622575936
+            ],
+            [
+              25.6,
+              3.4899881034600875
+            ],
+            [
+              30.72,
+              3.00051862012205
+            ],
+            [
+              35.84,
+              3.4991273486384378
+            ],
+            [
+              40.96,
+              3.1114193522292095
+            ],
+            [
+              46.08,
+              3.507168121578333
+            ],
+            [
+              51.2,
+              3.206541630494531
+            ],
+            [
+              56.32,
+              3.5105323605095773
+            ],
+            [
+              61.44,
+              3.287144975939288
+            ],
+            [
+              66.56,
+              3.5157328930899236
+            ],
+            [
+              71.68,
+              3.3554311995248374
+            ],
+            [
+              76.8,
+              3.518410743435493
+            ],
+            [
+              81.92,
+              3.417969535961291
+            ],
+            [
+              87.04,
+              3.5243232146048427
+            ],
+            [
+              92.16,
+              3.4752722252405004
+            ],
+            [
+              97.28,
+              3.5256162276455507
+            ]
+          ],
+          "rosenstein_divergence_trajectory": [
+            [
+              0.0,
+              2.488014521348635
+            ],
+            [
+              1.0,
+              3.4765574648105573
+            ],
+            [
+              2.0,
+              2.7002354943769604
+            ],
+            [
+              3.0,
+              3.4821373050912743
+            ],
+            [
+              4.0,
+              2.8658897622575936
+            ],
+            [
+              5.0,
+              3.4899881034600875
+            ],
+            [
+              6.0,
+              3.00051862012205
+            ],
+            [
+              7.0,
+              3.4991273486384378
+            ],
+            [
+              8.0,
+              3.1114193522292095
+            ],
+            [
+              9.0,
+              3.507168121578333
+            ],
+            [
+              10.0,
+              3.206541630494531
+            ],
+            [
+              11.0,
+              3.5105323605095773
+            ],
+            [
+              12.0,
+              3.287144975939288
+            ],
+            [
+              13.0,
+              3.5157328930899236
+            ],
+            [
+              14.0,
+              3.3554311995248374
+            ],
+            [
+              15.0,
+              3.518410743435493
+            ],
+            [
+              16.0,
+              3.417969535961291
+            ],
+            [
+              17.0,
+              3.5243232146048427
+            ],
+            [
+              18.0,
+              3.4752722252405004
+            ],
+            [
+              19.0,
+              3.5256162276455507
+            ]
+          ],
+          "rosenstein_fit_r2": 0.23341803336157763,
+          "rosenstein_method": "nolds.lyap_r (Rosenstein et al. 1993)",
+          "rosenstein_parameters": {
+            "emb_dim": 10,
+            "fit": "poly",
+            "fit_offset": 1,
+            "lag": 2,
+            "min_neighbors": 20,
+            "min_tsep": 20,
+            "random_seed": 20260859,
+            "trajectory_len": 20
+          },
+          "rosenstein_slope_per_sample": 0.02143157606742883,
+          "sample_interval": 5.12,
+          "sample_rate": 0.1953125,
+          "sensitivity_id": "lag2_theiler20_primary_window",
+          "sequence_first": 29638656,
+          "sequence_last": 33831936,
+          "spectrum": [
+            0.017803543366535057,
+            -0.0013134562700653188,
+            -0.030969585332110746
+          ],
+          "spectrum_status": "exploratory_nolds_eckmann_scalar_reconstruction",
+          "spectrum_sum": -0.014479498235641007,
+          "time_unit": "model_time",
+          "warnings": [
+            "Finite-time estimates reconstructed from one scalar observable.",
+            "Results depend on sampling, delay embedding, neighborhood, and fit parameters.",
+            "The nolds Eckmann spectrum and derived Kaplan-Yorke dimension are exploratory.",
+            "These diagnostics do not certify chaos, asymptotic exponents, or hiddenness."
+          ],
+          "window_offset_samples": 0
+        }
+      ],
+      "sensitivity_summary": {
+        "evaluations": 3,
+        "interpretation": "limited two-window/parameter sensitivity only; not an uncertainty interval or asymptotic convergence study",
+        "kaplan_yorke_max": 2.5324607003818045,
+        "kaplan_yorke_min": 2.5038281548021915,
+        "largest_exponent_all_positive": true,
+        "largest_exponent_max": 0.007968052808819962,
+        "largest_exponent_min": 0.004185854700669693,
+        "minimum_rosenstein_fit_r2": 0.23341803336157763,
+        "spectrum_component_max": [
+          0.017803543366535057,
+          -0.0012146033119874125,
+          -0.030231261636658624
+        ],
+        "spectrum_component_min": [
+          0.017619201579954002,
+          -0.0023878408122140087,
+          -0.031055266705231968
+        ],
+        "spectrum_largest_all_positive": true,
+        "spectrum_sum_all_negative": true
+      },
+      "sequence_first": 29638656,
+      "sequence_last": 33831936,
+      "source": "validation/results/hardware_smoke/h755_lorenz_m2sfrk_fixed_dec512_1mbit.csv",
+      "source_bytes": 8322922,
+      "source_raw_rows": 46694,
+      "source_sha256": "d3e57a1d9e499d3a2c6b90f7bfbc9f3ea9766fd04e7b3286fed3536e05eb7bb7",
+      "spectrum": [
+        0.017695099643212902,
+        -0.0012146033119874125,
+        -0.031055266705231968
+      ],
+      "spectrum_status": "exploratory_nolds_eckmann_scalar_reconstruction",
+      "spectrum_sum": -0.01457477037400648,
+      "system": "lorenz",
+      "target_decimation": 1024,
+      "time_unit": "model_time",
+      "warnings": [
+        "Finite-time estimates reconstructed from one scalar observable.",
+        "Results depend on sampling, delay embedding, neighborhood, and fit parameters.",
+        "The nolds Eckmann spectrum and derived Kaplan-Yorke dimension are exploratory.",
+        "These diagnostics do not certify chaos, asymptotic exponents, or hiddenness."
+      ],
+      "window_samples": 4096
+    }
+  ],
+  "estimator_contract": {
+    "eckmann_emb_dim": 9,
+    "eckmann_matrix_dim": 3,
+    "eckmann_min_neighbors": 6,
+    "eckmann_min_tsep": 10,
+    "max_pairwise_matrix_bytes": 268435456,
+    "random_seed_base": 20260728,
+    "rosenstein_emb_dim": 10,
+    "rosenstein_fit": "poly",
+    "rosenstein_fit_offset": 1,
+    "rosenstein_lag": 1,
+    "rosenstein_min_neighbors": 20,
+    "rosenstein_min_tsep": 10,
+    "rosenstein_trajectory_len": 20,
+    "sensitivity_protocols": [
+      {
+        "parameter_overrides": {},
+        "sensitivity_id": "next_nonoverlapping_window",
+        "window_offset_samples": 4096
+      },
+      {
+        "parameter_overrides": {
+          "eckmann_min_tsep": 20,
+          "rosenstein_lag": 2,
+          "rosenstein_min_tsep": 20
+        },
+        "sensitivity_id": "lag2_theiler20_primary_window",
+        "window_offset_samples": 0
+      }
+    ],
+    "sensitivity_scope": "primary window, next non-overlapping window, and one lag/Theiler perturbation; not a formal convergence study"
+  },
+  "numerical_contract": {
+    "embedded_integrator": "M2sFRK",
+    "fractional_order_q": 0.995,
+    "kaplan_yorke_source": "ordered exploratory Eckmann spectrum",
+    "model_step": 0.005,
+    "state_representations": [
+      "float32",
+      "fixed_q14_q30"
+    ],
+    "system": "lorenz",
+    "time_series_estimators": [
+      "Rosenstein largest Lyapunov exponent",
+      "Eckmann scalar-reconstruction spectrum"
+    ]
+  },
+  "sampling_contract": {
+    "discard_raw_rows": 64,
+    "harmonization": "dec512 lanes retain every second post-discard row; the dec1024 lane retains every row",
+    "observable": "x",
+    "sample_interval": 5.12,
+    "target_decimation": 1024,
+    "time_unit": "model_time",
+    "window_samples": 4096
+  },
+  "schema": "stm32-uart-time-series-lyapunov-v1",
+  "scientific_claims": {
+    "asymptotic_lyapunov_spectrum_claims": 0,
+    "cryptographic_claims": 0,
+    "formal_chaos_claims": 0,
+    "hiddenness_claims": 0,
+    "primary_kaplan_yorke_claims": 0,
+    "reason": "Lorenz failed the frozen ABM qualification and the retained UART streams are heavily decimated scalar observations."
+  },
+  "software": {
+    "api_function": "hidden_attractors.analysis.estimate_time_series_lyapunov",
+    "availability_statement": "hidden-attractors-fo is distributed on PyPI; this run uses the recorded local source revision so the time-series API is exact.",
+    "backend": "nolds",
+    "backend_version": "0.6.3",
+    "package_name": "hidden-attractors-fo",
+    "package_version": "1.0.0",
+    "pypi_url": "https://pypi.org/project/hidden-attractors-fo/",
+    "source_revision": "79440109d591e234c01c7966befa5f2737f57e29",
+    "source_root": "C:\\Users\\moren\\Desktop\\Codes\\Hidden Attractors Fractional Order\\version_2",
+    "time_series_module": "C:\\Users\\moren\\Desktop\\Codes\\Hidden Attractors Fractional Order\\version_2\\hidden_attractors\\analysis\\time_series_lyapunov.py",
+    "time_series_module_sha256": "663abee8c9758781b9e83c48928c425574afa0a00a62739019e073a5e94322fe",
+    "time_series_source_dirty": true
+  }
+}

@@ -1,8 +1,32 @@
 /build/
 /tests/build*/
+/.pytest*/
+**/__pycache__/
 *.su
 *.map
 *.list
+
+# Conservar localmente diagnósticos supersedidos; el repositorio publica sólo
+# las cuatro capturas UART aceptadas por transporte y su evidencia derivada.
+/validation/results/hardware_smoke/*
+!/validation/results/hardware_smoke/f746_lorenz_m2sfrk_float32_dec512_1mbit.csv
+!/validation/results/hardware_smoke/f746_lorenz_m2sfrk_float32_dec512_1mbit_evidence/
+!/validation/results/hardware_smoke/f746_lorenz_m2sfrk_float32_dec512_1mbit_evidence/**
+!/validation/results/hardware_smoke/f746_lorenz_m2sfrk_fixed_dec512_1mbit_telemetry.csv
+!/validation/results/hardware_smoke/f746_lorenz_m2sfrk_fixed_dec512_1mbit_telemetry_evidence/
+!/validation/results/hardware_smoke/f746_lorenz_m2sfrk_fixed_dec512_1mbit_telemetry_evidence/**
+!/validation/results/hardware_smoke/h755_lorenz_m2sfrk_float32_dec1024_1mbit.csv
+!/validation/results/hardware_smoke/h755_lorenz_m2sfrk_float32_dec1024_1mbit_evidence/
+!/validation/results/hardware_smoke/h755_lorenz_m2sfrk_float32_dec1024_1mbit_evidence/**
+!/validation/results/hardware_smoke/h755_lorenz_m2sfrk_fixed_dec512_1mbit.csv
+!/validation/results/hardware_smoke/h755_lorenz_m2sfrk_fixed_dec512_1mbit_evidence/
+!/validation/results/hardware_smoke/h755_lorenz_m2sfrk_fixed_dec512_1mbit_evidence/**
+
+# Salidas intermedias anteriores al nombre canónico actual.
+/validation/results/fixed_point_comparison_mixed/
+/validation/results/fixed_point_comparison_mixed_512/
+/validation/results/fixed_point_comparison/*_float_vs_q14*
+/validation/results/fixed_point_comparison/SUPERSEDED.md
 
 # Se recupera de la revisión fijada mediante tools/bootstrap.ps1.
 /vendor/STM32CubeH7/

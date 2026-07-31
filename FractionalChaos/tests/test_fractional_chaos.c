@@ -31,15 +31,33 @@ static int close_float(float actual, float expected, float tolerance)
     return fabsf(actual - expected) <= (tolerance * scale);
 }
 
+static void test_selected_manifest_hash(void)
+{
+    uint32_t index;
+
+    CHECK(strlen(FC_SELECTED_SYSTEM_MANIFEST_SHA256_TEXT) == 64u);
+    for (index = 0u; index < 64u; ++index) {
+        const char value =
+            FC_SELECTED_SYSTEM_MANIFEST_SHA256_TEXT[index];
+        CHECK(((value >= '0') && (value <= '9')) ||
+              ((value >= 'a') && (value <= 'f')));
+    }
+}
+
 static void test_manifests(void)
 {
     const fc_manifest_t *lorenz = fc_manifest(FC_SYSTEM_LORENZ);
     const fc_manifest_t *rossler = fc_manifest(FC_SYSTEM_ROSSLER);
     const fc_manifest_t *chen = fc_manifest(FC_SYSTEM_CHEN);
+    const fc_manifest_t *liu = fc_manifest(FC_SYSTEM_LIU);
+    const fc_manifest_t *hammouch =
+        fc_manifest(FC_SYSTEM_HAMMOUCH_MEKKAOUI);
 
     CHECK(lorenz != NULL);
     CHECK(rossler != NULL);
     CHECK(chen != NULL);
+    CHECK(liu != NULL);
+    CHECK(hammouch != NULL);
     CHECK(fc_manifest((fc_system_t)99) == NULL);
 
     CHECK(lorenz->memory_length == 2000u);
@@ -48,14 +66,39 @@ static void test_manifests(void)
     CHECK(float_word(lorenz->initial_state.v[0]) == 0x3dcccccdu);
 
     CHECK(rossler->memory_length == 1000u);
-    CHECK(float_word(rossler->q) == float_word(0.970f));
+    CHECK(float_word(rossler->q) == float_word(0.9877f));
     CHECK(float_word(rossler->h) == float_word(0.010f));
-    CHECK(float_word(rossler->initial_state.v[0]) == 0x3f000000u);
-    CHECK(float_word(rossler->initial_state.v[1]) == 0x3fc00000u);
+    CHECK(float_word(rossler->memory_seconds) == float_word(10.0f));
+    CHECK(float_word(rossler->parameters[0]) == float_word(0.2f));
+    CHECK(float_word(rossler->parameters[1]) == float_word(0.2f));
+    CHECK(float_word(rossler->parameters[2]) == float_word(5.7f));
+    CHECK(float_word(rossler->initial_state.v[0]) == 0x3f800000u);
+    CHECK(float_word(rossler->initial_state.v[1]) == 0x00000000u);
+    CHECK(float_word(rossler->initial_state.v[2]) == 0x00000000u);
 
     CHECK(chen->memory_length == 2000u);
     CHECK(float_word(chen->q) == float_word(0.900f));
     CHECK(float_word(chen->h) == float_word(0.005f));
+
+    CHECK(liu->memory_length == 1000u);
+    CHECK(float_word(liu->q) == float_word(0.920f));
+    CHECK(float_word(liu->h) == float_word(0.010f));
+    CHECK(float_word(liu->parameters[0]) == float_word(1.0f));
+    CHECK(float_word(liu->parameters[1]) == float_word(2.5f));
+    CHECK(float_word(liu->parameters[2]) == float_word(5.0f));
+    CHECK(float_word(liu->parameters[3]) == float_word(1.0f));
+    CHECK(float_word(liu->parameters[4]) == float_word(4.0f));
+    CHECK(float_word(liu->parameters[5]) == float_word(4.0f));
+    CHECK(float_word(liu->initial_state.v[0]) == float_word(0.2f));
+    CHECK(float_word(liu->initial_state.v[1]) == 0u);
+    CHECK(float_word(liu->initial_state.v[2]) == float_word(0.5f));
+
+    CHECK(hammouch->memory_length == 1000u);
+    CHECK(float_word(hammouch->q) == float_word(0.980f));
+    CHECK(float_word(hammouch->h) == float_word(0.010f));
+    CHECK(float_word(hammouch->initial_state.v[0]) == float_word(0.7f));
+    CHECK(float_word(hammouch->initial_state.v[1]) == float_word(0.1f));
+    CHECK(float_word(hammouch->initial_state.v[2]) == 0u);
 
     CHECK(fc_active_workspace_bytes(
               FC_METHOD_EFORK3, 2000u) == 48000u);
@@ -65,6 +108,8 @@ static void test_manifests(void)
               FC_METHOD_EFORK3, 1000u) == 24000u);
     CHECK(fc_active_workspace_bytes(
               FC_METHOD_GL_CAPUTO, 1000u) == 16004u);
+    CHECK(fc_active_workspace_bytes(
+              FC_METHOD_M2SFRK, 2000u) == 0u);
 }
 
 static void test_rhs(void)
@@ -88,7 +133,7 @@ static void test_rhs(void)
         &derivative));
     CHECK(close_float(derivative.v[0], -5.0f, 1.0e-6f));
     CHECK(close_float(derivative.v[1], 1.4f, 1.0e-6f));
-    CHECK(close_float(derivative.v[2], -14.8f, 1.0e-6f));
+    CHECK(close_float(derivative.v[2], -13.9f, 1.0e-6f));
 
     CHECK_STATUS(fc_rhs(
         FC_SYSTEM_CHEN,
@@ -97,6 +142,24 @@ static void test_rhs(void)
         &derivative));
     CHECK(close_float(derivative.v[0], 35.0f, 1.0e-6f));
     CHECK(close_float(derivative.v[1], 46.0f, 1.0e-6f));
+    CHECK(close_float(derivative.v[2], -7.0f, 1.0e-6f));
+
+    CHECK_STATUS(fc_rhs(
+        FC_SYSTEM_LIU,
+        FC_MANIFESTS[FC_SYSTEM_LIU].parameters,
+        &state,
+        &derivative));
+    CHECK(close_float(derivative.v[0], -5.0f, 1.0e-6f));
+    CHECK(close_float(derivative.v[1], -7.0f, 1.0e-6f));
+    CHECK(close_float(derivative.v[2], -7.0f, 1.0e-6f));
+
+    CHECK_STATUS(fc_rhs(
+        FC_SYSTEM_HAMMOUCH_MEKKAOUI,
+        FC_MANIFESTS[FC_SYSTEM_HAMMOUCH_MEKKAOUI].parameters,
+        &state,
+        &derivative));
+    CHECK(close_float(derivative.v[0], -6.0f, 1.0e-6f));
+    CHECK(close_float(derivative.v[1], -15.0f, 1.0e-6f));
     CHECK(close_float(derivative.v[2], -7.0f, 1.0e-6f));
 }
 
@@ -548,14 +611,14 @@ typedef struct {
  * protect the exact float32 operation order and are complemented by the
  * independent double-precision Python check.
  */
-static const golden_state_t GOLDEN_32[FC_SYSTEM_COUNT][2] = {
+static const golden_state_t GOLDEN_32[3][2] = {
     {
         {{0x3e634864u, 0x3ef0d4e7u, 0x3da5342eu}},
         {{0x3ed952aau, 0x3f6c467fu, 0x3da233c5u}}
     },
     {
-        {{0x3e13fccbu, 0x3fd16073u, 0x3d60c9e0u}},
-        {{0xbd74ca60u, 0x3fd767bdu, 0x3d338446u}}
+        {{0x3f79a75eu, 0x3e52542cu, 0x3cd35bafu}},
+        {{0x3f70c410u, 0x3ea92e79u, 0x3d08c65cu}}
     },
     {
         {{0x403b2ec7u, 0x409cce6eu, 0x3ec0e891u}},
@@ -590,20 +653,71 @@ static void test_six_smoke_and_golden(void)
             }
             CHECK(fc_solver_diagnostics(&solver)->steps_completed == 32u);
             CHECK(fc_solver_diagnostics(&solver)->active_memory_terms == 31u);
-            for (component = 0u; component < 3u; ++component) {
-                CHECK(float_word(state.v[component]) ==
-                      GOLDEN_32[system][method].words[component]);
+            if (system <= (uint32_t)FC_SYSTEM_CHEN) {
+                for (component = 0u; component < 3u; ++component) {
+                    CHECK(float_word(state.v[component]) ==
+                          GOLDEN_32[system][method].words[component]);
+                }
             }
         }
     }
 }
 
+static void test_m2sfrk_reduces_to_midpoint_at_q_one(void)
+{
+    fc_config_t config;
+    fc_workspace_t workspace;
+    fc_solver_t solver;
+    fc_vec3f_t first_rhs;
+    fc_vec3f_t second_rhs;
+    fc_vec3f_t stage;
+    fc_vec3f_t expected;
+    fc_vec3f_t actual;
+    uint32_t component;
+
+    CHECK_STATUS(fc_config_from_manifest(
+        FC_SYSTEM_LORENZ, FC_METHOD_M2SFRK, &config));
+    config.q = 1.0f;
+    config.h = 0.01f;
+    config.precomputed_tables = NULL;
+    CHECK_STATUS(fc_rhs(
+        config.system,
+        config.parameters,
+        &config.initial_state,
+        &first_rhs));
+    for (component = 0u; component < 3u; ++component) {
+        stage.v[component] = fmaf(
+            0.5f * config.h,
+            first_rhs.v[component],
+            config.initial_state.v[component]);
+    }
+    CHECK_STATUS(fc_rhs(
+        config.system, config.parameters, &stage, &second_rhs));
+    for (component = 0u; component < 3u; ++component) {
+        expected.v[component] = fmaf(
+            config.h,
+            second_rhs.v[component],
+            config.initial_state.v[component]);
+    }
+
+    CHECK_STATUS(fc_solver_init(&solver, &workspace, &config));
+    CHECK_STATUS(fc_solver_step(&solver, &actual));
+    for (component = 0u; component < 3u; ++component) {
+        CHECK(float_word(actual.v[component]) ==
+              float_word(expected.v[component]));
+    }
+    CHECK(fc_solver_diagnostics(&solver)->active_memory_terms == 0u);
+}
+
 int main(void)
 {
+    test_selected_manifest_hash();
     test_manifests();
     test_rhs();
     test_zero_equilibrium(FC_METHOD_EFORK3);
     test_zero_equilibrium(FC_METHOD_GL_CAPUTO);
+    test_zero_equilibrium(FC_METHOD_M2SFRK);
+    test_m2sfrk_reduces_to_midpoint_at_q_one();
     test_gl_first_step();
     test_weights_and_reset();
     test_precomputed_table_copy();

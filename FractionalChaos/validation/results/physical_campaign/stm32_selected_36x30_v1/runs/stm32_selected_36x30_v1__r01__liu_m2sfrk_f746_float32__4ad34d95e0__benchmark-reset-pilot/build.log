@@ -1,0 +1,7 @@
+Target 'f746_liu_m2sfrk' no corresponde a Board 'f746'.
+At C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\tools\build_campaign.ps1:47 char:5
++     throw "Target '$Target' no corresponde a Board '$Board'."
++     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (Target 'f746_li...a Board 'f746'.:String) [], RuntimeException
+    + FullyQualifiedErrorId : Target 'f746_liu_m2sfrk' no corresponde a Board 'f746'.
+ 

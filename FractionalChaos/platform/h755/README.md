@@ -26,14 +26,20 @@ RTOS.
 | CM4 | `0x08100000` | alias D2 desde `0x10000100` | DMA en `0x30000000` |
 | ambos | — | — | SRAM4 `.shared` en `0x38000000` |
 
-Los dos archivos se programan antes del reinicio:
+Los dos archivos HEX se programan antes del reinicio:
 
 ```powershell
 STM32_Programmer_CLI.exe -c port=SWD mode=UR reset=HWrst `
-  -d build\h755-release\h755_m7_lorenz_efork3.bin 0x08000000
+  -halt -w build\h755-release\h755_m7_lorenz_efork3.hex -v
 STM32_Programmer_CLI.exe -c port=SWD mode=UR reset=HWrst `
-  -d build\h755-release\h755_m4_uart.bin 0x08100000 -rst
+  -halt -w build\h755-release\h755_m4_uart.hex -v -rst
 ```
+
+No se deben pasar los ELF directamente a CubeProgrammer. El ELF de CM4
+describe también segmentos RAM `NOLOAD`; su verificación puede fallar en la
+RAM D2 antes de ejecutar `-rst`, dejando ambos núcleos detenidos y COM6 sin
+bytes nuevos. Los HEX contienen únicamente las regiones programables y son el
+formato usado por `tools/flash.ps1`.
 
 La compilación usa `-fno-fast-math -ffp-contract=off`. Las instrucciones FMA
 se generan sólo para las llamadas explícitas a `fmaf`, por lo que no se

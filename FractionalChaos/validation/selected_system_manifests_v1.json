@@ -1,0 +1,161 @@
+{
+  "schema": "fractional-chaos-selected-system-manifests-v1",
+  "schema_version": 1,
+  "cohort_id": "chen_liu_hammouch_mekkaoui_v1",
+  "status": "selected_for_embedded_validation",
+  "declared_date": "2026-07-29",
+  "operator_contract": {
+    "operator": "caputo",
+    "commensurate_order": true,
+    "lower_terminal": 0.0,
+    "prehistory": "x(t<0)=x0",
+    "embedded_memory_policy": "finite_window",
+    "embedded_memory_seconds": 10.0
+  },
+  "selection_decision": {
+    "path": "validation/results/alternative_system_selection_decision_v2.md",
+    "sha256": "8ecfbae776fd6745dee7078064f9af41f33635962b936cc84f2341ebb135a5d6"
+  },
+  "systems": [
+    {
+      "wire_id": 2,
+      "contract": {
+        "manifest_id": "chen_caputo_v1",
+        "system": "chen",
+        "equations": [
+          "C D^q x = a(y-x)",
+          "C D^q y = (c-a)x - xz + cy",
+          "C D^q z = xy - bz"
+        ],
+        "parameter_names": [
+          "a",
+          "b",
+          "c"
+        ],
+        "parameters": [
+          35.0,
+          3.0,
+          28.0
+        ],
+        "initial_state": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "q": 0.9,
+        "h": 0.005,
+        "memory_seconds": 10.0,
+        "memory_increments": 2000
+      },
+      "contract_canonical_sha256": "8d36e0fd98455edc575e8c6c0f47dc63f99f4aabeb9f2264a506f0f62c8c00e7",
+      "provenance": {
+        "selection_basis": "qualified_historical_primary_contract",
+        "source_manifest_path": "validation/candidate_manifests_rossler_classic_v2.json",
+        "source_manifest_sha256": "fc15e5cf21d82b6b9f1224cd740c2fd47dfaca7cc16289e726f18e9be9fdd8bc",
+        "qualification_path": "validation/results/abm_long_horizon_rossler_classic_v2/qualification.json",
+        "qualification_sha256": "e836df9cac86c5c4865dd708db7bffa9387e7bc86840a0120a6f8918f8233ae5",
+        "qualification_decision": "qualified_observed_long_horizon_screen",
+        "trajectory_float64_le_sha256_by_step": {
+          "0.0025": "a8d07c6207280b8445e24d166ae639ffb9bcb77a8c10b494bb76944010d6949c",
+          "0.00125": "50c29351f9e58863d52bacc5acebe5a9c46a4bde0a9280aad6df34d269f0ccb1"
+        }
+      }
+    },
+    {
+      "wire_id": 3,
+      "contract": {
+        "manifest_id": "liu_caputo_v1",
+        "candidate_id": "liu_bhalekar2010_caputo_v1",
+        "system": "liu",
+        "equations": [
+          "C D^q x = -a x - e y^2",
+          "C D^q y = b y - k x z",
+          "C D^q z = -c z + m x y"
+        ],
+        "parameter_names": [
+          "a",
+          "b",
+          "c",
+          "e",
+          "k",
+          "m"
+        ],
+        "parameters": [
+          1.0,
+          2.5,
+          5.0,
+          1.0,
+          4.0,
+          4.0
+        ],
+        "initial_state": [
+          0.2,
+          0.0,
+          0.5
+        ],
+        "q": 0.92,
+        "h": 0.01,
+        "memory_seconds": 10.0,
+        "memory_increments": 1000
+      },
+      "contract_canonical_sha256": "eea58d817e4877b2da1b70ec988602cdca725802924825161e2f5cb6cf01e34e",
+      "provenance": {
+        "selection_basis": "selected_by_frozen_v1_dynamic_ranking",
+        "source_manifest_path": "validation/alternative_system_manifests_v1.json",
+        "source_manifest_sha256": "26c0b74e20a1aed734110a1efe0e37f0bf0d8450bb899e7ead57bee270b822fc",
+        "qualification_path": "validation/results/alternative_system_qualification_v1/qualification.json",
+        "qualification_sha256": "1cf0b536cf4697099c0af48e09f043fe85e5dc29eac5723ae18f41cb3187abaa",
+        "qualification_decision": "qualified_observed_long_horizon_screen",
+        "minimum_normalized_continuous_margin": 1.2618718306764287,
+        "trajectory_float64_le_sha256_by_step": {
+          "0.005": "05cc918f1ef18410a0cd8caf22b54eb904888cec19c180df52a3c7643f4bf4c9",
+          "0.0025": "0c6218f6c20cc243e66163a27cbbad11feb901195cfa622477f3d8a3ea1531da"
+        }
+      }
+    },
+    {
+      "wire_id": 4,
+      "contract": {
+        "manifest_id": "hammouch_mekkaoui_caputo_v1",
+        "candidate_id": "hammouch_mekkaoui_2018_caputo_v1",
+        "system": "hammouch_mekkaoui",
+        "equations": [
+          "C D^q x = -2 x - y^2",
+          "C D^q y = -4 x z + 3 y - z^2",
+          "C D^q z = 4 x y - 7 z + y z"
+        ],
+        "parameter_names": [],
+        "parameters": [],
+        "initial_state": [
+          0.7,
+          0.1,
+          0.0
+        ],
+        "q": 0.98,
+        "h": 0.01,
+        "memory_seconds": 10.0,
+        "memory_increments": 1000
+      },
+      "contract_canonical_sha256": "e7ed2173d68da5cbd035baf1a4a4bf8d47ca2e7d97c535077cd262321355ec46",
+      "provenance": {
+        "selection_basis": "selected_by_frozen_round2_dynamic_ranking",
+        "source_manifest_path": "validation/alternative_system_round2_manifests_v1.json",
+        "source_manifest_sha256": "ebfad80fbcdbb5a0438527deca98b0aed59979c30b26f15e69ce6a2ca4d18c39",
+        "qualification_path": "validation/results/alternative_system_round2_v1/qualification.json",
+        "qualification_sha256": "bde14c219dd0ff096e8abf3b6d18a3924ee21b3b65517d05bbf29dc38e5783a5",
+        "qualification_decision": "qualified_observed_long_horizon_screen",
+        "minimum_normalized_continuous_margin": 1.5087763574251667,
+        "trajectory_float64_le_sha256_by_step": {
+          "0.005": "830e00d9f8a47a7e5343ca9465713948b71ce9f1fb4a5dd8ccd9be1303e15b01",
+          "0.0025": "f65185ebe3aaaa9b4a9a5e5bcd22a7f9ef290f47675898dfbc7489e128c55bd4"
+        }
+      }
+    }
+  ],
+  "does_not_establish": [
+    "equivalence between the full-history float64 qualification and the finite-window embedded implementation",
+    "C or STM32 numerical equivalence before the dedicated C-ABM and fixed-point gates pass",
+    "hardware timing, energy, randomness, hiddenness, or a formal proof of chaos",
+    "eligibility of an ST-LINK hardware reset as a paper cold start"
+  ]
+}

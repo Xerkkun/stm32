@@ -1,0 +1,249 @@
+{
+  "algorithm_validation": {
+    "constant": {
+      "case": "constant",
+      "h": 0.015625,
+      "max_abs_error": 0.0,
+      "passed": true,
+      "q": 0.73,
+      "steps": 64,
+      "threshold": 1e-14
+    },
+    "manufactured_power": {
+      "case": "manufactured_power_state_dependent",
+      "cases": [
+        {
+          "accepted_order_floor": 1.15,
+          "expected_asymptotic_order": 1.5,
+          "meshes": [
+            {
+              "h": 0.025,
+              "max_abs_error": 0.00527490709784928,
+              "observed_order": null,
+              "steps": 40
+            },
+            {
+              "h": 0.0125,
+              "max_abs_error": 0.0017215193500126347,
+              "observed_order": 1.6154632881608644,
+              "steps": 80
+            },
+            {
+              "h": 0.00625,
+              "max_abs_error": 0.0005726569289026262,
+              "observed_order": 1.587939393397105,
+              "steps": 160
+            },
+            {
+              "h": 0.003125,
+              "max_abs_error": 0.0001934929788944828,
+              "observed_order": 1.5653898809513302,
+              "steps": 320
+            }
+          ],
+          "monotone_error_reduction": true,
+          "passed": true,
+          "power": 4.0,
+          "q": 0.5
+        },
+        {
+          "accepted_order_floor": 1.4500000000000002,
+          "expected_asymptotic_order": 1.8,
+          "meshes": [
+            {
+              "h": 0.025,
+              "max_abs_error": 0.0016433361673982017,
+              "observed_order": null,
+              "steps": 40
+            },
+            {
+              "h": 0.0125,
+              "max_abs_error": 0.00044917812968625626,
+              "observed_order": 1.871268043643651,
+              "steps": 80
+            },
+            {
+              "h": 0.00625,
+              "max_abs_error": 0.00012383123020187625,
+              "observed_order": 1.8589124774413137,
+              "steps": 160
+            },
+            {
+              "h": 0.003125,
+              "max_abs_error": 3.436334737139113e-05,
+              "observed_order": 1.8494327247877707,
+              "steps": 320
+            }
+          ],
+          "monotone_error_reduction": true,
+          "passed": true,
+          "power": 4.0,
+          "q": 0.8
+        },
+        {
+          "accepted_order_floor": 1.645,
+          "expected_asymptotic_order": 1.995,
+          "meshes": [
+            {
+              "h": 0.025,
+              "max_abs_error": 0.0009718340162225836,
+              "observed_order": null,
+              "steps": 40
+            },
+            {
+              "h": 0.0125,
+              "max_abs_error": 0.00024260121791885858,
+              "observed_order": 2.0021231375150066,
+              "steps": 80
+            },
+            {
+              "h": 0.00625,
+              "max_abs_error": 6.065854600101339e-05,
+              "observed_order": 1.99980397140228,
+              "steps": 160
+            },
+            {
+              "h": 0.003125,
+              "max_abs_error": 1.5179325925984699e-05,
+              "observed_order": 1.9986031907755542,
+              "steps": 320
+            }
+          ],
+          "monotone_error_reduction": true,
+          "passed": true,
+          "power": 4.0,
+          "q": 0.995
+        }
+      ],
+      "equation": "CaputoD(q)x=-x+CaputoD(q)t^4+t^4",
+      "exact_solution": "x(t)=t^4",
+      "passed": true
+    },
+    "passed": true
+  },
+  "candidate_smoke": {
+    "cases": [
+      {
+        "all_finite": true,
+        "candidate_id": "lu_yadav2019_caputo_v1",
+        "completed_resolutions": 3,
+        "error": null,
+        "manifest_id": "lu_caputo_v1",
+        "max_abs_state_h_over_4": 40.76625996956101,
+        "normalized_rmse_h_over_2_vs_h_over_4": [
+          0.004139180565992883,
+          0.003934556659484646,
+          0.0035352497219897456
+        ],
+        "normalized_rmse_h_vs_h_over_2": [
+          0.016947125684352117,
+          0.016148534295325184,
+          0.015140794835205
+        ],
+        "physical_horizon_s": 1.0,
+        "steps": [
+          100,
+          200,
+          400
+        ],
+        "system": "lu"
+      },
+      {
+        "all_finite": true,
+        "candidate_id": "genesio_tesi_mao2025_simplified_caputo_v1",
+        "completed_resolutions": 3,
+        "error": null,
+        "manifest_id": "genesio_tesi_simplified_caputo_v1",
+        "max_abs_state_h_over_4": 0.5310169430520648,
+        "normalized_rmse_h_over_2_vs_h_over_4": [
+          6.445003862117132e-06,
+          7.554054419130976e-06,
+          4.893233012960929e-06
+        ],
+        "normalized_rmse_h_vs_h_over_2": [
+          2.3555468546525848e-05,
+          2.7126284452934295e-05,
+          1.7752691270068218e-05
+        ],
+        "physical_horizon_s": 1.0,
+        "steps": [
+          100,
+          200,
+          400
+        ],
+        "system": "genesio_tesi_simplified"
+      },
+      {
+        "all_finite": true,
+        "candidate_id": "shimizu_morioka_wei2021_caputo_v1",
+        "completed_resolutions": 3,
+        "error": null,
+        "manifest_id": "shimizu_morioka_caputo_v1",
+        "max_abs_state_h_over_4": 2.473273964812602,
+        "normalized_rmse_h_over_2_vs_h_over_4": [
+          7.865625560561176e-06,
+          3.453058565817267e-06,
+          1.4873284174218961e-05
+        ],
+        "normalized_rmse_h_vs_h_over_2": [
+          3.118347209357371e-05,
+          1.3681819939761568e-05,
+          5.920076288027439e-05
+        ],
+        "physical_horizon_s": 1.0,
+        "steps": [
+          100,
+          200,
+          400
+        ],
+        "system": "shimizu_morioka"
+      },
+      {
+        "all_finite": true,
+        "candidate_id": "liu_bhalekar2010_caputo_v1",
+        "completed_resolutions": 3,
+        "error": null,
+        "manifest_id": "liu_caputo_v1",
+        "max_abs_state_h_over_4": 0.724949827589824,
+        "normalized_rmse_h_over_2_vs_h_over_4": [
+          1.2164633463176925e-05,
+          5.072199411179939e-06,
+          2.645005228400345e-05
+        ],
+        "normalized_rmse_h_vs_h_over_2": [
+          4.1707252783565326e-05,
+          1.5503417403918423e-05,
+          0.0001029653432346754
+        ],
+        "physical_horizon_s": 1.0,
+        "steps": [
+          100,
+          200,
+          400
+        ],
+        "system": "liu"
+      }
+    ],
+    "purpose": "Exercise every frozen alternative vector field at h, h/2, and h/4 without claiming long-horizon boundedness or nonperiodicity.",
+    "status": "short_horizon_smoke_only_not_manifest_qualification"
+  },
+  "does_not_establish": [
+    "long-horizon qualification of any candidate",
+    "a proof of chaos",
+    "equivalence to an embedded finite-memory implementation",
+    "STM32 timing, energy, or randomness"
+  ],
+  "provenance": {
+    "abm_oracle_source": "validation/abm_oracle.py",
+    "abm_oracle_source_sha256": "5608dc119e85a01accc4ae8b58f83e13c79b230a7731953c280330e16bcb2aca",
+    "alternative_rhs_source": "validation/alternative_systems.py",
+    "alternative_rhs_source_sha256": "4aad013e3f362189183ad76ab8e451758c040547445999aa6116a3a744ad4af4",
+    "candidate_grid_sha256": "ae8f455ad8d8b8ca0c5e8d38c0515198814f02d4f2c1a32fb79cfff0b0a4a415",
+    "candidate_grid_source": "validation/alternative_system_candidate_grid_v1.json",
+    "candidate_manifest_sha256": "26c0b74e20a1aed734110a1efe0e37f0bf0d8450bb899e7ead57bee270b822fc",
+    "candidate_manifest_source": "validation/alternative_system_manifests_v1.json"
+  },
+  "schema_version": 1,
+  "scope": "Independent validation of the full-memory commensurate Caputo ABM implementation plus a non-qualifying smoke run of the frozen alternative vector fields.",
+  "status": "passed_alternative_system_abm_validation"
+}

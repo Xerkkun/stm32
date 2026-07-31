@@ -19,11 +19,14 @@ void HAL_UART_MspInit(UART_HandleTypeDef *uart)
     __HAL_RCC_DMA1_CLK_ENABLE();
 
     /*
-     * NUCLEO-F746ZG virtual COM: PD8 (MCU TX) is wired to ST-LINK RX.
-     * PD9 is deliberately left in its reset state because this firmware has
-     * no receive path.
+     * NUCLEO-F746ZG virtual COM: PD8 is MCU TX. PD9 is enabled only for the
+     * primary START/READY gate; all pilot images preserve the TX-only path.
      */
+#if FC_F746_PRIMARY_HANDSHAKE
+    gpio.Pin = GPIO_PIN_8 | GPIO_PIN_9;
+#else
     gpio.Pin = GPIO_PIN_8;
+#endif
     gpio.Mode = GPIO_MODE_AF_PP;
     gpio.Pull = GPIO_NOPULL;
     gpio.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
@@ -58,6 +61,10 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef *uart)
 
     HAL_NVIC_DisableIRQ(USART3_IRQn);
     HAL_DMA_DeInit(uart->hdmatx);
+#if FC_F746_PRIMARY_HANDSHAKE
+    HAL_GPIO_DeInit(GPIOD, GPIO_PIN_8 | GPIO_PIN_9);
+#else
     HAL_GPIO_DeInit(GPIOD, GPIO_PIN_8);
+#endif
     __HAL_RCC_USART3_CLK_DISABLE();
 }
