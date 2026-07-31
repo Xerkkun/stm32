@@ -1,0 +1,795 @@
+finite_file_adapter=testu01_file_batteries_v1
+testu01_version=1.2.3
+battery=rabbit
+input=C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\liu_m2sfrk_h755_fixed\h755_liu_m2sfrk_fixed-raw_lsb.bin
+input_bytes=131808
+requested_bits=1054464
+input_repetition_or_recycling=disabled
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+          Starting Rabbit:   nb = 1054464
+          Version: TestU01 1.2.3
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\liu_m2sfrk_h755_fixed\h755_liu_m2sfrk_fixed-raw_lsb.bin
+
+
+smultin_MultinomialBitsOver test:
+-----------------------------------------------
+   N =  1,  n = 1054464,  r =  0,   s = 32,   L =   32,
+       Sparse =   TRUE
+
+       Number of bits = n = 1054464
+       Number of cells = 2^L =         4294967296
+       Expected number per cell =  1 /  4073.1284
+       EColl = n^2 / (2k) =  129.4415359
+       Hashing =   TRUE
+
+       Collision test
+       CollisionOver:   density = n / k =  1 /    4073.13
+       Expected number of collisions = Mu =     129.42
+
+
+-----------------------------------------------
+Results of CollisionOver test:
+
+POISSON approximation                 :
+Expected number of collisions = N*Mu  :      129.42
+Observed number of collisions         :      128
+p-value of test                       :    0.53
+
+-----------------------------
+Total number of cells containing j balls
+
+  j =  0                              :       4293912960
+  j =  1                              :          1054208
+  j =  2                              :              128
+  j =  3                              :                0
+  j =  4                              :                0
+  j =  5                              :                0
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.25
+
+Generator state:
+ 1054464  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\liu_m2sfrk_h755_fixed\h755_liu_m2sfrk_fixed-raw_lsb.bin
+
+
+snpair_ClosePairsBitMatch test:
+-----------------------------------------------
+   N =  1,  n = 16476,  r =  0,  t = 2
+
+
+-----------------------------------------------
+Max of all bit distances              :   13.00
+p-value of test                       :    0.40
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1054464  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\liu_m2sfrk_h755_fixed\h755_liu_m2sfrk_fixed-raw_lsb.bin
+
+
+snpair_ClosePairsBitMatch test:
+-----------------------------------------------
+   N =  1,  n = 8238,  r =  0,  t = 4
+
+
+-----------------------------------------------
+Max of all bit distances              :    6.00
+p-value of test                       :    0.12
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1054464  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\liu_m2sfrk_h755_fixed\h755_liu_m2sfrk_fixed-raw_lsb.bin
+
+
+svaria_AppearanceSpacings test:
+-----------------------------------------------
+   N =  1,   Q = 49428,   K = 49428,   r = 0,   s = 30,   L = 10
+
+   Sequences of n = (K + Q)L =       988560 bits
+   Q = 49428 initialization blocks
+   K = 49428 blocks for the test
+   the blocks have L = 10 bits
+
+
+
+-----------------------------------------------
+Normal statistic                      :    1.22
+p-value of test                       :    0.11
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1054464  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\liu_m2sfrk_h755_fixed\h755_liu_m2sfrk_fixed-raw_lsb.bin
+
+
+scomp_LinearComp test:
+-----------------------------------------------
+   N =  1,  n = 12032,  r =  0,    s = 32
+
+
+
+-----------------------------------------------
+Number of degrees of freedom          :    7
+Chi2 statistic for size of jumps      :    5.20
+p-value of test                       :    0.64
+
+
+-----------------------------------------------
+Normal statistic for number of jumps  :    0.69
+p-value of test                       :    0.25
+
+
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.06
+
+Generator state:
+ 12032  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\liu_m2sfrk_h755_fixed\h755_liu_m2sfrk_fixed-raw_lsb.bin
+
+
+scomp_LempelZiv test:
+-----------------------------------------------
+   N =  1,  n = 1048576,  r =  0,   s =   32,   k =   20
+
+
+-----------------------------------------------
+Normal statistic                      :    1.10
+p-value of test                       :    0.14
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.01
+
+Generator state:
+ 1048576  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\liu_m2sfrk_h755_fixed\h755_liu_m2sfrk_fixed-raw_lsb.bin
+
+
+sspectral_Fourier1 test:
+-----------------------------------------------
+   N =  1,  n = 1048576,  r =  0,   s =   32,   k =   20
+
+
+-----------------------------------------------
+Normal statistic                      :   -0.15
+p-value of test                       :    0.56
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.10
+
+Generator state:
+ 1048576  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\liu_m2sfrk_h755_fixed\h755_liu_m2sfrk_fixed-raw_lsb.bin
+
+
+sspectral_Fourier3 test:
+-----------------------------------------------
+   N = 1938,  n = 512,  r =  0,   s =   32,   k =    9
+
+
+-----------------------------------------------
+
+Kolmogorov-Smirnov+ statistic = D+    :   0.048
+p-value of test                       :    0.53
+
+Kolmogorov-Smirnov- statistic = D-    :   0.090
+p-value of test                       :    0.12
+
+Anderson-Darling statistic = A2       :    0.78
+p-value of test                       :    0.49
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.01
+
+Generator state:
+ 1054272  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\liu_m2sfrk_h755_fixed\h755_liu_m2sfrk_fixed-raw_lsb.bin
+
+
+sstring_LongestHeadRun test:
+-----------------------------------------------
+   N =  1,  n = 60,  r =  0,   s = 32,   L = 17568
+
+
+-----------------------------------------------
+Number of degrees of freedom          :    3
+Chi-square statistic                  :    1.51
+p-value of test                       :    0.68
+
+-----------------------------------------------
+Global longest run of 1               :   22.00
+p-value of test                       :    0.12
+
+
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1054080  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\liu_m2sfrk_h755_fixed\h755_liu_m2sfrk_fixed-raw_lsb.bin
+
+
+sstring_PeriodsInStrings test:
+-----------------------------------------------
+   N =  1,  n = 32952,  r =  0,   s =   31
+
+
+-----------------------------------------------
+Number of degrees of freedom          :   45
+Chi-square statistic                  :   29.27
+p-value of test                       :    0.97
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1054464  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\liu_m2sfrk_h755_fixed\h755_liu_m2sfrk_fixed-raw_lsb.bin
+
+
+sstring_HammingWeight test:
+-----------------------------------------------
+   N =  1,  n = 32952,  r =  0,   s = 32,   L = 32
+
+
+-----------------------------------------------
+Number of degrees of freedom          :   18
+Chi-square statistic                  :   15.83
+p-value of test                       :    0.60
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1054464  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\liu_m2sfrk_h755_fixed\h755_liu_m2sfrk_fixed-raw_lsb.bin
+
+
+sstring_HammingCorr test:
+-----------------------------------------------
+   N =  1,  n = 32952,  r =  0,   s = 32,   L = 32
+
+
+
+-----------------------------------------------
+Normal statistic                      :   -0.43
+p-value of test                       :    0.67
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1054464  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\liu_m2sfrk_h755_fixed\h755_liu_m2sfrk_fixed-raw_lsb.bin
+
+
+sstring_HammingCorr test:
+-----------------------------------------------
+   N =  1,  n = 16476,  r =  0,   s = 32,   L = 64
+
+
+
+-----------------------------------------------
+Normal statistic                      :    0.87
+p-value of test                       :    0.19
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1054464  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\liu_m2sfrk_h755_fixed\h755_liu_m2sfrk_fixed-raw_lsb.bin
+
+
+sstring_HammingCorr test:
+-----------------------------------------------
+   N =  1,  n = 8238,  r =  0,   s = 32,   L = 128
+
+
+
+-----------------------------------------------
+Normal statistic                      :   -0.84
+p-value of test                       :    0.80
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1054464  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\liu_m2sfrk_h755_fixed\h755_liu_m2sfrk_fixed-raw_lsb.bin
+
+
+sstring_HammingIndep test:
+-----------------------------------------------
+   N =  1,  n = 32952,  r =  0,   s = 32,   L = 16,   d = 0
+
+
+
+Counters with expected numbers >= 10
+-----------------------------------------------
+Number of degrees of freedom          :  121
+Chi-square statistic                  :  113.32
+p-value of test                       :    0.68
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1054464  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\liu_m2sfrk_h755_fixed\h755_liu_m2sfrk_fixed-raw_lsb.bin
+
+
+sstring_HammingIndep test:
+-----------------------------------------------
+   N =  1,  n = 16476,  r =  0,   s = 32,   L = 32,   d = 0
+
+
+
+Counters with expected numbers >= 10
+-----------------------------------------------
+Number of degrees of freedom          :  177
+Chi-square statistic                  :  184.02
+p-value of test                       :    0.34
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1054464  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\liu_m2sfrk_h755_fixed\h755_liu_m2sfrk_fixed-raw_lsb.bin
+
+
+sstring_HammingIndep test:
+-----------------------------------------------
+   N =  1,  n = 8238,  r =  0,   s = 32,   L = 64,   d = 0
+
+
+
+Counters with expected numbers >= 10
+-----------------------------------------------
+Number of degrees of freedom          :  213
+Chi-square statistic                  :  214.80
+p-value of test                       :    0.45
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1054464  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\liu_m2sfrk_h755_fixed\h755_liu_m2sfrk_fixed-raw_lsb.bin
+
+
+sstring_AutoCor test:
+-----------------------------------------------
+   N =  1,  n = 1054401,  r =  0,   s = 32,   d = 1
+
+
+-----------------------------------------------
+Normal statistic                      :    0.20
+p-value of test                       :    0.42
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1054432  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\liu_m2sfrk_h755_fixed\h755_liu_m2sfrk_fixed-raw_lsb.bin
+
+
+sstring_AutoCor test:
+-----------------------------------------------
+   N =  1,  n = 1054402,  r =  0,   s = 32,   d = 2
+
+
+-----------------------------------------------
+Normal statistic                      :    0.27
+p-value of test                       :    0.39
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1054432  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\liu_m2sfrk_h755_fixed\h755_liu_m2sfrk_fixed-raw_lsb.bin
+
+
+sstring_Run test:
+-----------------------------------------------
+   N =  1,  n = 210892,  r =  0,   s =   32
+
+
+-----------------------------------------------
+Total number of 1 runs:  210892
+
+Number of degrees of freedom          :   28
+Chi2 statistic for number of runs     :   30.76
+p-value of test                       :    0.33
+
+
+-----------------------------------------------
+Total number of bits:  843328
+
+Normal statistic for number of bits   :   -0.18
+p-value of test                       :    0.57
+
+
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 843328  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\liu_m2sfrk_h755_fixed\h755_liu_m2sfrk_fixed-raw_lsb.bin
+
+
+smarsa_MatrixRank test:
+-----------------------------------------------
+   N =  1,  n = 1029,  r =  0,    s = 32,    L = 32,    k = 32
+
+
+-----------------------------------------------
+Number of degrees of freedom          :    2
+Chi-square statistic                  :    0.87
+p-value of test                       :    0.65
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.01
+
+Generator state:
+ 1053696  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\liu_m2sfrk_h755_fixed\h755_liu_m2sfrk_fixed-raw_lsb.bin
+
+
+swalk_RandomWalk1 test:
+-----------------------------------------------
+   N =  1,  n = 8238,  r =  0,   s = 32,   L0 =  128,   L1 =  128
+
+
+
+-----------------------------------------------
+Test on the values of the Statistic H
+
+Number of degrees of freedom          :   34
+ChiSquare statistic                   :   29.72
+p-value of test                       :    0.68
+
+
+-----------------------------------------------
+Test on the values of the Statistic M
+
+Number of degrees of freedom          :   34
+ChiSquare statistic                   :   42.95
+p-value of test                       :    0.14
+
+
+-----------------------------------------------
+Test on the values of the Statistic J
+
+Number of degrees of freedom          :   64
+ChiSquare statistic                   :   85.11
+p-value of test                       :    0.04
+
+
+-----------------------------------------------
+Test on the values of the Statistic R
+
+Number of degrees of freedom          :   30
+ChiSquare statistic                   :   25.02
+p-value of test                       :    0.72
+
+
+-----------------------------------------------
+Test on the values of the Statistic C
+
+Number of degrees of freedom          :   17
+ChiSquare statistic                   :   25.34
+p-value of test                       :    0.09
+
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1054464  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\liu_m2sfrk_h755_fixed\h755_liu_m2sfrk_fixed-raw_lsb.bin
+
+
+swalk_RandomWalk1 test:
+-----------------------------------------------
+   N =  1,  n = 1029,  r =  0,   s = 32,   L0 = 1024,   L1 = 1024
+
+
+
+-----------------------------------------------
+Test on the values of the Statistic H
+
+Number of degrees of freedom          :   56
+ChiSquare statistic                   :   56.35
+p-value of test                       :    0.46
+
+
+-----------------------------------------------
+Test on the values of the Statistic M
+
+Number of degrees of freedom          :   55
+ChiSquare statistic                   :   59.84
+p-value of test                       :    0.30
+
+
+-----------------------------------------------
+Test on the values of the Statistic J
+
+Number of degrees of freedom          :   88
+ChiSquare statistic                   :   93.49
+p-value of test                       :    0.32
+
+
+-----------------------------------------------
+Test on the values of the Statistic R
+
+Number of degrees of freedom          :   55
+ChiSquare statistic                   :   53.81
+p-value of test                       :    0.52
+
+
+-----------------------------------------------
+Test on the values of the Statistic C
+
+Number of degrees of freedom          :   33
+ChiSquare statistic                   :   35.75
+p-value of test                       :    0.34
+
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1053696  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\liu_m2sfrk_h755_fixed\h755_liu_m2sfrk_fixed-raw_lsb.bin
+
+
+swalk_RandomWalk1 test:
+-----------------------------------------------
+   N =  1,  n = 105,  r =  0,   s = 32,   L0 = 10016,   L1 = 10016
+
+
+
+-----------------------------------------------
+Test on the values of the Statistic H
+
+Number of degrees of freedom          :    9
+ChiSquare statistic                   :    8.98
+p-value of test                       :    0.44
+
+
+-----------------------------------------------
+Test on the values of the Statistic M
+
+Number of degrees of freedom          :    9
+ChiSquare statistic                   :    1.73
+p-value of test                       :    0.9950
+
+
+-----------------------------------------------
+Test on the values of the Statistic J
+
+Number of degrees of freedom          :    9
+ChiSquare statistic                   :   10.18
+p-value of test                       :    0.34
+
+
+-----------------------------------------------
+Test on the values of the Statistic R
+
+Number of degrees of freedom          :    9
+ChiSquare statistic                   :   10.40
+p-value of test                       :    0.32
+
+
+-----------------------------------------------
+Test on the values of the Statistic C
+
+Number of degrees of freedom          :    8
+ChiSquare statistic                   :   12.99
+p-value of test                       :    0.11
+
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1051680  bits have been read.
+
+
+
+
+
+========= Summary results of Rabbit =========
+
+ Version:          TestU01 1.2.3
+ File:             C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\liu_m2sfrk_h755_fixed\h755_liu_m2sfrk_fixed-raw_lsb.bin
+ Number of bits:   1054464
+ Number of statistics:  38
+ Total CPU time:   00:00:00.46
+
+ All tests were passed
+
+
+

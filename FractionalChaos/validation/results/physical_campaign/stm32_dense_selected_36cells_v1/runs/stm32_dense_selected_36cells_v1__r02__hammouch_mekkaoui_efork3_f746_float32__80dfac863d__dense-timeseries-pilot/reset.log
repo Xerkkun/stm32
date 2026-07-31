@@ -1,0 +1,25 @@
+Sonda validada: 066AFF504955657867165348 [NUCLEO-F746ZG].
+      -------------------------------------------------------------------
+                       STM32CubeProgrammer v2.23.0                  
+      -------------------------------------------------------------------
+
+ST-LINK SN  : 066AFF504955657867165348
+ST-LINK FW  : V2J29M18
+Board       : NUCLEO-F746ZG
+Voltage     : 3.24V
+SWD freq    : 4000 KHz
+Connect mode: Under Reset
+Reset mode  : Hardware reset
+Device ID   : 0x449
+Revision ID : Rev Z
+Device name : STM32F74x/STM32F75x
+NVM size    : 1 MBytes
+Device type : MCU
+Device CPU  : Cortex-M7
+BL Version  : 0x90
+Debug in Low Power mode enabled
+
+
+MCU Reset
+
+Software reset is performed

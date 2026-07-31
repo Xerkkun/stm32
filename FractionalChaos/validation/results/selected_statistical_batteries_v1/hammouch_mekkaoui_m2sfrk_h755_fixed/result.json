@@ -1,0 +1,1724 @@
+{
+  "id": "hammouch_mekkaoui_m2sfrk_h755_fixed",
+  "board": "h755",
+  "representation": "fixed_q14_q30",
+  "input": {
+    "path": "C:\\Users\\moren\\Desktop\\Codes\\STM32\\FractionalChaos\\validation\\results\\selected_statistical_streams_v1\\analysis\\hammouch_mekkaoui_m2sfrk_h755_fixed\\h755_hammouch_mekkaoui_m2sfrk_fixed-raw_lsb.bin",
+    "bytes": 131808,
+    "bits": 1054464,
+    "sha256": "4b55374b7ef4872b08331ffbd95652005b5f6daaf0dd3a3c7900bd4608742dfd",
+    "verification_checks": {
+      "manifest_bit_count": true,
+      "manifest_sha256": true,
+      "analysis_bit_count": true,
+      "analysis_sha256": true,
+      "transport_complete": true,
+      "all_solver_status_clear": true,
+      "configured_screening_eligible": true
+    }
+  },
+  "diagnostics": {
+    "classification": "descriptive_diagnostic_not_a_battery",
+    "is_statistical_battery_result": false,
+    "bytes": 131808,
+    "bits": 1054464,
+    "zeros": 528340,
+    "ones": 526124,
+    "ones_fraction": 0.49894922918184026,
+    "absolute_balance_error": 0.0010507708181597408,
+    "bit_runs": 527349,
+    "bit_transition_fraction": 0.5001104827765412,
+    "longest_zero_run": 19,
+    "longest_one_run": 19,
+    "distinct_byte_values": 256,
+    "byte_entropy_bits_per_byte": 7.997020904230162,
+    "most_common_bytes": [
+      {
+        "byte": 61,
+        "count": 600,
+        "fraction": 0.004552075746540422
+      },
+      {
+        "byte": 246,
+        "count": 590,
+        "fraction": 0.004476207817431415
+      },
+      {
+        "byte": 86,
+        "count": 589,
+        "fraction": 0.004468621024520515
+      },
+      {
+        "byte": 49,
+        "count": 583,
+        "fraction": 0.004423100267055111
+      },
+      {
+        "byte": 89,
+        "count": 580,
+        "fraction": 0.004400339888322408
+      },
+      {
+        "byte": 64,
+        "count": 580,
+        "fraction": 0.004400339888322408
+      },
+      {
+        "byte": 231,
+        "count": 577,
+        "fraction": 0.004377579509589706
+      },
+      {
+        "byte": 96,
+        "count": 576,
+        "fraction": 0.004369992716678805
+      }
+    ],
+    "no_pass_fail_conclusion": true
+  },
+  "eligibility": {
+    "configured_capture_screening": {
+      "eligible": true,
+      "minimum_bits": 1000000,
+      "observed_bits": 1054464,
+      "is_battery_result": false
+    },
+    "nist_sp800_22": {
+      "tool_selected": true,
+      "single_sequence_tests_executable": true,
+      "uniformity_and_pass_proportion_eligible": false,
+      "formal_battery_validation_eligible": false,
+      "reason": "one physical sequence per configuration"
+    },
+    "practrand": {
+      "tool_selected": true,
+      "whole_1KiB_blocks": 128,
+      "tail_bytes": 736,
+      "complete_stream_eligible": false,
+      "prefix_diagnostic_eligible": true
+    },
+    "testu01": {
+      "tool_selected": true,
+      "rabbit_alphabit_execution_eligible": true,
+      "whole_32_bit_words": 32952,
+      "tail_bits": 0,
+      "complete_stream_eligible": true,
+      "formal_battery_validation_eligible": false,
+      "reason": "an audited finite-file adapter is selected"
+    }
+  },
+  "batteries": {
+    "nist_sp800_22": {
+      "tool": "NIST SP 800-22 STS",
+      "version": "2.1.2",
+      "execution": {
+        "completed": true,
+        "return_code": 1,
+        "known_success_return_code": 1,
+        "elapsed_seconds": 3.5803221999958623,
+        "command": [
+          "assess.exe",
+          "1054464"
+        ],
+        "stdin_protocol": [
+          "0",
+          "${EXACT_STREAM_WITH_READER_PADDING_IF_NEEDED}",
+          "1",
+          "0",
+          "1",
+          "1"
+        ],
+        "input_bits_requested": 1054464,
+        "reader_padding_bytes": 0,
+        "reader_padding_tested": false,
+        "reader_padding_reason": "official binary reader requires four-byte reads; tp.n stops conversion after the exact original bit count"
+      },
+      "eligibility": {
+        "complete_input_consumed": true,
+        "individual_test_execution_eligible": true,
+        "uniformity_and_pass_proportion_eligible": false,
+        "formal_battery_pass_statement_allowed": false,
+        "reason": "only one physical sequence exists for this configuration; the final-report uniformity/proportion columns cannot support a validation claim",
+        "fft_minimum_recommended_bits": 1000,
+        "fft_recommended_length_met": true,
+        "fft_note": "SP 800-22 Rev. 1a section 2.6.7 recommends n >= 1,000 bits for the spectral test; all four streams meet it"
+      },
+      "result": {
+        "p_values_by_test": {
+          "Frequency": [
+            0.030927
+          ],
+          "BlockFrequency": [
+            0.038235
+          ],
+          "CumulativeSums": [
+            0.045246,
+            0.016015
+          ],
+          "Runs": [
+            0.816217
+          ],
+          "LongestRun": [
+            0.016749
+          ],
+          "Rank": [
+            0.669919
+          ],
+          "FFT": [
+            0.0
+          ],
+          "NonOverlappingTemplate": [
+            0.270802,
+            0.266909,
+            0.071466,
+            0.546427,
+            0.009107,
+            0.104244,
+            0.149948,
+            0.922202,
+            0.72723,
+            0.015692,
+            0.186151,
+            0.096384,
+            0.984133,
+            0.679491,
+            0.050153,
+            0.447816,
+            0.675747,
+            0.017571,
+            0.663884,
+            0.589132,
+            0.478177,
+            0.014316,
+            0.134249,
+            0.011756,
+            0.424911,
+            0.172609,
+            0.91412,
+            0.914021,
+            0.677178,
+            0.490054,
+            0.752772,
+            0.701496,
+            0.707876,
+            0.045695,
+            0.769832,
+            0.92426,
+            0.960708,
+            0.876003,
+            0.528281,
+            0.139806,
+            0.804585,
+            0.12103,
+            0.990723,
+            0.165757,
+            0.059558,
+            0.394788,
+            0.853999,
+            0.305705,
+            0.659091,
+            0.95795,
+            0.955028,
+            0.815849,
+            0.956685,
+            0.74581,
+            0.717392,
+            0.319186,
+            0.987471,
+            0.115409,
+            0.842261,
+            0.092269,
+            0.044976,
+            0.124663,
+            0.908955,
+            0.986857,
+            0.649289,
+            0.14358,
+            0.158643,
+            0.063393,
+            0.054768,
+            0.153471,
+            0.815178,
+            0.386194,
+            0.411047,
+            0.769991,
+            0.270802,
+            0.676449,
+            0.199967,
+            0.304698,
+            0.173255,
+            0.67064,
+            0.225821,
+            0.377717,
+            0.788957,
+            0.272094,
+            0.32933,
+            0.507167,
+            0.075704,
+            0.220536,
+            0.064199,
+            0.08542,
+            0.061906,
+            0.861764,
+            0.196996,
+            0.000176,
+            0.804775,
+            0.261006,
+            0.558012,
+            0.308603,
+            0.639486,
+            0.583404,
+            0.62737,
+            0.413072,
+            0.389779,
+            0.131574,
+            0.113662,
+            0.777238,
+            0.916479,
+            0.761525,
+            0.406233,
+            0.188374,
+            0.211398,
+            0.672956,
+            0.831951,
+            0.033294,
+            0.480179,
+            0.556133,
+            0.598498,
+            0.228543,
+            0.758365,
+            0.684883,
+            0.430376,
+            0.036785,
+            0.685919,
+            0.014377,
+            0.064632,
+            0.019407,
+            0.106536,
+            0.931713,
+            0.440693,
+            0.359117,
+            0.53353,
+            0.308268,
+            0.494973,
+            0.863904,
+            0.04986,
+            0.064291,
+            0.38803,
+            0.335528,
+            0.485767,
+            0.483093,
+            0.456776,
+            0.5252,
+            0.430743,
+            0.101059,
+            0.732168,
+            0.134224,
+            0.92768,
+            0.769991
+          ],
+          "OverlappingTemplate": [
+            0.981441
+          ],
+          "Universal": [
+            0.234142
+          ],
+          "ApproximateEntropy": [
+            0.0
+          ],
+          "RandomExcursions": [
+            0.370438,
+            0.024515,
+            0.598958,
+            0.919206,
+            0.044326,
+            0.742258,
+            0.060843,
+            0.405917
+          ],
+          "RandomExcursionsVariant": [
+            0.931716,
+            0.921744,
+            0.700678,
+            0.566254,
+            0.555982,
+            0.651302,
+            0.826833,
+            0.252048,
+            0.086877,
+            0.414907,
+            0.044606,
+            0.00866,
+            0.027216,
+            0.224795,
+            0.69409,
+            0.745858,
+            0.588989,
+            0.766768
+          ],
+          "Serial": [
+            0.0,
+            0.0
+          ],
+          "LinearComplexity": [
+            0.566601
+          ]
+        },
+        "p_value_count": 188,
+        "p_values_below_alpha": [
+          {
+            "test": "FFT",
+            "index_within_test": 0,
+            "p_value": 0.0
+          },
+          {
+            "test": "NonOverlappingTemplate",
+            "index_within_test": 4,
+            "p_value": 0.009107
+          },
+          {
+            "test": "NonOverlappingTemplate",
+            "index_within_test": 93,
+            "p_value": 0.000176
+          },
+          {
+            "test": "ApproximateEntropy",
+            "index_within_test": 0,
+            "p_value": 0.0
+          },
+          {
+            "test": "RandomExcursionsVariant",
+            "index_within_test": 11,
+            "p_value": 0.00866
+          },
+          {
+            "test": "Serial",
+            "index_within_test": 0,
+            "p_value": 0.0
+          },
+          {
+            "test": "Serial",
+            "index_within_test": 1,
+            "p_value": 0.0
+          }
+        ],
+        "p_values_below_alpha_count": 7,
+        "tests_with_p_values_below_alpha": [
+          "ApproximateEntropy",
+          "FFT",
+          "NonOverlappingTemplate",
+          "RandomExcursionsVariant",
+          "Serial"
+        ],
+        "final_report_rows_by_test": {
+          "Frequency": [
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            }
+          ],
+          "BlockFrequency": [
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            }
+          ],
+          "CumulativeSums": [
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            }
+          ],
+          "Runs": [
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            }
+          ],
+          "LongestRun": [
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            }
+          ],
+          "Rank": [
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            }
+          ],
+          "FFT": [
+            {
+              "passed_sequences": 0,
+              "total_sequences": 1
+            }
+          ],
+          "NonOverlappingTemplate": [
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 0,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 0,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            }
+          ],
+          "OverlappingTemplate": [
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            }
+          ],
+          "Universal": [
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            }
+          ],
+          "ApproximateEntropy": [
+            {
+              "passed_sequences": 0,
+              "total_sequences": 1
+            }
+          ],
+          "RandomExcursions": [
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            }
+          ],
+          "RandomExcursionsVariant": [
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 0,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            }
+          ],
+          "Serial": [
+            {
+              "passed_sequences": 0,
+              "total_sequences": 1
+            },
+            {
+              "passed_sequences": 0,
+              "total_sequences": 1
+            }
+          ],
+          "LinearComplexity": [
+            {
+              "passed_sequences": 1,
+              "total_sequences": 1
+            }
+          ]
+        },
+        "final_report_row_count": 188,
+        "final_report_failed_rows": [
+          {
+            "test": "FFT",
+            "index_within_test": 0,
+            "passed_sequences": 0,
+            "total_sequences": 1
+          },
+          {
+            "test": "NonOverlappingTemplate",
+            "index_within_test": 4,
+            "passed_sequences": 0,
+            "total_sequences": 1
+          },
+          {
+            "test": "NonOverlappingTemplate",
+            "index_within_test": 93,
+            "passed_sequences": 0,
+            "total_sequences": 1
+          },
+          {
+            "test": "ApproximateEntropy",
+            "index_within_test": 0,
+            "passed_sequences": 0,
+            "total_sequences": 1
+          },
+          {
+            "test": "RandomExcursionsVariant",
+            "index_within_test": 11,
+            "passed_sequences": 0,
+            "total_sequences": 1
+          },
+          {
+            "test": "Serial",
+            "index_within_test": 0,
+            "passed_sequences": 0,
+            "total_sequences": 1
+          },
+          {
+            "test": "Serial",
+            "index_within_test": 1,
+            "passed_sequences": 0,
+            "total_sequences": 1
+          }
+        ],
+        "final_report_failed_rows_count": 7,
+        "results_placeholders_excluded_as_inapplicable": {},
+        "inapplicable_tests": [],
+        "results_final_report_reconciled": true,
+        "alpha": 0.01,
+        "classification": "single_sequence_external_test_output_not_formal_validation",
+        "battery_pass": null
+      },
+      "artifacts": {
+        "nist_sp800_22_stdout.txt": {
+          "sha256": "f4381288a6bd584c46c968e349a4193811823d1067bc11ff640e3de11339f506",
+          "bytes": 1997
+        },
+        "nist_sp800_22_stderr.txt": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "nist_sp800_22_final_analysis_report.txt": {
+          "sha256": "7d37808ba5b8dddb379a55e722147b93ffd1fd0193a36845eda91272b33ce3ca",
+          "bytes": 17703
+        },
+        "nist_sp800_22_detailed_results.txt": {
+          "sha256": "efaf6791ce1f4a52ee53feb8001a62ce3098aa26e65328b146109b60f1f8aa3f",
+          "bytes": 23615
+        }
+      }
+    },
+    "practrand": {
+      "tool": "PractRand",
+      "version": "0.96",
+      "execution": {
+        "completed": true,
+        "return_code": 0,
+        "elapsed_seconds": 0.1355448999966029,
+        "command": [
+          "RNG_test.exe",
+          "stdin8",
+          "-tlmin",
+          "128KB",
+          "-tlmax",
+          "128KB",
+          "-tlmaxonly",
+          "-a",
+          "-singlethreaded",
+          "<",
+          "${FULL_LSB_BINARY}"
+        ],
+        "input_interface": "stdin8",
+        "test_set": "core",
+        "folding": "standard_8_bit"
+      },
+      "eligibility": {
+        "complete_input_consumed": false,
+        "formal_battery_pass_statement_allowed": false,
+        "input_bytes": 131808,
+        "tested_prefix_bytes": 131072,
+        "tested_prefix_bits": 1048576,
+        "omitted_tail_bytes": 736,
+        "coverage_fraction": 0.9944161204175771,
+        "reason": "PractRand accepts whole 1KiB TestBlocks; the result covers the largest exact prefix and the unmodified tail is not silently padded or repeated",
+        "short_run_note": "approximately 127-136 KiB is only a short diagnostic run, not evidence of long-stream randomness"
+      },
+      "result": {
+        "classification": "short_prefix_external_test_output",
+        "reported_result_count": 42,
+        "evaluation_counts": {
+          "FAIL !!!": 1,
+          "normal": 39,
+          "normalish": 2
+        },
+        "reported_results": [
+          {
+            "test": "BCFN(2+0,13-9U)",
+            "raw_score": "+5.3",
+            "p_relation": "=",
+            "p_value_text": "0.029",
+            "evaluation": "normal"
+          },
+          {
+            "test": "BCFN(2+1,13-9U)",
+            "raw_score": "+4.0",
+            "p_relation": "=",
+            "p_value_text": "0.057",
+            "evaluation": "normal"
+          },
+          {
+            "test": "BCFN(2+2,13-9U)",
+            "raw_score": "+7.4",
+            "p_relation": "=",
+            "p_value_text": "9.6e-3",
+            "evaluation": "normalish"
+          },
+          {
+            "test": "BCFN(2+3,13-9U)",
+            "raw_score": "+8.3",
+            "p_relation": "=",
+            "p_value_text": "6.0e-3",
+            "evaluation": "normal"
+          },
+          {
+            "test": "DC6-9x1Bytes-1",
+            "raw_score": "+55.4",
+            "p_relation": "=",
+            "p_value_text": "4.5e-28",
+            "evaluation": "FAIL !!!"
+          },
+          {
+            "test": "Gap-16:A",
+            "raw_score": "-1.3",
+            "p_relation": "=",
+            "p_value_text": "0.871",
+            "evaluation": "normal"
+          },
+          {
+            "test": "Gap-16:B",
+            "raw_score": "-1.6",
+            "p_relation": "=",
+            "p_value_text": "0.878",
+            "evaluation": "normal"
+          },
+          {
+            "test": "Gap-16:C",
+            "raw_score": "+0.1",
+            "p_relation": "~=",
+            "p_value_text": "0.540",
+            "evaluation": "normal"
+          },
+          {
+            "test": "FPF/16:(0,14-6)",
+            "raw_score": "-0.9",
+            "p_relation": "=",
+            "p_value_text": "0.726",
+            "evaluation": "normal"
+          },
+          {
+            "test": "FPF/16:(1,14-7)",
+            "raw_score": "+1.8",
+            "p_relation": "=",
+            "p_value_text": "0.110",
+            "evaluation": "normal"
+          },
+          {
+            "test": "FPF/16:(2,14-8)",
+            "raw_score": "+1.8",
+            "p_relation": "=",
+            "p_value_text": "0.103",
+            "evaluation": "normal"
+          },
+          {
+            "test": "FPF/16:(3,14-8)",
+            "raw_score": "+2.2",
+            "p_relation": "=",
+            "p_value_text": "0.068",
+            "evaluation": "normal"
+          },
+          {
+            "test": "FPF/16:(4,14-9)",
+            "raw_score": "+0.1",
+            "p_relation": "=",
+            "p_value_text": "0.438",
+            "evaluation": "normal"
+          },
+          {
+            "test": "FPF/16:(5,14-10)",
+            "raw_score": "+0.3",
+            "p_relation": "=",
+            "p_value_text": "0.363",
+            "evaluation": "normal"
+          },
+          {
+            "test": "FPF/16:(6,14-11)",
+            "raw_score": "-0.1",
+            "p_relation": "=",
+            "p_value_text": "0.466",
+            "evaluation": "normal"
+          },
+          {
+            "test": "FPF/16:(7,14-11)",
+            "raw_score": "+0.9",
+            "p_relation": "=",
+            "p_value_text": "0.226",
+            "evaluation": "normal"
+          },
+          {
+            "test": "FPF/16:all",
+            "raw_score": "+1.0",
+            "p_relation": "=",
+            "p_value_text": "0.264",
+            "evaluation": "normal"
+          },
+          {
+            "test": "FPF/16:cross",
+            "raw_score": "-0.9",
+            "p_relation": "=",
+            "p_value_text": "0.806",
+            "evaluation": "normal"
+          },
+          {
+            "test": "BDayS2(4,24)[18]",
+            "raw_score": "-2.2",
+            "p_relation": "~=",
+            "p_value_text": "0.986",
+            "evaluation": "normal"
+          },
+          {
+            "test": "BRank(12):score:128(9)",
+            "raw_score": "-0.0",
+            "p_relation": "~=",
+            "p_value_text": "0.5",
+            "evaluation": "normal"
+          },
+          {
+            "test": "mod3n(5):(0,9-6)",
+            "raw_score": "+0.6",
+            "p_relation": "=",
+            "p_value_text": "0.333",
+            "evaluation": "normal"
+          },
+          {
+            "test": "mod3n(5):(1,9-6)",
+            "raw_score": "-0.6",
+            "p_relation": "=",
+            "p_value_text": "0.583",
+            "evaluation": "normal"
+          },
+          {
+            "test": "mod3n(5):(2,9-6)",
+            "raw_score": "-1.0",
+            "p_relation": "=",
+            "p_value_text": "0.663",
+            "evaluation": "normal"
+          },
+          {
+            "test": "mod3n(5):(3,9-6)",
+            "raw_score": "-0.3",
+            "p_relation": "=",
+            "p_value_text": "0.501",
+            "evaluation": "normal"
+          },
+          {
+            "test": "mod3n(5):(4,9-6)",
+            "raw_score": "-0.7",
+            "p_relation": "=",
+            "p_value_text": "0.594",
+            "evaluation": "normal"
+          },
+          {
+            "test": "[Low1/8]BCFN(2+0,13-9U)",
+            "raw_score": "+5.4",
+            "p_relation": "=",
+            "p_value_text": "0.027",
+            "evaluation": "normal"
+          },
+          {
+            "test": "[Low1/8]DC6-9x1Bytes-1",
+            "raw_score": "+4.6",
+            "p_relation": "=",
+            "p_value_text": "0.021",
+            "evaluation": "normalish"
+          },
+          {
+            "test": "[Low1/8]Gap-16:A",
+            "raw_score": "+2.4",
+            "p_relation": "=",
+            "p_value_text": "0.182",
+            "evaluation": "normal"
+          },
+          {
+            "test": "[Low1/8]Gap-16:B",
+            "raw_score": "+2.6",
+            "p_relation": "=",
+            "p_value_text": "0.063",
+            "evaluation": "normal"
+          },
+          {
+            "test": "[Low1/8]Gap-16:C",
+            "raw_score": "-0.8",
+            "p_relation": "~=",
+            "p_value_text": "0.282",
+            "evaluation": "normal"
+          },
+          {
+            "test": "[Low1/8]FPF/16:(0,14-8)",
+            "raw_score": "-0.4",
+            "p_relation": "=",
+            "p_value_text": "0.586",
+            "evaluation": "normal"
+          },
+          {
+            "test": "[Low1/8]FPF/16:(1,14-9)",
+            "raw_score": "-1.6",
+            "p_relation": "=",
+            "p_value_text": "0.887",
+            "evaluation": "normal"
+          },
+          {
+            "test": "[Low1/8]FPF/16:(2,14-10)",
+            "raw_score": "-0.3",
+            "p_relation": "=",
+            "p_value_text": "0.545",
+            "evaluation": "normal"
+          },
+          {
+            "test": "[Low1/8]FPF/16:(3,14-11)",
+            "raw_score": "-0.6",
+            "p_relation": "=",
+            "p_value_text": "0.611",
+            "evaluation": "normal"
+          },
+          {
+            "test": "[Low1/8]FPF/16:(4,14-11)",
+            "raw_score": "-0.0",
+            "p_relation": "=",
+            "p_value_text": "0.433",
+            "evaluation": "normal"
+          },
+          {
+            "test": "[Low1/8]FPF/16:all",
+            "raw_score": "-0.1",
+            "p_relation": "=",
+            "p_value_text": "0.518",
+            "evaluation": "normal"
+          },
+          {
+            "test": "[Low1/8]FPF/16:cross",
+            "raw_score": "+0.7",
+            "p_relation": "=",
+            "p_value_text": "0.220",
+            "evaluation": "normal"
+          },
+          {
+            "test": "[Low1/8]BDayS2(4,24)[18]",
+            "raw_score": "-0.5",
+            "processed_text": "\"pass\"",
+            "evaluation": "normal"
+          },
+          {
+            "test": "[Low1/8]BRank(12):score:64(1)",
+            "raw_score": "+0.4",
+            "p_relation": "~=",
+            "p_value_text": "0.7",
+            "evaluation": "normal"
+          },
+          {
+            "test": "[Low1/8]mod3n(5):(0,9-6)",
+            "raw_score": "-1.9",
+            "p_relation": "=",
+            "p_value_text": "0.862",
+            "evaluation": "normal"
+          },
+          {
+            "test": "[Low1/8]mod3n(5):(1,9-6)",
+            "raw_score": "-0.7",
+            "p_relation": "=",
+            "p_value_text": "0.633",
+            "evaluation": "normal"
+          },
+          {
+            "test": "[Low1/8]mod3n(5):(2,9-6)",
+            "raw_score": "+2.5",
+            "p_relation": "=",
+            "p_value_text": "0.112",
+            "evaluation": "normal"
+          }
+        ],
+        "battery_pass": null
+      },
+      "artifacts": {
+        "practrand_stdout.txt": {
+          "sha256": "65e9ad19764b9a2c6997ffdac600500b9f8b10d097c10107b3e48654765b69de",
+          "bytes": 3608
+        },
+        "practrand_stderr.txt": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      }
+    },
+    "testu01": {
+      "tool": "TestU01",
+      "version": "1.2.3",
+      "execution": {
+        "completed": true,
+        "battery_invocations_completed": 2,
+        "elapsed_seconds": 0.4915838000306394,
+        "finite_file_adapter": "testu01_file_batteries_v1"
+      },
+      "eligibility": {
+        "rabbit_and_alphabit_executable": true,
+        "complete_input_consumed": true,
+        "formal_battery_pass_statement_allowed": false,
+        "requested_bits": 1054464,
+        "reported_bits": {
+          "rabbit": 1054464,
+          "alphabit": 1054464
+        },
+        "reason": "both file batteries consumed the complete stream",
+        "same_file_reused_between_tests": true,
+        "reuse_scope": "each statistical test starts from the same finite sequence; this does not extend a test beyond the requested bit count"
+      },
+      "result": {
+        "classification": "external_file_battery_output_not_formal_validation",
+        "batteries": {
+          "rabbit": {
+            "execution": {
+              "completed": true,
+              "return_code": 0,
+              "elapsed_seconds": 0.4590244000137318,
+              "command": [
+                "testu01_file_batteries.exe",
+                "rabbit",
+                "${FULL_LSB_BINARY}",
+                "1054464"
+              ],
+              "requested_bits": 1054464,
+              "file_rewound_between_distinct_tests": true,
+              "input_extended_or_recycled_to_reach_length": false
+            },
+            "result": {
+              "battery": "Rabbit",
+              "reported_bits": 1054464,
+              "reported_statistics": 38,
+              "tool_reported_all_tests_passed": false,
+              "tool_reported_conclusion": "at_least_one_result_flagged",
+              "summary_text": "========= Summary results of Rabbit =========\n\nVersion:          TestU01 1.2.3\n File:             C:\\Users\\moren\\Desktop\\Codes\\STM32\\FractionalChaos\\validation\\results\\selected_statistical_streams_v1\\analysis\\hammouch_mekkaoui_m2sfrk_h755_fixed\\h755_hammouch_mekkaoui_m2sfrk_fixed-raw_lsb.bin\n Number of bits:   1054464\n Number of statistics:  38\n Total CPU time:   00:00:00.43\n The following tests gave p-values outside [0.001, 0.9990]:\n (eps  means a value < 1.0e-300):\n (eps1 means a value < 1.0e-15):\n\n       Test                          p-value\n ----------------------------------------------\n  1  MultinomialBitsOver              eps  \n  6  LempelZiv                      1 -  3.8e-5\n  7  Fourier1                       1 - eps1\n ----------------------------------------------\n All other tests were passed\n",
+              "omitted_tail_bits": 0,
+              "classification": "external_file_battery_output_not_formal_validation",
+              "battery_pass": null
+            },
+            "artifacts": {
+              "testu01_rabbit_stdout.txt": {
+                "sha256": "7174e47dd30dcca2b83891a4c48f5c98c7ff986c0bb18873432f803408a6386a",
+                "bytes": 24050
+              },
+              "testu01_rabbit_stderr.txt": {
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "bytes": 0
+              }
+            }
+          },
+          "alphabit": {
+            "execution": {
+              "completed": true,
+              "return_code": 0,
+              "elapsed_seconds": 0.0325594000169076,
+              "command": [
+                "testu01_file_batteries.exe",
+                "alphabit",
+                "${FULL_LSB_BINARY}",
+                "1054464"
+              ],
+              "requested_bits": 1054464,
+              "file_rewound_between_distinct_tests": true,
+              "input_extended_or_recycled_to_reach_length": false
+            },
+            "result": {
+              "battery": "Alphabit",
+              "reported_bits": 1054464,
+              "reported_statistics": 17,
+              "tool_reported_all_tests_passed": false,
+              "tool_reported_conclusion": "at_least_one_result_flagged",
+              "summary_text": "========= Summary results of Alphabit =========\n\nVersion:          TestU01 1.2.3\n File:             C:\\Users\\moren\\Desktop\\Codes\\STM32\\FractionalChaos\\validation\\results\\selected_statistical_streams_v1\\analysis\\hammouch_mekkaoui_m2sfrk_h755_fixed\\h755_hammouch_mekkaoui_m2sfrk_fixed-raw_lsb.bin\n Number of bits:   1054464\n Number of statistics:  17\n Total CPU time:   00:00:00.00\n The following tests gave p-values outside [0.001, 0.9990]:\n (eps  means a value < 1.0e-300):\n (eps1 means a value < 1.0e-15):\n\n       Test                          p-value\n ----------------------------------------------\n  3  MultinomialBitsOver, L = 8     3.2e-13\n  4  MultinomialBitsOver, L = 16      eps  \n ----------------------------------------------\n All other tests were passed\n",
+              "omitted_tail_bits": 0,
+              "classification": "external_file_battery_output_not_formal_validation",
+              "battery_pass": null
+            },
+            "artifacts": {
+              "testu01_alphabit_stdout.txt": {
+                "sha256": "5e6b02f9f2a06cb7517ad8404dcd14de9363f3ce01957193dc1a86b80ed6f94d",
+                "bytes": 11885
+              },
+              "testu01_alphabit_stderr.txt": {
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "bytes": 0
+              }
+            }
+          }
+        },
+        "battery_pass": null
+      }
+    }
+  }
+}

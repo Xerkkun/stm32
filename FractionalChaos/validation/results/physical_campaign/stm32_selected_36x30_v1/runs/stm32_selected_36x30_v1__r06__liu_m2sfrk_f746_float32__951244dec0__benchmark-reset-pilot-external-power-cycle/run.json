@@ -1,0 +1,265 @@
+{
+  "build": {
+    "benchmark_mode": true,
+    "buffered_capture_mode": false,
+    "buffered_capture_samples": null,
+    "calibration_basis": "compile_time_kind4_timing_endpoint_with_postboot_start_gate",
+    "clock_reference": true,
+    "decimation": 512,
+    "directory": "C:\\Users\\moren\\Desktop\\Codes\\STM32\\FractionalChaos\\build\\campaign-selected\\f746\\benchmark-10000-primary-handshake-release",
+    "energy_marker": true,
+    "energy_work_multiplier": 1,
+    "energy_work_units": 10000,
+    "energy_workload_contract": null,
+    "explicit_h755_clock_480_off": false,
+    "firmware_clock_profile": "f746_216mhz",
+    "images": [
+      {
+        "path": "C:\\Users\\moren\\Desktop\\Codes\\STM32\\FractionalChaos\\build\\campaign-selected\\f746\\benchmark-10000-primary-handshake-release\\f746_liu_m2sfrk.hex",
+        "sha256": "ef6b681d80a60c8065eb00efb90ff6dfbe54e04f555084bb1c92c7d2607cf33e"
+      }
+    ],
+    "maps": [
+      {
+        "path": "C:\\Users\\moren\\Desktop\\Codes\\STM32\\FractionalChaos\\build\\campaign-selected\\f746\\benchmark-10000-primary-handshake-release\\f746_liu_m2sfrk.map",
+        "sha256": "9afb804a78c65c9215ca0cbacc9d3a04f8d4cbc0e05befcbef209eb21a95606f"
+      }
+    ],
+    "primary_handshake": true,
+    "primary_handshake_protocol": "fcc1-host-start-v1",
+    "runtime_probe": true,
+    "system_clock_hz": 216000000,
+    "target": "f746_liu_m2sfrk"
+  },
+  "campaign_id": "stm32_selected_36x30_v1",
+  "capture": {
+    "capture_wall_time_s": 7.296999999991385,
+    "csv_path": "capture.csv",
+    "csv_sha256": "1b93039f7663d58a1d93913446d20bc3c2ea58e2deeace0887381f195aec9394",
+    "postboot_handshake_wall_time_s": 0.0629999999946449,
+    "program_wall_time_s": 1.1560000000172295,
+    "raw_path": "capture.bin",
+    "raw_sha256": "bb27528e595baec6e3f73cb1a4a985d203d2d5d01cccf3945eaaa2994577ff8c",
+    "reset_wall_time_s": 3.6570000000065193,
+    "timing_cycles_path": "timing_cycles.csv",
+    "timing_cycles_sha256": "0be329cf7bf202f6b684bdc156a5b928ec9414d92537138a8f1bb5780c797fb7"
+  },
+  "cell": {
+    "block_id": "block-06",
+    "board": "f746",
+    "cell_id": "liu_m2sfrk_f746_float32",
+    "cold_start_id": 6,
+    "method": "m2sfrk",
+    "order_index": 211,
+    "representation": "float32",
+    "system": "liu"
+  },
+  "eligible_as_paper_cold_start": false,
+  "eligible_as_primary_benchmark": false,
+  "endpoint": {
+    "complete": true,
+    "expected_blocks": 2500,
+    "expected_first_sequence": 0,
+    "expected_last_sequence": 9996,
+    "first_sequence": 0,
+    "frame_kind": 4,
+    "last_sequence": 9996,
+    "received_blocks": 2500,
+    "rule": "complete_kind4_block_set_not_duration",
+    "values_per_frame": 4,
+    "watchdog_s": 180
+  },
+  "endpoint_name": "benchmark_reset_pilot",
+  "evidence_level": "benchmark_reset_pilot_with_validated_external_power_cycle_pilot_only_not_primary",
+  "experimental_unit": "external_power_cycle_pilot_repetition",
+  "finished_utc": "2026-07-31T09:19:02.764601Z",
+  "hardware": {
+    "baud": 921600,
+    "board_name": "NUCLEO-F746ZG",
+    "manifest_port": "COM7",
+    "mcu": "STM32F746ZG",
+    "port": "COM7",
+    "power_removed": true,
+    "probe_serial": "066AFF504955657867165348",
+    "reset_mode": "external_power_cycle_controller",
+    "reset_preparation": "program_verify_halt_then_controller_power_cycle_then_usb_reenumeration_and_postboot_handshake"
+  },
+  "ina226_energy": null,
+  "manifest_sha256": "4e1c59f038aa45d4f178e209805601bb57ef42c17efcc817ecefc0184866ce5e",
+  "method_contract": {
+    "wire_id": 2,
+    "wire_name": "m2sfrk"
+  },
+  "representation_contract": {
+    "decoder_name": "float32",
+    "flash_name": "float32",
+    "target_suffix": "",
+    "wire_kind": 1
+  },
+  "reset": {
+    "contract_authorization": "pilot_only_pending_real_preflight_and_manifest_authorization",
+    "controller": {
+      "ack": {
+        "channel": "F746",
+        "off_mv": 0,
+        "off_ok": true,
+        "on_mv": 3329,
+        "on_ok": true,
+        "raw_line": "ACK b22ad03379f843fa F746 OFF_OK=1 ON_OK=1 OFF_MV=0 ON_MV=3329",
+        "request_id": "b22ad03379f843fa"
+      },
+      "baud": 115200,
+      "channel": "F746",
+      "command": "CYCLE b22ad03379f843fa F746 2500",
+      "controller_id": "UNO_PWR_01",
+      "lines": [
+        "ACK b22ad03379f843fa F746 OFF_OK=1 ON_OK=1 OFF_MV=0 ON_MV=3329"
+      ],
+      "off_ms": 2500,
+      "off_threshold_mv": 200,
+      "on_threshold_mv": 3100,
+      "port": "COM10",
+      "relay": 1
+    },
+    "controller_open_prime": {
+      "eligible_as_campaign_repetition": false,
+      "reason": "target_present_after_controller_open",
+      "required": false
+    },
+    "cycle_wall_time_s": 3.6570000000065193,
+    "eligible_as_paper_cold_start": false,
+    "eligible_as_primary_benchmark": false,
+    "ina226_energy": {
+      "eligible_as_primary_benchmark": false,
+      "publication_ready": false,
+      "requested": false,
+      "single_controller_serial_owner": true,
+      "status": "not_requested",
+      "workload_contract": null
+    },
+    "mode": "external_power_cycle_controller",
+    "port_reopen": {
+      "attempts": 1,
+      "opened": true,
+      "port": {
+        "device": "COM7",
+        "hwid": "USB VID:PID=0483:374B SER=066AFF504955657867165348 LOCATION=1-2:x.2",
+        "pid": 14155,
+        "serial_number": "066AFF504955657867165348",
+        "vid": 1155
+      },
+      "transient_errors": [],
+      "wall_time_s": 0.015000000013969839
+    },
+    "postboot_handshake": {
+      "command": "START b22ad03379f843fa 4 1 3 2",
+      "completed": true,
+      "fcc1_before_ready": false,
+      "ignored_lines": [],
+      "post_ready_buffered_bytes": 0,
+      "protocol": "fcc1-host-start-v1",
+      "ready_after_com_open": true,
+      "request_id": "b22ad03379f843fa",
+      "response": "READY b22ad03379f843fa",
+      "response_bytes": 23,
+      "response_sha256": "44fb9ac0b4c4988477b62d79ee9e7f6ce0e6621f5af0b5916e80109779e3d457",
+      "wall_time_s": 0.0629999999946449
+    },
+    "power_cycle_repetition_id": 6,
+    "power_removed": true,
+    "power_removed_basis": "validated_controller_ack_plus_stlink_vcp_identity_disappearance_and_reappearance",
+    "preparation": "program_verify_halt_then_controller_power_cycle_then_usb_reenumeration_and_postboot_handshake",
+    "protocol": "fc-power-cycle-v1",
+    "request_id": "b22ad03379f843fa",
+    "requested_run_id": "stm32_selected_36x30_v1__r06__liu_m2sfrk_f746_float32__951244dec0__benchmark-reset-pilot-external-power-cycle",
+    "usb_reenumeration": {
+      "backend": "pyserial_list_ports_usb_serial",
+      "com_disappeared": true,
+      "com_disappeared_after_s": 0.11000000001513399,
+      "com_reappeared": true,
+      "com_reappeared_after_s": 3.3280000000086147,
+      "independent_probe_lister_used": false,
+      "port_after": {
+        "device": "COM7",
+        "hwid": "USB VID:PID=0483:374B SER=066AFF504955657867165348 LOCATION=1-2:x.2",
+        "pid": 14155,
+        "serial_number": "066AFF504955657867165348",
+        "vid": 1155
+      },
+      "port_before": {
+        "device": "COM7",
+        "hwid": "USB VID:PID=0483:374B SER=066AFF504955657867165348 LOCATION=1-2:x.2",
+        "pid": 14155,
+        "serial_number": "066AFF504955657867165348",
+        "vid": 1155
+      },
+      "port_changed": false,
+      "probe_disappeared": true,
+      "probe_disappeared_after_s": 0.11000000001513399,
+      "probe_identity_source": "stlink_vcp_usb_serial_and_vid_pid",
+      "probe_reappeared": true,
+      "probe_reappeared_after_s": 3.3280000000086147,
+      "probe_serial": "066AFF504955657867165348"
+    }
+  },
+  "run_id": "stm32_selected_36x30_v1__r06__liu_m2sfrk_f746_float32__951244dec0__benchmark-reset-pilot-external-power-cycle",
+  "runtime_probe": {
+    "eligible_as_primary_evidence": false,
+    "error": "faltan artefactos FRP1 para f746_m7: C:\\Users\\moren\\Desktop\\Codes\\STM32\\FractionalChaos\\validation\\results\\physical_campaign\\stm32_selected_36x30_v1\\runs\\stm32_selected_36x30_v1__r06__liu_m2sfrk_f746_float32__951244dec0__benchmark-reset-pilot-external-power-cycle",
+    "status": "swd_unavailable_post_power_cycle"
+  },
+  "scheduled_campaign_run_id": "stm32_selected_36x30_v1__r06__liu_m2sfrk_f746_float32__951244dec0",
+  "scheduled_primary_run_id": "stm32_selected_36x30_v1__r06__liu_m2sfrk_f746_float32__951244dec0",
+  "schema": "fractional-chaos-physical-run-v1",
+  "source": {
+    "commit": "7e80434cbacf0a515d14e458a1cd45ad582b17c5",
+    "dirty": true,
+    "excluded_generated_paths": [
+      "validation/results/physical_campaign",
+      "build/campaign-selected/f746/benchmark-10000-primary-handshake-release"
+    ],
+    "status_scope": "source tree excluding generated run and build paths",
+    "status_sha256": "ae82871f0072ac2fd46916fba05b8c435924d17faf6f10eb723ab91dd1c10255"
+  },
+  "started_utc": "2026-07-31T09:18:46.906348Z",
+  "system_contract": {
+    "contract_canonical_sha256": "eea58d817e4877b2da1b70ec988602cdca725802924825161e2f5cb6cf01e34e",
+    "contract_status": "selected_contract",
+    "dt_s": 0.01,
+    "history_states": 1001,
+    "initial_state_words_hex": [
+      "0x3E4CCCCD",
+      "0x00000000",
+      "0x3F000000"
+    ],
+    "manifest_id": "liu_caputo_v1",
+    "memory_increments": 1000,
+    "memory_s": 10,
+    "observation_steps": 4000,
+    "q": 0.92,
+    "transient_steps": 1000,
+    "wire_id": 3
+  },
+  "timing": {
+    "accepted_as_solver_timing": true,
+    "all_cycles_nonzero": true,
+    "received_cycle_values": 10000,
+    "required_cycle_values": 10000,
+    "solver_only_window": true,
+    "uart_active_during_timed_window": false,
+    "warmup_steps": 1000
+  },
+  "transport": {
+    "accepted": true,
+    "bytes_received": 100000,
+    "crc_errors": 0,
+    "identity_mismatches": 0,
+    "invalid_headers": 0,
+    "matching_frames": 2500,
+    "noise_bytes": 0,
+    "nonzero_dropped_frames": 0,
+    "nonzero_status_frames": 0,
+    "trailing_bytes": 0,
+    "valid_frames": 2500
+  }
+}

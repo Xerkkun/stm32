@@ -1,0 +1,120 @@
+{
+  "analysis_command": [
+    "C:\\msys64\\ucrt64\\bin\\python.exe",
+    "C:\\Users\\moren\\Desktop\\Codes\\STM32\\FractionalChaos\\validation\\analyze_capture.py",
+    "C:\\Users\\moren\\Desktop\\Codes\\STM32\\FractionalChaos\\validation\\results\\selected_statistical_streams_v1\\captures\\chen_m2sfrk_f746_float32\\capture.csv",
+    "--output-dir",
+    "C:\\Users\\moren\\Desktop\\Codes\\STM32\\FractionalChaos\\validation\\results\\selected_statistical_streams_v1\\analysis\\chen_m2sfrk_f746_float32",
+    "--mode",
+    "fixed-point",
+    "--fractional-bits",
+    "14",
+    "--lsb-bits",
+    "8",
+    "--discard",
+    "64",
+    "--time-series-samples",
+    "1024",
+    "--sample-interval",
+    "2.5600000000000001",
+    "--expected-decimation",
+    "512",
+    "--minimum-statistical-bits",
+    "1000000"
+  ],
+  "analysis_stderr": "",
+  "analysis_stdout": "C:\\Users\\moren\\Desktop\\Codes\\STM32\\FractionalChaos\\validation\\results\\selected_statistical_streams_v1\\analysis\\chen_m2sfrk_f746_float32\\f746_chen_m2sfrk_analysis.json",
+  "board": "f746",
+  "capture": "C:\\Users\\moren\\Desktop\\Codes\\STM32\\FractionalChaos\\validation\\results\\selected_statistical_streams_v1\\captures\\chen_m2sfrk_f746_float32\\capture.csv",
+  "capture_sha256": "ce9cd1e697eefab288f870afa437d95047da1af3028299655c12edcb87791b41",
+  "discarded_valid_samples": 64,
+  "extraction": {
+    "bits_per_sample": 24,
+    "fractional_bits": 14,
+    "lsb_bits_per_variable": 8,
+    "mode": "signed_fixed_point_projection",
+    "raster_bit_order_within_field": "most_to_least_significant",
+    "rounding": "nearest_ties_away_from_zero",
+    "stored_byte_order": "one low-bit field per byte; unused high bits are zero",
+    "variable_order": "x_then_y_then_z_per_sample",
+    "variables": [
+      "x",
+      "y",
+      "z"
+    ]
+  },
+  "method": "m2sfrk",
+  "outputs": {
+    "attractor": "f746_chen_m2sfrk_attractor.png",
+    "bit_count": 1054464,
+    "bit_raster": "f746_chen_m2sfrk_fixed-point_lsb_raster.png",
+    "bit_raster_bits_per_row": 512,
+    "bit_raster_contains_complete_stream": true,
+    "bit_raster_max_figure_height_inches": 5.5,
+    "bitstream": "f746_chen_m2sfrk_fixed-point_lsb.bin",
+    "bitstream_sha256": "8edec10c8df5b816d0f511b557f29d010c3da54be290cfc74ee7cce06c23add6",
+    "dynamics_plot_style": {
+      "attractor_point_alpha": 0.52,
+      "attractor_point_area_points_squared": 2.4,
+      "color": "#1F4E79",
+      "time_series_line_width_points": 1.15
+    },
+    "time_series": "f746_chen_m2sfrk_time_series.png",
+    "time_series_samples_plotted": 1024
+  },
+  "performance_cycles_per_step": {
+    "available": true,
+    "maximum": 344,
+    "mean": 331.46453932993444,
+    "median": 331.0,
+    "minimum": 331,
+    "nonzero_measurements": 43936,
+    "p95": 331.0,
+    "p99": 344.0,
+    "reason_if_unavailable": null,
+    "scope": "DWT cycles for one integration step; UART and decimation are outside the measured interval"
+  },
+  "representation": "float32",
+  "samples_used": 43936,
+  "sampling": {
+    "host_reception_time_used": false,
+    "interpolation": false,
+    "resampling": false,
+    "sample_interval": 2.56,
+    "time_origin_sequence": 33280,
+    "time_unit": "model_time"
+  },
+  "schema_version": 4,
+  "sequence_first": 33280,
+  "sequence_last": 22528000,
+  "solver_status": {
+    "all_samples_ok": true,
+    "counts_by_numeric_status": {
+      "0": 43936
+    },
+    "nonzero_status_samples": 0,
+    "samples_by_flag": {
+      "fixed_coefficient_saturation": 0,
+      "fixed_coefficient_zeroed": 0,
+      "fixed_state_saturation": 0,
+      "nonfinite": 0,
+      "queue": 0
+    },
+    "samples_with_unknown_flags": 0
+  },
+  "statistical_eligibility": {
+    "eligible_for_configured_screening": true,
+    "is_statistical_test_result": false,
+    "minimum_required_bits": 1000000,
+    "observed_bits": 1054464,
+    "reason": "eligible",
+    "scope": "transport integrity and configured bit-count threshold only; each statistical battery must enforce its own requirements"
+  },
+  "system": "chen",
+  "transport": {
+    "expected_decimation": 512,
+    "maximum_reported_dropped": 0,
+    "sequence_gap_count": 0,
+    "transport_complete": true
+  }
+}

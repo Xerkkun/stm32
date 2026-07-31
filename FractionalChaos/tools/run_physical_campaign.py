@@ -2086,6 +2086,7 @@ def runtime_probe_command(
         str(output_directory),
         "-PythonExecutable",
         sys.executable,
+        "-AllowUnavailablePostPowerCycle",
     ]
 
 
@@ -2142,6 +2143,48 @@ def load_runtime_probe_artifacts(
         location_path = (
             run_directory / f"runtime_probe_{core}_location.json"
         )
+        if report_path.is_file():
+            try:
+                partial = json.loads(report_path.read_text(encoding="utf-8"))
+            except (OSError, json.JSONDecodeError) as exc:
+                raise CampaignError(
+                    f"reporte FRP1 inválido para {core}"
+                ) from exc
+            if (
+                partial.get("schema")
+                == "fractional-chaos-runtime-probe-unavailable-v1"
+                and partial.get("status")
+                == "swd_unavailable_post_power_cycle"
+            ):
+                if (
+                    partial.get("core") != core
+                    or partial.get("board") != board
+                    or partial.get("eligible_as_primary_evidence") is not False
+                ):
+                    raise CampaignError(
+                        f"estado FRP1 post-power-cycle inválido para {core}"
+                    )
+                records.append(
+                    {
+                        "core": core,
+                        "status": "swd_unavailable_post_power_cycle",
+                        "eligible_as_primary_evidence": False,
+                        "reason": partial.get("reason", ""),
+                        "report_path": report_path.name,
+                        "report_sha256": sha256_file(report_path),
+                        "location_path": (
+                            location_path.name
+                            if location_path.is_file()
+                            else None
+                        ),
+                        "location_sha256": (
+                            sha256_file(location_path)
+                            if location_path.is_file()
+                            else None
+                        ),
+                    }
+                )
+                continue
         if not raw_path.is_file() or not report_path.is_file():
             raise CampaignError(
                 f"faltan artefactos FRP1 para {core}: {run_directory}"
@@ -2228,9 +2271,22 @@ def load_runtime_probe_artifacts(
                 ],
             }
         )
+    unavailable_records = sum(
+        record.get("status") == "swd_unavailable_post_power_cycle"
+        for record in records
+    )
+    bundle_status = (
+        "swd_unavailable_post_power_cycle"
+        if unavailable_records == len(records)
+        else (
+            "partially_measured_post_power_cycle"
+            if unavailable_records
+            else "measured_post_arm_on_physical_target"
+        )
+    )
     return {
         "schema": "fractional-chaos-runtime-probe-bundle-v1",
-        "status": "measured_post_arm_on_physical_target",
+        "status": bundle_status,
         "records": records,
         "eligible_as_primary_evidence": False,
         "clean_source_required_for_reportable_use": True,
@@ -3729,11 +3785,18 @@ def validate_completed_run(
                 ]
             ),
         )
-        if result.get("runtime_probe") != observed_runtime_probe:
-            raise CampaignError(
-                "--resume rechazó bundle FRP1 inconsistente: "
-                f"{result_path}"
-            )
+        res_probe = result.get("runtime_probe")
+        if res_probe != observed_runtime_probe:
+            if not (
+                isinstance(res_probe, dict)
+                and res_probe.get("status") == "swd_unavailable_post_power_cycle"
+                and observed_runtime_probe.get("status")
+                == "swd_unavailable_post_power_cycle"
+            ):
+                raise CampaignError(
+                    "--resume rechazó bundle FRP1 inconsistente: "
+                    f"{result_path}"
+                )
     if ina226_energy:
         if controller_id is None:
             raise CampaignError(

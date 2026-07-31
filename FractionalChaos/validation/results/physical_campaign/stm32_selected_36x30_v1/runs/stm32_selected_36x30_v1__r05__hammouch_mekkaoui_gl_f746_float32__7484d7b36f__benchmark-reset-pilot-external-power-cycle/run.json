@@ -1,0 +1,265 @@
+{
+  "build": {
+    "benchmark_mode": true,
+    "buffered_capture_mode": false,
+    "buffered_capture_samples": null,
+    "calibration_basis": "compile_time_kind4_timing_endpoint_with_postboot_start_gate",
+    "clock_reference": true,
+    "decimation": 512,
+    "directory": "C:\\Users\\moren\\Desktop\\Codes\\STM32\\FractionalChaos\\build\\campaign-selected\\f746\\benchmark-10000-primary-handshake-release",
+    "energy_marker": true,
+    "energy_work_multiplier": 1,
+    "energy_work_units": 10000,
+    "energy_workload_contract": null,
+    "explicit_h755_clock_480_off": false,
+    "firmware_clock_profile": "f746_216mhz",
+    "images": [
+      {
+        "path": "C:\\Users\\moren\\Desktop\\Codes\\STM32\\FractionalChaos\\build\\campaign-selected\\f746\\benchmark-10000-primary-handshake-release\\f746_hammouch_mekkaoui_gl.hex",
+        "sha256": "cc5af08d365a670f53e8711892e2f599e472e9ee2495a3e116e3c46c7e19195a"
+      }
+    ],
+    "maps": [
+      {
+        "path": "C:\\Users\\moren\\Desktop\\Codes\\STM32\\FractionalChaos\\build\\campaign-selected\\f746\\benchmark-10000-primary-handshake-release\\f746_hammouch_mekkaoui_gl.map",
+        "sha256": "20eb7e45b78c93749ca357a61af76a26e3d936d4bbc11b47bf357f02fec5e312"
+      }
+    ],
+    "primary_handshake": true,
+    "primary_handshake_protocol": "fcc1-host-start-v1",
+    "runtime_probe": true,
+    "system_clock_hz": 216000000,
+    "target": "f746_hammouch_mekkaoui_gl"
+  },
+  "campaign_id": "stm32_selected_36x30_v1",
+  "capture": {
+    "capture_wall_time_s": 8.0,
+    "csv_path": "capture.csv",
+    "csv_sha256": "563cef20121a8484ea0e1c9338dfa20f49dfdc24f18984f85ae9cb6b389326a2",
+    "postboot_handshake_wall_time_s": 0.046999999991385266,
+    "program_wall_time_s": 1.6559999999881256,
+    "raw_path": "capture.bin",
+    "raw_sha256": "91550768a5ea21b3100bc1893c1fe2d9cca3ce0d786ab0ad24ab576e8484861e",
+    "reset_wall_time_s": 3.6719999999913853,
+    "timing_cycles_path": "timing_cycles.csv",
+    "timing_cycles_sha256": "98bfe8fad236a87d6442513d3455c0f825a02f5bf9e94894b2cb7e39b3044f58"
+  },
+  "cell": {
+    "block_id": "block-05",
+    "board": "f746",
+    "cell_id": "hammouch_mekkaoui_gl_f746_float32",
+    "cold_start_id": 5,
+    "method": "gl",
+    "order_index": 170,
+    "representation": "float32",
+    "system": "hammouch_mekkaoui"
+  },
+  "eligible_as_paper_cold_start": false,
+  "eligible_as_primary_benchmark": false,
+  "endpoint": {
+    "complete": true,
+    "expected_blocks": 2500,
+    "expected_first_sequence": 0,
+    "expected_last_sequence": 9996,
+    "first_sequence": 0,
+    "frame_kind": 4,
+    "last_sequence": 9996,
+    "received_blocks": 2500,
+    "rule": "complete_kind4_block_set_not_duration",
+    "values_per_frame": 4,
+    "watchdog_s": 180
+  },
+  "endpoint_name": "benchmark_reset_pilot",
+  "evidence_level": "benchmark_reset_pilot_with_validated_external_power_cycle_pilot_only_not_primary",
+  "experimental_unit": "external_power_cycle_pilot_repetition",
+  "finished_utc": "2026-07-31T08:21:53.781298Z",
+  "hardware": {
+    "baud": 921600,
+    "board_name": "NUCLEO-F746ZG",
+    "manifest_port": "COM7",
+    "mcu": "STM32F746ZG",
+    "port": "COM7",
+    "power_removed": true,
+    "probe_serial": "066AFF504955657867165348",
+    "reset_mode": "external_power_cycle_controller",
+    "reset_preparation": "program_verify_halt_then_controller_power_cycle_then_usb_reenumeration_and_postboot_handshake"
+  },
+  "ina226_energy": null,
+  "manifest_sha256": "4e1c59f038aa45d4f178e209805601bb57ef42c17efcc817ecefc0184866ce5e",
+  "method_contract": {
+    "wire_id": 1,
+    "wire_name": "gl_caputo"
+  },
+  "representation_contract": {
+    "decoder_name": "float32",
+    "flash_name": "float32",
+    "target_suffix": "",
+    "wire_kind": 1
+  },
+  "reset": {
+    "contract_authorization": "pilot_only_pending_real_preflight_and_manifest_authorization",
+    "controller": {
+      "ack": {
+        "channel": "F746",
+        "off_mv": 0,
+        "off_ok": true,
+        "on_mv": 3321,
+        "on_ok": true,
+        "raw_line": "ACK da9db8ea58d46d7f F746 OFF_OK=1 ON_OK=1 OFF_MV=0 ON_MV=3321",
+        "request_id": "da9db8ea58d46d7f"
+      },
+      "baud": 115200,
+      "channel": "F746",
+      "command": "CYCLE da9db8ea58d46d7f F746 2500",
+      "controller_id": "UNO_PWR_01",
+      "lines": [
+        "ACK da9db8ea58d46d7f F746 OFF_OK=1 ON_OK=1 OFF_MV=0 ON_MV=3321"
+      ],
+      "off_ms": 2500,
+      "off_threshold_mv": 200,
+      "on_threshold_mv": 3100,
+      "port": "COM10",
+      "relay": 1
+    },
+    "controller_open_prime": {
+      "eligible_as_campaign_repetition": false,
+      "reason": "target_present_after_controller_open",
+      "required": false
+    },
+    "cycle_wall_time_s": 3.6719999999913853,
+    "eligible_as_paper_cold_start": false,
+    "eligible_as_primary_benchmark": false,
+    "ina226_energy": {
+      "eligible_as_primary_benchmark": false,
+      "publication_ready": false,
+      "requested": false,
+      "single_controller_serial_owner": true,
+      "status": "not_requested",
+      "workload_contract": null
+    },
+    "mode": "external_power_cycle_controller",
+    "port_reopen": {
+      "attempts": 1,
+      "opened": true,
+      "port": {
+        "device": "COM7",
+        "hwid": "USB VID:PID=0483:374B SER=066AFF504955657867165348 LOCATION=1-2:x.2",
+        "pid": 14155,
+        "serial_number": "066AFF504955657867165348",
+        "vid": 1155
+      },
+      "transient_errors": [],
+      "wall_time_s": 0.015000000013969839
+    },
+    "postboot_handshake": {
+      "command": "START da9db8ea58d46d7f 4 1 4 1",
+      "completed": true,
+      "fcc1_before_ready": false,
+      "ignored_lines": [],
+      "post_ready_buffered_bytes": 0,
+      "protocol": "fcc1-host-start-v1",
+      "ready_after_com_open": true,
+      "request_id": "da9db8ea58d46d7f",
+      "response": "READY da9db8ea58d46d7f",
+      "response_bytes": 23,
+      "response_sha256": "42cf3c62796ac1f153177a62ec758a922b352176611471bef994e0354e179a49",
+      "wall_time_s": 0.046999999991385266
+    },
+    "power_cycle_repetition_id": 5,
+    "power_removed": true,
+    "power_removed_basis": "validated_controller_ack_plus_stlink_vcp_identity_disappearance_and_reappearance",
+    "preparation": "program_verify_halt_then_controller_power_cycle_then_usb_reenumeration_and_postboot_handshake",
+    "protocol": "fc-power-cycle-v1",
+    "request_id": "da9db8ea58d46d7f",
+    "requested_run_id": "stm32_selected_36x30_v1__r05__hammouch_mekkaoui_gl_f746_float32__7484d7b36f__benchmark-reset-pilot-external-power-cycle",
+    "usb_reenumeration": {
+      "backend": "pyserial_list_ports_usb_serial",
+      "com_disappeared": true,
+      "com_disappeared_after_s": 0.10899999999674037,
+      "com_reappeared": true,
+      "com_reappeared_after_s": 3.139999999984866,
+      "independent_probe_lister_used": false,
+      "port_after": {
+        "device": "COM7",
+        "hwid": "USB VID:PID=0483:374B SER=066AFF504955657867165348 LOCATION=1-2:x.2",
+        "pid": 14155,
+        "serial_number": "066AFF504955657867165348",
+        "vid": 1155
+      },
+      "port_before": {
+        "device": "COM7",
+        "hwid": "USB VID:PID=0483:374B SER=066AFF504955657867165348 LOCATION=1-2:x.2",
+        "pid": 14155,
+        "serial_number": "066AFF504955657867165348",
+        "vid": 1155
+      },
+      "port_changed": false,
+      "probe_disappeared": true,
+      "probe_disappeared_after_s": 0.10899999999674037,
+      "probe_identity_source": "stlink_vcp_usb_serial_and_vid_pid",
+      "probe_reappeared": true,
+      "probe_reappeared_after_s": 3.139999999984866,
+      "probe_serial": "066AFF504955657867165348"
+    }
+  },
+  "run_id": "stm32_selected_36x30_v1__r05__hammouch_mekkaoui_gl_f746_float32__7484d7b36f__benchmark-reset-pilot-external-power-cycle",
+  "runtime_probe": {
+    "eligible_as_primary_evidence": false,
+    "error": "faltan artefactos FRP1 para f746_m7: C:\\Users\\moren\\Desktop\\Codes\\STM32\\FractionalChaos\\validation\\results\\physical_campaign\\stm32_selected_36x30_v1\\runs\\stm32_selected_36x30_v1__r05__hammouch_mekkaoui_gl_f746_float32__7484d7b36f__benchmark-reset-pilot-external-power-cycle",
+    "status": "swd_unavailable_post_power_cycle"
+  },
+  "scheduled_campaign_run_id": "stm32_selected_36x30_v1__r05__hammouch_mekkaoui_gl_f746_float32__7484d7b36f",
+  "scheduled_primary_run_id": "stm32_selected_36x30_v1__r05__hammouch_mekkaoui_gl_f746_float32__7484d7b36f",
+  "schema": "fractional-chaos-physical-run-v1",
+  "source": {
+    "commit": "7e80434cbacf0a515d14e458a1cd45ad582b17c5",
+    "dirty": true,
+    "excluded_generated_paths": [
+      "validation/results/physical_campaign",
+      "build/campaign-selected/f746/benchmark-10000-primary-handshake-release"
+    ],
+    "status_scope": "source tree excluding generated run and build paths",
+    "status_sha256": "72d0a7633b0deac1103471ca463b6ac31609fc67b48fbd5e7fdde26b2a5f2348"
+  },
+  "started_utc": "2026-07-31T08:21:34.354118Z",
+  "system_contract": {
+    "contract_canonical_sha256": "e7ed2173d68da5cbd035baf1a4a4bf8d47ca2e7d97c535077cd262321355ec46",
+    "contract_status": "selected_contract",
+    "dt_s": 0.01,
+    "history_states": 1001,
+    "initial_state_words_hex": [
+      "0x3F333333",
+      "0x3DCCCCCD",
+      "0x00000000"
+    ],
+    "manifest_id": "hammouch_mekkaoui_caputo_v1",
+    "memory_increments": 1000,
+    "memory_s": 10,
+    "observation_steps": 4000,
+    "q": 0.98,
+    "transient_steps": 1000,
+    "wire_id": 4
+  },
+  "timing": {
+    "accepted_as_solver_timing": true,
+    "all_cycles_nonzero": true,
+    "received_cycle_values": 10000,
+    "required_cycle_values": 10000,
+    "solver_only_window": true,
+    "uart_active_during_timed_window": false,
+    "warmup_steps": 1000
+  },
+  "transport": {
+    "accepted": true,
+    "bytes_received": 100000,
+    "crc_errors": 0,
+    "identity_mismatches": 0,
+    "invalid_headers": 0,
+    "matching_frames": 2500,
+    "noise_bytes": 0,
+    "nonzero_dropped_frames": 0,
+    "nonzero_status_frames": 0,
+    "trailing_bytes": 0,
+    "valid_frames": 2500
+  }
+}

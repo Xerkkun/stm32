@@ -1,0 +1,12 @@
+{
+  "eligible_as_evidence": false,
+  "error": "no llegó FCC1 válido antes del watchdog de 15.0s",
+  "error_type": "CampaignError",
+  "failed_utc": "2026-07-31T09:02:06.318924Z",
+  "power_cycle_requested": false,
+  "power_removed": false,
+  "reset_evidence": null,
+  "run_id": "stm32_dense_selected_36cells_v1__r01__chen_efork3_f746_fixed__30a416d816__dense-timeseries-pilot",
+  "schema": "fractional-chaos-physical-run-failure-v1",
+  "started_utc": "2026-07-31T09:01:44.214841Z"
+}

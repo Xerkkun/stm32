@@ -1,0 +1,66 @@
+{
+  "analysis": {
+    "path": "validation/results/selected_statistical_streams_v1/analysis/hammouch_mekkaoui_m2sfrk_f746_fixed/f746_hammouch_mekkaoui_m2sfrk_analysis.json",
+    "sha256": "bad3808cd1303aa98926025ea6fdaa6fb305128ae9614313ffcf85fb87641a27"
+  },
+  "bitstream": {
+    "bits": 1054464,
+    "bytes": 131808,
+    "extraction_mode": "raw_signed_fixed_point_word",
+    "path": "validation/results/selected_statistical_streams_v1/analysis/hammouch_mekkaoui_m2sfrk_f746_fixed/f746_hammouch_mekkaoui_m2sfrk_fixed-raw_lsb.bin",
+    "sha256": "1f4644c4fb30d48bf8c97f57378356f9ab4b8138dcf8d8d0e543d0321cc619b9"
+  },
+  "board": "f746",
+  "build": {
+    "directory": "build/campaign-selected/f746/decim-512-release",
+    "images": [
+      {
+        "path": "build/campaign-selected/f746/decim-512-release/f746_hammouch_mekkaoui_m2sfrk_fixed.hex",
+        "sha256": "6f354f637ee9761ef5ba05f512e20f5ca998bb8e92d48ab7fee85c2fe25dd08e"
+      }
+    ]
+  },
+  "capture_bin": {
+    "bytes": 1760000,
+    "path": "validation/results/selected_statistical_streams_v1/captures/hammouch_mekkaoui_m2sfrk_f746_fixed/capture.bin",
+    "sha256": "edf1dedeea8da7592f5c5782c415bac97084db5cbaf9d86bb2f46cc49ccbb432"
+  },
+  "capture_csv": {
+    "bytes": 8378345,
+    "path": "validation/results/selected_statistical_streams_v1/captures/hammouch_mekkaoui_m2sfrk_f746_fixed/capture.csv",
+    "sha256": "c3018c75e6515a0c54f2b9a9d7573fa9b0c6c143389813fb9ebd2444fe911df6"
+  },
+  "cell_id": "hammouch_mekkaoui_m2sfrk_f746_fixed",
+  "decimation": 512,
+  "discarded_frames": 64,
+  "durations": {
+    "capture_wall_time_s": 99.9210000000021,
+    "first_matching_frame_after_start_s": 0.6870000000053551
+  },
+  "finished_utc": "2026-07-31T09:52:36.586218Z",
+  "manifest": {
+    "path": "validation/physical_campaign_selected_v1.json",
+    "sha256": "4e1c59f038aa45d4f178e209805601bb57ef42c17efcc817ecefc0184866ce5e"
+  },
+  "matching_frames": 44000,
+  "method": "m2sfrk",
+  "post_discard_bits": 1054464,
+  "representation": "fixed_q14_q30",
+  "reset_mode": "stlink_hardware_reset",
+  "sample_interval_model_time_s": 5.12,
+  "schema": "fractional-chaos-selected-statistical-stream-v1",
+  "sequence_first": 512,
+  "sequence_increment": 512,
+  "sequence_last": 22528000,
+  "started_utc": "2026-07-31T09:50:47.278577Z",
+  "status": "complete",
+  "system": "hammouch_mekkaoui",
+  "transport": {
+    "crc_errors": 0,
+    "invalid_headers": 0,
+    "noise_bytes": 0,
+    "nonzero_dropped_frames": 0,
+    "nonzero_status_frames": 0,
+    "trailing_bytes": 0
+  }
+}

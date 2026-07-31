@@ -31,7 +31,9 @@ param(
     [string]$PythonExecutable,
 
     [ValidateRange(1, 30)]
-    [int]$TimeoutSeconds = 5
+    [int]$TimeoutSeconds = 5,
+
+    [switch]$AllowUnavailablePostPowerCycle
 )
 
 Set-StrictMode -Version Latest
@@ -155,6 +157,19 @@ foreach ($record in $records) {
 
     if ($lastDecode -ne 0 -or
         -not (Test-Path -LiteralPath $reportPath -PathType Leaf)) {
-        throw "FRP1 no quedó completo y válido para $($record.Core)."
+        if (-not $AllowUnavailablePostPowerCycle) {
+            throw "FRP1 no quedó completo y válido para $($record.Core)."
+        }
+        $partial = [ordered]@{
+            schema                       = 'fractional-chaos-runtime-probe-unavailable-v1'
+            status                       = 'swd_unavailable_post_power_cycle'
+            core                         = $record.Core
+            board                        = $Board
+            reason                       = 'HOTPLUG did not return a complete FRP1 record within the post-power-cycle timeout.'
+            eligible_as_primary_evidence = $false
+        } | ConvertTo-Json -Depth 3
+        $partial | Set-Content -LiteralPath $reportPath -Encoding UTF8
+        Write-Warning "FRP1 no pudo leerse para $($record.Core) tras el ciclo de alimentación; se registra el estado explícito."
     }
 }
+

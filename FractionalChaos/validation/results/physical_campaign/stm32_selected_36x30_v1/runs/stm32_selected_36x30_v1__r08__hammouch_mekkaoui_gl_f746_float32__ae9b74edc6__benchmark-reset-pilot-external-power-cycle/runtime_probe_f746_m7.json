@@ -1,0 +1,6 @@
+﻿{
+    "status":  "swd_unavailable_post_power_cycle",
+    "core":  "f746_m7",
+    "board":  "f746",
+    "reason":  "Unable to read device id from ROM table after power cycle; CPU may have completed execution before HOTPLUG connected."
+}

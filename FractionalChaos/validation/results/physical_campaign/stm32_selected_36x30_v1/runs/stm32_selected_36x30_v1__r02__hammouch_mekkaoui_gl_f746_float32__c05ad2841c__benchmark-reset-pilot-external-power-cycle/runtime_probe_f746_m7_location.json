@@ -1,0 +1,24 @@
+{
+  "schema": "fractional-chaos-runtime-probe-v1",
+  "status": "prepared_symbol_location_not_measurement",
+  "core": "f746_m7",
+  "symbol": "g_fc_f746_runtime_probe",
+  "linked_address": 536936608,
+  "physical_debug_address": 536936608,
+  "size": 84,
+  "elf": {
+    "path": "C:/Users/moren/Desktop/Codes/STM32/FractionalChaos/build/campaign-selected/f746/benchmark-10000-primary-handshake-release/f746_hammouch_mekkaoui_gl.elf",
+    "sha256": "5afda70d804f706a33a4e24b74953d3133e2f92ae50d2f5a9e763fc282e2a843"
+  },
+  "cubeprogrammer_upload_arguments": [
+    "-c",
+    "port=SWD",
+    "sn=<PROBE_SERIAL>",
+    "mode=HOTPLUG",
+    "-u",
+    "0x200100A0",
+    "84",
+    "<OUTPUT.bin>"
+  ],
+  "template_is_physical_evidence": false
+}

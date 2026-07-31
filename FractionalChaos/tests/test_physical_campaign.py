@@ -391,6 +391,7 @@ def test_runtime_probe_command_is_scoped_to_handshake_build(
         == "benchmark-10000-primary-handshake-release"
     )
     assert command[command.index("-PythonExecutable") + 1] == sys.executable
+    assert "-AllowUnavailablePostPowerCycle" in command
 
 
 def write_runtime_probe_fixture(
@@ -458,6 +459,68 @@ def test_runtime_probe_bundle_preserves_artifact_hashes(
         bundle["records"][0]["expected_core_clock_hz"]
         == 216_000_000
     )
+
+
+def test_runtime_probe_bundle_accepts_explicit_post_power_unavailable(
+    tmp_path: Path,
+) -> None:
+    report_path = tmp_path / "runtime_probe_f746_m7.json"
+    report_path.write_text(
+        json.dumps(
+            {
+                "schema": "fractional-chaos-runtime-probe-unavailable-v1",
+                "status": "swd_unavailable_post_power_cycle",
+                "core": "f746_m7",
+                "board": "f746",
+                "reason": "post-power-cycle timeout",
+                "eligible_as_primary_evidence": False,
+            }
+        ),
+        encoding="utf-8",
+    )
+    (tmp_path / "runtime_probe_f746_m7_location.json").write_text(
+        "{}",
+        encoding="utf-8",
+    )
+    (tmp_path / "runtime_probe_f746_m7.bin").write_bytes(b"incomplete")
+
+    bundle = campaign.load_runtime_probe_artifacts(
+        tmp_path,
+        "f746",
+        216_000_000,
+    )
+
+    assert bundle["status"] == "swd_unavailable_post_power_cycle"
+    assert bundle["eligible_as_primary_evidence"] is False
+    assert bundle["records"][0]["status"] == (
+        "swd_unavailable_post_power_cycle"
+    )
+    assert bundle["records"][0]["report_sha256"] == (
+        campaign.sha256_file(report_path)
+    )
+
+
+def test_runtime_probe_bundle_rejects_unscoped_unavailable_status(
+    tmp_path: Path,
+) -> None:
+    (tmp_path / "runtime_probe_f746_m7.json").write_text(
+        json.dumps(
+            {
+                "status": "swd_unavailable_post_power_cycle",
+                "core": "f746_m7",
+                "board": "f746",
+                "eligible_as_primary_evidence": False,
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(campaign.CampaignError, match="faltan artefactos FRP1"):
+        campaign.load_runtime_probe_artifacts(
+            tmp_path,
+            "f746",
+            216_000_000,
+        )
 
 
 @pytest.mark.parametrize(

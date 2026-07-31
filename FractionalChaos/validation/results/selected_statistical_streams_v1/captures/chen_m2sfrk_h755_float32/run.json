@@ -1,0 +1,70 @@
+{
+  "analysis": {
+    "path": "validation/results/selected_statistical_streams_v1/analysis/chen_m2sfrk_h755_float32/h755_chen_m2sfrk_analysis.json",
+    "sha256": "6eabdadedae90f73a57a1b8cf839e1c9c66fc4e4ad91b64e860eec75fbcd174c"
+  },
+  "bitstream": {
+    "bits": 1054464,
+    "bytes": 131808,
+    "extraction_mode": "signed_fixed_point_projection",
+    "path": "validation/results/selected_statistical_streams_v1/analysis/chen_m2sfrk_h755_float32/h755_chen_m2sfrk_fixed-point_lsb.bin",
+    "sha256": "e1cfa01493ab4067bbcc72b3ff1976e15215a969b2edc0712251af5c9cebd386"
+  },
+  "board": "h755",
+  "build": {
+    "directory": "build/campaign-selected/h755/decim-1024-release",
+    "images": [
+      {
+        "path": "build/campaign-selected/h755/decim-1024-release/h755_m7_chen_m2sfrk.hex",
+        "sha256": "2ce7e9e583a99ce8a0e99e3a377a1f6f506e4609516b9a146b8a60048b798008"
+      },
+      {
+        "path": "build/campaign-selected/h755/decim-1024-release/h755_m4_uart.hex",
+        "sha256": "32b25ad0699ba83aab4af36c6c99faae98e555ecd2f2bc006a11b0b5a5bee88a"
+      }
+    ]
+  },
+  "capture_bin": {
+    "bytes": 1760000,
+    "path": "validation/results/selected_statistical_streams_v1/captures/chen_m2sfrk_h755_float32/capture.bin",
+    "sha256": "4afc0a3b7229024b87c1b7745958dbec143dc55e0d1f9e9c939262b4773ea4ec"
+  },
+  "capture_csv": {
+    "bytes": 7310003,
+    "path": "validation/results/selected_statistical_streams_v1/captures/chen_m2sfrk_h755_float32/capture.csv",
+    "sha256": "06885956d16ab072991c52079b98cfa375efe8e7c21f29e14fe977918bcafee4"
+  },
+  "cell_id": "chen_m2sfrk_h755_float32",
+  "decimation": 1024,
+  "discarded_frames": 64,
+  "durations": {
+    "capture_wall_time_s": 38.0,
+    "first_matching_frame_after_start_s": 0.5629999999946449
+  },
+  "finished_utc": "2026-07-31T09:40:02.379028Z",
+  "manifest": {
+    "path": "validation/physical_campaign_selected_v1.json",
+    "sha256": "4e1c59f038aa45d4f178e209805601bb57ef42c17efcc817ecefc0184866ce5e"
+  },
+  "matching_frames": 44000,
+  "method": "m2sfrk",
+  "post_discard_bits": 1054464,
+  "representation": "float32",
+  "reset_mode": "stlink_hardware_reset",
+  "sample_interval_model_time_s": 5.12,
+  "schema": "fractional-chaos-selected-statistical-stream-v1",
+  "sequence_first": 1024,
+  "sequence_increment": 1024,
+  "sequence_last": 45056000,
+  "started_utc": "2026-07-31T09:39:06.947110Z",
+  "status": "complete",
+  "system": "chen",
+  "transport": {
+    "crc_errors": 0,
+    "invalid_headers": 0,
+    "noise_bytes": 0,
+    "nonzero_dropped_frames": 0,
+    "nonzero_status_frames": 0,
+    "trailing_bytes": 0
+  }
+}

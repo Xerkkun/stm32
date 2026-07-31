@@ -1,8 +1,19 @@
+/*
+ * ina226_capture.cpp — portado de ATmega328P a Arduino Uno R4 (Renesas RA4M1)
+ *
+ * Cambios respecto al original AVR:
+ * - Eliminado: #include <avr/interrupt.h>
+ * - Eliminado: ISR(PCINT2_vect), PIND, PCICR, PCMSK2, PCIFR, _BV(), digitalPinToBitMask()
+ * - Añadido:   attachInterrupt(digitalPinToInterrupt(pin), ..., CHANGE) para cada pin marcador
+ *              con funciones ISR individuales que comparten la cola de eventos.
+ * - WIRE_HAS_TIMEOUT: Wire.setWireTimeout() sigue siendo compatible con Uno R4.
+ * - Todo lo demás (protocolo PWRCTL/1, INA14/1, framing binario, CRC-8) permanece intacto.
+ */
+
 #include "ina226_capture.h"
 
 #include <Arduino.h>
 #include <Wire.h>
-#include <avr/interrupt.h>
 #include <stdint.h>
 #include <string.h>
 
@@ -10,63 +21,63 @@
 
 namespace {
 
-constexpr uint8_t INA226_REGISTER_CONFIG = 0x00U;
-constexpr uint8_t INA226_REGISTER_SHUNT = 0x01U;
-constexpr uint8_t INA226_REGISTER_BUS = 0x02U;
-constexpr uint8_t INA226_REGISTER_MASK_ENABLE = 0x06U;
+constexpr uint8_t INA226_REGISTER_CONFIG       = 0x00U;
+constexpr uint8_t INA226_REGISTER_SHUNT        = 0x01U;
+constexpr uint8_t INA226_REGISTER_BUS          = 0x02U;
+constexpr uint8_t INA226_REGISTER_MASK_ENABLE  = 0x06U;
 constexpr uint8_t INA226_REGISTER_MANUFACTURER = 0xFEU;
-constexpr uint8_t INA226_REGISTER_DIE = 0xFFU;
+constexpr uint8_t INA226_REGISTER_DIE          = 0xFFU;
 constexpr uint16_t INA226_EXPECTED_MANUFACTURER = 0x5449U;
-constexpr uint16_t INA226_EXPECTED_DIE = 0x2260U;
+constexpr uint16_t INA226_EXPECTED_DIE          = 0x2260U;
 
 /*
- * AVG=1, VBUSCT=140 us, VSHCT=140 us, continuous shunt+bus.  A complete
- * conversion pair therefore takes 280 us; the audited stream reads at 2 ms.
+ * AVG=1, VBUSCT=140 us, VSHCT=140 us, continuous shunt+bus.
+ * A complete conversion pair takes 280 us; the audited stream reads at 2 ms.
  */
 constexpr uint16_t INA226_CONFIG_140US_CONTINUOUS = 0x0007U;
-constexpr uint16_t INA226_MASK_CONVERSION_READY = 1U << 3U;
-constexpr uint16_t INA226_MASK_MATH_OVERFLOW = 1U << 2U;
+constexpr uint16_t INA226_MASK_CONVERSION_READY   = 1U << 3U;
+constexpr uint16_t INA226_MASK_MATH_OVERFLOW      = 1U << 2U;
 
-constexpr uint8_t FRAME_SYNC_0 = 0xA5U;
-constexpr uint8_t FRAME_SYNC_1 = 0x5AU;
-constexpr uint8_t FRAME_SIZE = 14U;
-constexpr uint8_t FRAME_TYPE_SAMPLE = 0x40U;
-constexpr uint8_t FRAME_TYPE_EDGE = 0x80U;
-constexpr uint8_t FRAME_TYPE_END = 0xC0U;
+constexpr uint8_t FRAME_SYNC_0       = 0xA5U;
+constexpr uint8_t FRAME_SYNC_1       = 0x5AU;
+constexpr uint8_t FRAME_SIZE         = 14U;
+constexpr uint8_t FRAME_TYPE_SAMPLE  = 0x40U;
+constexpr uint8_t FRAME_TYPE_EDGE    = 0x80U;
+constexpr uint8_t FRAME_TYPE_END     = 0xC0U;
 
 constexpr uint8_t SAMPLE_FLAG_CONVERSION_READY = 1U << 0U;
-constexpr uint8_t SAMPLE_FLAG_MATH_OVERFLOW = 1U << 1U;
-constexpr uint8_t SAMPLE_FLAG_ENERGY_HIGH = 1U << 2U;
-constexpr uint8_t SAMPLE_FLAG_I2C_OK = 1U << 3U;
+constexpr uint8_t SAMPLE_FLAG_MATH_OVERFLOW    = 1U << 1U;
+constexpr uint8_t SAMPLE_FLAG_ENERGY_HIGH      = 1U << 2U;
+constexpr uint8_t SAMPLE_FLAG_I2C_OK           = 1U << 3U;
 
-constexpr uint8_t EDGE_FLAG_LEVEL = 1U << 0U;
+constexpr uint8_t EDGE_FLAG_LEVEL           = 1U << 0U;
 constexpr uint8_t EDGE_FLAG_CLOCK_REFERENCE = 1U << 1U;
 
-constexpr uint8_t END_FLAG_COMPLETE = 1U << 0U;
-constexpr uint8_t END_FLAG_STOPPED = 1U << 1U;
-constexpr uint8_t END_FLAG_TIMEOUT = 1U << 2U;
-constexpr uint8_t END_FLAG_I2C_ERROR = 1U << 3U;
-constexpr uint8_t END_FLAG_EDGE_OVERFLOW = 1U << 4U;
+constexpr uint8_t END_FLAG_COMPLETE               = 1U << 0U;
+constexpr uint8_t END_FLAG_STOPPED                = 1U << 1U;
+constexpr uint8_t END_FLAG_TIMEOUT                = 1U << 2U;
+constexpr uint8_t END_FLAG_I2C_ERROR              = 1U << 3U;
+constexpr uint8_t END_FLAG_EDGE_OVERFLOW          = 1U << 4U;
 constexpr uint8_t END_FLAG_TIMING_OR_EDGE_ANOMALY = 1U << 5U;
 
-constexpr uint8_t MARKER_KIND_ENERGY = 0U;
-constexpr uint8_t MARKER_KIND_CLOCK = 1U;
-constexpr uint8_t MARKER_QUEUE_CAPACITY = 8U;
+constexpr uint8_t MARKER_KIND_ENERGY          = 0U;
+constexpr uint8_t MARKER_KIND_CLOCK           = 1U;
+constexpr uint8_t MARKER_QUEUE_CAPACITY       = 8U;
 constexpr uint8_t CAPTURE_CONTROL_BUFFER_SIZE = 80U;
 
 struct ChannelConfig {
     const char *name;
-    uint8_t address;
-    uint16_t shunt_milliohms;
-    uint8_t energy_pin;
-    uint8_t clock_pin;
+    uint8_t     address;
+    uint16_t    shunt_milliohms;
+    uint8_t     energy_pin;
+    uint8_t     clock_pin;
 };
 
 struct MarkerEvent {
     uint32_t timestamp_us;
     uint16_t sequence;
-    uint8_t kind;
-    uint8_t level;
+    uint8_t  kind;
+    uint8_t  level;
 };
 
 const ChannelConfig CHANNELS[2] = {
@@ -87,36 +98,66 @@ const ChannelConfig CHANNELS[2] = {
 };
 
 volatile MarkerEvent marker_queue[MARKER_QUEUE_CAPACITY];
-volatile uint8_t marker_queue_head = 0U;
-volatile uint8_t marker_queue_tail = 0U;
-volatile bool marker_queue_overflow = false;
-volatile uint8_t marker_port_mask = 0U;
-volatile uint8_t marker_energy_mask = 0U;
-volatile uint8_t marker_clock_mask = 0U;
-volatile uint8_t marker_last_portd = 0U;
-volatile uint16_t capture_sequence = 0U;
-volatile bool capture_active = false;
+volatile uint8_t  marker_queue_head     = 0U;
+volatile uint8_t  marker_queue_tail     = 0U;
+volatile bool     marker_queue_overflow = false;
+volatile uint16_t capture_sequence      = 0U;
+volatile bool     capture_active        = false;
 
-const ChannelConfig *capture_channel = nullptr;
-char capture_request_id[65] = {0};
-uint16_t capture_pre_target = 0U;
-uint16_t capture_post_target = 0U;
-uint32_t capture_timeout_ms = 0UL;
-uint32_t capture_started_ms = 0UL;
-uint32_t next_sample_us = 0UL;
-uint32_t total_sample_count = 0UL;
-uint32_t post_sample_count = 0UL;
-uint16_t i2c_error_count = 0U;
-uint16_t late_slot_count = 0U;
-bool energy_rise_seen = false;
-bool energy_fall_seen = false;
-uint32_t energy_fall_timestamp_us = 0UL;
-bool capture_stop_requested = false;
-bool capture_protocol_anomaly = false;
-char capture_control_buffer[CAPTURE_CONTROL_BUFFER_SIZE];
-uint8_t capture_control_length = 0U;
-bool capture_control_overflow = false;
+/*
+ * Uno R4 port: almacena los numeros de pin activos en lugar de mascaras de
+ * bit AVR. El ISR lee el estado del pin con digitalRead(), que es seguro en
+ * el RA4M1 (no se accede directamente a PIND ni a registros de puerto).
+ */
+volatile uint8_t marker_energy_pin  = 0U;
+volatile uint8_t marker_clock_pin   = 0U;
+volatile bool    markers_attached   = false;
 
+const ChannelConfig *capture_channel        = nullptr;
+char     capture_request_id[65]             = {0};
+uint16_t capture_pre_target                 = 0U;
+uint16_t capture_post_target                = 0U;
+uint32_t capture_timeout_ms                 = 0UL;
+uint32_t capture_started_ms                 = 0UL;
+uint32_t next_sample_us                     = 0UL;
+uint32_t total_sample_count                 = 0UL;
+uint32_t post_sample_count                  = 0UL;
+uint16_t i2c_error_count                    = 0U;
+uint16_t late_slot_count                    = 0U;
+bool     energy_rise_seen                   = false;
+bool     energy_fall_seen                   = false;
+uint32_t energy_fall_timestamp_us           = 0UL;
+bool     capture_stop_requested             = false;
+bool     capture_protocol_anomaly           = false;
+char     capture_control_buffer[CAPTURE_CONTROL_BUFFER_SIZE];
+uint8_t  capture_control_length             = 0U;
+bool     capture_control_overflow           = false;
+
+// ---------------------------------------------------------------------------
+// Helper compartido por los dos ISR de marcador
+// ---------------------------------------------------------------------------
+void pushMarkerEvent(uint8_t kind, uint8_t level, uint32_t timestamp_us)
+{
+    if (!capture_active) {
+        return;
+    }
+    const uint8_t next_head = static_cast<uint8_t>(
+        (marker_queue_head + 1U) % MARKER_QUEUE_CAPACITY);
+    if (next_head == marker_queue_tail) {
+        marker_queue_overflow = true;
+        return;
+    }
+    volatile MarkerEvent &event = marker_queue[marker_queue_head];
+    event.timestamp_us          = timestamp_us;
+    event.sequence              = capture_sequence;
+    event.kind                  = kind;
+    event.level                 = level;
+    marker_queue_head           = next_head;
+}
+
+// ---------------------------------------------------------------------------
+// Utilidades de framing
+// ---------------------------------------------------------------------------
 uint8_t crc8(const uint8_t *bytes, uint8_t length)
 {
     uint8_t crc = 0U;
@@ -146,16 +187,16 @@ void putUint32Le(uint8_t *destination, uint32_t value)
 }
 
 void emitFrame(
-    uint8_t kind_and_flags,
+    uint8_t  kind_and_flags,
     uint16_t sequence,
     uint32_t timestamp_us,
     uint16_t value_0,
     uint16_t value_1)
 {
     uint8_t frame[FRAME_SIZE];
-    frame[0] = FRAME_SYNC_0;
-    frame[1] = FRAME_SYNC_1;
-    frame[2] = kind_and_flags;
+    frame[0]  = FRAME_SYNC_0;
+    frame[1]  = FRAME_SYNC_1;
+    frame[2]  = kind_and_flags;
     putUint16Le(&frame[3], sequence);
     putUint32Le(&frame[5], timestamp_us);
     putUint16Le(&frame[9], value_0);
@@ -164,6 +205,9 @@ void emitFrame(
     Serial.write(frame, FRAME_SIZE);
 }
 
+// ---------------------------------------------------------------------------
+// Validacion de entrada ASCII
+// ---------------------------------------------------------------------------
 bool validRequestId(const char *text)
 {
     if ((text == nullptr) || (*text == '\0')) {
@@ -230,6 +274,9 @@ void emitInaError(
     Serial.println(code);
 }
 
+// ---------------------------------------------------------------------------
+// I2C
+// ---------------------------------------------------------------------------
 bool readRegister(uint8_t address, uint8_t reg, uint16_t *value)
 {
     Wire.beginTransmission(address);
@@ -241,7 +288,7 @@ bool readRegister(uint8_t address, uint8_t reg, uint16_t *value)
         return false;
     }
     const uint16_t high = static_cast<uint8_t>(Wire.read());
-    const uint16_t low = static_cast<uint8_t>(Wire.read());
+    const uint16_t low  = static_cast<uint8_t>(Wire.read());
     *value = static_cast<uint16_t>((high << 8U) | low);
     return true;
 }
@@ -261,10 +308,7 @@ bool readIdentity(
     uint16_t *die)
 {
     return
-        readRegister(
-            channel.address,
-            INA226_REGISTER_MANUFACTURER,
-            manufacturer) &&
+        readRegister(channel.address, INA226_REGISTER_MANUFACTURER, manufacturer) &&
         readRegister(channel.address, INA226_REGISTER_DIE, die);
 }
 
@@ -289,37 +333,15 @@ bool configureSensor(
         (observed_config == INA226_CONFIG_140US_CONTINUOUS);
 }
 
+// ---------------------------------------------------------------------------
+// Cola de marcadores
+// ---------------------------------------------------------------------------
 void clearMarkerQueue()
 {
     noInterrupts();
-    marker_queue_head = 0U;
-    marker_queue_tail = 0U;
+    marker_queue_head     = 0U;
+    marker_queue_tail     = 0U;
     marker_queue_overflow = false;
-    interrupts();
-}
-
-void enableMarkerInterrupts(const ChannelConfig &channel)
-{
-    const uint8_t energy_mask = digitalPinToBitMask(channel.energy_pin);
-    const uint8_t clock_mask = digitalPinToBitMask(channel.clock_pin);
-    noInterrupts();
-    marker_energy_mask = energy_mask;
-    marker_clock_mask = clock_mask;
-    marker_port_mask = static_cast<uint8_t>(energy_mask | clock_mask);
-    marker_last_portd = PIND;
-    PCIFR |= _BV(PCIF2);
-    PCMSK2 |= marker_port_mask;
-    PCICR |= _BV(PCIE2);
-    interrupts();
-}
-
-void disableMarkerInterrupts()
-{
-    noInterrupts();
-    PCMSK2 &= static_cast<uint8_t>(~marker_port_mask);
-    marker_port_mask = 0U;
-    marker_energy_mask = 0U;
-    marker_clock_mask = 0U;
     interrupts();
 }
 
@@ -328,12 +350,11 @@ bool popMarkerEvent(MarkerEvent *event)
     bool present = false;
     noInterrupts();
     if (marker_queue_tail != marker_queue_head) {
-        const volatile MarkerEvent &source =
-            marker_queue[marker_queue_tail];
+        const volatile MarkerEvent &source = marker_queue[marker_queue_tail];
         event->timestamp_us = source.timestamp_us;
-        event->sequence = source.sequence;
-        event->kind = source.kind;
-        event->level = source.level;
+        event->sequence     = source.sequence;
+        event->kind         = source.kind;
+        event->level        = source.level;
         marker_queue_tail = static_cast<uint8_t>(
             (marker_queue_tail + 1U) % MARKER_QUEUE_CAPACITY);
         present = true;
@@ -342,6 +363,61 @@ bool popMarkerEvent(MarkerEvent *event)
     return present;
 }
 
+// ---------------------------------------------------------------------------
+// Interrupciones de marcador — Uno R4 (Renesas RA4M1)
+//
+// El ATmega328P usaba ISR(PCINT2_vect) que leía PIND y PCICR/PCMSK2 para
+// detectar cambios en un grupo de pines. El RA4M1 no tiene Pin-Change
+// Interrupts por puerto; todos sus pines GPIO admiten interrupciones CHANGE
+// individuales a través de attachInterrupt().
+//
+// Se instalan dos handlers independientes — uno por pin marcador — que
+// comparten la cola circular de eventos y el contador de secuencia. La
+// semántica es equivalente al ISR original.
+// ---------------------------------------------------------------------------
+void energyISR()
+{
+    const uint32_t ts    = micros();
+    const uint8_t  level = static_cast<uint8_t>(digitalRead(marker_energy_pin));
+    pushMarkerEvent(MARKER_KIND_ENERGY, level, ts);
+}
+
+void clockISR()
+{
+    const uint32_t ts    = micros();
+    const uint8_t  level = static_cast<uint8_t>(digitalRead(marker_clock_pin));
+    pushMarkerEvent(MARKER_KIND_CLOCK, level, ts);
+}
+
+void enableMarkerInterrupts(const ChannelConfig &channel)
+{
+    noInterrupts();
+    marker_energy_pin = channel.energy_pin;
+    marker_clock_pin  = channel.clock_pin;
+    interrupts();
+
+    attachInterrupt(digitalPinToInterrupt(channel.energy_pin), energyISR, CHANGE);
+    attachInterrupt(digitalPinToInterrupt(channel.clock_pin),  clockISR,  CHANGE);
+    markers_attached = true;
+}
+
+void disableMarkerInterrupts()
+{
+    if (!markers_attached) {
+        return;
+    }
+    detachInterrupt(digitalPinToInterrupt(marker_energy_pin));
+    detachInterrupt(digitalPinToInterrupt(marker_clock_pin));
+    noInterrupts();
+    marker_energy_pin = 0U;
+    marker_clock_pin  = 0U;
+    markers_attached  = false;
+    interrupts();
+}
+
+// ---------------------------------------------------------------------------
+// Drenaje de cola y muestreo
+// ---------------------------------------------------------------------------
 void drainMarkerEvents()
 {
     MarkerEvent event;
@@ -374,7 +450,7 @@ void drainMarkerEvents()
                 capture_protocol_anomaly = true;
                 continue;
             }
-            energy_fall_seen = true;
+            energy_fall_seen         = true;
             energy_fall_timestamp_us = event.timestamp_us;
         }
     }
@@ -383,7 +459,7 @@ void drainMarkerEvents()
 void emitSample()
 {
     const uint32_t scheduled_us = next_sample_us;
-    uint32_t now_us = micros();
+    const uint32_t now_us       = micros();
     if (static_cast<int32_t>(now_us - scheduled_us) < 0) {
         return;
     }
@@ -404,24 +480,15 @@ void emitSample()
         next_sample_us += periods_late * PC_INA_SAMPLE_PERIOD_US;
     }
 
-    const uint16_t sequence = capture_sequence;
+    const uint16_t sequence        = capture_sequence;
     const uint32_t read_started_us = micros();
-    uint16_t shunt_raw = 0U;
-    uint16_t bus_raw = 0U;
+    uint16_t shunt_raw   = 0U;
+    uint16_t bus_raw     = 0U;
     uint16_t mask_enable = 0U;
     const bool i2c_ok =
-        readRegister(
-            capture_channel->address,
-            INA226_REGISTER_SHUNT,
-            &shunt_raw) &&
-        readRegister(
-            capture_channel->address,
-            INA226_REGISTER_BUS,
-            &bus_raw) &&
-        readRegister(
-            capture_channel->address,
-            INA226_REGISTER_MASK_ENABLE,
-            &mask_enable);
+        readRegister(capture_channel->address, INA226_REGISTER_SHUNT,       &shunt_raw) &&
+        readRegister(capture_channel->address, INA226_REGISTER_BUS,         &bus_raw) &&
+        readRegister(capture_channel->address, INA226_REGISTER_MASK_ENABLE, &mask_enable);
 
     uint8_t flags = 0U;
     if (i2c_ok) {
@@ -435,7 +502,13 @@ void emitSample()
     } else if (i2c_error_count < UINT16_MAX) {
         ++i2c_error_count;
     }
-    if ((PIND & marker_energy_mask) != 0U) {
+
+    /*
+     * Uno R4 port: en el original se leía PIND directamente para el nivel
+     * instantáneo del pin de energía. Aquí se usa digitalRead(), que es la
+     * API portable correcta para el RA4M1.
+     */
+    if (digitalRead(marker_energy_pin) == HIGH) {
         flags |= SAMPLE_FLAG_ENERGY_HIGH;
     }
 
@@ -452,21 +525,20 @@ void emitSample()
     ++total_sample_count;
     next_sample_us += PC_INA_SAMPLE_PERIOD_US;
     if (energy_fall_seen &&
-        (static_cast<int32_t>(
-             read_started_us - energy_fall_timestamp_us) > 0)) {
-        // A sample in the same micros() tick as the falling edge remains in
-        // the inclusive energy window.  Only a strictly later sample counts
-        // toward the post-trigger quota used by the host validator.
+        (static_cast<int32_t>(read_started_us - energy_fall_timestamp_us) > 0)) {
         ++post_sample_count;
     }
 }
 
+// ---------------------------------------------------------------------------
+// Control de captura ASCII
+// ---------------------------------------------------------------------------
 void processCaptureControlLine(char *line)
 {
     char *save_pointer = nullptr;
-    char *command = strtok_r(line, " ", &save_pointer);
+    char *command    = strtok_r(line, " ", &save_pointer);
     char *request_id = strtok_r(nullptr, " ", &save_pointer);
-    char *extra = strtok_r(nullptr, " ", &save_pointer);
+    char *extra      = strtok_r(nullptr, " ", &save_pointer);
     if ((command == nullptr) ||
         (strcmp(command, "STOP") != 0) ||
         (request_id == nullptr) ||
@@ -492,15 +564,14 @@ void pollCaptureControl()
                 capture_control_buffer[capture_control_length] = '\0';
                 processCaptureControlLine(capture_control_buffer);
             }
-            capture_control_length = 0U;
+            capture_control_length   = 0U;
             capture_control_overflow = false;
             continue;
         }
         if (capture_control_overflow) {
             continue;
         }
-        if (capture_control_length >=
-            (CAPTURE_CONTROL_BUFFER_SIZE - 1U)) {
+        if (capture_control_length >= (CAPTURE_CONTROL_BUFFER_SIZE - 1U)) {
             capture_control_overflow = true;
             continue;
         }
@@ -514,18 +585,10 @@ void finishCapture(bool complete, bool timed_out)
     drainMarkerEvents();
 
     uint8_t flags = complete ? END_FLAG_COMPLETE : 0U;
-    if (capture_stop_requested) {
-        flags |= END_FLAG_STOPPED;
-    }
-    if (timed_out) {
-        flags |= END_FLAG_TIMEOUT;
-    }
-    if (i2c_error_count > 0U) {
-        flags |= END_FLAG_I2C_ERROR;
-    }
-    if (marker_queue_overflow) {
-        flags |= END_FLAG_EDGE_OVERFLOW;
-    }
+    if (capture_stop_requested)   { flags |= END_FLAG_STOPPED; }
+    if (timed_out)                { flags |= END_FLAG_TIMEOUT; }
+    if (i2c_error_count > 0U)     { flags |= END_FLAG_I2C_ERROR; }
+    if (marker_queue_overflow)    { flags |= END_FLAG_EDGE_OVERFLOW; }
     if ((late_slot_count > 0U) || capture_protocol_anomaly) {
         flags |= END_FLAG_TIMING_OR_EDGE_ANOMALY;
     }
@@ -536,15 +599,18 @@ void finishCapture(bool complete, bool timed_out)
         i2c_error_count,
         late_slot_count);
     Serial.flush();
-    capture_active = false;
-    capture_control_length = 0U;
+    capture_active           = false;
+    capture_control_length   = 0U;
     capture_control_overflow = false;
 }
 
+// ---------------------------------------------------------------------------
+// Comandos INA_STATUS e INA_READ
+// ---------------------------------------------------------------------------
 void emitInaStatus(const ChannelConfig &channel)
 {
     uint16_t manufacturer = 0U;
-    uint16_t die = 0U;
+    uint16_t die          = 0U;
     const bool i2c_ok = readIdentity(channel, &manufacturer, &die);
     Serial.print(F("INASTATUS INACAP=1 CHANNEL="));
     Serial.print(channel.name);
@@ -572,34 +638,24 @@ void emitInaStatus(const ChannelConfig &channel)
 void emitInaRead(const ChannelConfig &channel)
 {
     uint16_t manufacturer = 0U;
-    uint16_t die = 0U;
+    uint16_t die          = 0U;
     if (!configureSensor(channel, &manufacturer, &die)) {
         emitInaError("0", channel.name, F("INA_ID_OR_CONFIG"));
         return;
     }
     delay(1U);
     const uint32_t timestamp_us = micros();
-    uint16_t shunt_raw = 0U;
-    uint16_t bus_raw = 0U;
+    uint16_t shunt_raw   = 0U;
+    uint16_t bus_raw     = 0U;
     uint16_t mask_enable = 0U;
     const bool i2c_ok =
-        readRegister(
-            channel.address,
-            INA226_REGISTER_SHUNT,
-            &shunt_raw) &&
-        readRegister(
-            channel.address,
-            INA226_REGISTER_BUS,
-            &bus_raw) &&
-        readRegister(
-            channel.address,
-            INA226_REGISTER_MASK_ENABLE,
-            &mask_enable);
+        readRegister(channel.address, INA226_REGISTER_SHUNT,       &shunt_raw) &&
+        readRegister(channel.address, INA226_REGISTER_BUS,         &bus_raw) &&
+        readRegister(channel.address, INA226_REGISTER_MASK_ENABLE, &mask_enable);
     if (!i2c_ok) {
         emitInaError("0", channel.name, F("INA_READ"));
         return;
     }
-
     Serial.print(F("INAREAD CHANNEL="));
     Serial.print(channel.name);
     Serial.print(F(" ADDR=0x"));
@@ -611,13 +667,14 @@ void emitInaRead(const ChannelConfig &channel)
     Serial.print(F(" SHUNT_RAW="));
     Serial.print(static_cast<int16_t>(shunt_raw));
     Serial.print(F(" CNVR="));
-    Serial.print(
-        (mask_enable & INA226_MASK_CONVERSION_READY) != 0U ? 1 : 0);
+    Serial.print((mask_enable & INA226_MASK_CONVERSION_READY) != 0U ? 1 : 0);
     Serial.print(F(" OVF="));
-    Serial.println(
-        (mask_enable & INA226_MASK_MATH_OVERFLOW) != 0U ? 1 : 0);
+    Serial.println((mask_enable & INA226_MASK_MATH_OVERFLOW) != 0U ? 1 : 0);
 }
 
+// ---------------------------------------------------------------------------
+// ARM — inicia captura binaria
+// ---------------------------------------------------------------------------
 void armCapture(
     const char *request_id,
     const ChannelConfig &channel,
@@ -631,30 +688,30 @@ void armCapture(
     }
 
     uint16_t manufacturer = 0U;
-    uint16_t die = 0U;
+    uint16_t die          = 0U;
     if (!configureSensor(channel, &manufacturer, &die)) {
         emitInaError(request_id, channel.name, F("INA_ID_OR_CONFIG"));
         return;
     }
 
-    capture_channel = &channel;
+    capture_channel  = &channel;
     strncpy(capture_request_id, request_id, sizeof(capture_request_id) - 1U);
     capture_request_id[sizeof(capture_request_id) - 1U] = '\0';
-    capture_pre_target = pre_samples;
-    capture_post_target = post_samples;
-    capture_timeout_ms = timeout_ms;
-    capture_sequence = 0U;
-    total_sample_count = 0UL;
-    post_sample_count = 0UL;
-    i2c_error_count = 0U;
-    late_slot_count = 0U;
-    energy_rise_seen = false;
-    energy_fall_seen = false;
-    energy_fall_timestamp_us = 0UL;
-    capture_stop_requested = false;
-    capture_protocol_anomaly = false;
-    capture_control_length = 0U;
-    capture_control_overflow = false;
+    capture_pre_target        = pre_samples;
+    capture_post_target       = post_samples;
+    capture_timeout_ms        = timeout_ms;
+    capture_sequence          = 0U;
+    total_sample_count        = 0UL;
+    post_sample_count         = 0UL;
+    i2c_error_count           = 0U;
+    late_slot_count           = 0U;
+    energy_rise_seen          = false;
+    energy_fall_seen          = false;
+    energy_fall_timestamp_us  = 0UL;
+    capture_stop_requested    = false;
+    capture_protocol_anomaly  = false;
+    capture_control_length    = 0U;
+    capture_control_overflow  = false;
     clearMarkerQueue();
 
     Serial.print(F("ARMED "));
@@ -680,55 +737,23 @@ void armCapture(
     Serial.println(F(" SHUNT_MARKING=R100 FRAME=INA14/1"));
     Serial.flush();
 
-    capture_active = true;
+    capture_active     = true;
     enableMarkerInterrupts(channel);
     capture_started_ms = millis();
-    next_sample_us = micros();
+    next_sample_us     = micros();
 }
 
 }  // namespace
 
-ISR(PCINT2_vect)
-{
-    const uint8_t current = PIND;
-    const uint8_t changed = static_cast<uint8_t>(
-        (current ^ marker_last_portd) & marker_port_mask);
-    marker_last_portd = current;
-    if (!capture_active || (changed == 0U)) {
-        return;
-    }
-
-    const uint32_t timestamp_us = micros();
-    const uint16_t sequence = capture_sequence;
-    const uint8_t masks[2] = {
-        marker_energy_mask,
-        marker_clock_mask,
-    };
-    for (uint8_t kind = 0U; kind < 2U; ++kind) {
-        if ((changed & masks[kind]) == 0U) {
-            continue;
-        }
-        const uint8_t next_head = static_cast<uint8_t>(
-            (marker_queue_head + 1U) % MARKER_QUEUE_CAPACITY);
-        if (next_head == marker_queue_tail) {
-            marker_queue_overflow = true;
-            continue;
-        }
-        volatile MarkerEvent &event = marker_queue[marker_queue_head];
-        event.timestamp_us = timestamp_us;
-        event.sequence = sequence;
-        event.kind = kind;
-        event.level = ((current & masks[kind]) != 0U) ? 1U : 0U;
-        marker_queue_head = next_head;
-    }
-}
-
+// ---------------------------------------------------------------------------
+// API publica
+// ---------------------------------------------------------------------------
 void ina226CaptureInitialize()
 {
     pinMode(PC_ENERGY_MARKER_CH1_PIN, INPUT);
     pinMode(PC_ENERGY_MARKER_CH2_PIN, INPUT);
-    pinMode(PC_CLOCK_MARKER_CH1_PIN, INPUT);
-    pinMode(PC_CLOCK_MARKER_CH2_PIN, INPUT);
+    pinMode(PC_CLOCK_MARKER_CH1_PIN,  INPUT);
+    pinMode(PC_CLOCK_MARKER_CH2_PIN,  INPUT);
     Wire.begin();
     Wire.setClock(PC_INA_I2C_CLOCK_HZ);
 #if defined(WIRE_HAS_TIMEOUT)
@@ -762,8 +787,7 @@ void ina226CapturePoll()
     emitSample();
     drainMarkerEvents();
 
-    if (energy_fall_seen &&
-        (post_sample_count >= capture_post_target)) {
+    if (energy_fall_seen && (post_sample_count >= capture_post_target)) {
         finishCapture(true, false);
     }
 }
@@ -772,7 +796,7 @@ bool ina226HandleAsciiCommand(char *command, char **save_pointer)
 {
     if (strcmp(command, "INA_STATUS") == 0) {
         char *channel_text = strtok_r(nullptr, " ", save_pointer);
-        char *extra = strtok_r(nullptr, " ", save_pointer);
+        char *extra        = strtok_r(nullptr, " ", save_pointer);
         if ((channel_text == nullptr) || (extra != nullptr)) {
             emitInaError("0", "0", F("BAD_ARITY"));
             return true;
@@ -788,7 +812,7 @@ bool ina226HandleAsciiCommand(char *command, char **save_pointer)
 
     if (strcmp(command, "INA_READ") == 0) {
         char *channel_text = strtok_r(nullptr, " ", save_pointer);
-        char *extra = strtok_r(nullptr, " ", save_pointer);
+        char *extra        = strtok_r(nullptr, " ", save_pointer);
         if ((channel_text == nullptr) || (extra != nullptr)) {
             emitInaError("0", "0", F("BAD_ARITY"));
             return true;
@@ -811,20 +835,20 @@ bool ina226HandleAsciiCommand(char *command, char **save_pointer)
         return false;
     }
 
-    char *request_id = strtok_r(nullptr, " ", save_pointer);
-    char *channel_text = strtok_r(nullptr, " ", save_pointer);
-    char *pre_text = strtok_r(nullptr, " ", save_pointer);
-    char *post_text = strtok_r(nullptr, " ", save_pointer);
-    char *timeout_text = strtok_r(nullptr, " ", save_pointer);
+    char *request_id    = strtok_r(nullptr, " ", save_pointer);
+    char *channel_text  = strtok_r(nullptr, " ", save_pointer);
+    char *pre_text      = strtok_r(nullptr, " ", save_pointer);
+    char *post_text     = strtok_r(nullptr, " ", save_pointer);
+    char *timeout_text  = strtok_r(nullptr, " ", save_pointer);
     char *shunt_marking = strtok_r(nullptr, " ", save_pointer);
-    char *extra = strtok_r(nullptr, " ", save_pointer);
-    if ((request_id == nullptr) ||
-        (channel_text == nullptr) ||
-        (pre_text == nullptr) ||
-        (post_text == nullptr) ||
-        (timeout_text == nullptr) ||
+    char *extra         = strtok_r(nullptr, " ", save_pointer);
+    if ((request_id    == nullptr) ||
+        (channel_text  == nullptr) ||
+        (pre_text      == nullptr) ||
+        (post_text     == nullptr) ||
+        (timeout_text  == nullptr) ||
         (shunt_marking == nullptr) ||
-        (extra != nullptr)) {
+        (extra         != nullptr)) {
         emitInaError("0", "0", F("BAD_ARITY"));
         return true;
     }
@@ -843,21 +867,21 @@ bool ina226HandleAsciiCommand(char *command, char **save_pointer)
         return true;
     }
 
-    uint32_t pre_samples = 0UL;
+    uint32_t pre_samples  = 0UL;
     uint32_t post_samples = 0UL;
-    uint32_t timeout_ms = 0UL;
+    uint32_t timeout_ms   = 0UL;
     if (!parseUint32(pre_text, &pre_samples) ||
         !parseUint32(post_text, &post_samples) ||
         !parseUint32(timeout_text, &timeout_ms)) {
         emitInaError(request_id, channel->name, F("BAD_CAPTURE_RANGE"));
         return true;
     }
-    if ((pre_samples < PC_INA_MIN_IDLE_SAMPLES) ||
-        (pre_samples > PC_INA_MAX_IDLE_SAMPLES) ||
+    if ((pre_samples  < PC_INA_MIN_IDLE_SAMPLES) ||
+        (pre_samples  > PC_INA_MAX_IDLE_SAMPLES) ||
         (post_samples < PC_INA_MIN_IDLE_SAMPLES) ||
         (post_samples > PC_INA_MAX_IDLE_SAMPLES) ||
-        (timeout_ms < PC_INA_MIN_TIMEOUT_MS) ||
-        (timeout_ms > PC_INA_MAX_TIMEOUT_MS)) {
+        (timeout_ms   < PC_INA_MIN_TIMEOUT_MS)   ||
+        (timeout_ms   > PC_INA_MAX_TIMEOUT_MS)) {
         emitInaError(request_id, channel->name, F("CAPTURE_RANGE"));
         return true;
     }

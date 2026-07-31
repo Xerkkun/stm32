@@ -1,3 +1,5 @@
-# Los resultados publicados se hashéan byte por byte. Evitar que autocrlf
-# altere capturas, tablas, bitstreams, figuras o logs al añadirlos o extraerlos.
+# Los resultados publicados y manifiestos se hashéan byte por byte. Evitar que autocrlf
+# altere capturas, tablas, bitstreams, figuras, manifiestos o logs al añadirlos o extraerlos.
 validation/results/** binary
+validation/*.json text eol=lf
+

@@ -1,0 +1,161 @@
+{
+  "build": {
+    "benchmark_mode": false,
+    "buffered_capture_mode": true,
+    "buffered_capture_samples": 12000,
+    "calibration_basis": "explicit_dense_capture_contract",
+    "clock_reference": false,
+    "decimation": 1,
+    "directory": "C:\\Users\\moren\\Desktop\\Codes\\STM32\\FractionalChaos\\build\\campaign-selected\\f746\\dense-12000-decim-1-release",
+    "energy_marker": false,
+    "energy_work_multiplier": 1,
+    "energy_work_units": 10000,
+    "energy_workload_contract": null,
+    "explicit_h755_clock_480_off": false,
+    "firmware_clock_profile": "f746_216mhz",
+    "images": [
+      {
+        "path": "C:\\Users\\moren\\Desktop\\Codes\\STM32\\FractionalChaos\\build\\campaign-selected\\f746\\dense-12000-decim-1-release\\f746_chen_m2sfrk.hex",
+        "sha256": "8aa1713bdb3f53a1ef2f7ae407e3eb32ae6b57a094478ce62280c526a94f4341"
+      }
+    ],
+    "maps": [
+      {
+        "path": "C:\\Users\\moren\\Desktop\\Codes\\STM32\\FractionalChaos\\build\\campaign-selected\\f746\\dense-12000-decim-1-release\\f746_chen_m2sfrk.map",
+        "sha256": "a6831bae88ad6e5cc680c9f5e9ea50ec842a45e86b47d4fb34c35e6bec13a47f"
+      }
+    ],
+    "primary_handshake": false,
+    "primary_handshake_protocol": null,
+    "runtime_probe": false,
+    "system_clock_hz": 216000000,
+    "target": "f746_chen_m2sfrk"
+  },
+  "campaign_id": "stm32_dense_selected_36cells_v1",
+  "capture": {
+    "capture_wall_time_s": 6.139999999984866,
+    "csv_path": "capture.csv",
+    "csv_sha256": "2369cb350cc38084890365b9810899612d4f4b4b1884c0f7820898b4892f8cb4",
+    "program_wall_time_s": 1.360000000015134,
+    "raw_path": "capture.bin",
+    "raw_sha256": "a42e2c996654a27d9ae896eb86f5fa9f868c72ee70e71840ad9001547f5e76f5",
+    "reset_wall_time_s": 0.8120000000053551,
+    "timing_cycles_path": null,
+    "timing_cycles_sha256": null
+  },
+  "cell": {
+    "block_id": "block-01",
+    "board": "f746",
+    "cell_id": "chen_m2sfrk_f746_float32",
+    "cold_start_id": 1,
+    "method": "m2sfrk",
+    "order_index": 9,
+    "representation": "float32",
+    "system": "chen"
+  },
+  "eligible_as_paper_cold_start": false,
+  "eligible_as_primary_benchmark": false,
+  "endpoint": {
+    "buffered_capture_mode": true,
+    "complete": true,
+    "expected_first_sequence": 1,
+    "expected_frames": 12000,
+    "expected_last_sequence": 12000,
+    "first_sequence": 1,
+    "last_sequence": 12000,
+    "output_decimation": 1,
+    "received_frames": 12000,
+    "rule": "exact_consecutive_model_step_sequence_window",
+    "sequence_increment": 1,
+    "watchdog_s": 180
+  },
+  "endpoint_name": "dense_timeseries_pilot",
+  "evidence_level": "dense_consecutive_state_series_from_stm32",
+  "experimental_unit": "dense_buffered_timeseries_acquisition",
+  "finished_utc": "2026-07-31T09:00:59.652175Z",
+  "hardware": {
+    "baud": 921600,
+    "board_name": "NUCLEO-F746ZG",
+    "manifest_port": "COM7",
+    "mcu": "STM32F746ZG",
+    "port": "COM7",
+    "power_removed": false,
+    "probe_serial": "066AFF504955657867165348",
+    "reset_mode": "stlink_hardware_reset",
+    "reset_preparation": "program_verify_halt_open_and_flush_uart_then_hardware_reset"
+  },
+  "ina226_energy": null,
+  "manifest_sha256": "e452ac52bc301163b3d6fbe9248762c86cabc95d0b508bff8c8ec93a1a1d4b00",
+  "method_contract": {
+    "wire_id": 2,
+    "wire_name": "m2sfrk"
+  },
+  "representation_contract": {
+    "decoder_name": "float32",
+    "flash_name": "float32",
+    "target_suffix": "",
+    "wire_kind": 1
+  },
+  "run_id": "stm32_dense_selected_36cells_v1__r01__chen_m2sfrk_f746_float32__ad8a7bf752__dense-timeseries-pilot",
+  "runtime_probe": null,
+  "scheduled_campaign_run_id": "stm32_dense_selected_36cells_v1__r01__chen_m2sfrk_f746_float32__ad8a7bf752",
+  "scheduled_primary_run_id": null,
+  "schema": "fractional-chaos-physical-run-v1",
+  "source": {
+    "commit": "7e80434cbacf0a515d14e458a1cd45ad582b17c5",
+    "dirty": true,
+    "excluded_generated_paths": [
+      "validation/results/physical_campaign",
+      "build/campaign-selected/f746/dense-12000-decim-1-release"
+    ],
+    "status_scope": "source tree excluding generated run and build paths",
+    "status_sha256": "ae82871f0072ac2fd46916fba05b8c435924d17faf6f10eb723ab91dd1c10255"
+  },
+  "started_utc": "2026-07-31T09:00:47.054628Z",
+  "system_contract": {
+    "contract_canonical_sha256": "8d36e0fd98455edc575e8c6c0f47dc63f99f4aabeb9f2264a506f0f62c8c00e7",
+    "contract_status": "selected_contract",
+    "dt_s": 0.005,
+    "history_states": 2001,
+    "initial_state_words_hex": [
+      "0x3DCCCCCD",
+      "0x3DCCCCCD",
+      "0x3DCCCCCD"
+    ],
+    "manifest_id": "chen_caputo_v1",
+    "memory_increments": 2000,
+    "memory_s": 10,
+    "observation_steps": 8000,
+    "q": 0.9,
+    "transient_steps": 2000,
+    "wire_id": 2
+  },
+  "time_series": {
+    "accepted_for_dense_series_analysis": true,
+    "host_reception_time_is_model_time": false,
+    "sample_interval_model_time": 0.005,
+    "sample_spacing_model_steps": 1,
+    "states_buffered_before_uart_drain": 12000
+  },
+  "timing": {
+    "accepted_as_solver_timing": false,
+    "all_reported_cycles_nonzero": true,
+    "eligible_as_primary_benchmark": false,
+    "ineligibility_reason": "dense_timeseries_pilot is a state-series acquisition endpoint, not a randomized primary timing repetition",
+    "reported_cycle_values": 12000
+  },
+  "transport": {
+    "accepted": true,
+    "bytes_received": 480000,
+    "crc_errors": 0,
+    "identity_mismatches": 0,
+    "invalid_headers": 0,
+    "matching_frames": 12000,
+    "noise_bytes": 0,
+    "nonzero_dropped_frames": 0,
+    "nonzero_status_frames": 0,
+    "sequence_gaps": 0,
+    "trailing_bytes": 0,
+    "valid_frames": 12000
+  }
+}

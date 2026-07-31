@@ -1,0 +1,50 @@
+RNG_test.exe using PractRand version 0.96
+RNG = RNG_stdin8, seed = unknown
+test set = core, folding = standard (8 bit)
+
+rng=RNG_stdin8, seed=unknown
+length= 128 kilobytes (2^17 bytes), time= 0.0 seconds
+  Test Name                         Raw       Processed     Evaluation       
+  BCFN(2+0,13-9U)                   R=  +3.0  p = 0.098     normal           
+  BCFN(2+1,13-9U)                   R=  +2.0  p = 0.160     normal           
+  BCFN(2+2,13-9U)                   R=  +0.9  p = 0.280     normal           
+  BCFN(2+3,13-9U)                   R=  -0.9  p = 0.599     normal           
+  DC6-9x1Bytes-1                    R=  -1.4  p = 0.792     normal           
+  Gap-16:A                          R=  +0.3  p = 0.495     normal           
+  Gap-16:B                          R=  -1.5  p = 0.857     normal           
+  Gap-16:C                          R=  +0.1  p~= 0.535     normal           
+  FPF/16:(0,14-6)                   R=  -0.4  p = 0.616     normal           
+  FPF/16:(1,14-7)                   R=  -0.2  p = 0.532     normal           
+  FPF/16:(2,14-8)                   R=  -0.1  p = 0.517     normal           
+  FPF/16:(3,14-8)                   R=  -1.1  p = 0.787     normal           
+  FPF/16:(4,14-9)                   R=  -1.8  p = 0.920     normal           
+  FPF/16:(5,14-10)                  R=  -1.8  p = 0.921     normal           
+  FPF/16:(6,14-11)                  R=  -0.9  p = 0.695     normal           
+  FPF/16:(7,14-11)                  R=  -1.9  p = 0.956     normal           
+  FPF/16:all                        R=  -2.4  p = 0.946     normal           
+  FPF/16:cross                      R=  -1.4  p = 0.963     normal           
+  BDayS2(4,24)[18]                  R=  -1.7  p~= 0.953     normal           
+  BRank(12):score:128(9)            R=  +1.5  p~= 0.9       normal           
+  mod3n(5):(0,9-6)                  R=  +0.7  p = 0.302     normal           
+  mod3n(5):(1,9-6)                  R=  +0.4  p = 0.365     normal           
+  mod3n(5):(2,9-6)                  R=  -2.0  p = 0.876     normal           
+  mod3n(5):(3,9-6)                  R=  -2.0  p = 0.884     normal           
+  mod3n(5):(4,9-6)                  R=  +3.1  p = 0.067     normal           
+  [Low1/8]BCFN(2+0,13-9U)           R=  +2.6  p = 0.117     normal           
+  [Low1/8]DC6-9x1Bytes-1            R=  +3.4  p = 0.064     normalish        
+  [Low1/8]Gap-16:A                  R=  -0.6  p = 0.850     normal           
+  [Low1/8]Gap-16:B                  R=  -1.7  p = 0.915     normal           
+  [Low1/8]Gap-16:C                  R=  +0.6  p~= 0.674     normal           
+  [Low1/8]FPF/16:(0,14-8)           R=  +1.0  p = 0.240     normal           
+  [Low1/8]FPF/16:(1,14-9)           R=  +0.6  p = 0.307     normal           
+  [Low1/8]FPF/16:(2,14-10)          R=  -1.4  p = 0.840     normal           
+  [Low1/8]FPF/16:(3,14-11)          R=  -0.1  p = 0.455     normal           
+  [Low1/8]FPF/16:(4,14-11)          R=  -2.3  p =1-4.4e-3   normal           
+  [Low1/8]FPF/16:all                R=  -0.5  p = 0.605     normal           
+  [Low1/8]FPF/16:cross              R=  -0.9  p = 0.835     normal           
+  [Low1/8]BDayS2(4,24)[18]          R=  -0.5    "pass"      normal           
+  [Low1/8]BRank(12):score:64(1)     R=  -0.7  p~= 0.3       normal           
+  [Low1/8]mod3n(5):(0,9-6)          R=  -0.8  p = 0.645     normal           
+  [Low1/8]mod3n(5):(1,9-6)          R=  -0.6  p = 0.591     normal           
+  [Low1/8]mod3n(5):(2,9-6)          R=  -0.9  p = 0.662     normal           
+

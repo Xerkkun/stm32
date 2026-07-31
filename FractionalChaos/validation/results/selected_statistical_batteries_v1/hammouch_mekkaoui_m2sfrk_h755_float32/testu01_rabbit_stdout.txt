@@ -1,0 +1,795 @@
+finite_file_adapter=testu01_file_batteries_v1
+testu01_version=1.2.3
+battery=rabbit
+input=C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\hammouch_mekkaoui_m2sfrk_h755_float32\h755_hammouch_mekkaoui_m2sfrk_fixed-point_lsb.bin
+input_bytes=131808
+requested_bits=1054464
+input_repetition_or_recycling=disabled
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+          Starting Rabbit:   nb = 1054464
+          Version: TestU01 1.2.3
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\hammouch_mekkaoui_m2sfrk_h755_float32\h755_hammouch_mekkaou
+
+
+smultin_MultinomialBitsOver test:
+-----------------------------------------------
+   N =  1,  n = 1054464,  r =  0,   s = 32,   L =   32,
+       Sparse =   TRUE
+
+       Number of bits = n = 1054464
+       Number of cells = 2^L =         4294967296
+       Expected number per cell =  1 /  4073.1284
+       EColl = n^2 / (2k) =  129.4415359
+       Hashing =   TRUE
+
+       Collision test
+       CollisionOver:   density = n / k =  1 /    4073.13
+       Expected number of collisions = Mu =     129.42
+
+
+-----------------------------------------------
+Results of CollisionOver test:
+
+POISSON approximation                 :
+Expected number of collisions = N*Mu  :      129.42
+Observed number of collisions         :      142
+p-value of test                       :    0.14
+
+-----------------------------
+Total number of cells containing j balls
+
+  j =  0                              :       4293912974
+  j =  1                              :          1054180
+  j =  2                              :              142
+  j =  3                              :                0
+  j =  4                              :                0
+  j =  5                              :                0
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.25
+
+Generator state:
+ 1054464  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\hammouch_mekkaoui_m2sfrk_h755_float32\h755_hammouch_mekkaou
+
+
+snpair_ClosePairsBitMatch test:
+-----------------------------------------------
+   N =  1,  n = 16476,  r =  0,  t = 2
+
+
+-----------------------------------------------
+Max of all bit distances              :   13.00
+p-value of test                       :    0.40
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1054464  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\hammouch_mekkaoui_m2sfrk_h755_float32\h755_hammouch_mekkaou
+
+
+snpair_ClosePairsBitMatch test:
+-----------------------------------------------
+   N =  1,  n = 8238,  r =  0,  t = 4
+
+
+-----------------------------------------------
+Max of all bit distances              :    6.00
+p-value of test                       :    0.12
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1054464  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\hammouch_mekkaoui_m2sfrk_h755_float32\h755_hammouch_mekkaou
+
+
+svaria_AppearanceSpacings test:
+-----------------------------------------------
+   N =  1,   Q = 49428,   K = 49428,   r = 0,   s = 30,   L = 10
+
+   Sequences of n = (K + Q)L =       988560 bits
+   Q = 49428 initialization blocks
+   K = 49428 blocks for the test
+   the blocks have L = 10 bits
+
+
+
+-----------------------------------------------
+Normal statistic                      :   -1.15
+p-value of test                       :    0.87
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1054464  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\hammouch_mekkaoui_m2sfrk_h755_float32\h755_hammouch_mekkaou
+
+
+scomp_LinearComp test:
+-----------------------------------------------
+   N =  1,  n = 12032,  r =  0,    s = 32
+
+
+
+-----------------------------------------------
+Number of degrees of freedom          :    7
+Chi2 statistic for size of jumps      :    4.79
+p-value of test                       :    0.69
+
+
+-----------------------------------------------
+Normal statistic for number of jumps  :    0.53
+p-value of test                       :    0.30
+
+
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.06
+
+Generator state:
+ 12032  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\hammouch_mekkaoui_m2sfrk_h755_float32\h755_hammouch_mekkaou
+
+
+scomp_LempelZiv test:
+-----------------------------------------------
+   N =  1,  n = 1048576,  r =  0,   s =   32,   k =   20
+
+
+-----------------------------------------------
+Normal statistic                      :    0.11
+p-value of test                       :    0.46
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.01
+
+Generator state:
+ 1048576  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\hammouch_mekkaoui_m2sfrk_h755_float32\h755_hammouch_mekkaou
+
+
+sspectral_Fourier1 test:
+-----------------------------------------------
+   N =  1,  n = 1048576,  r =  0,   s =   32,   k =   20
+
+
+-----------------------------------------------
+Normal statistic                      :   -0.51
+p-value of test                       :    0.70
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.10
+
+Generator state:
+ 1048576  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\hammouch_mekkaoui_m2sfrk_h755_float32\h755_hammouch_mekkaou
+
+
+sspectral_Fourier3 test:
+-----------------------------------------------
+   N = 1938,  n = 512,  r =  0,   s =   32,   k =    9
+
+
+-----------------------------------------------
+
+Kolmogorov-Smirnov+ statistic = D+    :   0.049
+p-value of test                       :    0.52
+
+Kolmogorov-Smirnov- statistic = D-    :   0.042
+p-value of test                       :    0.62
+
+Anderson-Darling statistic = A2       :    0.29
+p-value of test                       :    0.95
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1054272  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\hammouch_mekkaoui_m2sfrk_h755_float32\h755_hammouch_mekkaou
+
+
+sstring_LongestHeadRun test:
+-----------------------------------------------
+   N =  1,  n = 60,  r =  0,   s = 32,   L = 17568
+
+
+-----------------------------------------------
+Number of degrees of freedom          :    3
+Chi-square statistic                  :    0.46
+p-value of test                       :    0.93
+
+-----------------------------------------------
+Global longest run of 1               :   20.00
+p-value of test                       :    0.40
+
+
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.01
+
+Generator state:
+ 1054080  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\hammouch_mekkaoui_m2sfrk_h755_float32\h755_hammouch_mekkaou
+
+
+sstring_PeriodsInStrings test:
+-----------------------------------------------
+   N =  1,  n = 32952,  r =  0,   s =   31
+
+
+-----------------------------------------------
+Number of degrees of freedom          :   45
+Chi-square statistic                  :   39.46
+p-value of test                       :    0.70
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1054464  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\hammouch_mekkaoui_m2sfrk_h755_float32\h755_hammouch_mekkaou
+
+
+sstring_HammingWeight test:
+-----------------------------------------------
+   N =  1,  n = 32952,  r =  0,   s = 32,   L = 32
+
+
+-----------------------------------------------
+Number of degrees of freedom          :   18
+Chi-square statistic                  :   12.67
+p-value of test                       :    0.81
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1054464  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\hammouch_mekkaoui_m2sfrk_h755_float32\h755_hammouch_mekkaou
+
+
+sstring_HammingCorr test:
+-----------------------------------------------
+   N =  1,  n = 32952,  r =  0,   s = 32,   L = 32
+
+
+
+-----------------------------------------------
+Normal statistic                      :    0.79
+p-value of test                       :    0.21
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1054464  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\hammouch_mekkaoui_m2sfrk_h755_float32\h755_hammouch_mekkaou
+
+
+sstring_HammingCorr test:
+-----------------------------------------------
+   N =  1,  n = 16476,  r =  0,   s = 32,   L = 64
+
+
+
+-----------------------------------------------
+Normal statistic                      :    0.90
+p-value of test                       :    0.18
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1054464  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\hammouch_mekkaoui_m2sfrk_h755_float32\h755_hammouch_mekkaou
+
+
+sstring_HammingCorr test:
+-----------------------------------------------
+   N =  1,  n = 8238,  r =  0,   s = 32,   L = 128
+
+
+
+-----------------------------------------------
+Normal statistic                      :    1.06
+p-value of test                       :    0.15
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1054464  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\hammouch_mekkaoui_m2sfrk_h755_float32\h755_hammouch_mekkaou
+
+
+sstring_HammingIndep test:
+-----------------------------------------------
+   N =  1,  n = 32952,  r =  0,   s = 32,   L = 16,   d = 0
+
+
+
+Counters with expected numbers >= 10
+-----------------------------------------------
+Number of degrees of freedom          :  121
+Chi-square statistic                  :  121.41
+p-value of test                       :    0.47
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1054464  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\hammouch_mekkaoui_m2sfrk_h755_float32\h755_hammouch_mekkaou
+
+
+sstring_HammingIndep test:
+-----------------------------------------------
+   N =  1,  n = 16476,  r =  0,   s = 32,   L = 32,   d = 0
+
+
+
+Counters with expected numbers >= 10
+-----------------------------------------------
+Number of degrees of freedom          :  177
+Chi-square statistic                  :  201.24
+p-value of test                       :    0.10
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1054464  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\hammouch_mekkaoui_m2sfrk_h755_float32\h755_hammouch_mekkaou
+
+
+sstring_HammingIndep test:
+-----------------------------------------------
+   N =  1,  n = 8238,  r =  0,   s = 32,   L = 64,   d = 0
+
+
+
+Counters with expected numbers >= 10
+-----------------------------------------------
+Number of degrees of freedom          :  213
+Chi-square statistic                  :  204.04
+p-value of test                       :    0.66
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1054464  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\hammouch_mekkaoui_m2sfrk_h755_float32\h755_hammouch_mekkaou
+
+
+sstring_AutoCor test:
+-----------------------------------------------
+   N =  1,  n = 1054401,  r =  0,   s = 32,   d = 1
+
+
+-----------------------------------------------
+Normal statistic                      :    0.17
+p-value of test                       :    0.43
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1054432  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\hammouch_mekkaoui_m2sfrk_h755_float32\h755_hammouch_mekkaou
+
+
+sstring_AutoCor test:
+-----------------------------------------------
+   N =  1,  n = 1054402,  r =  0,   s = 32,   d = 2
+
+
+-----------------------------------------------
+Normal statistic                      :  -0.056
+p-value of test                       :    0.52
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1054432  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\hammouch_mekkaoui_m2sfrk_h755_float32\h755_hammouch_mekkaou
+
+
+sstring_Run test:
+-----------------------------------------------
+   N =  1,  n = 210892,  r =  0,   s =   32
+
+
+-----------------------------------------------
+Total number of 1 runs:  210898
+
+Number of degrees of freedom          :   28
+Chi2 statistic for number of runs     :   31.49
+p-value of test                       :    0.30
+
+
+-----------------------------------------------
+Total number of bits:  843168
+
+Normal statistic for number of bits   :   -0.31
+p-value of test                       :    0.62
+
+
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 843168  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\hammouch_mekkaoui_m2sfrk_h755_float32\h755_hammouch_mekkaou
+
+
+smarsa_MatrixRank test:
+-----------------------------------------------
+   N =  1,  n = 1029,  r =  0,    s = 32,    L = 32,    k = 32
+
+
+-----------------------------------------------
+Number of degrees of freedom          :    2
+Chi-square statistic                  :    0.23
+p-value of test                       :    0.89
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1053696  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\hammouch_mekkaoui_m2sfrk_h755_float32\h755_hammouch_mekkaou
+
+
+swalk_RandomWalk1 test:
+-----------------------------------------------
+   N =  1,  n = 8238,  r =  0,   s = 32,   L0 =  128,   L1 =  128
+
+
+
+-----------------------------------------------
+Test on the values of the Statistic H
+
+Number of degrees of freedom          :   34
+ChiSquare statistic                   :   27.68
+p-value of test                       :    0.77
+
+
+-----------------------------------------------
+Test on the values of the Statistic M
+
+Number of degrees of freedom          :   34
+ChiSquare statistic                   :   34.15
+p-value of test                       :    0.46
+
+
+-----------------------------------------------
+Test on the values of the Statistic J
+
+Number of degrees of freedom          :   64
+ChiSquare statistic                   :   68.42
+p-value of test                       :    0.33
+
+
+-----------------------------------------------
+Test on the values of the Statistic R
+
+Number of degrees of freedom          :   30
+ChiSquare statistic                   :   25.97
+p-value of test                       :    0.68
+
+
+-----------------------------------------------
+Test on the values of the Statistic C
+
+Number of degrees of freedom          :   17
+ChiSquare statistic                   :   24.70
+p-value of test                       :    0.10
+
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.01
+
+Generator state:
+ 1054464  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\hammouch_mekkaoui_m2sfrk_h755_float32\h755_hammouch_mekkaou
+
+
+swalk_RandomWalk1 test:
+-----------------------------------------------
+   N =  1,  n = 1029,  r =  0,   s = 32,   L0 = 1024,   L1 = 1024
+
+
+
+-----------------------------------------------
+Test on the values of the Statistic H
+
+Number of degrees of freedom          :   56
+ChiSquare statistic                   :   53.19
+p-value of test                       :    0.58
+
+
+-----------------------------------------------
+Test on the values of the Statistic M
+
+Number of degrees of freedom          :   55
+ChiSquare statistic                   :   40.88
+p-value of test                       :    0.92
+
+
+-----------------------------------------------
+Test on the values of the Statistic J
+
+Number of degrees of freedom          :   88
+ChiSquare statistic                   :   87.07
+p-value of test                       :    0.51
+
+
+-----------------------------------------------
+Test on the values of the Statistic R
+
+Number of degrees of freedom          :   55
+ChiSquare statistic                   :   51.58
+p-value of test                       :    0.61
+
+
+-----------------------------------------------
+Test on the values of the Statistic C
+
+Number of degrees of freedom          :   33
+ChiSquare statistic                   :   32.02
+p-value of test                       :    0.52
+
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1053696  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\hammouch_mekkaoui_m2sfrk_h755_float32\h755_hammouch_mekkaou
+
+
+swalk_RandomWalk1 test:
+-----------------------------------------------
+   N =  1,  n = 105,  r =  0,   s = 32,   L0 = 10016,   L1 = 10016
+
+
+
+-----------------------------------------------
+Test on the values of the Statistic H
+
+Number of degrees of freedom          :    9
+ChiSquare statistic                   :    7.22
+p-value of test                       :    0.61
+
+
+-----------------------------------------------
+Test on the values of the Statistic M
+
+Number of degrees of freedom          :    9
+ChiSquare statistic                   :    6.67
+p-value of test                       :    0.67
+
+
+-----------------------------------------------
+Test on the values of the Statistic J
+
+Number of degrees of freedom          :    9
+ChiSquare statistic                   :    6.68
+p-value of test                       :    0.67
+
+
+-----------------------------------------------
+Test on the values of the Statistic R
+
+Number of degrees of freedom          :    9
+ChiSquare statistic                   :    6.34
+p-value of test                       :    0.71
+
+
+-----------------------------------------------
+Test on the values of the Statistic C
+
+Number of degrees of freedom          :    8
+ChiSquare statistic                   :    7.64
+p-value of test                       :    0.47
+
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1051680  bits have been read.
+
+
+
+
+
+========= Summary results of Rabbit =========
+
+ Version:          TestU01 1.2.3
+ File:             C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\hammouch_mekkaoui_m2sfrk_h755_float32\h755_hammouch_mekkaoui_m2sfrk_fixed-point_lsb.bin
+ Number of bits:   1054464
+ Number of statistics:  38
+ Total CPU time:   00:00:00.46
+
+ All tests were passed
+
+
+

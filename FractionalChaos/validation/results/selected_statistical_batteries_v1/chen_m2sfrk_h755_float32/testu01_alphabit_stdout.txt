@@ -1,0 +1,376 @@
+finite_file_adapter=testu01_file_batteries_v1
+testu01_version=1.2.3
+battery=alphabit
+input=C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\chen_m2sfrk_h755_float32\h755_chen_m2sfrk_fixed-point_lsb.bin
+input_bytes=131808
+requested_bits=1054464
+input_repetition_or_recycling=disabled
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+          Starting Alphabit:   nb = 1054464
+          Version: TestU01 1.2.3
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\chen_m2sfrk_h755_float32\h755_chen_m2sfrk_fixed-point_lsb.b
+
+
+smultin_MultinomialBitsOver test:
+-----------------------------------------------
+   N =  1,  n = 1054464,  r =  0,   s = 32,   L =    2,
+       Sparse =  FALSE
+
+       Number of bits = n = 1054464
+       Number of cells = 2^L =                  4
+       Expected number per cell =      263616
+       Hashing =  FALSE
+
+   For Delta > -1, we use the ChiSquare approximation
+   Correction factor of the ChiSquare: 
+       Delta =     1,    Mu =  4.7417467e-07,    Sigma =          1
+
+-----------------------------------------------
+Test Results for Delta =   1.0000
+
+Number of degrees of freedom          :    2
+Value of the statistic                :    0.15
+p-value of test                       :    0.93
+
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1054464  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\chen_m2sfrk_h755_float32\h755_chen_m2sfrk_fixed-point_lsb.b
+
+
+smultin_MultinomialBitsOver test:
+-----------------------------------------------
+   N =  1,  n = 1054464,  r =  0,   s = 32,   L =    4,
+       Sparse =  FALSE
+
+       Number of bits = n = 1054464
+       Number of cells = 2^L =                 16
+       Expected number per cell =       65904
+       Hashing =  FALSE
+
+   For Delta > -1, we use the ChiSquare approximation
+   Correction factor of the ChiSquare: 
+       Delta =     1,    Mu =  3.3192227e-06,    Sigma =          1
+
+-----------------------------------------------
+Test Results for Delta =   1.0000
+
+Number of degrees of freedom          :    8
+Value of the statistic                :   12.05
+p-value of test                       :    0.15
+
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1054464  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\chen_m2sfrk_h755_float32\h755_chen_m2sfrk_fixed-point_lsb.b
+
+
+smultin_MultinomialBitsOver test:
+-----------------------------------------------
+   N =  1,  n = 1054464,  r =  0,   s = 32,   L =    8,
+       Sparse =  FALSE
+
+       Number of bits = n = 1054464
+       Number of cells = 2^L =                256
+       Expected number per cell =        4119
+       Hashing =  FALSE
+
+   For Delta > -1, we use the ChiSquare approximation
+   Correction factor of the ChiSquare: 
+       Delta =     1,    Mu =  6.0220183e-05,    Sigma =          1
+
+-----------------------------------------------
+Test Results for Delta =   1.0000
+
+Number of degrees of freedom          :  128
+Value of the statistic                :  137.73
+p-value of test                       :    0.26
+
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1054464  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\chen_m2sfrk_h755_float32\h755_chen_m2sfrk_fixed-point_lsb.b
+
+
+smultin_MultinomialBitsOver test:
+-----------------------------------------------
+   N =  1,  n = 1054464,  r =  0,   s = 32,   L =   16,
+       Sparse =  FALSE
+
+       Number of bits = n = 1054464
+       Number of cells = 2^L =              65536
+       Expected number per cell =   16.089844
+       Hashing =  FALSE
+
+   For Delta > -1, we use the ChiSquare approximation
+   Correction factor of the ChiSquare: 
+       Delta =     1,    Mu =    0.015537281,    Sigma =          1
+
+-----------------------------------------------
+Test Results for Delta =   1.0000
+
+Number of degrees of freedom          : 32768
+Value of the statistic                :32815.79
+p-value of test                       :    0.42
+
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1054464  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\chen_m2sfrk_h755_float32\h755_chen_m2sfrk_fixed-point_lsb.b
+
+
+sstring_HammingIndep test:
+-----------------------------------------------
+   N =  1,  n = 32952,  r =  0,   s = 32,   L = 16,   d = 0
+
+
+
+Counters with expected numbers >= 10
+-----------------------------------------------
+Number of degrees of freedom          :  121
+Chi-square statistic                  :  126.97
+p-value of test                       :    0.34
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1054464  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\chen_m2sfrk_h755_float32\h755_chen_m2sfrk_fixed-point_lsb.b
+
+
+sstring_HammingIndep test:
+-----------------------------------------------
+   N =  1,  n = 16476,  r =  0,   s = 32,   L = 32,   d = 0
+
+
+
+Counters with expected numbers >= 10
+-----------------------------------------------
+Number of degrees of freedom          :  177
+Chi-square statistic                  :  193.35
+p-value of test                       :    0.19
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1054464  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\chen_m2sfrk_h755_float32\h755_chen_m2sfrk_fixed-point_lsb.b
+
+
+sstring_HammingCorr test:
+-----------------------------------------------
+   N =  1,  n = 32952,  r =  0,   s = 32,   L = 32
+
+
+
+-----------------------------------------------
+Normal statistic                      :    0.95
+p-value of test                       :    0.17
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1054464  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\chen_m2sfrk_h755_float32\h755_chen_m2sfrk_fixed-point_lsb.b
+
+
+swalk_RandomWalk1 test:
+-----------------------------------------------
+   N =  1,  n = 16476,  r =  0,   s = 32,   L0 =   64,   L1 =   64
+
+
+
+-----------------------------------------------
+Test on the values of the Statistic H
+
+Number of degrees of freedom          :   26
+ChiSquare statistic                   :   18.29
+p-value of test                       :    0.86
+
+
+-----------------------------------------------
+Test on the values of the Statistic M
+
+Number of degrees of freedom          :   26
+ChiSquare statistic                   :   24.03
+p-value of test                       :    0.57
+
+
+-----------------------------------------------
+Test on the values of the Statistic J
+
+Number of degrees of freedom          :   32
+ChiSquare statistic                   :   24.93
+p-value of test                       :    0.81
+
+
+-----------------------------------------------
+Test on the values of the Statistic R
+
+Number of degrees of freedom          :   21
+ChiSquare statistic                   :   21.09
+p-value of test                       :    0.45
+
+
+-----------------------------------------------
+Test on the values of the Statistic C
+
+Number of degrees of freedom          :   13
+ChiSquare statistic                   :   13.17
+p-value of test                       :    0.43
+
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.01
+
+Generator state:
+ 1054464  bits have been read.
+
+
+
+
+***********************************************************
+HOST = 
+
+ufile_CreateReadBin:   C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\chen_m2sfrk_h755_float32\h755_chen_m2sfrk_fixed-point_lsb.b
+
+
+swalk_RandomWalk1 test:
+-----------------------------------------------
+   N =  1,  n = 3295,  r =  0,   s = 32,   L0 =  320,   L1 =  320
+
+
+
+-----------------------------------------------
+Test on the values of the Statistic H
+
+Number of degrees of freedom          :   44
+ChiSquare statistic                   :   43.46
+p-value of test                       :    0.49
+
+
+-----------------------------------------------
+Test on the values of the Statistic M
+
+Number of degrees of freedom          :   45
+ChiSquare statistic                   :   50.37
+p-value of test                       :    0.27
+
+
+-----------------------------------------------
+Test on the values of the Statistic J
+
+Number of degrees of freedom          :  160
+ChiSquare statistic                   :  138.21
+p-value of test                       :    0.89
+
+
+-----------------------------------------------
+Test on the values of the Statistic R
+
+Number of degrees of freedom          :   43
+ChiSquare statistic                   :   41.45
+p-value of test                       :    0.54
+
+
+-----------------------------------------------
+Test on the values of the Statistic C
+
+Number of degrees of freedom          :   24
+ChiSquare statistic                   :   21.57
+p-value of test                       :    0.61
+
+
+-----------------------------------------------
+CPU time used                    :  00:00:00.00
+
+Generator state:
+ 1054400  bits have been read.
+
+
+
+
+
+========= Summary results of Alphabit =========
+
+ Version:          TestU01 1.2.3
+ File:             C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\validation\results\selected_statistical_streams_v1\analysis\chen_m2sfrk_h755_float32\h755_chen_m2sfrk_fixed-point_lsb.bin
+ Number of bits:   1054464
+ Number of statistics:  17
+ Total CPU time:   00:00:00.01
+
+ All tests were passed
+
+
+

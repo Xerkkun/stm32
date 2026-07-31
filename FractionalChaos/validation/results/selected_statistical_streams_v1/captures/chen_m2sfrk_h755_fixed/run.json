@@ -1,0 +1,70 @@
+{
+  "analysis": {
+    "path": "validation/results/selected_statistical_streams_v1/analysis/chen_m2sfrk_h755_fixed/h755_chen_m2sfrk_analysis.json",
+    "sha256": "110b744761104cfc9e6be2d20d425f67777b0019373fb3c3d4ed6837fc2a4d4a"
+  },
+  "bitstream": {
+    "bits": 1054464,
+    "bytes": 131808,
+    "extraction_mode": "raw_signed_fixed_point_word",
+    "path": "validation/results/selected_statistical_streams_v1/analysis/chen_m2sfrk_h755_fixed/h755_chen_m2sfrk_fixed-raw_lsb.bin",
+    "sha256": "00fdf88e58a9812d31df95a63d3092380209c03ba39c55073e54c7caf69f8078"
+  },
+  "board": "h755",
+  "build": {
+    "directory": "build/campaign-selected/h755/decim-1024-release",
+    "images": [
+      {
+        "path": "build/campaign-selected/h755/decim-1024-release/h755_m7_chen_m2sfrk_fixed.hex",
+        "sha256": "7afe0ead6725e5d0991cca5e9acd571f3bcf307adabb51e6eef38bac7715e224"
+      },
+      {
+        "path": "build/campaign-selected/h755/decim-1024-release/h755_m4_uart.hex",
+        "sha256": "32b25ad0699ba83aab4af36c6c99faae98e555ecd2f2bc006a11b0b5a5bee88a"
+      }
+    ]
+  },
+  "capture_bin": {
+    "bytes": 1760000,
+    "path": "validation/results/selected_statistical_streams_v1/captures/chen_m2sfrk_h755_fixed/capture.bin",
+    "sha256": "57d323ff0894de663e9bfdc41ef9fec74fd91c440de1bb7c569abfd0ce9fec80"
+  },
+  "capture_csv": {
+    "bytes": 7936493,
+    "path": "validation/results/selected_statistical_streams_v1/captures/chen_m2sfrk_h755_fixed/capture.csv",
+    "sha256": "fb60f6d0d2f9cf829ef68308b4eef6593fb095c1208fc371a5a7745d97f24399"
+  },
+  "cell_id": "chen_m2sfrk_h755_fixed",
+  "decimation": 1024,
+  "discarded_frames": 64,
+  "durations": {
+    "capture_wall_time_s": 65.01499999998487,
+    "first_matching_frame_after_start_s": 0.5779999999795109
+  },
+  "finished_utc": "2026-07-31T09:41:23.335742Z",
+  "manifest": {
+    "path": "validation/physical_campaign_selected_v1.json",
+    "sha256": "4e1c59f038aa45d4f178e209805601bb57ef42c17efcc817ecefc0184866ce5e"
+  },
+  "matching_frames": 44000,
+  "method": "m2sfrk",
+  "post_discard_bits": 1054464,
+  "representation": "fixed_q14_q30",
+  "reset_mode": "stlink_hardware_reset",
+  "sample_interval_model_time_s": 5.12,
+  "schema": "fractional-chaos-selected-statistical-stream-v1",
+  "sequence_first": 1024,
+  "sequence_increment": 1024,
+  "sequence_last": 45056000,
+  "started_utc": "2026-07-31T09:40:02.474250Z",
+  "status": "complete",
+  "system": "chen",
+  "transport": {
+    "crc_errors": 0,
+    "invalid_headers": 0,
+    "noise_bytes": 0,
+    "nonzero_dropped_frames": 0,
+    "nonzero_status_frames": 0,
+    "trailing_bytes": 0
+  }
+}

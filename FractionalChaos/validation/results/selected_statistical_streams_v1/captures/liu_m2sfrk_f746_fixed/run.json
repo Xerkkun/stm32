@@ -1,0 +1,66 @@
+{
+  "analysis": {
+    "path": "validation/results/selected_statistical_streams_v1/analysis/liu_m2sfrk_f746_fixed/f746_liu_m2sfrk_analysis.json",
+    "sha256": "df2f68aacbea17eb976d5848026f08fd76f26d4908fe74555d5e824dab17dc42"
+  },
+  "bitstream": {
+    "bits": 1054464,
+    "bytes": 131808,
+    "extraction_mode": "raw_signed_fixed_point_word",
+    "path": "validation/results/selected_statistical_streams_v1/analysis/liu_m2sfrk_f746_fixed/f746_liu_m2sfrk_fixed-raw_lsb.bin",
+    "sha256": "5599cdb5f8a79c4f645a7376f452acf0f21e5461cd637ab1edebc2ed199b2359"
+  },
+  "board": "f746",
+  "build": {
+    "directory": "build/campaign-selected/f746/decim-512-release",
+    "images": [
+      {
+        "path": "build/campaign-selected/f746/decim-512-release/f746_liu_m2sfrk_fixed.hex",
+        "sha256": "891de0bdfa70ef9d5f95a71b20356e5d1f1c3b81d9c6cc039421b98e620bebf0"
+      }
+    ]
+  },
+  "capture_bin": {
+    "bytes": 1760000,
+    "path": "validation/results/selected_statistical_streams_v1/captures/liu_m2sfrk_f746_fixed/capture.bin",
+    "sha256": "28333cd03dcdaf1f2fc4faa30448f6477b70ef814dd14b856e7f1689944e4ad9"
+  },
+  "capture_csv": {
+    "bytes": 7758554,
+    "path": "validation/results/selected_statistical_streams_v1/captures/liu_m2sfrk_f746_fixed/capture.csv",
+    "sha256": "eaabdf84b5fc4b09ce6e3edc2946323b7f0540fc984b58fdee98f96bc6466650"
+  },
+  "cell_id": "liu_m2sfrk_f746_fixed",
+  "decimation": 512,
+  "discarded_frames": 64,
+  "durations": {
+    "capture_wall_time_s": 74.28099999998813,
+    "first_matching_frame_after_start_s": 0.6719999999913853
+  },
+  "finished_utc": "2026-07-31T09:45:24.442073Z",
+  "manifest": {
+    "path": "validation/physical_campaign_selected_v1.json",
+    "sha256": "4e1c59f038aa45d4f178e209805601bb57ef42c17efcc817ecefc0184866ce5e"
+  },
+  "matching_frames": 44000,
+  "method": "m2sfrk",
+  "post_discard_bits": 1054464,
+  "representation": "fixed_q14_q30",
+  "reset_mode": "stlink_hardware_reset",
+  "sample_interval_model_time_s": 5.12,
+  "schema": "fractional-chaos-selected-statistical-stream-v1",
+  "sequence_first": 512,
+  "sequence_increment": 512,
+  "sequence_last": 22528000,
+  "started_utc": "2026-07-31T09:44:00.773661Z",
+  "status": "complete",
+  "system": "liu",
+  "transport": {
+    "crc_errors": 0,
+    "invalid_headers": 0,
+    "noise_bytes": 0,
+    "nonzero_dropped_frames": 0,
+    "nonzero_status_frames": 0,
+    "trailing_bytes": 0
+  }
+}

@@ -1,0 +1,37 @@
+Dependencias verificadas:
+  STM32CubeH7 v1.13.0  5abb9764b32e11a6557b90bf39531528019b5761
+  CMSIS H7              8f922cdc7cc6de2344e75ddd657889f4ff761790
+  HAL H7                a1996eed9172b59887bafaaa0ea1816ea14d48b5
+  GCC                    C:\Users\moren\AppData\Local\STM32Cube\bundles\gnu-tools-for-stm32\14.3.1+st.2\bin\arm-none-eabi-gcc.exe
+  Ninja                  C:\Users\moren\AppData\Local\STM32Cube\bundles\ninja\1.13.2+st.1\bin\ninja.exe
+  Programmer             C:\Users\moren\AppData\Local\STM32Cube\bundles\programmer\2.23.0\bin\STM32_Programmer_CLI.exe
+-- Configuring done (0.0s)
+-- Generating done (0.1s)
+-- Build files have been written to: C:/Users/moren/Desktop/Codes/STM32/FractionalChaos/build/campaign-selected/h755/dense-12000-decim-1-release
+[1/19] Building ASM object platform/h755/CMakeFiles/h755_m7_hammouch_mekkaoui_gl.dir/725304a4aa398589ba3df84a3bd95c43/STM32H7xx/Source/Templates/gcc/startup_stm32h755xx.s.obj
+[2/19] Building C object platform/h755/CMakeFiles/h755_m7_hammouch_mekkaoui_gl.dir/shared/h755_shared_memory.c.obj
+[3/19] Building C object platform/h755/CMakeFiles/h755_m7_hammouch_mekkaoui_gl.dir/__/__/transport/fc_runtime_probe.c.obj
+[4/19] Building C object platform/h755/CMakeFiles/h755_m7_hammouch_mekkaoui_gl.dir/shared/h755_syscalls.c.obj
+[5/19] Building C object platform/h755/CMakeFiles/h755_m7_hammouch_mekkaoui_gl.dir/__/__/transport/fc_shared_queue.c.obj
+[6/19] Building C object platform/h755/CMakeFiles/h755_m7_hammouch_mekkaoui_gl.dir/cm7/src/stm32h7xx_it.c.obj
+[7/19] Building C object platform/h755/CMakeFiles/h755_m7_hammouch_mekkaoui_gl.dir/__/__/generated/fc_hammouch_mekkaoui_gl.c.obj
+[8/19] Building C object platform/h755/CMakeFiles/h755_m7_hammouch_mekkaoui_gl.dir/__/__/common/fractional_chaos.c.obj
+[9/19] Building C object platform/h755/CMakeFiles/h755_m7_hammouch_mekkaoui_gl.dir/cm7/src/main.c.obj
+[10/19] Building C object platform/h755/CMakeFiles/h755_m7_hammouch_mekkaoui_gl.dir/__/__/common/fractional_chaos_fixed.c.obj
+[11/19] Building C object platform/h755/CMakeFiles/h755_m7_hammouch_mekkaoui_gl.dir/d39c6db5c3e8e7567bbcb2f422c58e0b/Templates/system_stm32h7xx_dualcore_boot_cm4_cm7.c.obj
+[12/19] Building C object platform/h755/CMakeFiles/h755_m7_hammouch_mekkaoui_gl.dir/__/__/vendor/STM32CubeH7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_hsem.c.obj
+[13/19] Building C object platform/h755/CMakeFiles/h755_m7_hammouch_mekkaoui_gl.dir/__/__/vendor/STM32CubeH7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pwr.c.obj
+[14/19] Building C object platform/h755/CMakeFiles/h755_m7_hammouch_mekkaoui_gl.dir/__/__/vendor/STM32CubeH7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_cortex.c.obj
+[15/19] Building C object platform/h755/CMakeFiles/h755_m7_hammouch_mekkaoui_gl.dir/__/__/vendor/STM32CubeH7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal.c.obj
+[16/19] Building C object platform/h755/CMakeFiles/h755_m7_hammouch_mekkaoui_gl.dir/__/__/vendor/STM32CubeH7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pwr_ex.c.obj
+[17/19] Building C object platform/h755/CMakeFiles/h755_m7_hammouch_mekkaoui_gl.dir/__/__/vendor/STM32CubeH7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc.c.obj
+[18/19] Building C object platform/h755/CMakeFiles/h755_m7_hammouch_mekkaoui_gl.dir/__/__/vendor/STM32CubeH7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc_ex.c.obj
+[19/19] Linking C executable h755_m7_hammouch_mekkaoui_gl.elf
+Memory region         Used Size  Region Size  %age Used
+           FLASH:       12172 B         1 MB      1.16%
+         DTCMRAM:       48192 B       128 KB     36.77%
+          RAM_D1:      196160 B       512 KB     37.41%
+           SRAM4:        1632 B        64 KB      2.49%
+   text	   data	    bss	    dec	    hex	filename
+  12164	      8	 245952	 258124	  3f04c	C:/Users/moren/Desktop/Codes/STM32/FractionalChaos/build/campaign-selected/h755/dense-12000-decim-1-release/h755_m7_hammouch_mekkaoui_gl.elf
+Build de campaÃ±a listo: C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\build\campaign-selected\h755\dense-12000-decim-1-release [h755_m7_hammouch_mekkaoui_gl, h755_m4_uart].

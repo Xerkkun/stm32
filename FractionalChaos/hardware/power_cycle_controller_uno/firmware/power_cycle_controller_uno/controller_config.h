@@ -5,14 +5,17 @@
 /*
  * Controller-side wiring. Pins 0 and 1 are intentionally left to the UART.
  *
- * The default relay board is active-low. Each relay input therefore needs an
- * external 10 kohm pull-up to +5 V so that reset, bootloader, and unplugged-UNO
- * states de-energize the coil. If the actual board is active-high, set
- * PC_RELAY_ACTIVE_LOW to 0 and replace those pull-ups with pull-downs.
+ * Ported to Arduino Uno R4 (Renesas RA4M1):
+ * - Relay and sense pins are unchanged.
+ * - Marker pins verified against pruebas.ino diagnostics on the actual wiring.
+ * - AVR-specific PCINT registers removed in ina226_capture.cpp.
+ * - The relay board is active-low. Each relay input needs an external 10 kohm
+ *   pull-up to +5 V so that reset, bootloader, and unplugged-UNO states
+ *   de-energize the coil.
  */
-#define PC_RELAY_CH1_PIN 7
-#define PC_RELAY_CH2_PIN 8
-#define PC_RELAY_ACTIVE_LOW 1
+#define PC_RELAY_CH1_PIN     7
+#define PC_RELAY_CH2_PIN     9   // Hardware: D9 (verified with pruebas.ino)
+#define PC_RELAY_ACTIVE_LOW  1
 
 /*
  * Sense the Nucleo 3V3 rails through:
@@ -81,17 +84,22 @@
 #define PC_INA_MAX_TIMEOUT_MS 60000UL
 
 /*
- * PE0/D34 is the energy-window marker.  PA0/D32 is a separate clock-reference
- * pulse.  D2/D3 and D4/D5 are all observed through the ATmega328P PORTD pin
- * change interrupt so the raw record can label both marker kinds.
+ * Marker pins — verified against pruebas.ino on the actual Uno R4 wiring.
+ * Energy markers: D2 (F746) and D3 (H755) — unchanged from original.
+ * Clock markers:  D6 (F746) and D8 (H755) — corrected from D4/D5.
  *
- * Add an external 10 kohm pull-down from every marker input to UNO GND.  This
- * gives a defined LOW while a Nucleo is unpowered; do not enable UNO pull-ups.
+ * All four pins use external 10 kohm pull-downs to GND. Do NOT enable
+ * internal pull-ups; the Nucleo GPIOs are push-pull and a floating input
+ * while unpowered would produce spurious edges.
+ *
+ * On the Uno R4 (Renesas RA4M1) all digital pins support CHANGE interrupts
+ * via attachInterrupt(digitalPinToInterrupt(pin), ..., CHANGE), which
+ * replaces the AVR PCINT2_vect / PIND / PCICR / PCMSK2 mechanism.
  */
-#define PC_ENERGY_MARKER_CH1_PIN 2
-#define PC_ENERGY_MARKER_CH2_PIN 3
-#define PC_CLOCK_MARKER_CH1_PIN 4
-#define PC_CLOCK_MARKER_CH2_PIN 5
+#define PC_ENERGY_MARKER_CH1_PIN  2
+#define PC_ENERGY_MARKER_CH2_PIN  3
+#define PC_CLOCK_MARKER_CH1_PIN   6   // D6 (verified; was D4 in AVR version)
+#define PC_CLOCK_MARKER_CH2_PIN   8   // D8 (verified; was D5 in AVR version)
 
 #if (PC_RELAY_ACTIVE_LOW != 0) && (PC_RELAY_ACTIVE_LOW != 1)
 #error "PC_RELAY_ACTIVE_LOW must be 0 or 1."

@@ -1,0 +1,188 @@
+{
+  "alpha": 0.01,
+  "input_contract": {
+    "bit_order_within_byte": "most_to_least_significant",
+    "bits_per_sample": 24,
+    "bits_per_variable": 8,
+    "byte_packing": "each artifact byte is one complete eight-LSB field",
+    "source": "post-transient LSB artifacts emitted by validation/analyze_capture.py",
+    "variable_order": "x_then_y_then_z_per_sample",
+    "variables": [
+      "x",
+      "y",
+      "z"
+    ]
+  },
+  "schema_version": 2,
+  "scope": "Twelve physical M2sFRK streams from Chen, Liu, and Hammouch-Mekkaoui on F746/H755 in float32 and fixed-point form",
+  "streams": [
+    {
+      "analysis": "validation/results/selected_statistical_streams_v1/analysis/chen_m2sfrk_f746_fixed/f746_chen_m2sfrk_analysis.json",
+      "bitstream": "validation/results/selected_statistical_streams_v1/analysis/chen_m2sfrk_f746_fixed/f746_chen_m2sfrk_fixed-raw_lsb.bin",
+      "board": "f746",
+      "expected_bits": 1054464,
+      "expected_sha256": "7d8f5e729579e3a1736e9d477cf50f6464de04b35320348cef554d7a42c7f9ea",
+      "id": "chen_m2sfrk_f746_fixed",
+      "method": "m2sfrk",
+      "representation": "fixed_q14_q30",
+      "system": "chen"
+    },
+    {
+      "analysis": "validation/results/selected_statistical_streams_v1/analysis/chen_m2sfrk_f746_float32/f746_chen_m2sfrk_analysis.json",
+      "bitstream": "validation/results/selected_statistical_streams_v1/analysis/chen_m2sfrk_f746_float32/f746_chen_m2sfrk_fixed-point_lsb.bin",
+      "board": "f746",
+      "expected_bits": 1054464,
+      "expected_sha256": "8edec10c8df5b816d0f511b557f29d010c3da54be290cfc74ee7cce06c23add6",
+      "id": "chen_m2sfrk_f746_float32",
+      "method": "m2sfrk",
+      "representation": "float32",
+      "system": "chen"
+    },
+    {
+      "analysis": "validation/results/selected_statistical_streams_v1/analysis/chen_m2sfrk_h755_fixed/h755_chen_m2sfrk_analysis.json",
+      "bitstream": "validation/results/selected_statistical_streams_v1/analysis/chen_m2sfrk_h755_fixed/h755_chen_m2sfrk_fixed-raw_lsb.bin",
+      "board": "h755",
+      "expected_bits": 1054464,
+      "expected_sha256": "00fdf88e58a9812d31df95a63d3092380209c03ba39c55073e54c7caf69f8078",
+      "id": "chen_m2sfrk_h755_fixed",
+      "method": "m2sfrk",
+      "representation": "fixed_q14_q30",
+      "system": "chen"
+    },
+    {
+      "analysis": "validation/results/selected_statistical_streams_v1/analysis/chen_m2sfrk_h755_float32/h755_chen_m2sfrk_analysis.json",
+      "bitstream": "validation/results/selected_statistical_streams_v1/analysis/chen_m2sfrk_h755_float32/h755_chen_m2sfrk_fixed-point_lsb.bin",
+      "board": "h755",
+      "expected_bits": 1054464,
+      "expected_sha256": "e1cfa01493ab4067bbcc72b3ff1976e15215a969b2edc0712251af5c9cebd386",
+      "id": "chen_m2sfrk_h755_float32",
+      "method": "m2sfrk",
+      "representation": "float32",
+      "system": "chen"
+    },
+    {
+      "analysis": "validation/results/selected_statistical_streams_v1/analysis/hammouch_mekkaoui_m2sfrk_f746_fixed/f746_hammouch_mekkaoui_m2sfrk_analysis.json",
+      "bitstream": "validation/results/selected_statistical_streams_v1/analysis/hammouch_mekkaoui_m2sfrk_f746_fixed/f746_hammouch_mekkaoui_m2sfrk_fixed-raw_lsb.bin",
+      "board": "f746",
+      "expected_bits": 1054464,
+      "expected_sha256": "1f4644c4fb30d48bf8c97f57378356f9ab4b8138dcf8d8d0e543d0321cc619b9",
+      "id": "hammouch_mekkaoui_m2sfrk_f746_fixed",
+      "method": "m2sfrk",
+      "representation": "fixed_q14_q30",
+      "system": "hammouch_mekkaoui"
+    },
+    {
+      "analysis": "validation/results/selected_statistical_streams_v1/analysis/hammouch_mekkaoui_m2sfrk_f746_float32/f746_hammouch_mekkaoui_m2sfrk_analysis.json",
+      "bitstream": "validation/results/selected_statistical_streams_v1/analysis/hammouch_mekkaoui_m2sfrk_f746_float32/f746_hammouch_mekkaoui_m2sfrk_fixed-point_lsb.bin",
+      "board": "f746",
+      "expected_bits": 1054464,
+      "expected_sha256": "fbfd219a9c7f318d5c2e7c054726336d094f49d01427519bb5f38e7988a82f07",
+      "id": "hammouch_mekkaoui_m2sfrk_f746_float32",
+      "method": "m2sfrk",
+      "representation": "float32",
+      "system": "hammouch_mekkaoui"
+    },
+    {
+      "analysis": "validation/results/selected_statistical_streams_v1/analysis/hammouch_mekkaoui_m2sfrk_h755_fixed/h755_hammouch_mekkaoui_m2sfrk_analysis.json",
+      "bitstream": "validation/results/selected_statistical_streams_v1/analysis/hammouch_mekkaoui_m2sfrk_h755_fixed/h755_hammouch_mekkaoui_m2sfrk_fixed-raw_lsb.bin",
+      "board": "h755",
+      "expected_bits": 1054464,
+      "expected_sha256": "4b55374b7ef4872b08331ffbd95652005b5f6daaf0dd3a3c7900bd4608742dfd",
+      "id": "hammouch_mekkaoui_m2sfrk_h755_fixed",
+      "method": "m2sfrk",
+      "representation": "fixed_q14_q30",
+      "system": "hammouch_mekkaoui"
+    },
+    {
+      "analysis": "validation/results/selected_statistical_streams_v1/analysis/hammouch_mekkaoui_m2sfrk_h755_float32/h755_hammouch_mekkaoui_m2sfrk_analysis.json",
+      "bitstream": "validation/results/selected_statistical_streams_v1/analysis/hammouch_mekkaoui_m2sfrk_h755_float32/h755_hammouch_mekkaoui_m2sfrk_fixed-point_lsb.bin",
+      "board": "h755",
+      "expected_bits": 1054464,
+      "expected_sha256": "8f1888e0f5b0a4733548977e55b1f7bb90ae0dfa3a89bb5939650269e6b3e99e",
+      "id": "hammouch_mekkaoui_m2sfrk_h755_float32",
+      "method": "m2sfrk",
+      "representation": "float32",
+      "system": "hammouch_mekkaoui"
+    },
+    {
+      "analysis": "validation/results/selected_statistical_streams_v1/analysis/liu_m2sfrk_f746_fixed/f746_liu_m2sfrk_analysis.json",
+      "bitstream": "validation/results/selected_statistical_streams_v1/analysis/liu_m2sfrk_f746_fixed/f746_liu_m2sfrk_fixed-raw_lsb.bin",
+      "board": "f746",
+      "expected_bits": 1054464,
+      "expected_sha256": "5599cdb5f8a79c4f645a7376f452acf0f21e5461cd637ab1edebc2ed199b2359",
+      "id": "liu_m2sfrk_f746_fixed",
+      "method": "m2sfrk",
+      "representation": "fixed_q14_q30",
+      "system": "liu"
+    },
+    {
+      "analysis": "validation/results/selected_statistical_streams_v1/analysis/liu_m2sfrk_f746_float32/f746_liu_m2sfrk_analysis.json",
+      "bitstream": "validation/results/selected_statistical_streams_v1/analysis/liu_m2sfrk_f746_float32/f746_liu_m2sfrk_fixed-point_lsb.bin",
+      "board": "f746",
+      "expected_bits": 1054464,
+      "expected_sha256": "4e353d7e8c40eb9c3c8f77c56d786b0447f87021c6235d285dc0983acd2a8896",
+      "id": "liu_m2sfrk_f746_float32",
+      "method": "m2sfrk",
+      "representation": "float32",
+      "system": "liu"
+    },
+    {
+      "analysis": "validation/results/selected_statistical_streams_v1/analysis/liu_m2sfrk_h755_fixed/h755_liu_m2sfrk_analysis.json",
+      "bitstream": "validation/results/selected_statistical_streams_v1/analysis/liu_m2sfrk_h755_fixed/h755_liu_m2sfrk_fixed-raw_lsb.bin",
+      "board": "h755",
+      "expected_bits": 1054464,
+      "expected_sha256": "d428b37b3649681037455d23c7514da0ef8fdbd3e09961167f95c8332e0acadb",
+      "id": "liu_m2sfrk_h755_fixed",
+      "method": "m2sfrk",
+      "representation": "fixed_q14_q30",
+      "system": "liu"
+    },
+    {
+      "analysis": "validation/results/selected_statistical_streams_v1/analysis/liu_m2sfrk_h755_float32/h755_liu_m2sfrk_analysis.json",
+      "bitstream": "validation/results/selected_statistical_streams_v1/analysis/liu_m2sfrk_h755_float32/h755_liu_m2sfrk_fixed-point_lsb.bin",
+      "board": "h755",
+      "expected_bits": 1054464,
+      "expected_sha256": "d42aa2e58100043e76cafda98f7c950f0cf72eb96b63d69246baab84fa816265",
+      "id": "liu_m2sfrk_h755_float32",
+      "method": "m2sfrk",
+      "representation": "float32",
+      "system": "liu"
+    }
+  ],
+  "tool_provenance": {
+    "nist_sp800_22": {
+      "build_command": "gcc -O2 -Wall -I include -o assess.exe src/*.c -lm",
+      "distribution": "NIST Statistical Test Suite",
+      "official_source_url": "https://csrc.nist.gov/CSRC/media/Projects/Random-Bit-Generation/documents/sts-2_1_2.zip",
+      "source_archive_sha256": "0238d2f1d26e120e3cc748ed2d4c674cdc636de37fc4027c76cc2a394fff9157",
+      "version": "2.1.2",
+      "version_evidence": "version is identified by the official source distribution; assess has no version flag"
+    },
+    "practrand": {
+      "build_commands": [
+        "g++ -std=gnu++11 -O3 -I include -c src/*.cpp src/RNGs/*.cpp src/RNGs/other/*.cpp",
+        "ar rcs libPractRand.a *.o",
+        "g++ -std=gnu++11 -O3 -I include -I tools -o RNG_test.exe tools/RNG_test.cpp libPractRand.a -pthread"
+      ],
+      "distribution": "PractRand",
+      "official_source_url": "https://sourceforge.net/projects/pracrand/files/PractRand_0.96.zip/download",
+      "source_archive_sha256": "e4caf7fda98b2c597bbda3b576753cf5a0f6047aab837c82be370ab798a672e1",
+      "version": "0.96",
+      "version_probe": "RNG_test.exe --version"
+    },
+    "testu01": {
+      "build_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File validation/build_testu01_ucrt64.ps1 -SourceRoot <TestU01-2009> -OutputDir <empty-output-dir>",
+      "build_script": "validation/build_testu01_ucrt64.ps1",
+      "distribution": "TestU01",
+      "file_batteries": [
+        "bbattery_RabbitFile",
+        "bbattery_AlphabitFile"
+      ],
+      "generic_file_runner": "validation/testu01_file_batteries.c",
+      "note": "The adapter passes the exact requested nb, rejects nb larger than the finite file, and never extends the input. TestU01 may internally use the largest whole 32-bit prefix and rewinds the same file between distinct tests.",
+      "official_source_url": "https://github.com/umontreal-simul/TestU01-2009",
+      "source_git_commit": "57e98bf33880daedc930739c81e39b89a8d24dba",
+      "version": "1.2.3"
+    }
+  }
+}

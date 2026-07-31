@@ -1,0 +1,37 @@
+Dependencias verificadas:
+  STM32CubeH7 v1.13.0  5abb9764b32e11a6557b90bf39531528019b5761
+  CMSIS H7              8f922cdc7cc6de2344e75ddd657889f4ff761790
+  HAL H7                a1996eed9172b59887bafaaa0ea1816ea14d48b5
+  GCC                    C:\Users\moren\AppData\Local\STM32Cube\bundles\gnu-tools-for-stm32\14.3.1+st.2\bin\arm-none-eabi-gcc.exe
+  Ninja                  C:\Users\moren\AppData\Local\STM32Cube\bundles\ninja\1.13.2+st.1\bin\ninja.exe
+  Programmer             C:\Users\moren\AppData\Local\STM32Cube\bundles\programmer\2.23.0\bin\STM32_Programmer_CLI.exe
+-- Configuring done (0.0s)
+-- Generating done (0.1s)
+-- Build files have been written to: C:/Users/moren/Desktop/Codes/STM32/FractionalChaos/build/campaign-selected/f746/benchmark-10000-primary-handshake-release
+[1/21] Building C object platform/f746/CMakeFiles/f746_chen_m2sfrk.dir/src/syscalls.c.obj
+[2/21] Building ASM object platform/f746/CMakeFiles/f746_chen_m2sfrk.dir/d10c05f57ffeed7a536e4923a8a8e895/Core/Startup/startup_stm32f746zgtx.s.obj
+[3/21] Building C object platform/f746/CMakeFiles/f746_chen_m2sfrk.dir/src/stm32f7xx_it.c.obj
+[4/21] Building C object platform/f746/CMakeFiles/f746_chen_m2sfrk.dir/src/stm32f7xx_hal_msp.c.obj
+[5/21] Building C object platform/f746/CMakeFiles/f746_chen_m2sfrk.dir/__/__/transport/fc_runtime_probe.c.obj
+[6/21] Building C object platform/f746/CMakeFiles/f746_chen_m2sfrk.dir/__/__/transport/fc_protocol.c.obj
+[7/21] Building C object platform/f746/CMakeFiles/f746_chen_m2sfrk.dir/__/__/generated/fc_chen_m2sfrk.c.obj
+[8/21] Building C object platform/f746/CMakeFiles/f746_chen_m2sfrk.dir/__/__/common/fractional_chaos.c.obj
+[9/21] Building C object platform/f746/CMakeFiles/f746_chen_m2sfrk.dir/__/__/transport/fc_start_handshake.c.obj
+[10/21] Building C object platform/f746/CMakeFiles/f746_chen_m2sfrk.dir/__/__/common/fractional_chaos_fixed.c.obj
+[11/21] Building C object platform/f746/CMakeFiles/f746_chen_m2sfrk.dir/bf9ab7d8bb0eca06071ea0e4048ce3bd/Lorenz_efork/Core/Src/system_stm32f7xx.c.obj
+[12/21] Building C object platform/f746/CMakeFiles/f746_chen_m2sfrk.dir/5a4873b634b351f97a66d26768025a68/Src/stm32f7xx_hal_gpio.c.obj
+[13/21] Building C object platform/f746/CMakeFiles/f746_chen_m2sfrk.dir/src/main.c.obj
+[14/21] Building C object platform/f746/CMakeFiles/f746_chen_m2sfrk.dir/0dd75180ea24924d6a0ff3b6889c89c4/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.c.obj
+[15/21] Building C object platform/f746/CMakeFiles/f746_chen_m2sfrk.dir/5a4873b634b351f97a66d26768025a68/Src/stm32f7xx_hal_pwr_ex.c.obj
+[16/21] Building C object platform/f746/CMakeFiles/f746_chen_m2sfrk.dir/5a4873b634b351f97a66d26768025a68/Src/stm32f7xx_hal_cortex.c.obj
+[17/21] Building C object platform/f746/CMakeFiles/f746_chen_m2sfrk.dir/5a4873b634b351f97a66d26768025a68/Src/stm32f7xx_hal_rcc_ex.c.obj
+[18/21] Building C object platform/f746/CMakeFiles/f746_chen_m2sfrk.dir/5a4873b634b351f97a66d26768025a68/Src/stm32f7xx_hal_dma.c.obj
+[19/21] Building C object platform/f746/CMakeFiles/f746_chen_m2sfrk.dir/5a4873b634b351f97a66d26768025a68/Src/stm32f7xx_hal_rcc.c.obj
+[20/21] Building C object platform/f746/CMakeFiles/f746_chen_m2sfrk.dir/5a4873b634b351f97a66d26768025a68/Src/stm32f7xx_hal_uart.c.obj
+[21/21] Linking C executable f746_chen_m2sfrk.elf; Generating f746_chen_m2sfrk HEX and BIN images
+Memory region         Used Size  Region Size  %age Used
+           FLASH:       14156 B         1 MB      1.35%
+         DTCMRAM:         192 B        64 KB      0.29%
+           SRAM1:       48608 B       240 KB     19.78%
+           SRAM2:          64 B        16 KB      0.39%
+Build de campaÃ±a listo: C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\build\campaign-selected\f746\benchmark-10000-primary-handshake-release [f746_chen_m2sfrk].

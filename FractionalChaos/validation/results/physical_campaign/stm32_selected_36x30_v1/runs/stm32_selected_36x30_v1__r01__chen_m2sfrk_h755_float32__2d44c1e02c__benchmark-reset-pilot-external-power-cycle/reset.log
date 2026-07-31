@@ -1,0 +1,102 @@
+{
+  "error": "no llegó 'READY aed4cb8cbc0c3b90' en 15.0s",
+  "error_type": "CampaignError",
+  "reset_evidence": {
+    "contract_authorization": "pilot_only_pending_real_preflight_and_manifest_authorization",
+    "controller": {
+      "ack": {
+        "channel": "H755",
+        "off_mv": 0,
+        "off_ok": true,
+        "on_mv": 3314,
+        "on_ok": true,
+        "raw_line": "ACK aed4cb8cbc0c3b90 H755 OFF_OK=1 ON_OK=1 OFF_MV=0 ON_MV=3314",
+        "request_id": "aed4cb8cbc0c3b90"
+      },
+      "baud": 115200,
+      "channel": "H755",
+      "command": "CYCLE aed4cb8cbc0c3b90 H755 2500",
+      "controller_id": "UNO_PWR_01",
+      "lines": [
+        "ACK aed4cb8cbc0c3b90 H755 OFF_OK=1 ON_OK=1 OFF_MV=0 ON_MV=3314"
+      ],
+      "off_ms": 2500,
+      "off_threshold_mv": 200,
+      "on_threshold_mv": 3100,
+      "port": "COM10",
+      "relay": 2
+    },
+    "controller_open_prime": {
+      "eligible_as_campaign_repetition": false,
+      "reason": "target_present_after_controller_open",
+      "required": false
+    },
+    "cycle_wall_time_s": 3.7030000000086147,
+    "eligible_as_paper_cold_start": false,
+    "eligible_as_primary_benchmark": false,
+    "ina226_energy": {
+      "eligible_as_primary_benchmark": false,
+      "publication_ready": false,
+      "requested": false,
+      "single_controller_serial_owner": true,
+      "status": "not_requested",
+      "workload_contract": null
+    },
+    "mode": "external_power_cycle_controller",
+    "port_reopen": {
+      "attempts": 1,
+      "opened": true,
+      "port": {
+        "device": "COM6",
+        "hwid": "USB VID:PID=0483:374E SER=003700344142501220353451 LOCATION=1-1:x.2",
+        "pid": 14158,
+        "serial_number": "003700344142501220353451",
+        "vid": 1155
+      },
+      "transient_errors": [],
+      "wall_time_s": 0.0
+    },
+    "postboot_handshake": {
+      "completed": false,
+      "protocol": "fcc1-host-start-v1"
+    },
+    "power_cycle_repetition_id": 1,
+    "power_removed": true,
+    "power_removed_basis": "validated_controller_ack_plus_stlink_vcp_identity_disappearance_and_reappearance",
+    "preparation": "program_verify_halt_then_controller_power_cycle_then_usb_reenumeration_and_postboot_handshake",
+    "protocol": "fc-power-cycle-v1",
+    "request_id": "aed4cb8cbc0c3b90",
+    "requested_run_id": "stm32_selected_36x30_v1__r01__chen_m2sfrk_h755_float32__2d44c1e02c__benchmark-reset-pilot-external-power-cycle",
+    "usb_reenumeration": {
+      "backend": "pyserial_list_ports_usb_serial",
+      "com_disappeared": true,
+      "com_disappeared_after_s": 0.125,
+      "com_reappeared": true,
+      "com_reappeared_after_s": 3.1559999999881256,
+      "independent_probe_lister_used": false,
+      "port_after": {
+        "device": "COM6",
+        "hwid": "USB VID:PID=0483:374E SER=003700344142501220353451 LOCATION=1-1:x.2",
+        "pid": 14158,
+        "serial_number": "003700344142501220353451",
+        "vid": 1155
+      },
+      "port_before": {
+        "device": "COM6",
+        "hwid": "USB VID:PID=0483:374E SER=003700344142501220353451 LOCATION=1-1:x.2",
+        "pid": 14158,
+        "serial_number": "003700344142501220353451",
+        "vid": 1155
+      },
+      "port_changed": false,
+      "probe_disappeared": true,
+      "probe_disappeared_after_s": 0.125,
+      "probe_identity_source": "stlink_vcp_usb_serial_and_vid_pid",
+      "probe_reappeared": true,
+      "probe_reappeared_after_s": 3.1559999999881256,
+      "probe_serial": "003700344142501220353451"
+    }
+  },
+  "schema": "fractional-chaos-power-cycle-log-v1",
+  "status": "failed"
+}
