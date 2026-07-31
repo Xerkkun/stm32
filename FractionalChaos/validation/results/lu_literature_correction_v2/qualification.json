@@ -1,0 +1,574 @@
+{
+  "candidate_grid_snapshot": {
+    "candidates": [
+      {
+        "candidate_id": "lu_chen2012_caputo_v2",
+        "equations": [
+          "C D^q x = a(y-x)",
+          "C D^q y = c y - x z",
+          "C D^q z = x y - b z"
+        ],
+        "manifest": {
+          "h": 0.01,
+          "initial_state": [
+            0.0,
+            3.0,
+            9.0
+          ],
+          "manifest_id": "lu_caputo_v2",
+          "memory_increments": 1000,
+          "memory_seconds": 10.0,
+          "parameters": [
+            35.0,
+            3.0,
+            28.0
+          ],
+          "q": 0.9,
+          "system": "lu"
+        },
+        "source": {
+          "citation": "Chen, Zhang, Sprott, and Ma, Nonlinear Dynamics 70 (2012) 1549-1561",
+          "contract_evidence": [
+            "The paper states that the simulations use the Caputo version and a predictor-corrector generalization of Adams-Bashforth-Moulton with fixed step h=0.01.",
+            "Its fractional Lu case uses q1=q2=q3=0.90, parameters (a,b,c)=(35,3,28), and initial state (0,3,9)."
+          ],
+          "doi": "10.1007/s11071-012-0555-3",
+          "url": "https://sprott.physics.wisc.edu/pubs/paper462.pdf"
+        }
+      }
+    ],
+    "declared_date": "2026-07-29",
+    "does_not_establish": [
+      "that the v1 Yadav configuration is an invalid mathematical initial-value problem",
+      "a proof of chaos or a positive Lyapunov exponent",
+      "equivalence to a finite-memory embedded implementation",
+      "STM32 timing, energy, or randomness",
+      "automatic inclusion in the primary hardware matrix before firmware validation"
+    ],
+    "evidence_layer": "literature_contract_correction",
+    "grid_id": "lu_literature_contract_correction_v2",
+    "integration_policy": {
+      "base_step_s": 0.01,
+      "commensurate_order": true,
+      "diagnostic_sample_period_s": 0.05,
+      "embedded_window_for_later_port_s": 10.0,
+      "memory_policy": "full_history",
+      "operator": "caputo",
+      "physical_horizon_s": 50.0,
+      "step_basis": "The cited source explicitly reports a Caputo predictor-corrector algorithm with fixed step h=0.01; qualification runs h/2 and h/4.",
+      "transient_s": 10.0
+    },
+    "purpose": "Replace the dynamically selected Yadav-2019 Lu configuration with a Lu contract whose source explicitly reports Caputo predictor-corrector ABM and h=0.01. This correction is motivated by provenance, not by the observed v1 numerical score.",
+    "schema_version": 1,
+    "selection_rule": {
+      "eligibility": "The corrective candidate must pass every unchanged long-horizon screen at h/2 and h/4 and the unchanged cross-resolution screen.",
+      "insufficient_passes": "Do not relax thresholds or introduce another candidate after observing this run.",
+      "promotion_count": 1,
+      "ranking": "Use the same minimum normalized continuous acceptance margin as v1; with one corrective candidate, ranking cannot change its eligibility.",
+      "reporting": "Preserve the corrective result whether it passes or fails.",
+      "tie_breaker": "lexicographic candidate_id"
+    },
+    "status": "declared_after_v1_literature_audit_before_corrective_run",
+    "supersedes_for_formal_followup": {
+      "candidate_id": "lu_yadav2019_caputo_v1",
+      "manifest_id": "lu_caputo_v1",
+      "reason": "The source reports the state-space parameters but its printed numerical procedure is an ordinary four-step ABM method without the fractional history convolution and it does not report h. The v1 trajectory remains preserved as an independently integrated IVP, but it is not treated as a closed reproduction contract."
+    }
+  },
+  "criteria": {
+    "criteria_id": "abm_caputo_lu_literature_correction_v2",
+    "decision_rule": {
+      "not_qualified": "Any required dynamic screen or numerical integration fails. A failed screen is reported without changing the criteria.",
+      "prerequisite": "The separate alternative-system ABM validation report must pass and its oracle, vector-field, candidate-grid, and manifest hashes must match the current inputs.",
+      "qualified": "Every resolution passes observed boundedness, activity, the nonperiodicity screen, and within-resolution stability, and the h/2 versus h/4 distributional comparison passes."
+    },
+    "source": "validation/lu_literature_correction_criteria_v2.json",
+    "source_sha256": "d9da813f0f7e90a3585dcb8022fb0ec30deddfeb514fbb9d69f9c1e822d76e38",
+    "status": "predeclared_before_first_qualification_run"
+  },
+  "criteria_snapshot": {
+    "correction_rationale": "The v1 Lu candidate was dynamically strong, but the subsequent source-method audit found that its cited paper did not print a fractional full-memory ABM method or a numerical h. The replacement was chosen for a complete published operator-method-step contract before this corrective trajectory was computed.",
+    "criteria_id": "abm_caputo_lu_literature_correction_v2",
+    "cross_resolution_stability": {
+      "maximum_mean_difference_in_pooled_std": 0.75,
+      "maximum_permutation_entropy_difference": 0.25,
+      "maximum_quantile_difference_in_pooled_std": 1.0,
+      "maximum_symmetric_std_ratio": 2.5,
+      "quantiles": [
+        0.05,
+        0.25,
+        0.5,
+        0.75,
+        0.95
+      ]
+    },
+    "decision_rule": {
+      "not_qualified": "Any required dynamic screen or numerical integration fails. A failed screen is reported without changing the criteria.",
+      "prerequisite": "The separate alternative-system ABM validation report must pass and its oracle, vector-field, candidate-grid, and manifest hashes must match the current inputs.",
+      "qualified": "Every resolution passes observed boundedness, activity, the nonperiodicity screen, and within-resolution stability, and the h/2 versus h/4 distributional comparison passes."
+    },
+    "declared_date": "2026-07-29",
+    "does_not_establish": [
+      "mathematical boundedness outside the observed horizon",
+      "a proof of chaos or a positive Lyapunov exponent",
+      "hidden-attractor status",
+      "pointwise convergence of long chaotic trajectories",
+      "equivalence to an embedded finite-memory implementation",
+      "STM32 timing, energy, or randomness",
+      "automatic inclusion in the primary hardware matrix"
+    ],
+    "inputs": {
+      "candidate_grid_sha256": "e432183a9e309b7a673bfd29f86549e00c1cffa2a1e3f6c56781a8b7317a9fe5",
+      "candidate_manifest_sha256": "b5d27062d8d8e790c962bcf27fe8cc7a86b26ad54ca467e8e849d32bd0146453",
+      "manifest_ids": [
+        "lu_caputo_v2"
+      ]
+    },
+    "integration": {
+      "arithmetic": "IEEE-754 float64",
+      "diagnostic_sample_period_s": 0.05,
+      "memory_policy": "full_history",
+      "operator": "caputo",
+      "physical_horizon_s": 50.0,
+      "resolution_divisors": [
+        2,
+        4
+      ],
+      "transient_s": 10.0
+    },
+    "nonperiodicity_screen": {
+      "lag_window_s": [
+        1.0,
+        15.0
+      ],
+      "minimum_normalized_lag_rmse": 0.05,
+      "minimum_normalized_permutation_entropy": 0.25,
+      "permutation_entropy_delay_s": 0.1,
+      "permutation_entropy_order": 5
+    },
+    "observed_boundedness": {
+      "maximum_absolute_state": 1000.0,
+      "minimum_active_components": 3,
+      "minimum_component_peak_to_peak": 0.01,
+      "minimum_component_standard_deviation": 0.001
+    },
+    "schema_version": 1,
+    "scope": "Observed long-horizon dynamic qualification of the source-corrected Chen-2012 Lu Caputo contract using the independently validated full-memory ABM oracle.",
+    "selection_rule": {
+      "promotion_count": 1,
+      "ranking": "Descending minimum normalized continuous acceptance margin among qualified candidates.",
+      "report_all_candidates": true,
+      "tie_breaker": "lexicographic candidate_id"
+    },
+    "status": "predeclared_before_first_qualification_run",
+    "within_resolution_stability": {
+      "maximum_block_mean_shift_in_global_std": 1.5,
+      "maximum_block_to_global_std_ratio": 4.0,
+      "minimum_block_to_global_std_ratio": 0.25,
+      "post_transient_blocks": 4
+    }
+  },
+  "does_not_establish": [
+    "mathematical boundedness outside the observed horizon",
+    "a proof of chaos or a positive Lyapunov exponent",
+    "hidden-attractor status",
+    "pointwise convergence of long chaotic trajectories",
+    "equivalence to an embedded finite-memory implementation",
+    "STM32 timing, energy, or randomness",
+    "automatic inclusion in the primary hardware matrix"
+  ],
+  "evidence_layer": "dynamic_manifest_qualification",
+  "execution": {
+    "completed_utc": "2026-07-29T07:20:47.633714+00:00",
+    "numpy_version": "2.3.5",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "python_version": "3.12.12",
+    "started_utc": "2026-07-29T07:20:44.200991+00:00",
+    "wall_time_s": 3.4470126999995045
+  },
+  "implementation_validation_prerequisite": {
+    "checks": {
+      "abm_oracle_source_sha256_matches_report": true,
+      "algorithm_validation_passed": true,
+      "alternative_rhs_source_sha256_matches_report": true,
+      "candidate_grid_sha256_matches_report": true,
+      "candidate_manifest_sha256_matches_report": true,
+      "grid_matches_predeclared_criteria": true,
+      "manifest_matches_predeclared_criteria": true,
+      "status_passed": true
+    },
+    "current": {
+      "abm_oracle_source_sha256": "5608dc119e85a01accc4ae8b58f83e13c79b230a7731953c280330e16bcb2aca",
+      "alternative_rhs_source_sha256": "4aad013e3f362189183ad76ab8e451758c040547445999aa6116a3a744ad4af4",
+      "candidate_grid_sha256": "e432183a9e309b7a673bfd29f86549e00c1cffa2a1e3f6c56781a8b7317a9fe5",
+      "candidate_manifest_sha256": "b5d27062d8d8e790c962bcf27fe8cc7a86b26ad54ca467e8e849d32bd0146453"
+    },
+    "passed": true,
+    "source": "validation/results/lu_literature_correction_oracle_v2.json",
+    "source_sha256": "e3139e8395583bc2b0aed078560751b2ce0c5f750d5d7117dee5fabd5f71c7de"
+  },
+  "manifests": [
+    {
+      "candidate_id": "lu_chen2012_caputo_v2",
+      "cross_resolution_stability": {
+        "checks": {
+          "mean_difference": true,
+          "permutation_entropy_difference": true,
+          "quantile_difference": true,
+          "standard_deviation_ratio": true
+        },
+        "interpretation": "Distributional h/2 versus h/4 stability; pointwise trajectory agreement is intentionally not required at long horizon.",
+        "maximum_mean_difference_in_pooled_std": 0.3407165844408119,
+        "maximum_quantile_difference_in_pooled_std": 0.7822987339433117,
+        "maximum_symmetric_std_ratio": 1.0430661797295657,
+        "mean_difference_in_pooled_std_by_component": [
+          0.3407165844408119,
+          0.3122328839728277,
+          0.01613328453870069
+        ],
+        "passed": true,
+        "permutation_entropy_difference": 0.15833672843326618,
+        "symmetric_std_ratio_by_component": [
+          1.0430661797295657,
+          1.0401387312406873,
+          1.0010872427507975
+        ],
+        "thresholds": {
+          "maximum_mean_difference_in_pooled_std": 0.75,
+          "maximum_permutation_entropy_difference": 0.25,
+          "maximum_quantile_difference_in_pooled_std": 1.0,
+          "maximum_symmetric_std_ratio": 2.5
+        }
+      },
+      "decision": "not_qualified_dynamic_screen_failed",
+      "failure_reasons": [
+        "h/4 failed nonperiodicity_screen"
+      ],
+      "manifest": {
+        "candidate_id": "lu_chen2012_caputo_v2",
+        "h": 0.01,
+        "initial_state": [
+          0.0,
+          3.0,
+          9.0
+        ],
+        "manifest_id": "lu_caputo_v2",
+        "memory_increments": 1000,
+        "memory_seconds": 10.0,
+        "parameters": [
+          35.0,
+          3.0,
+          28.0
+        ],
+        "q": 0.9,
+        "system": "lu"
+      },
+      "manifest_id": "lu_caputo_v2",
+      "resolutions": [
+        {
+          "diagnostics": {
+            "activity": {
+              "active_components": 3,
+              "checks": {
+                "minimum_active_components": true
+              },
+              "minimum_required": 3,
+              "passed": true
+            },
+            "analysis_window_s": [
+              10.0,
+              50.0
+            ],
+            "component_summary": {
+              "maximum": [
+                22.289820652691315,
+                26.266250236314605,
+                45.882906955157374
+              ],
+              "mean": [
+                0.433008712300622,
+                0.41994420748054606,
+                28.114823112544435
+              ],
+              "minimum": [
+                -23.10721464765431,
+                -27.3688955992054,
+                13.704080501061462
+              ],
+              "peak_to_peak": [
+                45.39703530034562,
+                53.63514583552001,
+                32.17882645409591
+              ],
+              "quantile_probabilities": [
+                0.05,
+                0.25,
+                0.5,
+                0.75,
+                0.95
+              ],
+              "quantiles": [
+                [
+                  -14.426283162263683,
+                  -15.827512776575407,
+                  19.93174207886869
+                ],
+                [
+                  -6.734790156593044,
+                  -7.008357436174453,
+                  24.14519448443901
+                ],
+                [
+                  0.9894835416429036,
+                  0.9917007402911038,
+                  28.22952709958188
+                ],
+                [
+                  7.752249011602475,
+                  8.170691840533724,
+                  31.564493274114685
+                ],
+                [
+                  13.955448634860037,
+                  15.189609002459678,
+                  36.969705997316645
+                ]
+              ],
+              "standard_deviation": [
+                8.996435487080305,
+                9.7598619426571,
+                5.215547409242
+              ]
+            },
+            "diagnostic_sample_period_s": 0.05,
+            "diagnostic_samples": 801,
+            "nonperiodicity_screen": {
+              "checks": {
+                "minimum_normalized_lag_rmse": true,
+                "minimum_normalized_permutation_entropy": true
+              },
+              "interpretation": "Observed no-near-period recurrence and complexity screen; not a proof of chaos.",
+              "lag_at_minimum_s": 14.75,
+              "lag_window_s": [
+                1.0,
+                15.0
+              ],
+              "minimum_normalized_lag_rmse": 1.216904060788747,
+              "normalized_permutation_entropy": 0.8361226278504559,
+              "passed": true,
+              "permutation_entropy_component": 1,
+              "permutation_entropy_delay_samples": 2,
+              "permutation_entropy_order": 5,
+              "thresholds": {
+                "minimum_normalized_lag_rmse": 0.05,
+                "minimum_normalized_permutation_entropy": 0.25
+              }
+            },
+            "observed_boundedness": {
+              "checks": {
+                "all_finite": true,
+                "maximum_absolute_state": true
+              },
+              "maximum_absolute_state": 52.54138336280482,
+              "passed": true,
+              "threshold": 1000.0
+            },
+            "post_transient_samples": 8001,
+            "within_resolution_stability": {
+              "checks": {
+                "maximum_mean_shift": true,
+                "maximum_std_ratio": true,
+                "minimum_std_ratio": true
+              },
+              "maximum_block_mean_shift_in_global_std": 0.15371798941341935,
+              "maximum_block_to_global_std_ratio": 1.0881368684702062,
+              "minimum_block_to_global_std_ratio": 0.8949929150252858,
+              "passed": true,
+              "thresholds": {
+                "maximum_block_mean_shift_in_global_std": 1.5,
+                "maximum_block_to_global_std_ratio": 4.0,
+                "minimum_block_to_global_std_ratio": 0.25
+              }
+            }
+          },
+          "h": 0.005,
+          "integration_status": "completed",
+          "resolution_divisor": 2,
+          "rhs_evaluations": 20001,
+          "runtime_s": 0.9141904000007344,
+          "steps": 10000,
+          "trajectory_float64_le_sha256": "6413a348cf5d447c08ba66027be81849f1a4ea1d1fc43986f0086b603116ea7d"
+        },
+        {
+          "diagnostics": {
+            "activity": {
+              "active_components": 3,
+              "checks": {
+                "minimum_active_components": true
+              },
+              "minimum_required": 3,
+              "passed": true
+            },
+            "analysis_window_s": [
+              10.0,
+              50.0
+            ],
+            "component_summary": {
+              "maximum": [
+                18.927951614847526,
+                21.794742299584133,
+                40.489048919636026
+              ],
+              "mean": [
+                -2.5696141182149583,
+                -2.56918570246806,
+                28.030633447311235
+              ],
+              "minimum": [
+                -13.785015950017895,
+                -14.88684953756815,
+                18.47649603573891
+              ],
+              "peak_to_peak": [
+                32.71296756486542,
+                36.68159183715228,
+                22.012552883897115
+              ],
+              "quantile_probabilities": [
+                0.05,
+                0.25,
+                0.5,
+                0.75,
+                0.95
+              ],
+              "quantiles": [
+                [
+                  -13.038000430993764,
+                  -13.951562129286106,
+                  19.051007599763434
+                ],
+                [
+                  -8.975939035168716,
+                  -9.602260841302277,
+                  24.24937022692591
+                ],
+                [
+                  -5.904657061100996,
+                  -5.81231261053674,
+                  28.7618331203809
+                ],
+                [
+                  2.128025588251381,
+                  2.2981624474750926,
+                  30.760949367735943
+                ],
+                [
+                  16.62303520957857,
+                  18.769428259749844,
+                  37.9767774971249
+                ]
+              ],
+              "standard_deviation": [
+                8.624990112720171,
+                9.383230957100736,
+                5.221217975354139
+              ]
+            },
+            "diagnostic_sample_period_s": 0.05,
+            "diagnostic_samples": 801,
+            "nonperiodicity_screen": {
+              "checks": {
+                "minimum_normalized_lag_rmse": false,
+                "minimum_normalized_permutation_entropy": true
+              },
+              "interpretation": "Observed no-near-period recurrence and complexity screen; not a proof of chaos.",
+              "lag_at_minimum_s": 7.550000000000001,
+              "lag_window_s": [
+                1.0,
+                15.0
+              ],
+              "minimum_normalized_lag_rmse": 0.0327978176718254,
+              "normalized_permutation_entropy": 0.6777858994171897,
+              "passed": false,
+              "permutation_entropy_component": 1,
+              "permutation_entropy_delay_samples": 2,
+              "permutation_entropy_order": 5,
+              "thresholds": {
+                "minimum_normalized_lag_rmse": 0.05,
+                "minimum_normalized_permutation_entropy": 0.25
+              }
+            },
+            "observed_boundedness": {
+              "checks": {
+                "all_finite": true,
+                "maximum_absolute_state": true
+              },
+              "maximum_absolute_state": 51.95177677687988,
+              "passed": true,
+              "threshold": 1000.0
+            },
+            "post_transient_samples": 16001,
+            "within_resolution_stability": {
+              "checks": {
+                "maximum_mean_shift": true,
+                "maximum_std_ratio": true,
+                "minimum_std_ratio": true
+              },
+              "maximum_block_mean_shift_in_global_std": 0.02699180905261879,
+              "maximum_block_to_global_std_ratio": 1.0140219453183905,
+              "minimum_block_to_global_std_ratio": 0.9914043277916645,
+              "passed": true,
+              "thresholds": {
+                "maximum_block_mean_shift_in_global_std": 1.5,
+                "maximum_block_to_global_std_ratio": 4.0,
+                "minimum_block_to_global_std_ratio": 0.25
+              }
+            }
+          },
+          "h": 0.0025,
+          "integration_status": "completed",
+          "resolution_divisor": 4,
+          "rhs_evaluations": 40001,
+          "runtime_s": 2.526941000000079,
+          "steps": 20000,
+          "trajectory_float64_le_sha256": "0be46094c49a9b15e41b880d52b6376a50252926b35f4a116317abc0e65829f6"
+        }
+      ],
+      "selection": {
+        "eligible": false,
+        "minimum_normalized_continuous_margin": null,
+        "selected_for_formal_followup": false
+      },
+      "system": "lu"
+    }
+  ],
+  "provenance": {
+    "abm_oracle_source": "validation/abm_oracle.py",
+    "abm_oracle_source_sha256": "5608dc119e85a01accc4ae8b58f83e13c79b230a7731953c280330e16bcb2aca",
+    "alternative_rhs_source": "validation/alternative_systems.py",
+    "alternative_rhs_source_sha256": "4aad013e3f362189183ad76ab8e451758c040547445999aa6116a3a744ad4af4",
+    "candidate_grid_sha256": "e432183a9e309b7a673bfd29f86549e00c1cffa2a1e3f6c56781a8b7317a9fe5",
+    "candidate_grid_source": "validation/lu_literature_correction_grid_v2.json",
+    "candidate_manifest_sha256": "b5d27062d8d8e790c962bcf27fe8cc7a86b26ad54ca467e8e849d32bd0146453",
+    "candidate_manifest_source": "validation/lu_literature_correction_manifests_v2.json",
+    "qualification_source": "validation/qualify_alternative_systems.py",
+    "qualification_source_sha256": "81cc7bd575a16ed2b494eccf55086332ecaa72d7c1db0b4d185b4b70af0b41e3"
+  },
+  "qualified_manifest_ids": [],
+  "schema_version": 1,
+  "scope": "Observed long-horizon dynamic qualification of the source-corrected Chen-2012 Lu Caputo contract using the independently validated full-memory ABM oracle.",
+  "selection": {
+    "actual_selection_count": 0,
+    "eligible_ranked": [],
+    "requested_promotion_count": 1,
+    "rule": {
+      "promotion_count": 1,
+      "ranking": "Descending minimum normalized continuous acceptance margin among qualified candidates.",
+      "report_all_candidates": true,
+      "tie_breaker": "lexicographic candidate_id"
+    },
+    "selected_manifest_ids": [],
+    "thresholds_unchanged": true
+  },
+  "status": "alternative_system_qualification_completed"
+}

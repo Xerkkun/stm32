@@ -5,6 +5,27 @@
 
 #define FC_SOLVER_MAGIC (0x46434348u)
 
+#ifndef FC_SELECTED_SYSTEM_MANIFEST_SHA256
+#error "The selected-system manifest SHA-256 must be supplied by CMake"
+#endif
+
+#if defined(__GNUC__) && defined(__ELF__)
+#define FC_RETAINED_DATA \
+    __attribute__((used, section(".fc_manifest_hash")))
+#elif defined(__GNUC__)
+#define FC_RETAINED_DATA __attribute__((used))
+#else
+#define FC_RETAINED_DATA
+#endif
+
+FC_RETAINED_DATA
+const char FC_SELECTED_SYSTEM_MANIFEST_SHA256_TEXT[65] =
+    FC_SELECTED_SYSTEM_MANIFEST_SHA256;
+
+_Static_assert(
+    sizeof(FC_SELECTED_SYSTEM_MANIFEST_SHA256_TEXT) == 65u,
+    "The selected-system manifest SHA-256 must contain 64 characters");
+
 const fc_manifest_t FC_MANIFESTS[FC_SYSTEM_COUNT] = {
     {
         FC_SYSTEM_LORENZ,
@@ -13,7 +34,7 @@ const fc_manifest_t FC_MANIFESTS[FC_SYSTEM_COUNT] = {
         0.005f,
         10.0f,
         2000u,
-        {10.0f, 28.0f, 8.0f / 3.0f},
+        {10.0f, 28.0f, 8.0f / 3.0f, 0.0f, 0.0f, 0.0f},
         {{0.1f, 0.1f, 0.1f}}
     },
     {
@@ -23,7 +44,7 @@ const fc_manifest_t FC_MANIFESTS[FC_SYSTEM_COUNT] = {
         0.010f,
         10.0f,
         1000u,
-        {0.2f, 0.2f, 5.7f},
+        {0.2f, 0.2f, 5.7f, 0.0f, 0.0f, 0.0f},
         {{1.0f, 0.0f, 0.0f}}
     },
     {
@@ -33,8 +54,28 @@ const fc_manifest_t FC_MANIFESTS[FC_SYSTEM_COUNT] = {
         0.005f,
         10.0f,
         2000u,
-        {35.0f, 3.0f, 28.0f},
+        {35.0f, 3.0f, 28.0f, 0.0f, 0.0f, 0.0f},
         {{0.1f, 0.1f, 0.1f}}
+    },
+    {
+        FC_SYSTEM_LIU,
+        "liu",
+        0.920f,
+        0.010f,
+        10.0f,
+        1000u,
+        {1.0f, 2.5f, 5.0f, 1.0f, 4.0f, 4.0f},
+        {{0.2f, 0.0f, 0.5f}}
+    },
+    {
+        FC_SYSTEM_HAMMOUCH_MEKKAOUI,
+        "hammouch_mekkaoui",
+        0.980f,
+        0.010f,
+        10.0f,
+        1000u,
+        {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
+        {{0.7f, 0.1f, 0.0f}}
     }
 };
 
@@ -161,7 +202,7 @@ fc_status_t fc_config_from_manifest(
     config->memory_length = manifest->memory_length;
     config->initial_state = manifest->initial_state;
     config->precomputed_tables = NULL;
-    for (component = 0u; component < FC_STATE_DIMENSION; ++component) {
+    for (component = 0u; component < FC_PARAMETER_COUNT; ++component) {
         config->parameters[component] = manifest->parameters[component];
     }
     return FC_OK;
@@ -169,7 +210,7 @@ fc_status_t fc_config_from_manifest(
 
 fc_status_t fc_rhs(
     fc_system_t system,
-    const fc_real_t parameters[FC_STATE_DIMENSION],
+    const fc_real_t parameters[FC_PARAMETER_COUNT],
     const fc_vec3f_t *state,
     fc_vec3f_t *derivative)
 {
@@ -179,6 +220,9 @@ fc_status_t fc_rhs(
     fc_real_t p0;
     fc_real_t p1;
     fc_real_t p2;
+    fc_real_t p3;
+    fc_real_t p4;
+    fc_real_t p5;
 
     if ((parameters == NULL) || (state == NULL) || (derivative == NULL)) {
         return FC_ERR_NULL;
@@ -193,6 +237,9 @@ fc_status_t fc_rhs(
     p0 = parameters[0];
     p1 = parameters[1];
     p2 = parameters[2];
+    p3 = parameters[3];
+    p4 = parameters[4];
+    p5 = parameters[5];
 
     switch (system) {
     case FC_SYSTEM_LORENZ:
@@ -212,6 +259,22 @@ fc_status_t fc_rhs(
             z,
             fmaf(p2 - p0, x, p2 * y));
         derivative->v[2] = fmaf(x, y, -(p1 * z));
+        break;
+    case FC_SYSTEM_LIU:
+        derivative->v[0] = fmaf(-p0, x, -(p3 * y * y));
+        derivative->v[1] = fmaf(-p4 * x, z, p1 * y);
+        derivative->v[2] = fmaf(p5 * x, y, -(p2 * z));
+        break;
+    case FC_SYSTEM_HAMMOUCH_MEKKAOUI:
+        derivative->v[0] = fmaf(-2.0f, x, -(y * y));
+        derivative->v[1] = fmaf(
+            -4.0f * x,
+            z,
+            fmaf(3.0f, y, -(z * z)));
+        derivative->v[2] = fmaf(
+            4.0f * x,
+            y,
+            fmaf(y, z, -7.0f * z));
         break;
     default:
         return FC_ERR_CONFIG;
@@ -261,7 +324,7 @@ static int fc_config_is_valid(const fc_config_t *config)
         return 0;
     }
 
-    for (component = 0u; component < FC_STATE_DIMENSION; ++component) {
+    for (component = 0u; component < FC_PARAMETER_COUNT; ++component) {
         if (!isfinite(config->parameters[component])) {
             return 0;
         }

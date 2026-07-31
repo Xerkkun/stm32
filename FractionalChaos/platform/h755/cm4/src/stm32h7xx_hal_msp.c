@@ -17,10 +17,14 @@ void HAL_UART_MspInit(UART_HandleTypeDef *uart)
     __HAL_RCC_USART3_CLK_ENABLE();
 
     /*
-     * NUCLEO-H755ZI-Q conecta PD8/USART3_TX con el VCP del ST-LINK. PD9 y la
-     * recepción no se inicializan porque el experimento sólo transmite.
+     * PD8 es TX hacia el VCP. PD9 se activa exclusivamente en la imagen
+     * primaria con gate START/READY; los pilotos siguen siendo TX-only.
      */
+#if FC_H755_PRIMARY_HANDSHAKE
+    gpio.Pin = GPIO_PIN_8 | GPIO_PIN_9;
+#else
     gpio.Pin = GPIO_PIN_8;
+#endif
     gpio.Mode = GPIO_MODE_AF_PP;
     gpio.Pull = GPIO_NOPULL;
     gpio.Speed = GPIO_SPEED_FREQ_VERY_HIGH;

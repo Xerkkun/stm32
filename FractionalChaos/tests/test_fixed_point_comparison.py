@@ -44,37 +44,51 @@ def test_m2_q1_is_midpoint_in_q14() -> None:
     assert c4 == 0.0625
 
 
-def test_all_candidate_cells_remain_unsaturated_short_horizon() -> None:
-    manifests = MODULE.load_manifests(
-        MODULE_PATH.with_name("candidate_manifests.json")
+def test_all_historical_and_selected_cells_remain_unsaturated() -> None:
+    system_ids = {
+        "lorenz": 0,
+        "rossler": 1,
+        "chen": 2,
+        "liu": 3,
+        "hammouch_mekkaoui": 4,
+    }
+    manifest_paths = (
+        MODULE_PATH.with_name("candidate_manifests.json"),
+        MODULE_PATH.with_name("selected_system_manifests_v1.json"),
     )
-    system_ids = {"lorenz": 0, "rossler": 1, "chen": 2}
-    for manifest in manifests:
-        system = system_ids[manifest.name]
-        for method in ("efork3", "gl", "m2sfrk"):
-            states, arithmetic = MODULE.simulate_fixed(
-                system, manifest, method, 32
-            )
-            assert len(states) == 33
-            assert arithmetic.saturations == 0
-            assert arithmetic.coefficient_saturations == 0
-            assert arithmetic.nonzero_coefficients_rounded_to_zero == 0
+    for manifest_path in manifest_paths:
+        for manifest in MODULE.load_manifests(manifest_path):
+            system = system_ids[manifest.name]
+            for method in ("efork3", "gl", "m2sfrk"):
+                states, arithmetic = MODULE.simulate_fixed(
+                    system, manifest, method, 32
+                )
+                assert len(states) == 33
+                assert arithmetic.saturations == 0
+                assert arithmetic.coefficient_saturations == 0
+                assert arithmetic.nonzero_coefficients_rounded_to_zero == 0
 
 
 def test_full_memory_coefficients_survive_q30_quantization() -> None:
-    manifests = MODULE.load_manifests(
-        MODULE_PATH.with_name("candidate_manifests.json")
+    manifest_paths = (
+        MODULE_PATH.with_name("candidate_manifests.json"),
+        MODULE_PATH.with_name("selected_system_manifests_v1.json"),
     )
-    for manifest in manifests:
-        arithmetic = MODULE.Arithmetic()
-        for method in ("efork3", "gl"):
-            coefficients = MODULE.coefficient_set(manifest, method)
-            source_weights = coefficients[3] if method == "efork3" else (coefficients[1],)
-            for lane in source_weights:
-                encoded = [
-                    arithmetic.encode_coefficient(value)
-                    for value in lane
-                    if value != 0.0
-                ]
-                assert all(value != 0 for value in encoded)
+    arithmetic = MODULE.Arithmetic()
+    for manifest_path in manifest_paths:
+        for manifest in MODULE.load_manifests(manifest_path):
+            for method in ("efork3", "gl"):
+                coefficients = MODULE.coefficient_set(manifest, method)
+                source_weights = (
+                    coefficients[3]
+                    if method == "efork3"
+                    else (coefficients[1],)
+                )
+                for lane in source_weights:
+                    encoded = [
+                        arithmetic.encode_coefficient(value)
+                        for value in lane
+                        if value != 0.0
+                    ]
+                    assert all(value != 0 for value in encoded)
     assert arithmetic.nonzero_coefficients_rounded_to_zero == 0

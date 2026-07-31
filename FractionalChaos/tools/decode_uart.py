@@ -16,7 +16,13 @@ from typing import BinaryIO, Iterator
 
 SYNC = b"FCC1"
 FRAME = struct.Struct("<I6BH7I")
-SYSTEMS = {0: "lorenz", 1: "rossler", 2: "chen"}
+SYSTEMS = {
+    0: "lorenz",
+    1: "rossler",
+    2: "chen",
+    3: "liu",
+    4: "hammouch_mekkaoui",
+}
 METHODS = {0: "efork3", 1: "gl_caputo", 2: "m2sfrk"}
 BOARDS = {1: "f746", 2: "h755"}
 FRAME_STATE_FLOAT = 1

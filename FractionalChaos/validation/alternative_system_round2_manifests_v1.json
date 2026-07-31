@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "status": "predeclared_alternative_system_round2_candidates",
+  "operator": "caputo",
+  "lower_terminal": 0.0,
+  "prehistory": "x(t<0)=x0",
+  "candidate_grid_source": "validation/alternative_system_round2_grid_v1.json",
+  "manifests": [
+    {
+      "manifest_id": "hammouch_mekkaoui_caputo_v1",
+      "candidate_id": "hammouch_mekkaoui_2018_caputo_v1",
+      "system": "hammouch_mekkaoui",
+      "parameters": [],
+      "initial_state": [0.7, 0.1, 0.0],
+      "q": 0.98,
+      "h": 0.01,
+      "memory_seconds": 10.0,
+      "memory_increments": 1000
+    },
+    {
+      "manifest_id": "munoz_pacheco_hidden_caputo_v1",
+      "candidate_id": "munoz_pacheco_hidden_2018_caputo_v1",
+      "system": "munoz_pacheco_hidden",
+      "parameters": [0.35],
+      "initial_state": [1.0, 1.0, 1.0],
+      "q": 0.97,
+      "h": 0.01,
+      "memory_seconds": 10.0,
+      "memory_increments": 1000
+    },
+    {
+      "manifest_id": "glucose_insulin_caputo_v1",
+      "candidate_id": "glucose_insulin_2020_caputo_v1",
+      "system": "glucose_insulin",
+      "parameters": [1.3, 2.01, 0.22, 0.3],
+      "initial_state": [0.5, 1.2, 1.0],
+      "q": 0.9,
+      "h": 0.01,
+      "memory_seconds": 10.0,
+      "memory_increments": 1000
+    }
+  ]
+}

@@ -7,6 +7,13 @@ Caputo, conserva toda la historia desde el terminal inferior y utiliza
 `float64` en el anfitrión. No importa ni ejecuta los kernels EFORK3 o
 GL-Caputo de `common/`.
 
+El firmware C soporta cinco sistemas: Lorenz, Rössler, Chen, Liu y
+Hammouch--Mekkaoui. La cohorte congelada para evaluación embebida es
+**Chen + Liu + Hammouch--Mekkaoui** y su contrato está en
+[`selected_system_manifests_v1.json`](selected_system_manifests_v1.json).
+Lorenz y Rössler se conservan como condiciones históricas o diagnósticas
+soportadas, no como integrantes de la matriz primaria seleccionada.
+
 ## Validación reproducible
 
 Desde la raíz `FractionalChaos`:
@@ -145,24 +152,27 @@ paridad porque describen el tiempo de cada placa y no el estado numérico.
 
 ## Comparación flotante frente a punto fijo mixto
 
-`fixed_point_comparison.py` ejecuta los tres sistemas con EFORK3, GL-Caputo y
-M2sFRK mediante dos referencias independientes. Los estados y parámetros fijos
-usan Q1.14.14; \(h^q\), coeficientes y pesos usan Q1.30 para conservar los
-términos pequeños del historial. El punto fijo redondea después de cada
-producto y suma, satura en vez de envolver y registra saturaciones y
-coeficientes no nulos que se hayan cuantizado a cero. Una celda con cualquiera
-de esos eventos queda fuera de la comparación aritmética.
+`fixed_point_comparison.py` ejecuta los tres sistemas seleccionados con
+EFORK3, GL-Caputo y M2sFRK mediante dos referencias independientes. Los
+estados y parámetros fijos usan Q1.14.14; \(h^q\), coeficientes y pesos usan
+Q1.30 para conservar los términos pequeños del historial. El punto fijo
+redondea después de cada producto y suma, satura en vez de envolver y registra
+saturaciones y coeficientes no nulos que se hayan cuantizado a cero. Una celda
+con cualquiera de esos eventos queda fuera de la comparación aritmética.
 
 ```powershell
-python validation/fixed_point_comparison.py --steps 256
+python validation/fixed_point_comparison.py --steps 256 `
+  --manifests validation/selected_system_manifests_v1.json `
+  --output validation/results/fixed_point_selected_v1
 ```
 
 Por celda se guardan CSV, series temporales, tres proyecciones de trayectoria,
 una trama con 8 LSB de `x`, `y` y `z` por iteración y un JSON de métricas.
-`validation/results/fixed_point_comparison/summary.json` declara expresamente
-que estos resultados comparan una fórmula `float64` con la aritmética fija
-mixta en el anfitrión: todavía no representan el kernel `float32` ni evidencia
-de ejecución física en las placas.
+[`results/fixed_point_selected_v1/summary.json`](results/fixed_point_selected_v1/summary.json)
+registra 9/9 celdas seleccionadas con el contrato aritmético aprobado. Estos
+resultados comparan una fórmula independiente `float64` con la aritmética fija
+mixta en el anfitrión: no representan el kernel C `float32` ni evidencia de
+ejecución física en las placas.
 
 ### Kernels C portables frente al ABM
 
@@ -172,18 +182,20 @@ contrasta con ABM Caputo `float64` de memoria completa a \(h/4\):
 
 ```powershell
 python .\validation\compare_embedded_to_abm.py `
-  --dump-executable .\build\host-release\tests\fractional_embedded_trajectory_dump.exe
+  --dump-executable .\build\host-release\tests\fractional_embedded_trajectory_dump.exe `
+  --manifests .\validation\selected_system_manifests_v1.json `
+  --output-dir .\validation\results\embedded_vs_abm_selected_short_horizon_v1
 python -m pytest .\tests\test_embedded_vs_abm.py -q
 ```
 
 Los artefactos de
-[`results/embedded_vs_abm_short_horizon/`](results/embedded_vs_abm_short_horizon/)
-registran 18/18 celdas
-sistema--método--representación sin saturaciones de estado, saturaciones de
+[`results/embedded_vs_abm_selected_short_horizon_v1/`](results/embedded_vs_abm_selected_short_horizon_v1/)
+registran el estado `completed_no_arithmetic_contract_failures`: 18/18 celdas
+seleccionadas sistema--método--representación sin saturaciones de estado o
 coeficientes ni coeficientes no nulos cuantizados a cero. Las métricas RMSE y
 error máximo son resultados de corto horizonte del host; no establecen
-temporización o energía de placa, dinámica a largo plazo ni equivalencia entre
-operadores fraccionarios distintos.
+temporización o energía de placa, dinámica a largo plazo, aleatoriedad ni
+equivalencia entre operadores fraccionarios distintos.
 
 ### Inventario estático Release
 
@@ -195,10 +207,14 @@ python .\validation\collect_resource_usage.py
 python -m pytest .\tests\test_resource_usage.py -q
 ```
 
-[`results/resource_usage/resource_usage.json`](results/resource_usage/resource_usage.json)
-separa la imagen solver y, para H755, el acompañante CM4 común. Sus campos
-Flash y RAM son un inventario estático de enlace; no miden watermark de pila,
-heap, energía, tiempo ni fallos de memoria en ejecución.
+[`results/resource_usage_selected_v1/resource_usage.json`](results/resource_usage_selected_v1/resource_usage.json)
+registra las 36/36 imágenes seleccionadas y separa la imagen solver y, para
+H755, el acompañante CM4 común. El SHA-256
+`d9d554ca9126ecf9a86f3931fb41da9d4395521ffcb7d2470fa57fb1d6b7d259`
+del manifiesto seleccionado está embebido en cada ELF solver y en el
+acompañante CM4. Los campos Flash y RAM son un inventario estático de enlace;
+no miden watermark de pila, heap, energía, tiempo ni fallos de memoria en
+ejecución.
 
 ### Checkpoint físico M2sFRK
 
@@ -245,7 +261,38 @@ colas de 0--24 bits no reutilizadas. La existencia de una sola secuencia por
 configuración impide interpretar estos resultados cortos como proporciones de
 aprobación, uniformidad formal o evidencia a gran escala.
 
-## Piloto físico de temporización por reset
+## Referencia de reloj INA14/1
+
+`clock_reference.py` valida, sin adquirir datos, una captura JSONL `INA14/1`.
+Exige exactamente un flanco ascendente y uno descendente con
+`marker_kind=clock_reference`, comprueba el pulso nominal de 100 ms y calcula
+`effective_core_clock_hz = expected_cycles / measured_duration_s`:
+
+```powershell
+python .\validation\clock_reference.py `
+  --capture .\captura.jsonl --expected-cycles 21600000 `
+  --firmware-profile f746_216mhz `
+  --output .\clock_reference.json
+```
+
+La tolerancia predeterminada es ±1 ms, puede configurarse con
+`--duration-tolerance-ms` y no puede ampliarse más allá de ±10 ms. Los ciclos
+esperados se contrastan con perfiles congelados: `f746_216mhz` exige
+21,600,000 ciclos y `h755_400mhz` exige 40,000,000 ciclos. Un valor arbitrario,
+un perfil cruzado o la imagen H755 opcional de 480 MHz se rechazan mientras no
+exista otro perfil predeclarado. El validador exige que esos argumentos
+coincidan exactamente con `header.clock_reference_contract`, incluido
+`source=host_selected_frozen_campaign_profile` y
+`profile_is_measurement=false`. Este bloque registra una selección del host,
+no una medición ni una atestación del binario cargado. Sin un artefacto separado
+`fractional-chaos-arduino-timebase-calibration-v1`, ligado al mismo
+`controller_id`, cuya entrada `traceability_artifact` apunte a un archivo cuyo
+SHA-256 coincida con el declarado, la frecuencia queda como diagnóstico y
+`publication_ready=false`.
+
+## Pilotos físicos de temporización por reset
+
+### Checkpoint histórico Chen
 
 El endpoint `benchmark_reset_pilot` mantiene UART fuera de la ventana medida,
 almacena 10,000 conteos DWT crudos y los transmite sólo al terminar. Se
@@ -261,6 +308,27 @@ El resumen, CSV y figura se encuentran en
 [`results/physical_timing_reset_pilot_chen/`](results/physical_timing_reset_pilot_chen/).
 ST-LINK no retiró la alimentación, por lo que estos pilotos no reemplazan los
 30 ciclos de alimentación por celda ni soportan inferencia entre reinicios.
+
+### Matriz de ingeniería de la cohorte seleccionada
+
+El mismo endpoint se ejecutó después sobre las 36 celdas de
+Chen/Liu/Hammouch--Mekkaoui, tres métodos, dos representaciones y dos placas.
+La matriz de ingeniería quedó aceptada 36/36, con 10,000 conteos DWT
+solver-only por celda. La selección final toma 33 celdas aceptadas de `r04` y
+los tres reintentos aceptados de `r05`.
+
+- unidad experimental: una repetición de reset hardware por ST-LINK;
+- repeticiones aceptadas por celda: \(N=1\);
+- alimentación retirada: `power_removed=false`;
+- procedencia del código: `source.dirty=true`;
+- elegibilidad como preflight físico, arranque en frío o benchmark primario:
+  falsa.
+
+Los `run.json`, conteos crudos, capturas, hashes y logs por ejecución están en
+[`results/physical_campaign/stm32_selected_36x30_v1/runs/`](results/physical_campaign/stm32_selected_36x30_v1/runs/).
+Esta capa comprueba programación, identidad, transporte y temporización
+solver-only bajo reset; no sustituye las 30 repeticiones con ciclo real de
+alimentación ni la medición de energía.
 
 ## Calificación dinámica ABM de horizonte largo
 
@@ -320,6 +388,68 @@ están en
 [`results/abm_replacement_exploration_v1/DECISION.md`](results/abm_replacement_exploration_v1/DECISION.md).
 Esa exploración no congeló un manifiesto v2 ni modificó umbrales.
 
+### Selección de sistemas alternativos
+
+Una cohorte posterior evaluó Lü, Genesio--Tesi simplificado,
+Shimizu--Morioka y Liu sin modificar los umbrales de horizonte largo. Los
+campos vectoriales alternativos permanecen aislados en
+`alternative_systems.py`, de modo que esta extensión no altera los hashes de
+la evidencia histórica Lorenz--Rössler--Chen.
+
+```powershell
+python .\validation\validate_alternative_system_oracle.py
+python .\validation\qualify_alternative_systems.py
+python -m pytest .\tests\test_alternative_system_artifacts.py -q
+```
+
+Lü v1, Genesio--Tesi y Liu superaron las pantallas dinámicas; la regla
+predeclarada de dos plazas ordenó Lü, Liu y Genesio--Tesi por margen. Una
+auditoría bibliográfica posterior impidió promover el Lü v1 como reproducción
+cerrada: la fuente de Yadav et al. publica el sistema y sus parámetros, pero
+su procedimiento numérico impreso no contiene la historia fraccionaria y no
+declara \(h\).
+
+La corrección `lu_caputo_v2` se eligió por completitud de procedencia antes de
+calcularla. Usa el caso de Chen et al. con Caputo predictor-corrector,
+\(h=0.01\), \(q=0.90\), \((a,b,c)=(35,3,28)\) y
+\(\mathbf{x}_0=(0,3,9)\). Pasó finitud, actividad, estabilidad por bloques,
+entropía y consistencia entre resoluciones, pero en \(h/4\) obtuvo RMSE de
+recurrencia 0.032798, por debajo del mínimo 0.05. Conserva por ello la decisión
+`not_qualified_dynamic_screen_failed`.
+
+El resultado de esa ronda conservó `liu_caputo_v1` para la puerta C/firmware,
+que posteriormente superó dentro de la cohorte embebida seleccionada, y dejó
+una plaza alternativa abierta. Genesio--Tesi se conserva como una IVP Caputo
+calificada numéricamente, no como reproducción de su algoritmo publicado ni
+como sustituto automático.
+
+La plaza restante se resolvió mediante una segunda cohorte bibliográfica
+congelada antes de ejecutar las trayectorias:
+
+```powershell
+python .\validation\validate_alternative_system_oracle.py `
+  --candidate-grid .\validation\alternative_system_round2_grid_v1.json `
+  --manifests .\validation\alternative_system_round2_manifests_v1.json `
+  --output .\validation\results\alternative_system_round2_oracle_v1.json
+python .\validation\qualify_alternative_systems.py `
+  --candidate-grid .\validation\alternative_system_round2_grid_v1.json `
+  --criteria .\validation\alternative_system_round2_criteria_v1.json `
+  --manifests .\validation\alternative_system_round2_manifests_v1.json `
+  --implementation-report .\validation\results\alternative_system_round2_oracle_v1.json `
+  --output-dir .\validation\results\alternative_system_round2_v1
+```
+
+Hammouch--Mekkaoui, Muñoz--Pacheco y glucosa--insulina superaron todas las
+pantallas. La regla de una promoción ordenó por margen mínimo y seleccionó
+`hammouch_mekkaoui_caputo_v1` con 1.5088; glucosa--insulina obtuvo 1.3216 y
+Muñoz--Pacheco 1.0389. La cohorte congelada para evaluación embebida es
+**Chen + Liu + Hammouch--Mekkaoui**. Liu y Hammouch--Mekkaoui ya están
+portados al C portable y al firmware; la cohorte completa pasó 18/18 celdas
+C--ABM, 9/9 celdas fijas y el inventario de 36/36 imágenes Release. El
+preflight físico y la campaña primaria permanecen pendientes. La decisión
+completa, incluidas las razones de cada prueba, está en
+[`results/alternative_system_selection_decision_v2.md`](results/alternative_system_selection_decision_v2.md).
+
 ### Contrato activo Rössler clásico v2
 
 El contrato `rossler_classic_caputo_v2` se adoptó después como una revisión
@@ -355,6 +485,6 @@ papel de único manifiesto primario calificado a horizonte largo.
 La evidencia actual no cierra la campaña primaria. Faltan los 30 ciclos
 físicos de alimentación por celda promovible, energía y corriente, watermark
 de pila, la ablación de comunicación H0-E/H1/H2 y las baterías largas
-predeclaradas. Lorenz y Rössler requieren contratos que superen la
-calificación congelada antes de incorporarse como resultados dinámicos
-primarios.
+predeclaradas. Lorenz y Rössler permanecen como condiciones soportadas
+históricas o diagnósticas; sólo podrían reincorporarse como resultados
+dinámicos primarios mediante contratos que superen la calificación congelada.

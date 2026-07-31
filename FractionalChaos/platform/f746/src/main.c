@@ -1,6 +1,8 @@
 #include "main.h"
 
 #include "fc_protocol.h"
+#include "fc_runtime_probe.h"
+#include "fc_start_handshake.h"
 #include "fractional_chaos.h"
 #include "fractional_chaos_fixed.h"
 
@@ -31,6 +33,26 @@
 #define FC_F746_BENCHMARK_MODE 0
 #endif
 
+#ifndef FC_F746_ENERGY_MARKER
+#define FC_F746_ENERGY_MARKER 0
+#endif
+
+#ifndef FC_F746_ENERGY_WORK_MULTIPLIER
+#define FC_F746_ENERGY_WORK_MULTIPLIER 1U
+#endif
+
+#ifndef FC_F746_CLOCK_REFERENCE
+#define FC_F746_CLOCK_REFERENCE 0
+#endif
+
+#ifndef FC_F746_RUNTIME_PROBE
+#define FC_F746_RUNTIME_PROBE 0
+#endif
+
+#ifndef FC_F746_PRIMARY_HANDSHAKE
+#define FC_F746_PRIMARY_HANDSHAKE 0
+#endif
+
 #ifndef FC_F746_BUFFERED_CAPTURE_MODE
 #define FC_F746_BUFFERED_CAPTURE_MODE 0
 #endif
@@ -45,18 +67,29 @@
 #define FC_F746_DMA_BUFFER_BYTES    (2U * FC_F746_CACHE_LINE_BYTES)
 #define FC_F746_DTCM_BYTES          (64U * 1024U)
 #define FC_BENCHMARK_TIMED_STEPS    10000U
+#define FC_BENCHMARK_ENERGY_STEPS   \
+    (FC_BENCHMARK_TIMED_STEPS * FC_F746_ENERGY_WORK_MULTIPLIER)
 #define FC_BENCHMARK_BLOCK_VALUES   4U
+#define FC_ENERGY_MARKER_GPIO       GPIOE
+#define FC_ENERGY_MARKER_PIN        GPIO_PIN_0
+#define FC_CLOCK_REFERENCE_GPIO     GPIOA
+#define FC_CLOCK_REFERENCE_PIN      GPIO_PIN_0
+#define FC_CLOCK_REFERENCE_CYCLES   (FC_F746_CORE_CLOCK_HZ / 10U)
+#define FC_INA226_PRE_ENERGY_IDLE_CYCLES \
+    ((FC_F746_CORE_CLOCK_HZ / 10U) * 3U)
 
 #if FC_F746_SYSTEM == 1
 #define FC_BENCHMARK_WARMUP_STEPS   5000U
+#elif (FC_F746_SYSTEM == 3) || (FC_F746_SYSTEM == 4)
+#define FC_BENCHMARK_WARMUP_STEPS   1000U
 #else
 #define FC_BENCHMARK_WARMUP_STEPS   2000U
 #endif
 
 _Static_assert(
     (FC_F746_SYSTEM >= FC_SYSTEM_LORENZ) &&
-    (FC_F746_SYSTEM <= FC_SYSTEM_CHEN),
-    "FC_F746_SYSTEM must select one of the three manifests");
+    (FC_F746_SYSTEM <= FC_SYSTEM_HAMMOUCH_MEKKAOUI),
+    "FC_F746_SYSTEM must select a float manifest or a supported fixed manifest");
 _Static_assert(
     (FC_F746_METHOD == FC_METHOD_EFORK3) ||
     (FC_F746_METHOD == FC_METHOD_GL_CAPUTO) ||
@@ -69,6 +102,46 @@ _Static_assert(
     (FC_F746_BENCHMARK_MODE == 0) ||
     (FC_F746_BENCHMARK_MODE == 1),
     "FC_F746_BENCHMARK_MODE must be zero or one");
+_Static_assert(
+    (FC_F746_ENERGY_MARKER == 0) ||
+    (FC_F746_ENERGY_MARKER == 1),
+    "FC_F746_ENERGY_MARKER must be zero or one");
+_Static_assert(
+    !FC_F746_ENERGY_MARKER || FC_F746_BENCHMARK_MODE,
+    "The energy marker is only valid in benchmark mode");
+_Static_assert(
+    (FC_F746_ENERGY_WORK_MULTIPLIER >= 1U) &&
+    (FC_F746_ENERGY_WORK_MULTIPLIER <= 512U),
+    "FC_F746_ENERGY_WORK_MULTIPLIER must be in [1, 512]");
+_Static_assert(
+    FC_F746_ENERGY_MARKER ||
+    (FC_F746_ENERGY_WORK_MULTIPLIER == 1U),
+    "An expanded energy workload requires the energy marker");
+_Static_assert(
+    FC_F746_PRIMARY_HANDSHAKE ||
+    (FC_F746_ENERGY_WORK_MULTIPLIER == 1U),
+    "An expanded energy workload requires the primary handshake");
+_Static_assert(
+    (FC_F746_CLOCK_REFERENCE == 0) ||
+    (FC_F746_CLOCK_REFERENCE == 1),
+    "FC_F746_CLOCK_REFERENCE must be zero or one");
+_Static_assert(
+    !FC_F746_CLOCK_REFERENCE || FC_F746_PRIMARY_HANDSHAKE,
+    "The clock reference requires the primary handshake");
+_Static_assert(
+    (FC_F746_RUNTIME_PROBE == 0) ||
+    (FC_F746_RUNTIME_PROBE == 1),
+    "FC_F746_RUNTIME_PROBE must be zero or one");
+_Static_assert(
+    !FC_F746_RUNTIME_PROBE || FC_F746_PRIMARY_HANDSHAKE,
+    "The runtime probe requires the primary handshake");
+_Static_assert(
+    (FC_F746_PRIMARY_HANDSHAKE == 0) ||
+    (FC_F746_PRIMARY_HANDSHAKE == 1),
+    "FC_F746_PRIMARY_HANDSHAKE must be zero or one");
+_Static_assert(
+    !FC_F746_PRIMARY_HANDSHAKE || FC_F746_BENCHMARK_MODE,
+    "The primary handshake is only valid in benchmark mode");
 _Static_assert(
     (FC_F746_BUFFERED_CAPTURE_MODE == 0) ||
     (FC_F746_BUFFERED_CAPTURE_MODE == 1),
@@ -154,6 +227,19 @@ static fc_f746_capture_record_t
     g_buffered_capture[FC_F746_BUFFERED_CAPTURE_SAMPLES]
     __attribute__((section(".capture"), aligned(32), used));
 #endif
+#if FC_F746_RUNTIME_PROBE
+extern uint8_t __stack_probe_start__;
+extern uint8_t __stack_probe_end__;
+extern uint8_t __solver_start__;
+extern uint8_t __solver_end__;
+extern uint8_t __capture_start__;
+extern uint8_t __capture_end__;
+extern uint8_t __dma_buffer_start__;
+extern uint8_t __dma_buffer_end__;
+
+fc_runtime_probe_record_t g_fc_f746_runtime_probe
+    __attribute__((aligned(32), used));
+#endif
 
 static volatile uint8_t g_uart_tx_active;
 static volatile uint32_t g_uart_dropped;
@@ -164,6 +250,20 @@ static uint8_t g_fixed_status_flags;
 static void SystemClock_Config(void);
 static void MX_DMA_Init(void);
 static void MX_USART3_UART_Init(void);
+#if FC_F746_PRIMARY_HANDSHAKE
+static void wait_for_primary_start(void);
+#endif
+#if FC_F746_ENERGY_MARKER
+static void MX_Energy_Marker_GPIO_Init(void);
+#endif
+#if FC_F746_CLOCK_REFERENCE
+static void MX_Clock_Reference_GPIO_Init(void);
+static void emit_clock_reference_pulse(void);
+#endif
+#if FC_F746_RUNTIME_PROBE
+static void runtime_probe_begin(void);
+static void runtime_probe_finish(void);
+#endif
 static void configure_floating_point(void);
 static void cycle_counter_init(void);
 static void clear_solver_storage(void);
@@ -217,14 +317,30 @@ int main(void)
     configure_floating_point();
     cycle_counter_init();
 
+#if FC_F746_RUNTIME_PROBE
+    runtime_probe_begin();
+#endif
+#if FC_F746_ENERGY_MARKER
+    MX_Energy_Marker_GPIO_Init();
+#endif
+#if FC_F746_CLOCK_REFERENCE
+    MX_Clock_Reference_GPIO_Init();
+#endif
     MX_DMA_Init();
     MX_USART3_UART_Init();
+#if FC_F746_PRIMARY_HANDSHAKE
+    wait_for_primary_start();
+#endif
 
     /*
      * Después de configurar reloj y UART no se usa la base temporal HAL.
      * Se suprime su interrupción periódica y se conservan solo DMA/USART3.
      */
     HAL_SuspendTick();
+
+#if FC_F746_CLOCK_REFERENCE
+    emit_clock_reference_pulse();
+#endif
 
     clear_solver_storage();
 #if FC_F746_FIXED_POINT
@@ -304,6 +420,66 @@ int main(void)
 #endif
 }
 
+#if FC_F746_RUNTIME_PROBE
+static uint32_t runtime_section_bytes(
+    const uint8_t *start,
+    const uint8_t *end)
+{
+    return (uint32_t)(
+        (uintptr_t)(const void *)end -
+        (uintptr_t)(const void *)start);
+}
+
+static void runtime_probe_begin(void)
+{
+    const fc_runtime_probe_config_t config = {
+        FC_RUNTIME_CORE_F746_M7,
+        FC_F746_CORE_CLOCK_HZ,
+        SystemCoreClock,
+        runtime_section_bytes(&__solver_start__, &__solver_end__),
+        runtime_section_bytes(&__capture_start__, &__capture_end__),
+        runtime_section_bytes(
+            &__dma_buffer_start__,
+            &__dma_buffer_end__),
+        0U,
+        0U,
+    };
+
+    if (!fc_runtime_probe_begin(
+            &g_fc_f746_runtime_probe,
+            &__stack_probe_start__,
+            &__stack_probe_end__,
+            (uintptr_t)__get_MSP(),
+            256U,
+            &config)) {
+        Error_Handler();
+    }
+}
+
+static void runtime_probe_finish(void)
+{
+    const int32_t stack_bytes = (int32_t)runtime_section_bytes(
+        &__stack_probe_start__,
+        &__stack_probe_end__);
+    const int32_t record_bytes = (int32_t)(
+        (sizeof(g_fc_f746_runtime_probe) + 31U) & ~31U);
+
+    if (!fc_runtime_probe_finish(
+            &g_fc_f746_runtime_probe,
+            &__stack_probe_start__,
+            &__stack_probe_end__)) {
+        Error_Handler();
+    }
+    SCB_CleanDCache_by_Addr(
+        (uint32_t *)(void *)&__stack_probe_start__,
+        stack_bytes);
+    SCB_CleanDCache_by_Addr(
+        (uint32_t *)(void *)&g_fc_f746_runtime_probe,
+        record_bytes);
+    __DSB();
+}
+#endif
+
 static void SystemClock_Config(void)
 {
     RCC_OscInitTypeDef oscillator = {0};
@@ -362,7 +538,11 @@ static void MX_USART3_UART_Init(void)
     huart3.Init.WordLength = UART_WORDLENGTH_8B;
     huart3.Init.StopBits = UART_STOPBITS_1;
     huart3.Init.Parity = UART_PARITY_NONE;
+#if FC_F746_PRIMARY_HANDSHAKE
+    huart3.Init.Mode = UART_MODE_TX_RX;
+#else
     huart3.Init.Mode = UART_MODE_TX;
+#endif
     huart3.Init.HwFlowCtl = UART_HWCONTROL_NONE;
     huart3.Init.OverSampling = UART_OVERSAMPLING_16;
     huart3.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
@@ -372,6 +552,133 @@ static void MX_USART3_UART_Init(void)
         Error_Handler();
     }
 }
+
+#if FC_F746_PRIMARY_HANDSHAKE
+static void wait_for_primary_start(void)
+{
+    static const uint8_t error_line[] = "ERR START\n";
+    char line[FC_START_LINE_MAX];
+    char ready[FC_READY_LINE_MAX];
+    size_t length = 0U;
+    uint8_t overflow = 0U;
+
+    for (;;) {
+        uint8_t byte;
+        fc_start_command_t command;
+        size_t ready_length;
+
+        if (HAL_UART_Receive(
+                &huart3,
+                &byte,
+                1U,
+                HAL_MAX_DELAY) != HAL_OK) {
+            Error_Handler();
+        }
+        if (byte != (uint8_t)'\n') {
+            if (length < sizeof(line)) {
+                line[length] = (char)byte;
+                ++length;
+            } else {
+                overflow = 1U;
+            }
+            continue;
+        }
+        if ((overflow == 0U) &&
+            fc_parse_start_command(line, length, &command) &&
+            fc_start_command_matches(
+                &command,
+                FC_FRAME_TIMING_BLOCK,
+                FC_BOARD_F746,
+                (uint8_t)FC_F746_SYSTEM,
+                (uint8_t)FC_F746_METHOD)) {
+            ready_length = fc_format_ready_line(
+                ready,
+                sizeof(ready),
+                command.request_id);
+            if ((ready_length == 0U) ||
+                (HAL_UART_Transmit(
+                    &huart3,
+                    (const uint8_t *)(const void *)ready,
+                    (uint16_t)ready_length,
+                    1000U) != HAL_OK)) {
+                Error_Handler();
+            }
+            return;
+        }
+        if (HAL_UART_Transmit(
+                &huart3,
+                error_line,
+                (uint16_t)(sizeof(error_line) - 1U),
+                1000U) != HAL_OK) {
+            Error_Handler();
+        }
+        length = 0U;
+        overflow = 0U;
+    }
+}
+#endif
+
+#if FC_F746_ENERGY_MARKER
+static void MX_Energy_Marker_GPIO_Init(void)
+{
+    __HAL_RCC_GPIOE_CLK_ENABLE();
+    (void)RCC->AHB1ENR;
+    FC_ENERGY_MARKER_GPIO->BSRR =
+        (uint32_t)FC_ENERGY_MARKER_PIN << 16U;
+    FC_ENERGY_MARKER_GPIO->OTYPER &= ~UINT32_C(1);
+    FC_ENERGY_MARKER_GPIO->OSPEEDR &= ~UINT32_C(3);
+    FC_ENERGY_MARKER_GPIO->PUPDR &= ~UINT32_C(3);
+    FC_ENERGY_MARKER_GPIO->MODER =
+        (FC_ENERGY_MARKER_GPIO->MODER & ~UINT32_C(3)) |
+        UINT32_C(1);
+    __DSB();
+}
+#endif
+
+#if FC_F746_CLOCK_REFERENCE
+static void MX_Clock_Reference_GPIO_Init(void)
+{
+    __HAL_RCC_GPIOA_CLK_ENABLE();
+    (void)RCC->AHB1ENR;
+    FC_CLOCK_REFERENCE_GPIO->BSRR =
+        (uint32_t)FC_CLOCK_REFERENCE_PIN << 16U;
+    FC_CLOCK_REFERENCE_GPIO->OTYPER &= ~UINT32_C(1);
+    FC_CLOCK_REFERENCE_GPIO->OSPEEDR &= ~UINT32_C(3);
+    FC_CLOCK_REFERENCE_GPIO->PUPDR &= ~UINT32_C(3);
+    FC_CLOCK_REFERENCE_GPIO->MODER =
+        (FC_CLOCK_REFERENCE_GPIO->MODER & ~UINT32_C(3)) |
+        UINT32_C(1);
+    __DSB();
+}
+
+static void emit_clock_reference_pulse(void)
+{
+    uint32_t start;
+
+    FC_CLOCK_REFERENCE_GPIO->BSRR = FC_CLOCK_REFERENCE_PIN;
+    __DSB();
+    start = DWT->CYCCNT;
+    while ((uint32_t)(DWT->CYCCNT - start) <
+           FC_CLOCK_REFERENCE_CYCLES) {
+        __NOP();
+    }
+    FC_CLOCK_REFERENCE_GPIO->BSRR =
+        (uint32_t)FC_CLOCK_REFERENCE_PIN << 16U;
+    __DSB();
+#if FC_F746_ENERGY_MARKER
+    /*
+     * INA14/1 requires at least 100 idle samples at 500 Hz before PE0 rises.
+     * Keep PA0 low for 300 ms so even the fastest solver profile satisfies
+     * that baseline independently of its warm-up duration.
+     */
+    start = DWT->CYCCNT;
+    while ((uint32_t)(DWT->CYCCNT - start) <
+           FC_INA226_PRE_ENERGY_IDLE_CYCLES) {
+        __NOP();
+    }
+#endif
+}
+#endif
 
 static void configure_floating_point(void)
 {
@@ -562,7 +869,14 @@ static void run_timing_benchmark(
     /*
      * UART remains idle throughout this loop. Each DWT result is preserved
      * verbatim in SRAM1 and emitted only after all 10000 timed calls finish.
+     * PE0/D34 brackets the retained 10000 calls plus any predeclared
+     * supplemental calls needed to give the external INA226 enough samples.
+     * Every call uses the same DWT-instrumented solver wrapper, but only the
+     * first 10000 cycle counts are retained. UART remains outside the window.
      */
+#if FC_F746_ENERGY_MARKER
+    FC_ENERGY_MARKER_GPIO->BSRR = FC_ENERGY_MARKER_PIN;
+#endif
     for (index = 0U; index < FC_BENCHMARK_TIMED_STEPS; ++index) {
         const uint32_t cycles =
             solver_step_cycles(solver, state, &solver_status);
@@ -575,6 +889,22 @@ static void run_timing_benchmark(
         }
         g_benchmark_cycles[index] = cycles;
     }
+#if FC_F746_ENERGY_MARKER
+    for (index = FC_BENCHMARK_TIMED_STEPS;
+         index < FC_BENCHMARK_ENERGY_STEPS;
+         ++index) {
+        (void)solver_step_cycles(solver, state, &solver_status);
+        ++solver_sequence;
+        if (solver_status != FC_F746_STATUS_OK) {
+            halt_after_solver_error(
+                state,
+                solver_sequence,
+                0U);
+        }
+    }
+    FC_ENERGY_MARKER_GPIO->BSRR =
+        (uint32_t)FC_ENERGY_MARKER_PIN << 16U;
+#endif
 
     output_status =
         sample_status_with_fixed_diagnostics(FC_SAMPLE_STATUS_OK);
@@ -589,6 +919,9 @@ static void run_timing_benchmark(
     while (g_uart_tx_active != 0U) {
         __WFI();
     }
+#if FC_F746_RUNTIME_PROBE
+    runtime_probe_finish();
+#endif
     for (;;) {
         __WFI();
     }

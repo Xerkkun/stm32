@@ -103,12 +103,23 @@ class Manifest:
     q: float
     h: float
     memory: int
-    parameters: tuple[float, float, float]
+    parameters: tuple[float, ...]
     initial: tuple[float, float, float]
 
 
 def load_manifests(path: Path) -> tuple[Manifest, ...]:
     payload = json.loads(path.read_text(encoding="utf-8"))
+    items = payload.get("manifests")
+    if items is None and isinstance(payload.get("systems"), list):
+        items = [
+            entry.get("contract")
+            for entry in payload["systems"]
+            if isinstance(entry, dict)
+        ]
+    if not isinstance(items, list) or not all(
+        isinstance(item, dict) for item in items
+    ):
+        raise ValueError("manifest payload has no valid system contracts")
     return tuple(
         Manifest(
             name=item["system"],
@@ -118,18 +129,39 @@ def load_manifests(path: Path) -> tuple[Manifest, ...]:
             parameters=tuple(float(v) for v in item["parameters"]),
             initial=tuple(float(v) for v in item["initial_state"]),
         )
-        for item in payload["manifests"]
+        for item in items
     )
 
 
 def rhs_float(system: int, p: tuple[float, ...], s: tuple[float, ...]):
     x, y, z = s
-    p0, p1, p2 = p
     if system == 0:
+        p0, p1, p2 = p
         return p0 * (y - x), x * (p1 - z) - y, x * y - p2 * z
     if system == 1:
+        p0, p1, p2 = p
         return -y - z, x + p0 * y, p1 + z * (x - p2)
-    return p0 * (y - x), (p2 - p0) * x - x * z + p2 * y, x * y - p1 * z
+    if system == 2:
+        p0, p1, p2 = p
+        return (
+            p0 * (y - x),
+            (p2 - p0) * x - x * z + p2 * y,
+            x * y - p1 * z,
+        )
+    if system == 3:
+        p0, p1, p2, p3, p4, p5 = p
+        return (
+            -p0 * x - p3 * y * y,
+            p1 * y - p4 * x * z,
+            -p2 * z + p5 * x * y,
+        )
+    if system == 4:
+        return (
+            -2.0 * x - y * y,
+            -4.0 * x * z + 3.0 * y - z * z,
+            4.0 * x * y - 7.0 * z + y * z,
+        )
+    raise ValueError(f"unsupported system id: {system}")
 
 
 def rhs_fixed(
@@ -139,25 +171,73 @@ def rhs_fixed(
     s: tuple[int, ...],
 ) -> tuple[int, int, int]:
     x, y, z = s
-    p0, p1, p2 = p
     a = arithmetic
     if system == 0:
+        p0, p1, p2 = p
         return (
             a.mul(p0, a.sub(y, x)),
             a.sub(a.mul(x, a.sub(p1, z)), y),
             a.sub(a.mul(x, y), a.mul(p2, z)),
         )
     if system == 1:
+        p0, p1, p2 = p
         return (
             a.sub(a.sub(0, y), z),
             a.add(x, a.mul(p0, y)),
             a.add(p1, a.mul(z, a.sub(x, p2))),
         )
-    return (
-        a.mul(p0, a.sub(y, x)),
-        a.add(a.sub(a.mul(a.sub(p2, p0), x), a.mul(x, z)), a.mul(p2, y)),
-        a.sub(a.mul(x, y), a.mul(p1, z)),
-    )
+    if system == 2:
+        p0, p1, p2 = p
+        return (
+            a.mul(p0, a.sub(y, x)),
+            a.add(
+                a.sub(a.mul(a.sub(p2, p0), x), a.mul(x, z)),
+                a.mul(p2, y),
+            ),
+            a.sub(a.mul(x, y), a.mul(p1, z)),
+        )
+    if system == 3:
+        p0, p1, p2, p3, p4, p5 = p
+        return (
+            a.sub(
+                a.sub(0, a.mul(p0, x)),
+                a.mul(p3, a.mul(y, y)),
+            ),
+            a.sub(
+                a.mul(p1, y),
+                a.mul(p4, a.mul(x, z)),
+            ),
+            a.add(
+                a.sub(0, a.mul(p2, z)),
+                a.mul(p5, a.mul(x, y)),
+            ),
+        )
+    if system == 4:
+        two = 2 * SCALE
+        three = 3 * SCALE
+        four = 4 * SCALE
+        seven = 7 * SCALE
+        return (
+            a.sub(
+                a.sub(0, a.mul(two, x)),
+                a.mul(y, y),
+            ),
+            a.sub(
+                a.add(
+                    a.sub(0, a.mul(four, a.mul(x, z))),
+                    a.mul(three, y),
+                ),
+                a.mul(z, z),
+            ),
+            a.add(
+                a.sub(
+                    a.mul(four, a.mul(x, y)),
+                    a.mul(seven, z),
+                ),
+                a.mul(y, z),
+            ),
+        )
+    raise ValueError(f"unsupported system id: {system}")
 
 
 def efork_coefficients(q: float):
@@ -506,7 +586,9 @@ def main() -> int:
     parser.add_argument(
         "--manifests",
         type=Path,
-        default=Path(__file__).with_name("candidate_manifests.json"),
+        default=Path(__file__).with_name(
+            "selected_system_manifests_v1.json"
+        ),
     )
     parser.add_argument(
         "--output",
@@ -518,7 +600,13 @@ def main() -> int:
         parser.error("--steps must be positive")
 
     manifests = load_manifests(args.manifests)
-    system_ids = {"lorenz": 0, "rossler": 1, "chen": 2}
+    system_ids = {
+        "lorenz": 0,
+        "rossler": 1,
+        "chen": 2,
+        "liu": 3,
+        "hammouch_mekkaoui": 4,
+    }
     manifest_names = [manifest.name for manifest in manifests]
     if len(manifest_names) != len(set(manifest_names)):
         parser.error("los manifiestos contienen sistemas duplicados")

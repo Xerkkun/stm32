@@ -1,9 +1,10 @@
 # Firmware fraccionario para STM32F746 y STM32H755
 
-En este proyecto se implementan los sistemas de Lorenz, Rössler y Chen con
-los métodos EFORK de tres etapas, Grünwald–Letnikov alineado con Caputo y
-M2sFRK. Se conserva un único núcleo numérico en C11 y se generan binarios
-específicos para la NUCLEO-F746ZG y la NUCLEO-H755ZI-Q.
+En este proyecto se implementan cinco sistemas —Lorenz, Rössler, Chen, Liu y
+Hammouch--Mekkaoui— con los métodos EFORK de tres etapas,
+Grünwald–Letnikov alineado con Caputo y M2sFRK. Se conserva un único núcleo
+numérico en C11 y se generan binarios específicos para la NUCLEO-F746ZG y la
+NUCLEO-H755ZI-Q.
 
 El firmware se prepara para compilarse, probarse y programarse directamente
 desde Visual Studio Code. No se inicializan Ethernet, USB, I2C, DAC, ADC ni
@@ -22,11 +23,17 @@ temporal para cada sistema. La memoria corta representa diez segundos:
 | Lorenz | \(\sigma=10,\ \rho=28,\ \beta=8/3\) | \((0.1,0.1,0.1)\) | 0.995 | 0.005 | 2000 |
 | Rössler | \(a=0.2,\ b=0.2,\ c=5.7\) | \((1,0,0)\) | 0.9877 | 0.01 | 1000 |
 | Chen | \(a=35,\ b=3,\ c=28\) | \((0.1,0.1,0.1)\) | 0.9 | 0.005 | 2000 |
+| Liu | \(a=1,\ b=2.5,\ c=5,\ e=1,\ k=4,\ m=4\) | \((0.2,0,0.5)\) | 0.92 | 0.01 | 1000 |
+| Hammouch--Mekkaoui | sin parámetros libres | \((0.7,0.1,0)\) | 0.98 | 0.01 | 1000 |
 
-El contrato activo está registrado en
-[`validation/candidate_manifests_rossler_classic_v2.json`](validation/candidate_manifests_rossler_classic_v2.json).
-`rossler_classic_caputo_v2` reemplaza el Rössler v1 únicamente como contrato
-activo del firmware y de sus tablas de coeficientes. El archivo
+La cohorte seleccionada para evaluación embebida está congelada en
+[`validation/selected_system_manifests_v1.json`](validation/selected_system_manifests_v1.json):
+**Chen + Liu + Hammouch--Mekkaoui**. Lorenz y Rössler continúan soportados por
+el firmware como condiciones históricas o diagnósticas, pero no pertenecen a
+esa cohorte primaria. Para Rössler, el contrato operativo está registrado en
+[`validation/candidate_manifests_rossler_classic_v2.json`](validation/candidate_manifests_rossler_classic_v2.json);
+`rossler_classic_caputo_v2` reemplaza el Rössler v1 únicamente en el firmware
+y en sus tablas de coeficientes. El archivo
 [`validation/candidate_manifests.json`](validation/candidate_manifests.json)
 y todos los resultados obtenidos con `rossler_caputo_v1` se conservan sin
 modificar como evidencia histórica; no se reetiquetan ni se atribuyen a v2.
@@ -37,29 +44,31 @@ punto fijo mixto `fixed_q14_q30`. En la segunda representación, el sufijo
 
 | Sistema | Método | NUCLEO-F746ZG | NUCLEO-H755ZI-Q, CM7 |
 |---|---|---|---|
-| Lorenz | EFORK3 | `f746_lorenz_efork3.elf` | `h755_m7_lorenz_efork3.elf` |
-| Lorenz | GL-Caputo | `f746_lorenz_gl.elf` | `h755_m7_lorenz_gl.elf` |
-| Lorenz | M2sFRK | `f746_lorenz_m2sfrk.elf` | `h755_m7_lorenz_m2sfrk.elf` |
-| Rössler | EFORK3 | `f746_rossler_efork3.elf` | `h755_m7_rossler_efork3.elf` |
-| Rössler | GL-Caputo | `f746_rossler_gl.elf` | `h755_m7_rossler_gl.elf` |
-| Rössler | M2sFRK | `f746_rossler_m2sfrk.elf` | `h755_m7_rossler_m2sfrk.elf` |
 | Chen | EFORK3 | `f746_chen_efork3.elf` | `h755_m7_chen_efork3.elf` |
 | Chen | GL-Caputo | `f746_chen_gl.elf` | `h755_m7_chen_gl.elf` |
 | Chen | M2sFRK | `f746_chen_m2sfrk.elf` | `h755_m7_chen_m2sfrk.elf` |
+| Liu | EFORK3 | `f746_liu_efork3.elf` | `h755_m7_liu_efork3.elf` |
+| Liu | GL-Caputo | `f746_liu_gl.elf` | `h755_m7_liu_gl.elf` |
+| Liu | M2sFRK | `f746_liu_m2sfrk.elf` | `h755_m7_liu_m2sfrk.elf` |
+| Hammouch--Mekkaoui | EFORK3 | `f746_hammouch_mekkaoui_efork3.elf` | `h755_m7_hammouch_mekkaoui_efork3.elf` |
+| Hammouch--Mekkaoui | GL-Caputo | `f746_hammouch_mekkaoui_gl.elf` | `h755_m7_hammouch_mekkaoui_gl.elf` |
+| Hammouch--Mekkaoui | M2sFRK | `f746_hammouch_mekkaoui_m2sfrk.elf` | `h755_m7_hammouch_mekkaoui_m2sfrk.elf` |
 
-Por ejemplo, la pareja fija correspondiente a Lorenz/M2sFRK es
-`f746_lorenz_m2sfrk_fixed.elf` y
-`h755_m7_lorenz_m2sfrk_fixed.elf`. Las nueve combinaciones
+Por ejemplo, la pareja fija correspondiente a Liu/M2sFRK es
+`f746_liu_m2sfrk_fixed.elf` y
+`h755_m7_liu_m2sfrk_fixed.elf`. Las nueve combinaciones
 sistema--método de cada placa siguen la misma convención. Las 18 imágenes
 fijas y sus archivos HEX compilan en Release; esta comprobación de build no
 equivale a haber ejecutado ni validado físicamente las 18 condiciones.
 
 El inventario reproducible de las 36 imágenes Release no destinadas a
 benchmark está en
-[`validation/results/resource_usage/`](validation/results/resource_usage/).
+[`validation/results/resource_usage_selected_v1/`](validation/results/resource_usage_selected_v1/).
 Registra SHA-256 de ELF/mapa y Flash/RAM estática mediante
-`arm-none-eabi-size -B`. Es evidencia de enlace, no una medición de pila
-máxima, heap, tiempo o energía.
+`arm-none-eabi-size -B`. El hash SHA-256 del manifiesto seleccionado también
+está embebido en cada ELF solver y en el acompañante CM4 de la H755. Es
+evidencia de enlace y procedencia, no una medición de pila máxima, heap, tiempo
+o energía.
 
 En la H755 se acompaña cualquiera de los 18 binarios primarios del CM7 con
 `h755_m4_uart.elf`. El CM7 se dedica al cálculo y el CM4 se dedica a la
@@ -73,9 +82,9 @@ selecciona **Terminal > Run Task**:
 - `build:host:release` compila las pruebas del núcleo en el equipo.
 - `test:host:release` ejecuta las pruebas deterministas y la referencia
   independiente.
-- `build:f746:release` genera nueve binarios `float32` y nueve
-  `fixed_q14_q30` de la F746.
-- `build:h755:release` genera nueve binarios `float32`, nueve
+- `build:f746:release` genera 15 binarios `float32` y 15
+  `fixed_q14_q30` de la F746 para los cinco sistemas soportados.
+- `build:h755:release` genera 15 binarios `float32`, 15
   `fixed_q14_q30` del CM7 y el binario UART del CM4.
 - `build:all:release` ejecuta las tres compilaciones anteriores.
 - `flash:seleccionar` solicita placa, sistema, método y representación, y
@@ -97,7 +106,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass `
 
 powershell.exe -NoProfile -ExecutionPolicy Bypass `
   -File .\tools\flash.ps1 `
-  -Board f746 -System lorenz -Method efork3 `
+  -Board f746 -System chen -Method efork3 `
   -Representation float32 `
   -ProbeSerial 00112233445566778899AABB
 ```
@@ -131,19 +140,23 @@ en Q1.30. Los productos se resuelven en `int64_t`, con redondeo al más cercano
 —empates alejándose de cero— y saturación contabilizada. El
 oráculo independiente y sus gráficas están en
 `validation/fixed_point_comparison.py`. Esta referencia de host congela el
-contrato aritmético. El kernel fijo ya está integrado en los objetivos de
-ambas plataformas y sus 18 imágenes compilan, pero ni el oráculo ni la
-compilación se presentan como mediciones STM32 o como validación de la
-campaña física completa.
+contrato aritmético. Las 9/9 celdas seleccionadas —tres sistemas por tres
+métodos— pasan sin saturaciones de estado o coeficientes ni coeficientes no
+nulos cuantizados a cero; el resumen está en
+[`validation/results/fixed_point_selected_v1/summary.json`](validation/results/fixed_point_selected_v1/summary.json).
+El kernel fijo está integrado para los cinco sistemas en ambas plataformas,
+pero ni el oráculo ni la compilación se presentan como mediciones STM32 o como
+validación de la campaña física completa.
 
 La comparación de corto horizonte
-[`embedded_vs_abm_short_horizon`](validation/results/embedded_vs_abm_short_horizon/)
+[`embedded_vs_abm_selected_short_horizon_v1`](validation/results/embedded_vs_abm_selected_short_horizon_v1/)
 ejecuta los kernels C portables reales `float32` y `fixed_q14_q30` frente al
 ABM `float64` de memoria completa a \(h/4\). Las 18 combinaciones
-sistema--método--representación terminaron sin saturaciones, saturaciones de
-coeficientes ni coeficientes no nulos cuantizados a cero. Es una comparación
-numérica de host durante un segundo; no acredita temporización de placa,
-equivalencia entre operadores ni dinámica a largo plazo.
+sistema--método--representación seleccionadas terminaron sin fallos del
+contrato aritmético: 18/18 sin saturaciones de estado o coeficientes ni
+coeficientes no nulos cuantizados a cero. Es una comparación numérica de host
+durante un segundo; no acredita temporización de placa, equivalencia entre
+operadores ni dinámica a largo plazo.
 
 La descripción completa se encuentra en
 [`docs/ARQUITECTURA.md`](docs/ARQUITECTURA.md), y la revisión de los proyectos
@@ -181,6 +194,25 @@ y
 [`validation/results/abm_replacement_exploration_v1/`](validation/results/abm_replacement_exploration_v1/).
 Esta calificación observacional no demuestra caos, atractor oculto ni
 equivalencia con la memoria finita del firmware.
+
+Una cohorte alternativa posterior probó Lü, Genesio--Tesi simplificado,
+Shimizu--Morioka y Liu con los mismos umbrales. Liu obtuvo una plaza para la
+puerta C/firmware y posteriormente la superó dentro de la cohorte embebida
+seleccionada. El Lü seleccionado numéricamente en la primera ronda perdió
+elegibilidad de procedencia tras auditar el método impreso en su fuente; un
+contrato Lü corregido y bibliográficamente completo falló después la pantalla
+de recurrencia en \(h/4\). Genesio--Tesi calificó como IVP independiente, pero
+no se promueve de forma retrospectiva.
+
+Una segunda cohorte, congelada antes de ejecutarla, evaluó
+Hammouch--Mekkaoui, Muñoz--Pacheco y glucosa--insulina para una sola plaza. Los
+tres superaron las pantallas, y la regla predeclarada seleccionó
+`hammouch_mekkaoui_caputo_v1` por el mayor margen mínimo. La cohorte congelada
+para evaluación embebida es **Chen + Liu + Hammouch--Mekkaoui**. Los dos
+sistemas nuevos ya están portados al C portable y al firmware, pasan las
+comparaciones host y forman parte de las 36 imágenes STM32 seleccionadas. La
+trazabilidad, la corrección Lü y los resultados negativos están en
+[`validation/results/alternative_system_selection_decision_v2.md`](validation/results/alternative_system_selection_decision_v2.md).
 
 ## Protocolo UART FCC1
 
@@ -288,6 +320,18 @@ alimentación, de modo que esas ejecuciones no son arranques en frío ni
 observaciones de la campaña primaria. El resumen trazable y su figura están
 en
 [`validation/results/physical_timing_reset_pilot_chen/`](validation/results/physical_timing_reset_pilot_chen/).
+
+La matriz de ingeniería posterior extendió ese endpoint a la cohorte
+seleccionada completa: 36/36 celdas aceptadas, cada una con 10,000 conteos DWT
+solver-only. La selección de ejecuciones está formada por 33 celdas aceptadas
+en `r04` y tres reintentos aceptados en `r05`. Cada celda conserva sólo
+\(N=1\) repetición por reset hardware ST-LINK; en todas
+`power_removed=false` y `source.dirty=true`. Los artefactos por ejecución
+están en
+[`validation/results/physical_campaign/stm32_selected_36x30_v1/runs/`](validation/results/physical_campaign/stm32_selected_36x30_v1/runs/).
+Esta matriz sirve para comprobar programación, identidad, transporte y
+temporización solver-only bajo reset. No constituye el preflight físico
+congelado, un arranque en frío ni el benchmark primario.
 
 Por ello no se infieren resultados científicos a partir de una compilación ni
 de una trayectoria corta. Se registran en placa los ciclos por paso y por bit,

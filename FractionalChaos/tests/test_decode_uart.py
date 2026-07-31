@@ -72,6 +72,22 @@ class DecoderTests(unittest.TestCase):
         self.assertEqual(row["z"], 0.5)
         self.assertEqual(row["crc32"], "0xEDA10E9E")
 
+    def test_selected_system_wire_ids_are_decoded(self) -> None:
+        for wire_id, expected in (
+            (2, "chen"),
+            (3, "liu"),
+            (4, "hammouch_mekkaoui"),
+        ):
+            with self.subTest(wire_id=wire_id):
+                values = list(
+                    decode_uart.iter_frames(
+                        io.BytesIO(frame(system=wire_id))
+                    )
+                )
+                self.assertEqual(len(values), 1)
+                row = list(decode_uart.rows(iter(values)))[0]
+                self.assertEqual(row["system"], expected)
+
     def test_fixed_q14_frame_preserves_raw_words(self) -> None:
         status = (
             decode_uart.STATUS_FIXED_STATE_SATURATION

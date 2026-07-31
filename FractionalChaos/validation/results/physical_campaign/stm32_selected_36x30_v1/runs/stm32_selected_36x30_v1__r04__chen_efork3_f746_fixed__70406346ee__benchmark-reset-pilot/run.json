@@ -1,0 +1,147 @@
+{
+  "build": {
+    "benchmark_mode": true,
+    "buffered_capture_mode": false,
+    "buffered_capture_samples": null,
+    "calibration_basis": "compile_time_kind4_timing_endpoint",
+    "decimation": 512,
+    "directory": "C:\\Users\\moren\\Desktop\\Codes\\STM32\\FractionalChaos\\build\\campaign-selected\\f746\\benchmark-10000-release",
+    "images": [
+      {
+        "path": "C:\\Users\\moren\\Desktop\\Codes\\STM32\\FractionalChaos\\build\\campaign-selected\\f746\\benchmark-10000-release\\f746_chen_efork3_fixed.hex",
+        "sha256": "7faa0c7fee9fdff2136d6dac680c15d8f134c6cf8775546af992793284e0748d"
+      }
+    ],
+    "maps": [
+      {
+        "path": "C:\\Users\\moren\\Desktop\\Codes\\STM32\\FractionalChaos\\build\\campaign-selected\\f746\\benchmark-10000-release\\f746_chen_efork3_fixed.map",
+        "sha256": "6c24c86c5fbf72de56c490ba82a956ac611eb7c3046ddbc5f7e1d66661eb117a"
+      }
+    ],
+    "target": "f746_chen_efork3_fixed"
+  },
+  "campaign_id": "stm32_selected_36x30_v1",
+  "capture": {
+    "capture_wall_time_s": 20.32799999999952,
+    "csv_path": "capture.csv",
+    "csv_sha256": "5da68002a177eb7c795f2470559932c798e5a910e9349b7f5ddbe85e72a4591d",
+    "program_wall_time_s": 1.8910000000014406,
+    "raw_path": "capture.bin",
+    "raw_sha256": "93700bc5fd289d851d0bfecdbf74b14712693b13009c9bd9e1e9ee21ec66d9ef",
+    "reset_wall_time_s": 0.6869999999998981,
+    "timing_cycles_path": "timing_cycles.csv",
+    "timing_cycles_sha256": "522ebbeb3cd1a8e7c66008c49d6996bb59e3b56aa70be9f86c87c29483fcc46b"
+  },
+  "cell": {
+    "block_id": "block-04",
+    "board": "f746",
+    "cell_id": "chen_efork3_f746_fixed",
+    "cold_start_id": 4,
+    "method": "efork3",
+    "order_index": 131,
+    "representation": "fixed_q14_q30",
+    "system": "chen"
+  },
+  "eligible_as_paper_cold_start": false,
+  "eligible_as_primary_benchmark": false,
+  "endpoint": {
+    "complete": true,
+    "expected_blocks": 2500,
+    "expected_first_sequence": 0,
+    "expected_last_sequence": 9996,
+    "first_sequence": 0,
+    "frame_kind": 4,
+    "last_sequence": 9996,
+    "received_blocks": 2500,
+    "rule": "complete_kind4_block_set_not_duration",
+    "values_per_frame": 4,
+    "watchdog_s": 180
+  },
+  "endpoint_name": "benchmark_reset_pilot",
+  "evidence_level": "solver_only_timing_under_stlink_hardware_reset",
+  "experimental_unit": "stlink_hardware_reset_repetition",
+  "finished_utc": "2026-07-29T08:11:55.132686Z",
+  "hardware": {
+    "baud": 921600,
+    "board_name": "NUCLEO-F746ZG",
+    "mcu": "STM32F746ZG",
+    "port": "COM7",
+    "power_removed": false,
+    "probe_serial": "066AFF504955657867165348",
+    "reset_mode": "stlink_hardware_reset",
+    "reset_preparation": "program_verify_halt_open_and_flush_uart_then_hardware_reset"
+  },
+  "manifest_sha256": "4e1c59f038aa45d4f178e209805601bb57ef42c17efcc817ecefc0184866ce5e",
+  "method_contract": {
+    "wire_id": 0,
+    "wire_name": "efork3"
+  },
+  "representation_contract": {
+    "decoder_name": "fixed_q14",
+    "flash_name": "fixed",
+    "target_suffix": "_fixed",
+    "wire_kind": 3
+  },
+  "reset": {
+    "eligible_as_paper_cold_start": false,
+    "hardware_reset_repetition_id": 4,
+    "mode": "stlink_hardware_reset",
+    "power_removed": false,
+    "preparation": "program_verify_halt_open_and_flush_uart_then_hardware_reset"
+  },
+  "run_id": "stm32_selected_36x30_v1__r04__chen_efork3_f746_fixed__70406346ee__benchmark-reset-pilot",
+  "scheduled_campaign_run_id": "stm32_selected_36x30_v1__r04__chen_efork3_f746_fixed__70406346ee",
+  "scheduled_primary_run_id": "stm32_selected_36x30_v1__r04__chen_efork3_f746_fixed__70406346ee",
+  "schema": "fractional-chaos-physical-run-v1",
+  "source": {
+    "commit": "207d26d68c926ea27ec52911293f443ed84641dc",
+    "dirty": true,
+    "excluded_generated_paths": [
+      "validation/results/physical_campaign",
+      "build/campaign-selected/f746/benchmark-10000-release"
+    ],
+    "status_scope": "source tree excluding generated run and build paths",
+    "status_sha256": "3a3e2a19c276c81ed8ac3037b63a2b86a21a09f29ad9962d2933ca2cb969f072"
+  },
+  "started_utc": "2026-07-29T08:11:28.949441Z",
+  "system_contract": {
+    "contract_canonical_sha256": "8d36e0fd98455edc575e8c6c0f47dc63f99f4aabeb9f2264a506f0f62c8c00e7",
+    "contract_status": "selected_contract",
+    "dt_s": 0.005,
+    "history_states": 2001,
+    "initial_state_words_hex": [
+      "0x3DCCCCCD",
+      "0x3DCCCCCD",
+      "0x3DCCCCCD"
+    ],
+    "manifest_id": "chen_caputo_v1",
+    "memory_increments": 2000,
+    "memory_s": 10,
+    "observation_steps": 8000,
+    "q": 0.9,
+    "transient_steps": 2000,
+    "wire_id": 2
+  },
+  "timing": {
+    "accepted_as_solver_timing": true,
+    "all_cycles_nonzero": true,
+    "received_cycle_values": 10000,
+    "required_cycle_values": 10000,
+    "solver_only_window": true,
+    "uart_active_during_timed_window": false,
+    "warmup_steps": 2000
+  },
+  "transport": {
+    "accepted": true,
+    "bytes_received": 100000,
+    "crc_errors": 0,
+    "identity_mismatches": 0,
+    "invalid_headers": 0,
+    "matching_frames": 2500,
+    "noise_bytes": 0,
+    "nonzero_dropped_frames": 0,
+    "nonzero_status_frames": 0,
+    "trailing_bytes": 0,
+    "valid_frames": 2500
+  }
+}

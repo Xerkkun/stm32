@@ -1,0 +1,92 @@
+{
+  "schema": "fractional-chaos-ina226-acquisition-plan-v1",
+  "status": "planned_unmeasured",
+  "controller": {
+    "board": "arduino_uno_compatible",
+    "serial_baud": 115200,
+    "i2c_clock_hz": 400000,
+    "remains_powered_during_nucleo_power_cycle": true,
+    "physical_controller_id_required": true,
+    "com_port_is_physical_identity": false,
+    "one_sensor_streamed_at_a_time": true,
+    "binary_wire_protocol": "INA14/1",
+    "binary_frame_bytes": 14,
+    "sample_rate_hz": 500,
+    "uart_8n1_utilization_percent_at_sample_rate": 60.77
+  },
+  "register_contract": {
+    "mode": "continuous_shunt_and_bus",
+    "shunt_conversion_us": 140,
+    "bus_conversion_us": 140,
+    "averaging": 1,
+    "conversion_ready_required": true,
+    "manufacturer_id_expected": "0x5449",
+    "die_id_expected": "0x2260",
+    "ids_establish_compatibility_not_authenticity": true
+  },
+  "sensors": [
+    {
+      "sensor_id": "ina226_f746",
+      "board": "f746",
+      "i2c_address": "0x40",
+      "shunt_marking_required": "R100",
+      "shunt_nominal_ohms": 0.1
+    },
+    {
+      "sensor_id": "ina226_h755",
+      "board": "h755",
+      "i2c_address": "0x41",
+      "shunt_marking_required": "R100",
+      "shunt_nominal_ohms": 0.1
+    }
+  ],
+  "capture_contract": {
+    "schema": "fractional-chaos-ina226-capture-v1",
+    "wire_record_format": "fixed_14_byte_binary_crc8_atm",
+    "host_artifact_format": "utf8_json_lines",
+    "raw_sample_fields": [
+      "timestamp_ns",
+      "sequence",
+      "bus_raw",
+      "shunt_raw",
+      "conversion_ready",
+      "math_overflow"
+    ],
+    "gpio_edge_fields": [
+      "timestamp_ns",
+      "level",
+      "marker_kind"
+    ],
+    "marker_inputs": {
+      "energy_window": {
+        "f746": "UNO_D2_from_Nucleo_PE0_D34",
+        "h755": "UNO_D3_from_Nucleo_PE0_D34"
+      },
+      "clock_reference": {
+        "f746": "UNO_D4_from_Nucleo_PA0_D32",
+        "h755": "UNO_D5_from_Nucleo_PA0_D32"
+      }
+    },
+    "energy_scope": "whole_nucleo_vbus_including_stlink",
+    "work_unit_label": "solver_step",
+    "quality_contract": {
+      "expected_sample_period_ns": 2000000,
+      "min_window_samples": 1000,
+      "max_gap_periods": 2.0,
+      "max_loss_percent": 0.1,
+      "min_window_s": 2.0,
+      "clock_reference_must_finish_before_energy_window": true,
+      "min_bus_voltage_v": 4.75,
+      "saturation_guard_fraction": 0.9,
+      "min_idle_samples_each_side": 100,
+      "max_idle_drift_percent": 2.0
+    }
+  },
+  "evidence_boundary": {
+    "template_is_measurement": false,
+    "whole_board_energy_is_mcu_core_energy": false,
+    "post_campaign_calibration_check_required_for_publication": true,
+    "r100_command_assertion_is_physical_verification": false,
+    "raw_capture_publication_ready": false
+  }
+}

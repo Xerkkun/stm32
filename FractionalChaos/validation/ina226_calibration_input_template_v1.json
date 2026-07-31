@@ -1,0 +1,54 @@
+{
+  "schema": "fractional-chaos-ina226-calibration-input-v1",
+  "status": "template_unmeasured_do_not_report",
+  "calibration_id": "REPLACE_AFTER_MEASUREMENT",
+  "sensor_id": "ina226_f746",
+  "board": "f746",
+  "i2c_address": "0x40",
+  "identity": {
+    "manufacturer_id": null,
+    "die_id": null
+  },
+  "shunt": {
+    "marking": "VERIFY_R100_PHYSICALLY",
+    "nominal_ohms": 0.1
+  },
+  "current_points": [
+    {
+      "measured_shunt_raw": null,
+      "reference_current_a": 0.0
+    },
+    {
+      "measured_shunt_raw": null,
+      "reference_current_a": 0.1
+    },
+    {
+      "measured_shunt_raw": null,
+      "reference_current_a": 0.25
+    },
+    {
+      "measured_shunt_raw": null,
+      "reference_current_a": 0.5
+    }
+  ],
+  "bus_voltage_points": [
+    {
+      "measured_bus_raw": null,
+      "reference_bus_v": null
+    },
+    {
+      "measured_bus_raw": null,
+      "reference_bus_v": null
+    }
+  ],
+  "uncertainty": {
+    "expanded_relative_percent_k2": null,
+    "method": "REPLACE_WITH_TRACEABLE_UNCERTAINTY_BUDGET"
+  },
+  "provenance": {
+    "timestamp_utc": "REPLACE",
+    "reference_instrument": "REPLACE_WITH_MODEL_AND_SERIAL",
+    "operator": "REPLACE",
+    "temperature_c": null
+  }
+}

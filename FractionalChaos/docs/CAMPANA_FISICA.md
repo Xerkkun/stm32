@@ -216,6 +216,49 @@ python tools/run_physical_campaign.py run `
   --allow-pilot-only
 ```
 
+## Piloto externo con relés e INA226
+
+El controlador UNO usa el mismo puerto serial para `CYCLE/ACK` y el flujo
+binario `INA14/1`; el runner mantiene un solo propietario. Al abrir un UNO
+clásico, DTR puede reiniciarlo y dejar ambos relés en OFF. Por eso el runner
+espera el bootloader, sincroniza una energización inicial no elegible como
+repetición y después ejecuta el ciclo medido.
+
+Antes de adquirir se coloca y registra una etiqueta física estable, por
+ejemplo `UNO_PWR_01`. No se acepta el nombre COM como identidad. El dry-run
+completo para una celda es:
+
+```powershell
+python tools/run_physical_campaign.py `
+  --manifest validation/physical_campaign_selected_v1.json `
+  run `
+  --endpoint benchmark_reset_pilot `
+  --cell chen_m2sfrk_h755_float32 `
+  --reset-repetition 1 `
+  --max-runs 1 `
+  --power-controller-port COM12 `
+  --power-controller-id UNO_PWR_01 `
+  --ina226-energy `
+  --confirm-ina226-r100
+```
+
+La ejecución física añade `--execute`,
+`--confirm-campaign-id stm32_selected_36x30_v1` y `--allow-pilot-only`. El
+multiplicador de trabajo se toma exclusivamente de
+`validation/energy_workload_contract_v1.json`, que dimensiona cada combinación
+placa/método/representación para conservar al menos 1000 muestras y 2 s de
+ventana activa. `--power-cycle-timeout` debe ser mayor que
+`off_ms/1000 + 12.8 s`; así cubre los watchdogs OFF/ON del firmware y un
+segundo de margen host.
+
+La aceptación de transporte exige CRC y secuencias íntegros, cero ranuras
+tardías/errores I2C, 128 muestras antes y después, dos flancos PE0, y un pulso
+PA0 de 100 ms que termine antes del inicio de PE0. El runner conserva
+`energy_capture.raw.jsonl`, su hash, el contrato de carga y
+`timebase.controller_id`, pero lo marca `publication_ready=false`. Calibrar el
+INA226 y la base temporal del mismo UNO, realizar el preflight físico y la
+comprobación posterior siguen siendo requisitos separados.
+
 ## Aislamiento y trazabilidad
 
 Los builds se configuran mediante `tools/build_campaign.ps1` en:

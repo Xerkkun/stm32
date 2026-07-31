@@ -31,15 +31,33 @@ static int close_float(float actual, float expected, float tolerance)
     return fabsf(actual - expected) <= (tolerance * scale);
 }
 
+static void test_selected_manifest_hash(void)
+{
+    uint32_t index;
+
+    CHECK(strlen(FC_SELECTED_SYSTEM_MANIFEST_SHA256_TEXT) == 64u);
+    for (index = 0u; index < 64u; ++index) {
+        const char value =
+            FC_SELECTED_SYSTEM_MANIFEST_SHA256_TEXT[index];
+        CHECK(((value >= '0') && (value <= '9')) ||
+              ((value >= 'a') && (value <= 'f')));
+    }
+}
+
 static void test_manifests(void)
 {
     const fc_manifest_t *lorenz = fc_manifest(FC_SYSTEM_LORENZ);
     const fc_manifest_t *rossler = fc_manifest(FC_SYSTEM_ROSSLER);
     const fc_manifest_t *chen = fc_manifest(FC_SYSTEM_CHEN);
+    const fc_manifest_t *liu = fc_manifest(FC_SYSTEM_LIU);
+    const fc_manifest_t *hammouch =
+        fc_manifest(FC_SYSTEM_HAMMOUCH_MEKKAOUI);
 
     CHECK(lorenz != NULL);
     CHECK(rossler != NULL);
     CHECK(chen != NULL);
+    CHECK(liu != NULL);
+    CHECK(hammouch != NULL);
     CHECK(fc_manifest((fc_system_t)99) == NULL);
 
     CHECK(lorenz->memory_length == 2000u);
@@ -61,6 +79,26 @@ static void test_manifests(void)
     CHECK(chen->memory_length == 2000u);
     CHECK(float_word(chen->q) == float_word(0.900f));
     CHECK(float_word(chen->h) == float_word(0.005f));
+
+    CHECK(liu->memory_length == 1000u);
+    CHECK(float_word(liu->q) == float_word(0.920f));
+    CHECK(float_word(liu->h) == float_word(0.010f));
+    CHECK(float_word(liu->parameters[0]) == float_word(1.0f));
+    CHECK(float_word(liu->parameters[1]) == float_word(2.5f));
+    CHECK(float_word(liu->parameters[2]) == float_word(5.0f));
+    CHECK(float_word(liu->parameters[3]) == float_word(1.0f));
+    CHECK(float_word(liu->parameters[4]) == float_word(4.0f));
+    CHECK(float_word(liu->parameters[5]) == float_word(4.0f));
+    CHECK(float_word(liu->initial_state.v[0]) == float_word(0.2f));
+    CHECK(float_word(liu->initial_state.v[1]) == 0u);
+    CHECK(float_word(liu->initial_state.v[2]) == float_word(0.5f));
+
+    CHECK(hammouch->memory_length == 1000u);
+    CHECK(float_word(hammouch->q) == float_word(0.980f));
+    CHECK(float_word(hammouch->h) == float_word(0.010f));
+    CHECK(float_word(hammouch->initial_state.v[0]) == float_word(0.7f));
+    CHECK(float_word(hammouch->initial_state.v[1]) == float_word(0.1f));
+    CHECK(float_word(hammouch->initial_state.v[2]) == 0u);
 
     CHECK(fc_active_workspace_bytes(
               FC_METHOD_EFORK3, 2000u) == 48000u);
@@ -104,6 +142,24 @@ static void test_rhs(void)
         &derivative));
     CHECK(close_float(derivative.v[0], 35.0f, 1.0e-6f));
     CHECK(close_float(derivative.v[1], 46.0f, 1.0e-6f));
+    CHECK(close_float(derivative.v[2], -7.0f, 1.0e-6f));
+
+    CHECK_STATUS(fc_rhs(
+        FC_SYSTEM_LIU,
+        FC_MANIFESTS[FC_SYSTEM_LIU].parameters,
+        &state,
+        &derivative));
+    CHECK(close_float(derivative.v[0], -5.0f, 1.0e-6f));
+    CHECK(close_float(derivative.v[1], -7.0f, 1.0e-6f));
+    CHECK(close_float(derivative.v[2], -7.0f, 1.0e-6f));
+
+    CHECK_STATUS(fc_rhs(
+        FC_SYSTEM_HAMMOUCH_MEKKAOUI,
+        FC_MANIFESTS[FC_SYSTEM_HAMMOUCH_MEKKAOUI].parameters,
+        &state,
+        &derivative));
+    CHECK(close_float(derivative.v[0], -6.0f, 1.0e-6f));
+    CHECK(close_float(derivative.v[1], -15.0f, 1.0e-6f));
     CHECK(close_float(derivative.v[2], -7.0f, 1.0e-6f));
 }
 
@@ -555,7 +611,7 @@ typedef struct {
  * protect the exact float32 operation order and are complemented by the
  * independent double-precision Python check.
  */
-static const golden_state_t GOLDEN_32[FC_SYSTEM_COUNT][2] = {
+static const golden_state_t GOLDEN_32[3][2] = {
     {
         {{0x3e634864u, 0x3ef0d4e7u, 0x3da5342eu}},
         {{0x3ed952aau, 0x3f6c467fu, 0x3da233c5u}}
@@ -597,9 +653,11 @@ static void test_six_smoke_and_golden(void)
             }
             CHECK(fc_solver_diagnostics(&solver)->steps_completed == 32u);
             CHECK(fc_solver_diagnostics(&solver)->active_memory_terms == 31u);
-            for (component = 0u; component < 3u; ++component) {
-                CHECK(float_word(state.v[component]) ==
-                      GOLDEN_32[system][method].words[component]);
+            if (system <= (uint32_t)FC_SYSTEM_CHEN) {
+                for (component = 0u; component < 3u; ++component) {
+                    CHECK(float_word(state.v[component]) ==
+                          GOLDEN_32[system][method].words[component]);
+                }
             }
         }
     }
@@ -653,6 +711,7 @@ static void test_m2sfrk_reduces_to_midpoint_at_q_one(void)
 
 int main(void)
 {
+    test_selected_manifest_hash();
     test_manifests();
     test_rhs();
     test_zero_equilibrium(FC_METHOD_EFORK3);

@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "status": "predeclared_literature_contract_correction",
+  "operator": "caputo",
+  "lower_terminal": 0.0,
+  "prehistory": "x(t<0)=x0",
+  "candidate_grid_source": "validation/lu_literature_correction_grid_v2.json",
+  "manifests": [
+    {
+      "manifest_id": "lu_caputo_v2",
+      "candidate_id": "lu_chen2012_caputo_v2",
+      "system": "lu",
+      "parameters": [35.0, 3.0, 28.0],
+      "initial_state": [0.0, 3.0, 9.0],
+      "q": 0.9,
+      "h": 0.01,
+      "memory_seconds": 10.0,
+      "memory_increments": 1000
+    }
+  ]
+}

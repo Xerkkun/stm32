@@ -40,7 +40,12 @@ param(
     [string]$Board,
 
     [Parameter(Mandatory = $true)]
-    [ValidateSet('lorenz', 'rossler', 'chen')]
+    [ValidateSet(
+        'lorenz',
+        'rossler',
+        'chen',
+        'liu',
+        'hammouch_mekkaoui')]
     [string]$System,
 
     [Parameter(Mandatory = $true)]

@@ -1,9 +1,23 @@
 #include "main.h"
 
 #include "fc_protocol.h"
+#include "fc_runtime_probe.h"
+#include "fc_start_handshake.h"
 #include "h755_shared_memory.h"
 
 #include <stdint.h>
+
+#ifndef FC_SELECTED_SYSTEM_MANIFEST_SHA256
+#error "The selected-system manifest SHA-256 must be supplied by CMake"
+#endif
+
+__attribute__((used, section(".fc_manifest_hash")))
+const char FC_H755_CM4_SELECTED_SYSTEM_MANIFEST_SHA256_TEXT[65] =
+    FC_SELECTED_SYSTEM_MANIFEST_SHA256;
+
+_Static_assert(
+    sizeof(FC_H755_CM4_SELECTED_SYSTEM_MANIFEST_SHA256_TEXT) == 65u,
+    "The selected-system manifest SHA-256 must contain 64 characters");
 
 #define FC_H755_HSEM_BOOT_ID       0U
 #if FC_H755_SMOKE_DIAGNOSTICS
@@ -17,6 +31,38 @@
 #ifndef FC_H755_SMOKE_DIAGNOSTICS
 #define FC_H755_SMOKE_DIAGNOSTICS 0
 #endif
+
+#ifndef FC_H755_PRIMARY_HANDSHAKE
+#define FC_H755_PRIMARY_HANDSHAKE 0
+#endif
+
+#ifndef FC_H755_BENCHMARK_MODE
+#define FC_H755_BENCHMARK_MODE 0
+#endif
+
+#ifndef FC_H755_RUNTIME_PROBE
+#define FC_H755_RUNTIME_PROBE 0
+#endif
+
+_Static_assert(
+    (FC_H755_PRIMARY_HANDSHAKE == 0) ||
+    (FC_H755_PRIMARY_HANDSHAKE == 1),
+    "FC_H755_PRIMARY_HANDSHAKE debe ser cero o uno");
+_Static_assert(
+    (FC_H755_RUNTIME_PROBE == 0) ||
+    (FC_H755_RUNTIME_PROBE == 1),
+    "FC_H755_RUNTIME_PROBE debe ser cero o uno");
+_Static_assert(
+    !FC_H755_RUNTIME_PROBE ||
+    (FC_H755_PRIMARY_HANDSHAKE && FC_H755_BENCHMARK_MODE),
+    "El runtime probe CM4 requiere benchmark y handshake primario");
+
+#if FC_H755_CLOCK_480
+#define FC_H755_CM4_CLOCK_HZ UINT32_C(240000000)
+#else
+#define FC_H755_CM4_CLOCK_HZ UINT32_C(200000000)
+#endif
+#define FC_H755_BENCHMARK_BLOCKS UINT32_C(2500)
 
 #if FC_H755_SMOKE_DIAGNOSTICS
 #define FC_CM4_DIAG_WRITE(field, value) \
@@ -53,11 +99,31 @@ static fc_h755_dma_buffer_t g_uart_tx_buffer
     __attribute__((section(".dma_buffer"), aligned(32), used));
 static volatile uint8_t g_uart_tx_active;
 static volatile uint32_t g_uart_errors;
+#if FC_H755_RUNTIME_PROBE
+extern uint8_t __stack_probe_start__;
+extern uint8_t __stack_probe_end__;
+extern uint8_t __dma_buffer_start__;
+extern uint8_t __dma_buffer_end__;
+extern uint8_t __shared_start__;
+extern uint8_t __shared_end__;
+
+fc_runtime_probe_record_t g_fc_h755_m4_runtime_probe
+    __attribute__((aligned(32), used));
+static volatile uint32_t g_benchmark_frames_completed;
+static uint8_t g_runtime_probe_finished;
+#endif
 
 static void wait_for_cm7_release(void);
 static void MX_DMA_Init(void);
 static void MX_USART3_UART_Init(void);
 static void MX_CM7_SEV_Init(void);
+#if FC_H755_PRIMARY_HANDSHAKE
+static void wait_for_primary_start(void);
+#endif
+#if FC_H755_RUNTIME_PROBE
+static void runtime_probe_begin(void);
+static void runtime_probe_finish_if_complete(void);
+#endif
 static void transmit_next_sample(void);
 
 int main(void)
@@ -82,11 +148,17 @@ int main(void)
     wait_for_cm7_release();
     FC_CM4_DIAG_WRITE(stage, 3U);
     SystemCoreClockUpdate();
+#if FC_H755_RUNTIME_PROBE
+    runtime_probe_begin();
+#endif
 
     MX_DMA_Init();
     FC_CM4_DIAG_WRITE(stage, 4U);
     MX_USART3_UART_Init();
     FC_CM4_DIAG_WRITE(stage, 5U);
+#if FC_H755_PRIMARY_HANDSHAKE
+    wait_for_primary_start();
+#endif
     MX_CM7_SEV_Init();
     HAL_SuspendTick();
 
@@ -103,6 +175,9 @@ int main(void)
         if (g_uart_tx_active == 0U) {
             transmit_next_sample();
         }
+#if FC_H755_RUNTIME_PROBE
+        runtime_probe_finish_if_complete();
+#endif
         /*
          * WFI puede perder la terminación DMA/UART si la interrupción ocurre
          * entre la comprobación de g_uart_tx_active y la instrucción de
@@ -112,6 +187,64 @@ int main(void)
         __WFE();
     }
 }
+
+#if FC_H755_RUNTIME_PROBE
+static uint32_t runtime_section_bytes(
+    const uint8_t *start,
+    const uint8_t *end)
+{
+    return (uint32_t)(
+        (uintptr_t)(const void *)end -
+        (uintptr_t)(const void *)start);
+}
+
+static void runtime_probe_begin(void)
+{
+    const fc_runtime_probe_config_t config = {
+        FC_RUNTIME_CORE_H755_M4,
+        FC_H755_CM4_CLOCK_HZ,
+        SystemCoreClock,
+        0U,
+        0U,
+        runtime_section_bytes(
+            &__dma_buffer_start__,
+            &__dma_buffer_end__),
+        runtime_section_bytes(&__shared_start__, &__shared_end__),
+        0U,
+    };
+
+    if (!fc_runtime_probe_begin(
+            &g_fc_h755_m4_runtime_probe,
+            &__stack_probe_start__,
+            &__stack_probe_end__,
+            (uintptr_t)__get_MSP(),
+            128U,
+            &config)) {
+        Error_Handler();
+    }
+}
+
+static void runtime_probe_finish_if_complete(void)
+{
+    if ((g_runtime_probe_finished != 0U) ||
+        (g_benchmark_frames_completed != FC_H755_BENCHMARK_BLOCKS) ||
+        (g_uart_tx_active != 0U) ||
+        (g_fc_h755_queue.read_sequence !=
+         g_fc_h755_queue.write_sequence)) {
+        return;
+    }
+    if ((g_uart_errors != 0U) ||
+        (fc_shared_queue_dropped(&g_fc_h755_queue) != 0U) ||
+        !fc_runtime_probe_finish(
+            &g_fc_h755_m4_runtime_probe,
+            &__stack_probe_start__,
+            &__stack_probe_end__)) {
+        Error_Handler();
+    }
+    __DMB();
+    g_runtime_probe_finished = 1U;
+}
+#endif
 
 static void wait_for_cm7_release(void)
 {
@@ -141,7 +274,11 @@ static void MX_USART3_UART_Init(void)
     huart3.Init.WordLength = UART_WORDLENGTH_8B;
     huart3.Init.StopBits = UART_STOPBITS_1;
     huart3.Init.Parity = UART_PARITY_NONE;
+#if FC_H755_PRIMARY_HANDSHAKE
+    huart3.Init.Mode = UART_MODE_TX_RX;
+#else
     huart3.Init.Mode = UART_MODE_TX;
+#endif
     huart3.Init.HwFlowCtl = UART_HWCONTROL_NONE;
     huart3.Init.OverSampling = UART_OVERSAMPLING_16;
     huart3.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
@@ -152,6 +289,75 @@ static void MX_USART3_UART_Init(void)
         Error_Handler();
     }
 }
+
+#if FC_H755_PRIMARY_HANDSHAKE
+static void wait_for_primary_start(void)
+{
+    static const uint8_t error_line[] = "ERR START\n";
+    char line[FC_START_LINE_MAX];
+    char ready[FC_READY_LINE_MAX];
+    size_t length = 0U;
+    uint8_t overflow = 0U;
+
+    __DMB();
+    if (g_fc_h755_start_contract.magic != FC_H755_START_MAGIC) {
+        Error_Handler();
+    }
+    for (;;) {
+        uint8_t byte;
+        fc_start_command_t command;
+        size_t ready_length;
+
+        if (HAL_UART_Receive(
+                &huart3,
+                &byte,
+                1U,
+                HAL_MAX_DELAY) != HAL_OK) {
+            Error_Handler();
+        }
+        if (byte != (uint8_t)'\n') {
+            if (length < sizeof(line)) {
+                line[length] = (char)byte;
+                ++length;
+            } else {
+                overflow = 1U;
+            }
+            continue;
+        }
+        if ((overflow == 0U) &&
+            fc_parse_start_command(line, length, &command) &&
+            fc_start_command_matches(
+                &command,
+                g_fc_h755_start_contract.kind,
+                g_fc_h755_start_contract.board_id,
+                g_fc_h755_start_contract.system_id,
+                g_fc_h755_start_contract.method_id)) {
+            ready_length = fc_format_ready_line(
+                ready,
+                sizeof(ready),
+                command.request_id);
+            if ((ready_length == 0U) ||
+                (HAL_UART_Transmit(
+                    &huart3,
+                    (const uint8_t *)(const void *)ready,
+                    (uint16_t)ready_length,
+                    1000U) != HAL_OK)) {
+                Error_Handler();
+            }
+            return;
+        }
+        if (HAL_UART_Transmit(
+                &huart3,
+                error_line,
+                (uint16_t)(sizeof(error_line) - 1U),
+                1000U) != HAL_OK) {
+            Error_Handler();
+        }
+        length = 0U;
+        overflow = 0U;
+    }
+}
+#endif
 
 static void MX_CM7_SEV_Init(void)
 {
@@ -225,6 +431,9 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *uart)
     if (uart->Instance == USART3) {
         g_uart_tx_active = 0U;
         FC_CM4_DIAG_INCREMENT(tx_completed);
+#if FC_H755_RUNTIME_PROBE
+        ++g_benchmark_frames_completed;
+#endif
         __SEV();
     }
 }

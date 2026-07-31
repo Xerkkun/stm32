@@ -1,0 +1,9 @@
+{
+  "eligible_as_evidence": false,
+  "error": "el proceso terminó con código 1; vea C:\\Users\\moren\\Desktop\\Codes\\STM32\\FractionalChaos\\validation\\results\\physical_campaign\\stm32_selected_36x30_v1\\runs\\stm32_selected_36x30_v1__r01__liu_m2sfrk_f746_float32__4ad34d95e0__benchmark-reset-pilot\\build.log",
+  "error_type": "CampaignError",
+  "failed_utc": "2026-07-29T08:05:57.340368Z",
+  "run_id": "stm32_selected_36x30_v1__r01__liu_m2sfrk_f746_float32__4ad34d95e0__benchmark-reset-pilot",
+  "schema": "fractional-chaos-physical-run-failure-v1",
+  "started_utc": "2026-07-29T08:05:56.939770Z"
+}

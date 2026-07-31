@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "status": "predeclared_alternative_system_candidates",
+  "operator": "caputo",
+  "lower_terminal": 0.0,
+  "prehistory": "x(t<0)=x0",
+  "candidate_grid_source": "validation/alternative_system_candidate_grid_v1.json",
+  "manifests": [
+    {
+      "manifest_id": "lu_caputo_v1",
+      "candidate_id": "lu_yadav2019_caputo_v1",
+      "system": "lu",
+      "parameters": [36.0, 3.0, 20.0],
+      "initial_state": [0.2, 0.5, 0.3],
+      "q": 0.96,
+      "h": 0.01,
+      "memory_seconds": 10.0,
+      "memory_increments": 1000
+    },
+    {
+      "manifest_id": "genesio_tesi_simplified_caputo_v1",
+      "candidate_id": "genesio_tesi_mao2025_simplified_caputo_v1",
+      "system": "genesio_tesi_simplified",
+      "parameters": [1.05, 1.1, 0.45],
+      "initial_state": [-0.1, 0.5, 0.2],
+      "q": 0.9,
+      "h": 0.01,
+      "memory_seconds": 10.0,
+      "memory_increments": 1000
+    },
+    {
+      "manifest_id": "shimizu_morioka_caputo_v1",
+      "candidate_id": "shimizu_morioka_wei2021_caputo_v1",
+      "system": "shimizu_morioka",
+      "parameters": [0.45, 0.75],
+      "initial_state": [1.0, 1.0, 2.0],
+      "q": 0.99,
+      "h": 0.01,
+      "memory_seconds": 10.0,
+      "memory_increments": 1000
+    },
+    {
+      "manifest_id": "liu_caputo_v1",
+      "candidate_id": "liu_bhalekar2010_caputo_v1",
+      "system": "liu",
+      "parameters": [1.0, 2.5, 5.0, 1.0, 4.0, 4.0],
+      "initial_state": [0.2, 0.0, 0.5],
+      "q": 0.92,
+      "h": 0.01,
+      "memory_seconds": 10.0,
+      "memory_increments": 1000
+    }
+  ]
+}

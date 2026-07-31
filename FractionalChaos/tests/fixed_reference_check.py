@@ -17,6 +17,36 @@ Q30_SCALE = 1 << 30
 Q30_MIN = -(1 << 31)
 Q30_MAX = (1 << 31) - 1
 METHODS = ("efork3", "gl", "m2sfrk")
+SYSTEM_NAMES = (
+    "lorenz",
+    "rossler",
+    "chen",
+    "liu",
+    "hammouch_mekkaoui",
+)
+PARAMETER_COUNT = 6
+ADDITIONAL_MANIFESTS = (
+    {
+        "manifest_id": "liu_caputo_v1",
+        "system": "liu",
+        "parameters": [1.0, 2.5, 5.0, 1.0, 4.0, 4.0],
+        "initial_state": [0.2, 0.0, 0.5],
+        "q": 0.92,
+        "h": 0.01,
+        "memory_seconds": 10.0,
+        "memory_increments": 1000,
+    },
+    {
+        "manifest_id": "hammouch_mekkaoui_caputo_v1",
+        "system": "hammouch_mekkaoui",
+        "parameters": [],
+        "initial_state": [0.7, 0.1, 0.0],
+        "q": 0.98,
+        "h": 0.01,
+        "memory_seconds": 10.0,
+        "memory_increments": 1000,
+    },
+)
 
 
 def round_away(value: float) -> int:
@@ -48,6 +78,9 @@ class Q14Arithmetic:
 
     def sub(self, left: int, right: int) -> int:
         return self.sat(left - right)
+
+    def neg(self, value: int) -> int:
+        return self.sat(-value)
 
     def mul(self, left: int, right: int) -> int:
         product = left * right
@@ -81,11 +114,11 @@ class Q30Encoder:
 def rhs(
     arithmetic: Q14Arithmetic,
     system: int,
-    parameters: tuple[int, int, int],
+    parameters: tuple[int, ...],
     state: tuple[int, int, int],
 ) -> tuple[int, int, int]:
     x, y, z = state
-    p0, p1, p2 = parameters
+    p0, p1, p2, p3, p4, p5 = parameters
     a = arithmetic
     if system == 0:
         return (
@@ -99,14 +132,114 @@ def rhs(
             a.add(x, a.mul(p0, y)),
             a.add(p1, a.mul(z, a.sub(x, p2))),
         )
-    return (
-        a.mul(p0, a.sub(y, x)),
-        a.add(
-            a.sub(a.mul(a.sub(p2, p0), x), a.mul(x, z)),
-            a.mul(p2, y),
-        ),
-        a.sub(a.mul(x, y), a.mul(p1, z)),
+    if system == 2:
+        return (
+            a.mul(p0, a.sub(y, x)),
+            a.add(
+                a.sub(a.mul(a.sub(p2, p0), x), a.mul(x, z)),
+                a.mul(p2, y),
+            ),
+            a.sub(a.mul(x, y), a.mul(p1, z)),
+        )
+    if system == 3:
+        # Frozen operation tree shared with fractional_chaos_fixed.c.
+        dx = a.sub(
+            a.neg(a.mul(p0, x)),
+            a.mul(p3, a.mul(y, y)),
+        )
+        dy = a.sub(
+            a.mul(p1, y),
+            a.mul(p4, a.mul(x, z)),
+        )
+        dz = a.add(
+            a.neg(a.mul(p2, z)),
+            a.mul(p5, a.mul(x, y)),
+        )
+        return dx, dy, dz
+    if system == 4:
+        two = 2 * Q14_SCALE
+        three = 3 * Q14_SCALE
+        four = 4 * Q14_SCALE
+        seven = 7 * Q14_SCALE
+        dx = a.sub(
+            a.neg(a.mul(two, x)),
+            a.mul(y, y),
+        )
+        dy = a.sub(
+            a.add(
+                a.neg(a.mul(four, a.mul(x, z))),
+                a.mul(three, y),
+            ),
+            a.mul(z, z),
+        )
+        dz = a.add(
+            a.sub(
+                a.mul(four, a.mul(x, y)),
+                a.mul(seven, z),
+            ),
+            a.mul(y, z),
+        )
+        return dx, dy, dz
+    raise ValueError(f"unsupported fixed system id: {system}")
+
+
+def encode_parameters(
+    arithmetic: Q14Arithmetic,
+    values: object,
+) -> tuple[int, ...]:
+    parameters = tuple(
+        arithmetic.encode(float(value))
+        for value in values  # type: ignore[union-attr]
     )
+    if len(parameters) > PARAMETER_COUNT:
+        raise ValueError(
+            f"fixed manifest has {len(parameters)} parameters; "
+            f"capacity is {PARAMETER_COUNT}"
+        )
+    return parameters + ((0,) * (PARAMETER_COUNT - len(parameters)))
+
+
+def check_new_rhs_contracts() -> None:
+    state = (
+        1 * Q14_SCALE,
+        2 * Q14_SCALE,
+        3 * Q14_SCALE,
+    )
+    cases = (
+        (
+            3,
+            (1.0, 2.5, 5.0, 1.0, 4.0, 4.0),
+            (-5, -7, -7),
+        ),
+        (
+            4,
+            (),
+            (-6, -15, -7),
+        ),
+    )
+    for system, values, expected_units in cases:
+        arithmetic = Q14Arithmetic()
+        parameters = encode_parameters(arithmetic, values)
+        actual = rhs(arithmetic, system, parameters, state)
+        expected = tuple(value * Q14_SCALE for value in expected_units)
+        if actual != expected:
+            raise AssertionError(
+                f"system {system} nominal RHS: "
+                f"actual={actual}, expected={expected}"
+            )
+        if arithmetic.saturations != 0:
+            raise AssertionError(
+                f"system {system} nominal RHS saturated"
+            )
+
+        stress = Q14Arithmetic()
+        stress_parameters = encode_parameters(stress, values)
+        large_state = (16000 * Q14_SCALE,) * 3
+        rhs(stress, system, stress_parameters, large_state)
+        if stress.saturations == 0:
+            raise AssertionError(
+                f"system {system} saturation diagnostic did not fire"
+            )
 
 
 def efork_coefficients(
@@ -207,9 +340,8 @@ def simulate(
 ) -> dict[int, tuple[int, int, int, int, int, int]]:
     arithmetic = Q14Arithmetic()
     encoder = Q30Encoder()
-    parameters = tuple(
-        arithmetic.encode(float(value))
-        for value in manifest["parameters"]  # type: ignore[union-attr]
+    parameters = encode_parameters(
+        arithmetic, manifest["parameters"]
     )
     initial = tuple(
         arithmetic.encode(float(value))
@@ -409,9 +541,21 @@ def main() -> int:
 
     executable = Path(sys.argv[1]).resolve()
     manifest_path = Path(sys.argv[2]).resolve()
-    manifests = json.loads(
+    base_manifests = json.loads(
         manifest_path.read_text(encoding="utf-8")
     )["manifests"]
+    base_names = tuple(
+        str(manifest["system"]) for manifest in base_manifests
+    )
+    if base_names != SYSTEM_NAMES[:3]:
+        raise AssertionError(
+            f"fixed base manifest order is {base_names}, "
+            f"expected {SYSTEM_NAMES[:3]}"
+        )
+    manifests = [*base_manifests, *ADDITIONAL_MANIFESTS]
+    if tuple(str(item["system"]) for item in manifests) != SYSTEM_NAMES:
+        raise AssertionError("fixed five-system manifest order mismatch")
+    check_new_rhs_contracts()
     actual = read_c_dump(executable)
     expected = {}
     for system, manifest in enumerate(manifests):
@@ -437,17 +581,19 @@ def main() -> int:
             print(f"  {error}", file=sys.stderr)
         return 1
 
-    if len(actual) != 18:
+    expected_count = len(SYSTEM_NAMES) * len(METHODS) * 2
+    if len(actual) != expected_count:
         print(
-            f"fixed_reference_check: expected 18 checkpoints, "
+            f"fixed_reference_check: expected {expected_count} "
+            "checkpoints, "
             f"got {len(actual)}",
             file=sys.stderr,
         )
         return 1
 
     print(
-        "fixed_reference_check: 18 bit-exact checkpoints passed "
-        "(9 cells; steps 1 and 32)"
+        f"fixed_reference_check: {expected_count} bit-exact "
+        "checkpoints passed (15 cells; steps 1 and 32)"
     )
     return 0
 

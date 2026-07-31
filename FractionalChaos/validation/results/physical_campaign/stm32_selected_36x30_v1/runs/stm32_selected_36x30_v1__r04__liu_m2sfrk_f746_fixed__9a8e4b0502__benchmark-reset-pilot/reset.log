@@ -1,0 +1,17 @@
+Sonda validada: 066AFF504955657867165348 [NUCLEO-F746ZG].
+      -------------------------------------------------------------------
+                       STM32CubeProgrammer v2.23.0                  
+      -------------------------------------------------------------------
+
+ST-LINK SN  : 066AFF504955657867165348
+ST-LINK FW  : V2J29M18
+Board       : NUCLEO-F746ZG
+Voltage     : 3.24V
+Error: ST-LINK error (DEV_TARGET_NOT_HALTED)
+FallÃ³ el reset hardware de NUCLEO-F746ZG.
+At C:\Users\moren\Desktop\Codes\STM32\FractionalChaos\tools\flash.ps1:217 char:13
++             throw "FallÃ³ el reset hardware de $expectedBoardName."
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (FallÃ³ el reset... NUCLEO-F746ZG.:String) [], RuntimeException
+    + FullyQualifiedErrorId : FallÃ³ el reset hardware de NUCLEO-F746ZG.
+ 

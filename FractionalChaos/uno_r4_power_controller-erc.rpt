@@ -1,0 +1,268 @@
+ERC report (2026-07-30T18:42:16, Encoding UTF8)
+Report includes: Errors, Warnings
+
+***** Sheet /
+[footprint_link_issues]: La configuración actual no incluye la biblioteca de huellas 'Schematic_Only'
+    ; warning
+    @(130.81 mm, 86.36 mm): Symbol #FLG03 [PWR_FLAG]
+[lib_symbol_mismatch]: El símbolo 'PWR_FLAG' no coincide con la copia en la biblioteca 'power'
+    ; warning
+    @(130.81 mm, 86.36 mm): Symbol #FLG03 [PWR_FLAG]
+[footprint_link_issues]: La configuración actual no incluye la biblioteca de huellas 'Schematic_Only'
+    ; warning
+    @(138.43 mm, 77.47 mm): Symbol #FLG02 [PWR_FLAG]
+[lib_symbol_mismatch]: El símbolo 'PWR_FLAG' no coincide con la copia en la biblioteca 'power'
+    ; warning
+    @(138.43 mm, 77.47 mm): Symbol #FLG02 [PWR_FLAG]
+[footprint_link_issues]: La configuración actual no incluye la biblioteca de huellas 'Schematic_Only'
+    ; warning
+    @(146.05 mm, 81.28 mm): Symbol #FLG01 [PWR_FLAG]
+[lib_symbol_mismatch]: El símbolo 'PWR_FLAG' no coincide con la copia en la biblioteca 'power'
+    ; warning
+    @(146.05 mm, 81.28 mm): Symbol #FLG01 [PWR_FLAG]
+[footprint_link_issues]: La configuración actual no incluye la biblioteca de huellas 'Schematic_Only'
+    ; warning
+    @(156.21 mm, 114.30 mm): Symbol RPU2 [R]
+[lib_symbol_mismatch]: El símbolo 'R' no coincide con la copia en la biblioteca 'Device'
+    ; warning
+    @(156.21 mm, 114.30 mm): Symbol RPU2 [R]
+[footprint_link_issues]: La configuración actual no incluye la biblioteca de huellas 'Schematic_Only'
+    ; warning
+    @(156.21 mm, 127.00 mm): Symbol RPU1 [R]
+[lib_symbol_mismatch]: El símbolo 'R' no coincide con la copia en la biblioteca 'Device'
+    ; warning
+    @(156.21 mm, 127.00 mm): Symbol RPU1 [R]
+[footprint_link_issues]: La configuración actual no incluye la biblioteca de huellas 'Schematic_Only'
+    ; warning
+    @(165.10 mm, 74.93 mm): Symbol J3 [Conn_01x02]
+[lib_symbol_mismatch]: El símbolo 'Conn_01x02' no coincide con la copia en la biblioteca 'Connector_Generic'
+    ; warning
+    @(165.10 mm, 74.93 mm): Symbol J3 [Conn_01x02]
+[footprint_link_issues]: La configuración actual no incluye la biblioteca de huellas 'Schematic_Only'
+    ; warning
+    @(165.10 mm, 106.68 mm): Symbol J1 [Conn_01x06]
+[lib_symbol_mismatch]: El símbolo 'Conn_01x06' no coincide con la copia en la biblioteca 'Connector_Generic'
+    ; warning
+    @(165.10 mm, 106.68 mm): Symbol J1 [Conn_01x06]
+[footprint_link_issues]: La configuración actual no incluye la biblioteca de huellas 'Schematic_Only'
+    ; warning
+    @(165.10 mm, 127.00 mm): Symbol J4 [Conn_01x06]
+[lib_symbol_mismatch]: El símbolo 'Conn_01x06' no coincide con la copia en la biblioteca 'Connector_Generic'
+    ; warning
+    @(165.10 mm, 127.00 mm): Symbol J4 [Conn_01x06]
+[footprint_link_issues]: La configuración actual no incluye la biblioteca de huellas 'Schematic_Only'
+    ; warning
+    @(166.37 mm, 88.90 mm): Symbol J2 [Conn_01x04]
+[lib_symbol_mismatch]: El símbolo 'Conn_01x04' no coincide con la copia en la biblioteca 'Connector_Generic'
+    ; warning
+    @(166.37 mm, 88.90 mm): Symbol J2 [Conn_01x04]
+[footprint_link_issues]: La configuración actual no incluye la biblioteca de huellas 'Schematic_Only'
+    ; warning
+    @(135.89 mm, 92.71 mm): Symbol K1 [SW_SPDT]
+[lib_symbol_mismatch]: El símbolo 'SW_SPDT' no coincide con la copia en la biblioteca 'Switch'
+    ; warning
+    @(135.89 mm, 92.71 mm): Symbol K1 [SW_SPDT]
+[footprint_link_issues]: La configuración actual no incluye la biblioteca de huellas 'Schematic_Only'
+    ; warning
+    @(144.78 mm, 95.25 mm): Symbol RSH1 [R]
+[lib_symbol_mismatch]: El símbolo 'R' no coincide con la copia en la biblioteca 'Device'
+    ; warning
+    @(144.78 mm, 95.25 mm): Symbol RSH1 [R]
+[footprint_link_issues]: La configuración actual no incluye la biblioteca de huellas 'Schematic_Only'
+    ; warning
+    @(177.80 mm, 81.28 mm): Symbol J7 [Conn_01x05]
+[lib_symbol_mismatch]: El símbolo 'Conn_01x05' no coincide con la copia en la biblioteca 'Connector_Generic'
+    ; warning
+    @(177.80 mm, 81.28 mm): Symbol J7 [Conn_01x05]
+[footprint_link_issues]: La configuración actual no incluye la biblioteca de huellas 'Schematic_Only'
+    ; warning
+    @(179.07 mm, 99.06 mm): Symbol J8 [Conn_01x05]
+[lib_symbol_mismatch]: El símbolo 'Conn_01x05' no coincide con la copia en la biblioteca 'Connector_Generic'
+    ; warning
+    @(179.07 mm, 99.06 mm): Symbol J8 [Conn_01x05]
+[footprint_link_issues]: La configuración actual no incluye la biblioteca de huellas 'Schematic_Only'
+    ; warning
+    @(179.07 mm, 121.92 mm): Symbol U1 [Conn_01x10]
+[lib_symbol_mismatch]: El símbolo 'Conn_01x10' no coincide con la copia en la biblioteca 'Connector_Generic'
+    ; warning
+    @(179.07 mm, 121.92 mm): Symbol U1 [Conn_01x10]
+[footprint_link_issues]: La configuración actual no incluye la biblioteca de huellas 'Schematic_Only'
+    ; warning
+    @(130.81 mm, 93.98 mm): Symbol K2 [SW_SPDT]
+[lib_symbol_mismatch]: El símbolo 'SW_SPDT' no coincide con la copia en la biblioteca 'Switch'
+    ; warning
+    @(130.81 mm, 93.98 mm): Symbol K2 [SW_SPDT]
+[footprint_link_issues]: La configuración actual no incluye la biblioteca de huellas 'Schematic_Only'
+    ; warning
+    @(165.10 mm, 132.08 mm): Symbol RSH2 [R]
+[lib_symbol_mismatch]: El símbolo 'R' no coincide con la copia en la biblioteca 'Device'
+    ; warning
+    @(165.10 mm, 132.08 mm): Symbol RSH2 [R]
+[footprint_link_issues]: La configuración actual no incluye la biblioteca de huellas 'Schematic_Only'
+    ; warning
+    @(172.72 mm, 99.06 mm): Symbol J9 [Conn_01x05]
+[lib_symbol_mismatch]: El símbolo 'Conn_01x05' no coincide con la copia en la biblioteca 'Connector_Generic'
+    ; warning
+    @(172.72 mm, 99.06 mm): Symbol J9 [Conn_01x05]
+[footprint_link_issues]: La configuración actual no incluye la biblioteca de huellas 'Schematic_Only'
+    ; warning
+    @(173.99 mm, 81.28 mm): Symbol J10 [Conn_01x05]
+[lib_symbol_mismatch]: El símbolo 'Conn_01x05' no coincide con la copia en la biblioteca 'Connector_Generic'
+    ; warning
+    @(173.99 mm, 81.28 mm): Symbol J10 [Conn_01x05]
+[footprint_link_issues]: La configuración actual no incluye la biblioteca de huellas 'Schematic_Only'
+    ; warning
+    @(173.99 mm, 121.92 mm): Symbol U2 [Conn_01x10]
+[lib_symbol_mismatch]: El símbolo 'Conn_01x10' no coincide con la copia en la biblioteca 'Connector_Generic'
+    ; warning
+    @(173.99 mm, 121.92 mm): Symbol U2 [Conn_01x10]
+[footprint_link_issues]: La configuración actual no incluye la biblioteca de huellas 'Schematic_Only'
+    ; warning
+    @(127.00 mm, 74.93 mm): Symbol RBE3 [R]
+[lib_symbol_mismatch]: El símbolo 'R' no coincide con la copia en la biblioteca 'Device'
+    ; warning
+    @(127.00 mm, 74.93 mm): Symbol RBE3 [R]
+[footprint_link_issues]: La configuración actual no incluye la biblioteca de huellas 'Schematic_Only'
+    ; warning
+    @(127.00 mm, 83.82 mm): Symbol Q3 [Q_NPN_CBE]
+[lib_symbol_mismatch]: El símbolo 'Q_NPN_CBE' no coincide con la copia en la biblioteca 'Transistor_BJT'
+    ; warning
+    @(127.00 mm, 83.82 mm): Symbol Q3 [Q_NPN_CBE]
+[footprint_link_issues]: La configuración actual no incluye la biblioteca de huellas 'Schematic_Only'
+    ; warning
+    @(128.27 mm, 97.79 mm): Symbol RBE1 [R]
+[lib_symbol_mismatch]: El símbolo 'R' no coincide con la copia en la biblioteca 'Device'
+    ; warning
+    @(128.27 mm, 97.79 mm): Symbol RBE1 [R]
+[footprint_link_issues]: La configuración actual no incluye la biblioteca de huellas 'Schematic_Only'
+    ; warning
+    @(128.27 mm, 106.68 mm): Symbol Q1 [Q_NPN_CBE]
+[lib_symbol_mismatch]: El símbolo 'Q_NPN_CBE' no coincide con la copia en la biblioteca 'Transistor_BJT'
+    ; warning
+    @(128.27 mm, 106.68 mm): Symbol Q1 [Q_NPN_CBE]
+[footprint_link_issues]: La configuración actual no incluye la biblioteca de huellas 'Schematic_Only'
+    ; warning
+    @(135.89 mm, 86.36 mm): Symbol RC3 [R]
+[lib_symbol_mismatch]: El símbolo 'R' no coincide con la copia en la biblioteca 'Device'
+    ; warning
+    @(135.89 mm, 86.36 mm): Symbol RC3 [R]
+[footprint_link_issues]: La configuración actual no incluye la biblioteca de huellas 'Schematic_Only'
+    ; warning
+    @(137.16 mm, 109.22 mm): Symbol RC1 [R]
+[lib_symbol_mismatch]: El símbolo 'R' no coincide con la copia en la biblioteca 'Device'
+    ; warning
+    @(137.16 mm, 109.22 mm): Symbol RC1 [R]
+[footprint_link_issues]: La configuración actual no incluye la biblioteca de huellas 'Schematic_Only'
+    ; warning
+    @(152.40 mm, 139.70 mm): Symbol RS2 [R]
+[lib_symbol_mismatch]: El símbolo 'R' no coincide con la copia en la biblioteca 'Device'
+    ; warning
+    @(152.40 mm, 139.70 mm): Symbol RS2 [R]
+[footprint_link_issues]: La configuración actual no incluye la biblioteca de huellas 'Schematic_Only'
+    ; warning
+    @(160.02 mm, 134.62 mm): Symbol RB1 [R]
+[lib_symbol_mismatch]: El símbolo 'R' no coincide con la copia en la biblioteca 'Device'
+    ; warning
+    @(160.02 mm, 134.62 mm): Symbol RB1 [R]
+[footprint_link_issues]: La configuración actual no incluye la biblioteca de huellas 'Schematic_Only'
+    ; warning
+    @(160.02 mm, 137.16 mm): Symbol RB3 [R]
+[lib_symbol_mismatch]: El símbolo 'R' no coincide con la copia en la biblioteca 'Device'
+    ; warning
+    @(160.02 mm, 137.16 mm): Symbol RB3 [R]
+[footprint_link_issues]: La configuración actual no incluye la biblioteca de huellas 'Schematic_Only'
+    ; warning
+    @(160.02 mm, 139.70 mm): Symbol RS1 [R]
+[lib_symbol_mismatch]: El símbolo 'R' no coincide con la copia en la biblioteca 'Device'
+    ; warning
+    @(160.02 mm, 139.70 mm): Symbol RS1 [R]
+[footprint_link_issues]: La configuración actual no incluye la biblioteca de huellas 'Schematic_Only'
+    ; warning
+    @(168.91 mm, 137.16 mm): Symbol J5 [Conn_01x04]
+[lib_symbol_mismatch]: El símbolo 'Conn_01x04' no coincide con la copia en la biblioteca 'Connector_Generic'
+    ; warning
+    @(168.91 mm, 137.16 mm): Symbol J5 [Conn_01x04]
+[footprint_link_issues]: La configuración actual no incluye la biblioteca de huellas 'Schematic_Only'
+    ; warning
+    @(127.00 mm, 99.06 mm): Symbol RBE4 [R]
+[lib_symbol_mismatch]: El símbolo 'R' no coincide con la copia en la biblioteca 'Device'
+    ; warning
+    @(127.00 mm, 99.06 mm): Symbol RBE4 [R]
+[footprint_link_issues]: La configuración actual no incluye la biblioteca de huellas 'Schematic_Only'
+    ; warning
+    @(127.00 mm, 107.95 mm): Symbol Q4 [Q_NPN_CBE]
+[lib_symbol_mismatch]: El símbolo 'Q_NPN_CBE' no coincide con la copia en la biblioteca 'Transistor_BJT'
+    ; warning
+    @(127.00 mm, 107.95 mm): Symbol Q4 [Q_NPN_CBE]
+[footprint_link_issues]: La configuración actual no incluye la biblioteca de huellas 'Schematic_Only'
+    ; warning
+    @(128.27 mm, 76.20 mm): Symbol RBE2 [R]
+[lib_symbol_mismatch]: El símbolo 'R' no coincide con la copia en la biblioteca 'Device'
+    ; warning
+    @(128.27 mm, 76.20 mm): Symbol RBE2 [R]
+[footprint_link_issues]: La configuración actual no incluye la biblioteca de huellas 'Schematic_Only'
+    ; warning
+    @(128.27 mm, 85.09 mm): Symbol Q2 [Q_NPN_CBE]
+[lib_symbol_mismatch]: El símbolo 'Q_NPN_CBE' no coincide con la copia en la biblioteca 'Transistor_BJT'
+    ; warning
+    @(128.27 mm, 85.09 mm): Symbol Q2 [Q_NPN_CBE]
+[footprint_link_issues]: La configuración actual no incluye la biblioteca de huellas 'Schematic_Only'
+    ; warning
+    @(135.89 mm, 110.49 mm): Symbol RC4 [R]
+[lib_symbol_mismatch]: El símbolo 'R' no coincide con la copia en la biblioteca 'Device'
+    ; warning
+    @(135.89 mm, 110.49 mm): Symbol RC4 [R]
+[footprint_link_issues]: La configuración actual no incluye la biblioteca de huellas 'Schematic_Only'
+    ; warning
+    @(137.16 mm, 87.63 mm): Symbol RC2 [R]
+[lib_symbol_mismatch]: El símbolo 'R' no coincide con la copia en la biblioteca 'Device'
+    ; warning
+    @(137.16 mm, 87.63 mm): Symbol RC2 [R]
+[footprint_link_issues]: La configuración actual no incluye la biblioteca de huellas 'Schematic_Only'
+    ; warning
+    @(152.40 mm, 137.16 mm): Symbol RS4 [R]
+[lib_symbol_mismatch]: El símbolo 'R' no coincide con la copia en la biblioteca 'Device'
+    ; warning
+    @(152.40 mm, 137.16 mm): Symbol RS4 [R]
+[footprint_link_issues]: La configuración actual no incluye la biblioteca de huellas 'Schematic_Only'
+    ; warning
+    @(160.02 mm, 132.08 mm): Symbol RB2 [R]
+[lib_symbol_mismatch]: El símbolo 'R' no coincide con la copia en la biblioteca 'Device'
+    ; warning
+    @(160.02 mm, 132.08 mm): Symbol RB2 [R]
+[footprint_link_issues]: La configuración actual no incluye la biblioteca de huellas 'Schematic_Only'
+    ; warning
+    @(160.02 mm, 134.62 mm): Symbol RB4 [R]
+[lib_symbol_mismatch]: El símbolo 'R' no coincide con la copia en la biblioteca 'Device'
+    ; warning
+    @(160.02 mm, 134.62 mm): Symbol RB4 [R]
+[footprint_link_issues]: La configuración actual no incluye la biblioteca de huellas 'Schematic_Only'
+    ; warning
+    @(160.02 mm, 137.16 mm): Symbol RS3 [R]
+[lib_symbol_mismatch]: El símbolo 'R' no coincide con la copia en la biblioteca 'Device'
+    ; warning
+    @(160.02 mm, 137.16 mm): Symbol RS3 [R]
+[footprint_link_issues]: La configuración actual no incluye la biblioteca de huellas 'Schematic_Only'
+    ; warning
+    @(168.91 mm, 134.62 mm): Symbol J6 [Conn_01x04]
+[lib_symbol_mismatch]: El símbolo 'Conn_01x04' no coincide con la copia en la biblioteca 'Connector_Generic'
+    ; warning
+    @(168.91 mm, 134.62 mm): Symbol J6 [Conn_01x04]
+
+***** Sheet /control_uno_r4/
+
+***** Sheet /potencia_f746/
+
+***** Sheet /potencia_h755/
+
+***** Sheet /senales_f746/
+
+***** Sheet /senales_h755/
+
+ ** ERC messages: 82  Errors 0  Warnings 82
+
+ ** Ignored checks:
+    - Global label only appears once in the schematic
+    - Four connection points are joined together
+    - SPICE model issue
+    - Assigned footprint doesn't match footprint filters

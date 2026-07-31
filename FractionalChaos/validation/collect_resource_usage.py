@@ -22,8 +22,13 @@ from typing import Any, Iterable
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_OUTPUT = ROOT / "validation" / "results" / "resource_usage"
-SYSTEMS = ("lorenz", "rossler", "chen")
+DEFAULT_OUTPUT = (
+    ROOT / "validation" / "results" / "resource_usage_selected_v1"
+)
+SELECTED_MANIFEST = (
+    ROOT / "validation" / "selected_system_manifests_v1.json"
+)
+SYSTEMS = ("chen", "liu", "hammouch_mekkaoui")
 METHODS = ("efork3", "gl", "m2sfrk")
 REPRESENTATIONS = ("float32", "fixed_q14_q30")
 SIZE_ROW = re.compile(
@@ -129,7 +134,21 @@ def tool_version(size_tool: Path) -> str:
     return completed.stdout.strip()
 
 
-def measure_image(size_tool: Path, elf: Path) -> dict[str, Any]:
+def verify_embedded_manifest_hash(elf: Path, expected: str) -> None:
+    if not re.fullmatch(r"[0-9a-f]{64}", expected):
+        raise ResourceError("el SHA-256 esperado del manifiesto no es válido")
+    if expected.encode("ascii") not in elf.read_bytes():
+        raise ResourceError(
+            f"{elf} no contiene el SHA-256 del manifiesto seleccionado"
+        )
+
+
+def measure_image(
+    size_tool: Path,
+    elf: Path,
+    *,
+    selected_manifest_sha256: str,
+) -> dict[str, Any]:
     elf = elf.resolve()
     if not elf.is_file():
         raise ResourceError(f"falta la imagen Release: {elf}")
@@ -152,6 +171,7 @@ def measure_image(size_tool: Path, elf: Path) -> dict[str, Any]:
     map_path = elf.with_suffix(".map")
     if not map_path.is_file():
         raise ResourceError(f"falta el mapa enlazado: {map_path}")
+    verify_embedded_manifest_hash(elf, selected_manifest_sha256)
     relative_elf = elf.relative_to(ROOT)
     relative_map = map_path.resolve().relative_to(ROOT)
     return {
@@ -159,6 +179,9 @@ def measure_image(size_tool: Path, elf: Path) -> dict[str, Any]:
         "elf_sha256": sha256_file(elf),
         "map": relative_map.as_posix(),
         "map_sha256": sha256_file(map_path),
+        "embedded_selected_manifest_sha256": (
+            selected_manifest_sha256
+        ),
         **parse_size_output(completed.stdout),
     }
 
@@ -190,13 +213,22 @@ def expected_cells() -> Iterable[dict[str, str]]:
 def collect(size_tool: Path) -> dict[str, Any]:
     f746_root = ROOT / "build" / "f746-release"
     h755_root = ROOT / "build" / "h755-release"
-    cm4 = measure_image(size_tool, h755_root / "h755_m4_uart.elf")
+    selected_manifest_sha256 = sha256_file(SELECTED_MANIFEST)
+    cm4 = measure_image(
+        size_tool,
+        h755_root / "h755_m4_uart.elf",
+        selected_manifest_sha256=selected_manifest_sha256,
+    )
     cells: list[dict[str, Any]] = []
 
     for identity in expected_cells():
         target = target_name(**identity)
         build_root = f746_root if identity["board"] == "f746" else h755_root
-        primary = measure_image(size_tool, build_root / f"{target}.elf")
+        primary = measure_image(
+            size_tool,
+            build_root / f"{target}.elf",
+            selected_manifest_sha256=selected_manifest_sha256,
+        )
         companion = cm4 if identity["board"] == "h755" else None
         total_flash = primary["flash_bytes"]
         total_ram = primary["static_ram_bytes"]
@@ -232,6 +264,12 @@ def collect(size_tool: Path) -> dict[str, Any]:
             "images in the primary matrix"
         ),
         "evidence_level": "static_linker_inventory",
+        "selected_system_manifest": {
+            "path": SELECTED_MANIFEST.relative_to(ROOT).as_posix(),
+            "sha256": selected_manifest_sha256,
+            "embedded_in_every_solver_elf": True,
+            "embedded_in_h755_cm4_companion_elf": True,
+        },
         "tool": {
             "path": str(size_tool),
             "sha256": sha256_file(size_tool),

@@ -1,0 +1,65 @@
+{
+  "schema": "fractional-chaos-energy-workload-contract-v1",
+  "contract_id": "stm32_selected_energy_window_v1",
+  "status": "predeclared_before_external_energy_measurement",
+  "work_unit": {
+    "label": "instrumented_solver_step",
+    "timing_values_retained": 10000,
+    "base_work_units": 10000,
+    "energy_window_includes_retained_timing_steps": true,
+    "supplemental_steps_use_same_solver_step_cycles_call": true,
+    "uart_inside_energy_window": false
+  },
+  "capture_requirement": {
+    "sample_rate_hz": 500,
+    "minimum_window_samples": 1000,
+    "minimum_window_s": 2.0,
+    "sizing_target_window_s": 4.0
+  },
+  "multipliers": {
+    "f746": {
+      "efork3": {
+        "float32": 4,
+        "fixed_q14_q30": 1
+      },
+      "gl": {
+        "float32": 8,
+        "fixed_q14_q30": 2
+      },
+      "m2sfrk": {
+        "float32": 256,
+        "fixed_q14_q30": 128
+      }
+    },
+    "h755": {
+      "efork3": {
+        "float32": 8,
+        "fixed_q14_q30": 1
+      },
+      "gl": {
+        "float32": 16,
+        "fixed_q14_q30": 4
+      },
+      "m2sfrk": {
+        "float32": 512,
+        "fixed_q14_q30": 256
+      }
+    }
+  },
+  "sizing_basis": {
+    "source": "validation/results/physical_campaign/stm32_selected_36x30_v1/aggregates/benchmark_reset_pilot_matrix_v1/summary.json",
+    "source_sha256": "ac87081a55ab263eb6519a2ec2440ba719fb043a7230e3c98eb5d7c448aa69f3",
+    "source_commit": "207d26d68c926ea27ec52911293f443ed84641dc",
+    "source_dirty": true,
+    "use": "acquisition_duration_sizing_only",
+    "rounding": "conservative_power_of_two_by_board_method_representation",
+    "systems_share_multiplier": true
+  },
+  "evidence_boundary": {
+    "contract_is_measurement": false,
+    "sizing_pilot_is_primary_evidence": false,
+    "multiplier_may_change_after_external_energy_is_observed": false,
+    "raw_capture_requires_calibration_and_quality_validation": true,
+    "energy_scope": "whole_nucleo_vbus_including_stlink"
+  }
+}

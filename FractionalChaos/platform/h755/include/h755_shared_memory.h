@@ -13,6 +13,15 @@ extern "C" {
 #define FC_H755_SHARED_BYTES      (64U * 1024U)
 #define FC_H755_CM4_READY_MAGIC   UINT32_C(0x344D4346) /* "FCM4" */
 #define FC_H755_CM4_DIAG_MAGIC    UINT32_C(0x47443443) /* "C4DG" */
+#define FC_H755_START_MAGIC       UINT32_C(0x54534643) /* "CFST" */
+
+typedef struct {
+    uint32_t magic;
+    uint8_t kind;
+    uint8_t board_id;
+    uint8_t system_id;
+    uint8_t method_id;
+} fc_h755_start_contract_t;
 
 typedef struct {
     uint32_t magic;
@@ -32,6 +41,7 @@ typedef struct {
 
 extern fc_shared_queue_t g_fc_h755_queue;
 extern volatile uint32_t g_fc_h755_cm4_ready;
+extern fc_h755_start_contract_t g_fc_h755_start_contract;
 extern fc_h755_cm4_diagnostics_t g_fc_h755_cm4_diagnostics;
 
 #ifdef __cplusplus

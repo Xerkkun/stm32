@@ -1,5 +1,6 @@
 #include "main.h"
 
+#include "fc_runtime_probe.h"
 #include "fractional_chaos.h"
 #include "fractional_chaos_fixed.h"
 #include "h755_shared_memory.h"
@@ -31,6 +32,22 @@
 #define FC_H755_BENCHMARK_MODE 0
 #endif
 
+#ifndef FC_H755_ENERGY_MARKER
+#define FC_H755_ENERGY_MARKER 0
+#endif
+
+#ifndef FC_H755_ENERGY_WORK_MULTIPLIER
+#define FC_H755_ENERGY_WORK_MULTIPLIER 1U
+#endif
+
+#ifndef FC_H755_CLOCK_REFERENCE
+#define FC_H755_CLOCK_REFERENCE 0
+#endif
+
+#ifndef FC_H755_RUNTIME_PROBE
+#define FC_H755_RUNTIME_PROBE 0
+#endif
+
 #ifndef FC_H755_BUFFERED_CAPTURE_MODE
 #define FC_H755_BUFFERED_CAPTURE_MODE 0
 #endif
@@ -51,10 +68,18 @@
 #define FC_H755_BOOT_TIMEOUT       0xFFFFU
 #define FC_H755_DTCM_BYTES         (128U * 1024U)
 #define FC_BENCHMARK_TIMED_STEPS   10000U
+#define FC_BENCHMARK_ENERGY_STEPS  \
+    (FC_BENCHMARK_TIMED_STEPS * FC_H755_ENERGY_WORK_MULTIPLIER)
 #define FC_BENCHMARK_BLOCK_VALUES  4U
+#define FC_ENERGY_MARKER_GPIO      GPIOE
+#define FC_ENERGY_MARKER_PIN       GPIO_PIN_0
+#define FC_CLOCK_REFERENCE_GPIO    GPIOA
+#define FC_CLOCK_REFERENCE_PIN     GPIO_PIN_0
 
 #if FC_SYSTEM_ID == 1
 #define FC_BENCHMARK_WARMUP_STEPS  5000U
+#elif (FC_SYSTEM_ID == 3) || (FC_SYSTEM_ID == 4)
+#define FC_BENCHMARK_WARMUP_STEPS  1000U
 #else
 #define FC_BENCHMARK_WARMUP_STEPS  2000U
 #endif
@@ -66,11 +91,14 @@
 #define FC_H755_M7_CLOCK_HZ        400000000U
 #define FC_H755_HCLK_HZ            200000000U
 #endif
+#define FC_CLOCK_REFERENCE_CYCLES  (FC_H755_M7_CLOCK_HZ / 10U)
+#define FC_INA226_PRE_ENERGY_IDLE_CYCLES \
+    ((FC_H755_M7_CLOCK_HZ / 10U) * 3U)
 
 _Static_assert(
     (FC_SYSTEM_ID >= FC_SYSTEM_LORENZ) &&
-    (FC_SYSTEM_ID <= FC_SYSTEM_CHEN),
-    "FC_SYSTEM_ID debe seleccionar Lorenz, Rossler o Chen");
+    (FC_SYSTEM_ID <= FC_SYSTEM_HAMMOUCH_MEKKAOUI),
+    "FC_SYSTEM_ID debe seleccionar un manifiesto float o fixed soportado");
 _Static_assert(
     (FC_METHOD_ID == FC_METHOD_EFORK3) ||
     (FC_METHOD_ID == FC_METHOD_GL_CAPUTO) ||
@@ -83,6 +111,39 @@ _Static_assert(
     (FC_H755_BENCHMARK_MODE == 0) ||
     (FC_H755_BENCHMARK_MODE == 1),
     "FC_H755_BENCHMARK_MODE debe ser cero o uno");
+_Static_assert(
+    (FC_H755_ENERGY_MARKER == 0) ||
+    (FC_H755_ENERGY_MARKER == 1),
+    "FC_H755_ENERGY_MARKER debe ser cero o uno");
+_Static_assert(
+    !FC_H755_ENERGY_MARKER || FC_H755_BENCHMARK_MODE,
+    "El marcador de energía sólo es válido en modo benchmark");
+_Static_assert(
+    (FC_H755_ENERGY_WORK_MULTIPLIER >= 1U) &&
+    (FC_H755_ENERGY_WORK_MULTIPLIER <= 512U),
+    "FC_H755_ENERGY_WORK_MULTIPLIER debe estar en [1, 512]");
+_Static_assert(
+    FC_H755_ENERGY_MARKER ||
+    (FC_H755_ENERGY_WORK_MULTIPLIER == 1U),
+    "Una ventana energetica ampliada requiere el marcador de energia");
+_Static_assert(
+    FC_H755_PRIMARY_HANDSHAKE ||
+    (FC_H755_ENERGY_WORK_MULTIPLIER == 1U),
+    "Una ventana energetica ampliada requiere el handshake primario");
+_Static_assert(
+    (FC_H755_CLOCK_REFERENCE == 0) ||
+    (FC_H755_CLOCK_REFERENCE == 1),
+    "FC_H755_CLOCK_REFERENCE debe ser cero o uno");
+_Static_assert(
+    !FC_H755_CLOCK_REFERENCE || FC_H755_PRIMARY_HANDSHAKE,
+    "La referencia de reloj requiere el handshake primario");
+_Static_assert(
+    (FC_H755_RUNTIME_PROBE == 0) ||
+    (FC_H755_RUNTIME_PROBE == 1),
+    "FC_H755_RUNTIME_PROBE debe ser cero o uno");
+_Static_assert(
+    !FC_H755_RUNTIME_PROBE || FC_H755_PRIMARY_HANDSHAKE,
+    "El runtime probe requiere el handshake primario");
 _Static_assert(
     (FC_H755_BUFFERED_CAPTURE_MODE == 0) ||
     (FC_H755_BUFFERED_CAPTURE_MODE == 1),
@@ -152,6 +213,19 @@ static fc_h755_capture_record_t
     g_buffered_capture[FC_H755_BUFFERED_CAPTURE_SAMPLES]
     __attribute__((section(".capture"), aligned(32), used));
 #endif
+#if FC_H755_RUNTIME_PROBE
+extern uint8_t __stack_probe_start__;
+extern uint8_t __stack_probe_end__;
+extern uint8_t __solver_start__;
+extern uint8_t __solver_end__;
+extern uint8_t __capture_start__;
+extern uint8_t __capture_end__;
+extern uint8_t __shared_start__;
+extern uint8_t __shared_end__;
+
+fc_runtime_probe_record_t g_fc_h755_m7_runtime_probe
+    __attribute__((aligned(32), used));
+#endif
 #if FC_H755_FIXED_POINT
 static uint8_t g_fixed_status_flags;
 #endif
@@ -160,6 +234,17 @@ static void MPU_Config_Shared(void);
 static void SystemClock_Config(void);
 static void configure_floating_point(void);
 static void cycle_counter_init(void);
+#if FC_H755_ENERGY_MARKER
+static void MX_Energy_Marker_GPIO_Init(void);
+#endif
+#if FC_H755_CLOCK_REFERENCE
+static void MX_Clock_Reference_GPIO_Init(void);
+static void emit_clock_reference_pulse(void);
+#endif
+#if FC_H755_RUNTIME_PROBE
+static void runtime_probe_begin(void);
+static void runtime_probe_finish(void);
+#endif
 static void clear_solver_storage(void);
 static void wait_for_cm4_stop(void);
 static void release_cm4(void);
@@ -211,10 +296,30 @@ int main(void)
     SystemClock_Config();
     configure_floating_point();
     cycle_counter_init();
+#if FC_H755_RUNTIME_PROBE
+    runtime_probe_begin();
+#endif
+#if FC_H755_ENERGY_MARKER
+    MX_Energy_Marker_GPIO_Init();
+#endif
+#if FC_H755_CLOCK_REFERENCE
+    MX_Clock_Reference_GPIO_Init();
+#endif
 
     g_fc_h755_cm4_ready = 0U;
     g_fc_h755_cm4_diagnostics.magic = 0U;
     fc_shared_queue_initialize(&g_fc_h755_queue);
+#if FC_H755_PRIMARY_HANDSHAKE
+    g_fc_h755_start_contract.magic = 0U;
+    g_fc_h755_start_contract.kind = FC_FRAME_TIMING_BLOCK;
+    g_fc_h755_start_contract.board_id = FC_BOARD_H755;
+    g_fc_h755_start_contract.system_id = (uint8_t)FC_SYSTEM_ID;
+    g_fc_h755_start_contract.method_id = (uint8_t)FC_METHOD_ID;
+    __DMB();
+    g_fc_h755_start_contract.magic = FC_H755_START_MAGIC;
+#else
+    g_fc_h755_start_contract.magic = 0U;
+#endif
     __DMB();
 
     release_cm4();
@@ -225,6 +330,10 @@ int main(void)
      * mediciones DWT y se deja activo únicamente el trabajo solicitado.
      */
     HAL_SuspendTick();
+
+#if FC_H755_CLOCK_REFERENCE
+    emit_clock_reference_pulse();
+#endif
 
     clear_solver_storage();
 #if FC_H755_FIXED_POINT
@@ -307,6 +416,64 @@ int main(void)
     }
 #endif
 }
+
+#if FC_H755_RUNTIME_PROBE
+static uint32_t runtime_section_bytes(
+    const uint8_t *start,
+    const uint8_t *end)
+{
+    return (uint32_t)(
+        (uintptr_t)(const void *)end -
+        (uintptr_t)(const void *)start);
+}
+
+static void runtime_probe_begin(void)
+{
+    const fc_runtime_probe_config_t config = {
+        FC_RUNTIME_CORE_H755_M7,
+        FC_H755_M7_CLOCK_HZ,
+        SystemCoreClock,
+        runtime_section_bytes(&__solver_start__, &__solver_end__),
+        runtime_section_bytes(&__capture_start__, &__capture_end__),
+        0U,
+        runtime_section_bytes(&__shared_start__, &__shared_end__),
+        0U,
+    };
+
+    if (!fc_runtime_probe_begin(
+            &g_fc_h755_m7_runtime_probe,
+            &__stack_probe_start__,
+            &__stack_probe_end__,
+            (uintptr_t)__get_MSP(),
+            256U,
+            &config)) {
+        Error_Handler();
+    }
+}
+
+static void runtime_probe_finish(void)
+{
+    const int32_t stack_bytes = (int32_t)runtime_section_bytes(
+        &__stack_probe_start__,
+        &__stack_probe_end__);
+    const int32_t record_bytes = (int32_t)(
+        (sizeof(g_fc_h755_m7_runtime_probe) + 31U) & ~31U);
+
+    if (!fc_runtime_probe_finish(
+            &g_fc_h755_m7_runtime_probe,
+            &__stack_probe_start__,
+            &__stack_probe_end__)) {
+        Error_Handler();
+    }
+    SCB_CleanDCache_by_Addr(
+        (uint32_t *)(void *)&__stack_probe_start__,
+        stack_bytes);
+    SCB_CleanDCache_by_Addr(
+        (uint32_t *)(void *)&g_fc_h755_m7_runtime_probe,
+        record_bytes);
+    __DSB();
+}
+#endif
 
 static void MPU_Config_Shared(void)
 {
@@ -432,6 +599,67 @@ static void cycle_counter_init(void)
         Error_Handler();
     }
 }
+
+#if FC_H755_ENERGY_MARKER
+static void MX_Energy_Marker_GPIO_Init(void)
+{
+    __HAL_RCC_GPIOE_CLK_ENABLE();
+    (void)RCC->AHB4ENR;
+    FC_ENERGY_MARKER_GPIO->BSRR =
+        (uint32_t)FC_ENERGY_MARKER_PIN << 16U;
+    FC_ENERGY_MARKER_GPIO->OTYPER &= ~UINT32_C(1);
+    FC_ENERGY_MARKER_GPIO->OSPEEDR &= ~UINT32_C(3);
+    FC_ENERGY_MARKER_GPIO->PUPDR &= ~UINT32_C(3);
+    FC_ENERGY_MARKER_GPIO->MODER =
+        (FC_ENERGY_MARKER_GPIO->MODER & ~UINT32_C(3)) |
+        UINT32_C(1);
+    __DSB();
+}
+#endif
+
+#if FC_H755_CLOCK_REFERENCE
+static void MX_Clock_Reference_GPIO_Init(void)
+{
+    __HAL_RCC_GPIOA_CLK_ENABLE();
+    (void)RCC->AHB4ENR;
+    FC_CLOCK_REFERENCE_GPIO->BSRR =
+        (uint32_t)FC_CLOCK_REFERENCE_PIN << 16U;
+    FC_CLOCK_REFERENCE_GPIO->OTYPER &= ~UINT32_C(1);
+    FC_CLOCK_REFERENCE_GPIO->OSPEEDR &= ~UINT32_C(3);
+    FC_CLOCK_REFERENCE_GPIO->PUPDR &= ~UINT32_C(3);
+    FC_CLOCK_REFERENCE_GPIO->MODER =
+        (FC_CLOCK_REFERENCE_GPIO->MODER & ~UINT32_C(3)) |
+        UINT32_C(1);
+    __DSB();
+}
+
+static void emit_clock_reference_pulse(void)
+{
+    uint32_t start;
+
+    FC_CLOCK_REFERENCE_GPIO->BSRR = FC_CLOCK_REFERENCE_PIN;
+    __DSB();
+    start = DWT->CYCCNT;
+    while ((uint32_t)(DWT->CYCCNT - start) <
+           FC_CLOCK_REFERENCE_CYCLES) {
+        __NOP();
+    }
+    FC_CLOCK_REFERENCE_GPIO->BSRR =
+        (uint32_t)FC_CLOCK_REFERENCE_PIN << 16U;
+    __DSB();
+#if FC_H755_ENERGY_MARKER
+    /*
+     * INA14/1 requires at least 100 idle samples at 500 Hz before PE0 rises.
+     * Keep PA0 low for 300 ms so the baseline does not depend on warm-up cost.
+     */
+    start = DWT->CYCCNT;
+    while ((uint32_t)(DWT->CYCCNT - start) <
+           FC_INA226_PRE_ENERGY_IDLE_CYCLES) {
+        __NOP();
+    }
+#endif
+}
+#endif
 
 static void clear_solver_storage(void)
 {
@@ -628,7 +856,14 @@ static void run_timing_benchmark(
     /*
      * No se publica nada en SRAM4 durante esta ventana. Los 10000 valores DWT
      * se conservan en RAM_D1 y se envían al CM4 únicamente al terminar.
+     * PE0/D34 delimita los 10000 pasos retenidos y los pasos suplementarios
+     * predeclarados para que el INA226 obtenga una ventana suficiente. Todos
+     * usan el mismo wrapper DWT; sólo se guardan los primeros 10000 conteos y
+     * no se publica nada a CM4 dentro de la ventana.
      */
+#if FC_H755_ENERGY_MARKER
+    FC_ENERGY_MARKER_GPIO->BSRR = FC_ENERGY_MARKER_PIN;
+#endif
     for (index = 0U; index < FC_BENCHMARK_TIMED_STEPS; ++index) {
         const uint32_t cycles =
             solver_step_cycles(solver, state, &solver_status);
@@ -645,6 +880,26 @@ static void run_timing_benchmark(
         }
         g_benchmark_cycles[index] = cycles;
     }
+#if FC_H755_ENERGY_MARKER
+    for (index = FC_BENCHMARK_TIMED_STEPS;
+         index < FC_BENCHMARK_ENERGY_STEPS;
+         ++index) {
+        (void)solver_step_cycles(solver, state, &solver_status);
+        ++solver_sequence;
+        if (solver_status != FC_H755_STATUS_OK) {
+            publish_sample(
+                state,
+                solver_sequence,
+                0U,
+                FC_SAMPLE_STATUS_NONFINITE);
+            for (;;) {
+                __WFE();
+            }
+        }
+    }
+    FC_ENERGY_MARKER_GPIO->BSRR =
+        (uint32_t)FC_ENERGY_MARKER_PIN << 16U;
+#endif
 
     output_status =
         sample_status_with_fixed_diagnostics(FC_SAMPLE_STATUS_OK);
@@ -656,6 +911,17 @@ static void run_timing_benchmark(
             &g_benchmark_cycles[index],
             output_status);
     }
+#if FC_H755_RUNTIME_PROBE
+    while (g_fc_h755_queue.read_sequence !=
+           g_fc_h755_queue.write_sequence) {
+        if ((g_fc_h755_queue.magic != FC_SHARED_QUEUE_MAGIC) ||
+            (fc_shared_queue_dropped(&g_fc_h755_queue) != 0U)) {
+            Error_Handler();
+        }
+    }
+    __DMB();
+    runtime_probe_finish();
+#endif
     for (;;) {
         __WFE();
     }

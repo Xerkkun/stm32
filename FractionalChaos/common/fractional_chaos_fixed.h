@@ -22,7 +22,8 @@ extern "C" {
 #define FC_FIXED_COEFFICIENT_RAW_MIN (INT32_MIN)
 #define FC_FIXED_COEFFICIENT_RAW_MAX (INT32_MAX)
 #define FC_FIXED_STATE_DIMENSION     (3u)
-#define FC_FIXED_SYSTEM_COUNT        (3u)
+#define FC_FIXED_PARAMETER_COUNT     (6u)
+#define FC_FIXED_SYSTEM_COUNT        (5u)
 #define FC_FIXED_MAX_MEMORY_LENGTH   (2000u)
 
 typedef int32_t fc_fixed_t;
@@ -32,10 +33,21 @@ typedef struct {
     fc_fixed_t v[FC_FIXED_STATE_DIMENSION];
 } fc_fixed_vec3_t;
 
+/*
+ * System parameters are not state vectors.  Keeping a distinct six-element
+ * type prevents the Liu contract from being silently truncated to three
+ * values while preserving the three-dimensional state contract.
+ */
+typedef struct {
+    fc_fixed_t v[FC_FIXED_PARAMETER_COUNT];
+} fc_fixed_parameters_t;
+
 typedef enum {
     FC_FIXED_SYSTEM_LORENZ = 0,
     FC_FIXED_SYSTEM_ROSSLER = 1,
-    FC_FIXED_SYSTEM_CHEN = 2
+    FC_FIXED_SYSTEM_CHEN = 2,
+    FC_FIXED_SYSTEM_LIU = 3,
+    FC_FIXED_SYSTEM_HAMMOUCH_MEKKAOUI = 4
 } fc_fixed_system_t;
 
 typedef enum {
@@ -66,7 +78,7 @@ typedef struct {
     double q;
     double h;
     uint32_t memory_length;
-    double parameters[FC_FIXED_STATE_DIMENSION];
+    double parameters[FC_FIXED_PARAMETER_COUNT];
     double initial_state[FC_FIXED_STATE_DIMENSION];
 } fc_fixed_config_t;
 
@@ -113,7 +125,7 @@ typedef struct {
     uint32_t magic;
     fc_fixed_config_t config;
     fc_fixed_workspace_t *workspace;
-    fc_fixed_vec3_t parameters;
+    fc_fixed_parameters_t parameters;
     fc_fixed_vec3_t initial_state;
     fc_fixed_vec3_t state;
     fc_fixed_coefficient_t h_to_q;
@@ -173,7 +185,7 @@ fc_fixed_status_t fc_fixed_config_from_manifest(
 
 fc_fixed_status_t fc_fixed_rhs(
     fc_fixed_system_t system,
-    const fc_fixed_vec3_t *parameters,
+    const fc_fixed_parameters_t *parameters,
     const fc_fixed_vec3_t *state,
     fc_fixed_arithmetic_t *arithmetic,
     fc_fixed_vec3_t *derivative);

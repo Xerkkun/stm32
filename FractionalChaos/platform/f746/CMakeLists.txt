@@ -31,6 +31,27 @@ option(
     "Store 10000 solver-only DWT counts, then emit timing blocks"
     OFF)
 option(
+    FC_F746_ENERGY_MARKER
+    "Drive PE0/D34 high only across the benchmark measurement window"
+    OFF)
+set(
+    FC_F746_ENERGY_WORK_MULTIPLIER
+    "1"
+    CACHE STRING
+    "Energy-window solver steps as a multiple of the retained 10000 DWT steps")
+option(
+    FC_F746_CLOCK_REFERENCE
+    "Emit a 100 ms DWT-clocked pulse on PA0/D32 after START/READY"
+    OFF)
+option(
+    FC_F746_RUNTIME_PROBE
+    "Paint and report a dedicated stack-watermark region"
+    OFF)
+option(
+    FC_F746_PRIMARY_HANDSHAKE
+    "Wait for the versioned host START line before a primary benchmark"
+    OFF)
+option(
     FC_F746_BUFFERED_CAPTURE_MODE
     "Capture every solver step in RAM, then drain it over UART"
     OFF)
@@ -46,9 +67,36 @@ if(NOT FC_F746_BUFFERED_CAPTURE_SAMPLES MATCHES "^[1-9][0-9]*$")
     message(FATAL_ERROR
         "FC_F746_BUFFERED_CAPTURE_SAMPLES must be a positive integer")
 endif()
+if(NOT FC_F746_ENERGY_WORK_MULTIPLIER MATCHES "^[1-9][0-9]*$" OR
+        FC_F746_ENERGY_WORK_MULTIPLIER GREATER 512)
+    message(FATAL_ERROR
+        "FC_F746_ENERGY_WORK_MULTIPLIER must be an integer from 1 to 512")
+endif()
+if(NOT FC_F746_ENERGY_MARKER AND
+        NOT FC_F746_ENERGY_WORK_MULTIPLIER STREQUAL "1")
+    message(FATAL_ERROR
+        "FC_F746_ENERGY_WORK_MULTIPLIER requires FC_F746_ENERGY_MARKER")
+endif()
+if(NOT FC_F746_PRIMARY_HANDSHAKE AND
+        NOT FC_F746_ENERGY_WORK_MULTIPLIER STREQUAL "1")
+    message(FATAL_ERROR
+        "Expanded energy workloads require FC_F746_PRIMARY_HANDSHAKE")
+endif()
 if(FC_F746_BUFFERED_CAPTURE_MODE AND FC_F746_BENCHMARK_MODE)
     message(FATAL_ERROR
         "Buffered capture and benchmark modes are mutually exclusive")
+endif()
+if(FC_F746_PRIMARY_HANDSHAKE AND NOT FC_F746_BENCHMARK_MODE)
+    message(FATAL_ERROR
+        "FC_F746_PRIMARY_HANDSHAKE requires FC_F746_BENCHMARK_MODE")
+endif()
+if(FC_F746_CLOCK_REFERENCE AND NOT FC_F746_PRIMARY_HANDSHAKE)
+    message(FATAL_ERROR
+        "FC_F746_CLOCK_REFERENCE requires FC_F746_PRIMARY_HANDSHAKE")
+endif()
+if(FC_F746_RUNTIME_PROBE AND NOT FC_F746_PRIMARY_HANDSHAKE)
+    message(FATAL_ERROR
+        "FC_F746_RUNTIME_PROBE requires FC_F746_PRIMARY_HANDSHAKE")
 endif()
 if(FC_F746_BUFFERED_CAPTURE_MODE AND
         NOT FC_F746_OUTPUT_DECIMATION STREQUAL "1")
@@ -134,6 +182,8 @@ function(
         "${FC_PROJECT_ROOT}/common/fractional_chaos.c"
         "${FC_PROJECT_ROOT}/common/fractional_chaos_fixed.c"
         "${FC_PROJECT_ROOT}/transport/fc_protocol.c"
+        "${FC_PROJECT_ROOT}/transport/fc_runtime_probe.c"
+        "${FC_PROJECT_ROOT}/transport/fc_start_handshake.c"
         "${table_source}"
         "${FC_F7_SYSTEM}"
         "${FC_F7_STARTUP}"
@@ -182,7 +232,12 @@ function(
             FC_F746_OUTPUT_DECIMATION=${FC_F746_OUTPUT_DECIMATION}
             FC_F746_BUFFERED_CAPTURE_MODE=$<BOOL:${FC_F746_BUFFERED_CAPTURE_MODE}>
             FC_F746_BUFFERED_CAPTURE_SAMPLES=${FC_F746_BUFFERED_CAPTURE_SAMPLES}
-            FC_F746_BENCHMARK_MODE=$<BOOL:${FC_F746_BENCHMARK_MODE}>)
+            FC_F746_BENCHMARK_MODE=$<BOOL:${FC_F746_BENCHMARK_MODE}>
+            FC_F746_ENERGY_MARKER=$<BOOL:${FC_F746_ENERGY_MARKER}>
+            FC_F746_ENERGY_WORK_MULTIPLIER=${FC_F746_ENERGY_WORK_MULTIPLIER}
+            FC_F746_CLOCK_REFERENCE=$<BOOL:${FC_F746_CLOCK_REFERENCE}>
+            FC_F746_RUNTIME_PROBE=$<BOOL:${FC_F746_RUNTIME_PROBE}>
+            FC_F746_PRIMARY_HANDSHAKE=$<BOOL:${FC_F746_PRIMARY_HANDSHAKE}>)
 
     target_compile_options(
         "${target_name}"
@@ -207,6 +262,7 @@ function(
             ${FC_F746_CPU_OPTIONS}
             ${FC_F746_RUNTIME_LINK_OPTIONS}
             "-T${CMAKE_CURRENT_LIST_DIR}/STM32F746ZGTX_FLASH.ld"
+            $<$<BOOL:${FC_F746_RUNTIME_PROBE}>:-Wl,--defsym=FC_RUNTIME_PROBE_ENABLED=1>
             -Wl,--gc-sections
             -Wl,--cref
             "-Wl,-Map=${CMAKE_BINARY_DIR}/${target_name}.map"
@@ -244,6 +300,18 @@ set(FC_CG_TABLE_SOURCE
     "${FC_PROJECT_ROOT}/generated/fc_chen_gl.c")
 set(FC_CM_TABLE_SOURCE
     "${FC_PROJECT_ROOT}/generated/fc_chen_m2sfrk.c")
+set(FC_LIU_EFORK_TABLE_SOURCE
+    "${FC_PROJECT_ROOT}/generated/fc_liu_efork3.c")
+set(FC_LIU_GL_TABLE_SOURCE
+    "${FC_PROJECT_ROOT}/generated/fc_liu_gl.c")
+set(FC_LIU_M2SFRK_TABLE_SOURCE
+    "${FC_PROJECT_ROOT}/generated/fc_liu_m2sfrk.c")
+set(FC_HAMMOUCH_EFORK_TABLE_SOURCE
+    "${FC_PROJECT_ROOT}/generated/fc_hammouch_mekkaoui_efork3.c")
+set(FC_HAMMOUCH_GL_TABLE_SOURCE
+    "${FC_PROJECT_ROOT}/generated/fc_hammouch_mekkaoui_gl.c")
+set(FC_HAMMOUCH_M2SFRK_TABLE_SOURCE
+    "${FC_PROJECT_ROOT}/generated/fc_hammouch_mekkaoui_m2sfrk.c")
 
 fc_add_f746_firmware(
     f746_lorenz_efork3 0 0
@@ -272,6 +340,27 @@ fc_add_f746_firmware(
 fc_add_f746_firmware(
     f746_chen_m2sfrk 2 2
     FC_CHEN_M2SFRK_TABLES "${FC_CM_TABLE_SOURCE}" 0)
+fc_add_f746_firmware(
+    f746_liu_efork3 3 0
+    FC_LIU_EFORK_TABLES "${FC_LIU_EFORK_TABLE_SOURCE}" 0)
+fc_add_f746_firmware(
+    f746_liu_gl 3 1
+    FC_LIU_GL_TABLES "${FC_LIU_GL_TABLE_SOURCE}" 0)
+fc_add_f746_firmware(
+    f746_liu_m2sfrk 3 2
+    FC_LIU_M2SFRK_TABLES "${FC_LIU_M2SFRK_TABLE_SOURCE}" 0)
+fc_add_f746_firmware(
+    f746_hammouch_mekkaoui_efork3 4 0
+    FC_HAMMOUCH_MEKKAOUI_EFORK_TABLES
+    "${FC_HAMMOUCH_EFORK_TABLE_SOURCE}" 0)
+fc_add_f746_firmware(
+    f746_hammouch_mekkaoui_gl 4 1
+    FC_HAMMOUCH_MEKKAOUI_GL_TABLES
+    "${FC_HAMMOUCH_GL_TABLE_SOURCE}" 0)
+fc_add_f746_firmware(
+    f746_hammouch_mekkaoui_m2sfrk 4 2
+    FC_HAMMOUCH_MEKKAOUI_M2SFRK_TABLES
+    "${FC_HAMMOUCH_M2SFRK_TABLE_SOURCE}" 0)
 
 fc_add_f746_firmware(
     f746_lorenz_efork3_fixed 0 0
@@ -300,3 +389,24 @@ fc_add_f746_firmware(
 fc_add_f746_firmware(
     f746_chen_m2sfrk_fixed 2 2
     FC_CHEN_M2SFRK_TABLES "${FC_CM_TABLE_SOURCE}" 1)
+fc_add_f746_firmware(
+    f746_liu_efork3_fixed 3 0
+    FC_LIU_EFORK_TABLES "${FC_LIU_EFORK_TABLE_SOURCE}" 1)
+fc_add_f746_firmware(
+    f746_liu_gl_fixed 3 1
+    FC_LIU_GL_TABLES "${FC_LIU_GL_TABLE_SOURCE}" 1)
+fc_add_f746_firmware(
+    f746_liu_m2sfrk_fixed 3 2
+    FC_LIU_M2SFRK_TABLES "${FC_LIU_M2SFRK_TABLE_SOURCE}" 1)
+fc_add_f746_firmware(
+    f746_hammouch_mekkaoui_efork3_fixed 4 0
+    FC_HAMMOUCH_MEKKAOUI_EFORK_TABLES
+    "${FC_HAMMOUCH_EFORK_TABLE_SOURCE}" 1)
+fc_add_f746_firmware(
+    f746_hammouch_mekkaoui_gl_fixed 4 1
+    FC_HAMMOUCH_MEKKAOUI_GL_TABLES
+    "${FC_HAMMOUCH_GL_TABLE_SOURCE}" 1)
+fc_add_f746_firmware(
+    f746_hammouch_mekkaoui_m2sfrk_fixed 4 2
+    FC_HAMMOUCH_MEKKAOUI_M2SFRK_TABLES
+    "${FC_HAMMOUCH_M2SFRK_TABLE_SOURCE}" 1)

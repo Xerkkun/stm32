@@ -1,0 +1,1446 @@
+{
+  "candidate_grid_snapshot": {
+    "candidates": [
+      {
+        "candidate_id": "hammouch_mekkaoui_2018_caputo_v1",
+        "equations": [
+          "C D^q x = -2 x - y^2",
+          "C D^q y = -4 x z + 3 y - z^2",
+          "C D^q z = 4 x y - 7 z + y z"
+        ],
+        "manifest": {
+          "h": 0.01,
+          "initial_state": [
+            0.7,
+            0.1,
+            0.0
+          ],
+          "manifest_id": "hammouch_mekkaoui_caputo_v1",
+          "memory_increments": 1000,
+          "memory_seconds": 10.0,
+          "parameters": [],
+          "q": 0.98,
+          "system": "hammouch_mekkaoui"
+        },
+        "source": {
+          "caveats": [
+            "The paper supports the chaotic case mainly with phase portraits and an analog circuit comparison rather than a reported Lyapunov exponent or 0-1 value for this contract.",
+            "The analog frequency-domain circuit is not a samplewise oracle for the full-memory ABM trajectory."
+          ],
+          "citation": "Hammouch and Mekkaoui, Complex and Intelligent Systems 4 (2018) 251-260",
+          "contract_evidence": [
+            "The paper derives a Caputo PECE Adams-Bashforth-Moulton method from the equivalent Volterra equation and prints its history weights.",
+            "The selected system uses q=0.98, initial state (0.7,0.1,0), and h=0.01."
+          ],
+          "doi": "10.1007/s40747-018-0070-3",
+          "url": "https://link.springer.com/article/10.1007/s40747-018-0070-3"
+        }
+      },
+      {
+        "candidate_id": "munoz_pacheco_hidden_2018_caputo_v1",
+        "equations": [
+          "C D^q x = y z + x(y-a)",
+          "C D^q y = 1 - |x|",
+          "C D^q z = -x y - z"
+        ],
+        "manifest": {
+          "h": 0.01,
+          "initial_state": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "manifest_id": "munoz_pacheco_hidden_caputo_v1",
+          "memory_increments": 1000,
+          "memory_seconds": 10.0,
+          "parameters": [
+            0.35
+          ],
+          "q": 0.97,
+          "system": "munoz_pacheco_hidden"
+        },
+        "source": {
+          "caveats": [
+            "The reported chaotic q window is narrow and the no-equilibrium attractor is basin-dependent, so the initial condition is part of the immutable contract.",
+            "The absolute-value operation requires an exact Python/C convention and widened fixed-point handling for the most-negative integer."
+          ],
+          "citation": "Munoz-Pacheco et al., Entropy 20 (2018) 564",
+          "contract_evidence": [
+            "The paper defines the Caputo operator and uses the full-history Adams-Bashforth-Moulton predictor-corrector scheme.",
+            "The selected hidden-attractor case uses q=0.97, a=0.35, initial state (1,1,1), and h=0.01.",
+            "The source reports a 0-1 test value K=0.9985 for this case in addition to Lyapunov, bifurcation, and entropy evidence."
+          ],
+          "doi": "10.3390/e20080564",
+          "url": "https://www.mdpi.com/1099-4300/20/8/564"
+        }
+      },
+      {
+        "candidate_id": "glucose_insulin_2020_caputo_v1",
+        "equations": [
+          "C D^q x = -a1*x + 0.1*x*y + 1.09*y^2 - 1.08*y^3 + 0.03*z - 0.06*z^2 + a7*z^3 - 0.19",
+          "C D^q y = -a8*x*y + 3.84*x^2 + 1.2*x^3 + 0.3*y*(1-y) - 1.37*z + 0.3*z^2 - 0.22*z^3 - 0.56",
+          "C D^q z = a15*y - 1.35*y^2 + 0.5*y^3 + 0.42*z + 0.15*y*z"
+        ],
+        "manifest": {
+          "h": 0.01,
+          "initial_state": [
+            0.5,
+            1.2,
+            1.0
+          ],
+          "manifest_id": "glucose_insulin_caputo_v1",
+          "memory_increments": 1000,
+          "memory_seconds": 10.0,
+          "parameters": [
+            1.3,
+            2.01,
+            0.22,
+            0.3
+          ],
+          "q": 0.9,
+          "system": "glucose_insulin"
+        },
+        "source": {
+          "caveats": [
+            "Cubic terms require widened fixed-point intermediates and a frozen operation order.",
+            "The published ARM realization is not evidence of equivalence to this STM32 firmware or its Q14/Q30 path.",
+            "This work treats the equations only as a numerical benchmark and does not make a medical claim."
+          ],
+          "citation": "Munoz-Pacheco, Posadas-Castillo, and Zambrano-Serrano, Symmetry 12 (2020) 1395",
+          "contract_evidence": [
+            "The paper defines a Caputo commensurate model and applies the full-history Adams-Bashforth-Moulton predictor-corrector scheme.",
+            "Its baseline attractor uses q=0.9, parameters (a1,a7,a8,a15)=(1.3,2.01,0.22,0.3), initial state (0.5,1.2,1), and h=0.01.",
+            "The source reports Lyapunov and bifurcation evidence and an ARM BCM2837B0 digital realization."
+          ],
+          "doi": "10.3390/sym12091395",
+          "url": "https://www.mdpi.com/2073-8994/12/9/1395"
+        }
+      }
+    ],
+    "declared_date": "2026-07-29",
+    "does_not_establish": [
+      "formal qualification before the frozen screen is executed",
+      "a proof of chaos or a positive Lyapunov exponent",
+      "hidden-attractor status under this execution",
+      "equivalence to a finite-memory embedded implementation",
+      "STM32 timing, energy, or randomness",
+      "automatic inclusion in the primary hardware matrix"
+    ],
+    "evidence_layer": "literature_complete_candidate_search_round2",
+    "grid_id": "abm_alternative_systems_round2_v1",
+    "integration_policy": {
+      "base_step_s": 0.01,
+      "commensurate_order": true,
+      "diagnostic_sample_period_s": 0.05,
+      "embedded_window_for_later_port_s": 10.0,
+      "memory_policy": "full_history",
+      "operator": "caputo",
+      "physical_horizon_s": 50.0,
+      "step_basis": "Every primary source explicitly reports h=0.01 for the selected contract; qualification runs h/2 and h/4.",
+      "transient_s": 10.0
+    },
+    "purpose": "Evaluate three source-complete three-dimensional Caputo PECE candidates for the one alternative hardware slot left vacant after the Lu provenance correction failed. Candidate choice is based on published contract completeness, not on unpublished numerical results.",
+    "schema_version": 1,
+    "selection_rule": {
+      "candidate_order_does_not_determine_selection": true,
+      "eligibility": "A candidate must pass every unchanged long-horizon screen at h/2 and h/4 and the unchanged cross-resolution screen.",
+      "insufficient_passes": "Leave the hardware slot vacant; do not relax thresholds or introduce a post-hoc candidate.",
+      "promotion_count": 1,
+      "ranking": "Among eligible candidates, rank by the largest minimum normalized continuous acceptance margin across the required screens. Activity and finiteness remain eligibility gates but do not enter the ranking score.",
+      "reporting": "Preserve and report every candidate result, including failures and exact failure reasons.",
+      "tie_breaker": "lexicographic candidate_id"
+    },
+    "status": "predeclared_before_round2_numerical_execution"
+  },
+  "criteria": {
+    "criteria_id": "abm_caputo_alternative_systems_round2_v1",
+    "decision_rule": {
+      "not_qualified": "Any required dynamic screen or numerical integration fails. A failed screen is reported without changing the criteria.",
+      "prerequisite": "The separate alternative-system ABM validation report must pass and its oracle, vector-field, candidate-grid, and manifest hashes must match the current inputs.",
+      "qualified": "Every resolution passes observed boundedness, activity, the nonperiodicity screen, and within-resolution stability, and the h/2 versus h/4 distributional comparison passes."
+    },
+    "source": "validation/alternative_system_round2_criteria_v1.json",
+    "source_sha256": "5d5ab908ea00ab4db4aaf67aa29620ccee7df081b81235fb554c85baf25bfa45",
+    "status": "predeclared_before_first_qualification_run"
+  },
+  "criteria_snapshot": {
+    "criteria_id": "abm_caputo_alternative_systems_round2_v1",
+    "cross_resolution_stability": {
+      "maximum_mean_difference_in_pooled_std": 0.75,
+      "maximum_permutation_entropy_difference": 0.25,
+      "maximum_quantile_difference_in_pooled_std": 1.0,
+      "maximum_symmetric_std_ratio": 2.5,
+      "quantiles": [
+        0.05,
+        0.25,
+        0.5,
+        0.75,
+        0.95
+      ]
+    },
+    "decision_rule": {
+      "not_qualified": "Any required dynamic screen or numerical integration fails. A failed screen is reported without changing the criteria.",
+      "prerequisite": "The separate alternative-system ABM validation report must pass and its oracle, vector-field, candidate-grid, and manifest hashes must match the current inputs.",
+      "qualified": "Every resolution passes observed boundedness, activity, the nonperiodicity screen, and within-resolution stability, and the h/2 versus h/4 distributional comparison passes."
+    },
+    "declared_date": "2026-07-29",
+    "does_not_establish": [
+      "mathematical boundedness outside the observed horizon",
+      "a proof of chaos or a positive Lyapunov exponent",
+      "hidden-attractor status",
+      "clinical validity of the glucose-insulin benchmark",
+      "pointwise convergence of long chaotic trajectories",
+      "equivalence to an embedded finite-memory implementation",
+      "STM32 timing, energy, or randomness",
+      "automatic inclusion in the primary hardware matrix"
+    ],
+    "inputs": {
+      "candidate_grid_sha256": "513646675c44857837c34778ef8fc4ca2ba48a50f8cc70eedd58c55154e24951",
+      "candidate_manifest_sha256": "ebfad80fbcdbb5a0438527deca98b0aed59979c30b26f15e69ce6a2ca4d18c39",
+      "manifest_ids": [
+        "hammouch_mekkaoui_caputo_v1",
+        "munoz_pacheco_hidden_caputo_v1",
+        "glucose_insulin_caputo_v1"
+      ]
+    },
+    "integration": {
+      "arithmetic": "IEEE-754 float64",
+      "diagnostic_sample_period_s": 0.05,
+      "memory_policy": "full_history",
+      "operator": "caputo",
+      "physical_horizon_s": 50.0,
+      "resolution_divisors": [
+        2,
+        4
+      ],
+      "transient_s": 10.0
+    },
+    "nonperiodicity_screen": {
+      "lag_window_s": [
+        1.0,
+        15.0
+      ],
+      "minimum_normalized_lag_rmse": 0.05,
+      "minimum_normalized_permutation_entropy": 0.25,
+      "permutation_entropy_delay_s": 0.1,
+      "permutation_entropy_order": 5
+    },
+    "observed_boundedness": {
+      "maximum_absolute_state": 1000.0,
+      "minimum_active_components": 3,
+      "minimum_component_peak_to_peak": 0.01,
+      "minimum_component_standard_deviation": 0.001
+    },
+    "round_context": "This is a new candidate round after the source-corrected Lu contract failed. Candidate selection was frozen from operator, method, step, parameter, and initial-condition completeness before computing these trajectories.",
+    "schema_version": 1,
+    "scope": "Observed long-horizon qualification of three source-complete three-dimensional Caputo PECE candidates for one vacant hardware-followup slot.",
+    "selection_rule": {
+      "promotion_count": 1,
+      "ranking": "Descending minimum normalized continuous acceptance margin among qualified candidates.",
+      "report_all_candidates": true,
+      "tie_breaker": "lexicographic candidate_id"
+    },
+    "status": "predeclared_before_first_qualification_run",
+    "within_resolution_stability": {
+      "maximum_block_mean_shift_in_global_std": 1.5,
+      "maximum_block_to_global_std_ratio": 4.0,
+      "minimum_block_to_global_std_ratio": 0.25,
+      "post_transient_blocks": 4
+    }
+  },
+  "does_not_establish": [
+    "mathematical boundedness outside the observed horizon",
+    "a proof of chaos or a positive Lyapunov exponent",
+    "hidden-attractor status",
+    "clinical validity of the glucose-insulin benchmark",
+    "pointwise convergence of long chaotic trajectories",
+    "equivalence to an embedded finite-memory implementation",
+    "STM32 timing, energy, or randomness",
+    "automatic inclusion in the primary hardware matrix"
+  ],
+  "evidence_layer": "dynamic_manifest_qualification",
+  "execution": {
+    "completed_utc": "2026-07-29T07:20:55.365020+00:00",
+    "numpy_version": "2.3.5",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "python_version": "3.12.12",
+    "started_utc": "2026-07-29T07:20:44.362367+00:00",
+    "wall_time_s": 10.994719199999963
+  },
+  "implementation_validation_prerequisite": {
+    "checks": {
+      "abm_oracle_source_sha256_matches_report": true,
+      "algorithm_validation_passed": true,
+      "alternative_rhs_source_sha256_matches_report": true,
+      "candidate_grid_sha256_matches_report": true,
+      "candidate_manifest_sha256_matches_report": true,
+      "grid_matches_predeclared_criteria": true,
+      "manifest_matches_predeclared_criteria": true,
+      "status_passed": true
+    },
+    "current": {
+      "abm_oracle_source_sha256": "5608dc119e85a01accc4ae8b58f83e13c79b230a7731953c280330e16bcb2aca",
+      "alternative_rhs_source_sha256": "4aad013e3f362189183ad76ab8e451758c040547445999aa6116a3a744ad4af4",
+      "candidate_grid_sha256": "513646675c44857837c34778ef8fc4ca2ba48a50f8cc70eedd58c55154e24951",
+      "candidate_manifest_sha256": "ebfad80fbcdbb5a0438527deca98b0aed59979c30b26f15e69ce6a2ca4d18c39"
+    },
+    "passed": true,
+    "source": "validation/results/alternative_system_round2_oracle_v1.json",
+    "source_sha256": "0cc2a8bfa984f11d3d64447f1922edb5a74ade4085a9c3c6753489b495cf33c6"
+  },
+  "manifests": [
+    {
+      "candidate_id": "hammouch_mekkaoui_2018_caputo_v1",
+      "cross_resolution_stability": {
+        "checks": {
+          "mean_difference": true,
+          "permutation_entropy_difference": true,
+          "quantile_difference": true,
+          "standard_deviation_ratio": true
+        },
+        "interpretation": "Distributional h/2 versus h/4 stability; pointwise trajectory agreement is intentionally not required at long horizon.",
+        "maximum_mean_difference_in_pooled_std": 0.03421284077023616,
+        "maximum_quantile_difference_in_pooled_std": 0.15048847147549085,
+        "maximum_symmetric_std_ratio": 1.033803378561479,
+        "mean_difference_in_pooled_std_by_component": [
+          0.03421284077023616,
+          0.018995912852704605,
+          0.00850325030545191
+        ],
+        "passed": true,
+        "permutation_entropy_difference": 0.0013818467676508517,
+        "symmetric_std_ratio_by_component": [
+          1.033803378561479,
+          1.0085462191559977,
+          1.0037721951843135
+        ],
+        "thresholds": {
+          "maximum_mean_difference_in_pooled_std": 0.75,
+          "maximum_permutation_entropy_difference": 0.25,
+          "maximum_quantile_difference_in_pooled_std": 1.0,
+          "maximum_symmetric_std_ratio": 2.5
+        }
+      },
+      "decision": "qualified_observed_long_horizon_screen",
+      "failure_reasons": [],
+      "manifest": {
+        "candidate_id": "hammouch_mekkaoui_2018_caputo_v1",
+        "h": 0.01,
+        "initial_state": [
+          0.7,
+          0.1,
+          0.0
+        ],
+        "manifest_id": "hammouch_mekkaoui_caputo_v1",
+        "memory_increments": 1000,
+        "memory_seconds": 10.0,
+        "parameters": [],
+        "q": 0.98,
+        "system": "hammouch_mekkaoui"
+      },
+      "manifest_id": "hammouch_mekkaoui_caputo_v1",
+      "resolutions": [
+        {
+          "diagnostics": {
+            "activity": {
+              "active_components": 3,
+              "checks": {
+                "minimum_active_components": true
+              },
+              "minimum_required": 3,
+              "passed": true
+            },
+            "analysis_window_s": [
+              10.0,
+              50.0
+            ],
+            "component_summary": {
+              "maximum": [
+                -0.0630282990573865,
+                2.6487425739153583,
+                2.3092985074619445
+              ],
+              "mean": [
+                -0.8571783058052214,
+                0.12959788318316987,
+                -0.07483013532016311
+              ],
+              "minimum": [
+                -2.406417876447481,
+                -3.1493544192168885,
+                -2.005665865086104
+              ],
+              "peak_to_peak": [
+                2.3433895773900946,
+                5.798096993132247,
+                4.314964372548049
+              ],
+              "quantile_probabilities": [
+                0.05,
+                0.25,
+                0.5,
+                0.75,
+                0.95
+              ],
+              "quantiles": [
+                [
+                  -2.0138271069435874,
+                  -2.560772126211082,
+                  -1.429852995766093
+                ],
+                [
+                  -1.1620904616564383,
+                  -0.5249049800484445,
+                  -0.5159940890565687
+                ],
+                [
+                  -0.7614229970038326,
+                  0.17575522761076634,
+                  -0.04132305694576791
+                ],
+                [
+                  -0.4698261391645613,
+                  1.0243045659014653,
+                  0.18355852758615868
+                ],
+                [
+                  -0.14518819083524104,
+                  2.058743908666171,
+                  1.753393007194455
+                ]
+              ],
+              "standard_deviation": [
+                0.5360887135323658,
+                1.3073219829183673,
+                0.8401904663728764
+              ]
+            },
+            "diagnostic_sample_period_s": 0.05,
+            "diagnostic_samples": 801,
+            "nonperiodicity_screen": {
+              "checks": {
+                "minimum_normalized_lag_rmse": true,
+                "minimum_normalized_permutation_entropy": true
+              },
+              "interpretation": "Observed no-near-period recurrence and complexity screen; not a proof of chaos.",
+              "lag_at_minimum_s": 13.850000000000001,
+              "lag_window_s": [
+                1.0,
+                15.0
+              ],
+              "minimum_normalized_lag_rmse": 1.0833694290272637,
+              "normalized_permutation_entropy": 0.3785759361239425,
+              "passed": true,
+              "permutation_entropy_component": 1,
+              "permutation_entropy_delay_samples": 2,
+              "permutation_entropy_order": 5,
+              "thresholds": {
+                "minimum_normalized_lag_rmse": 0.05,
+                "minimum_normalized_permutation_entropy": 0.25
+              }
+            },
+            "observed_boundedness": {
+              "checks": {
+                "all_finite": true,
+                "maximum_absolute_state": true
+              },
+              "maximum_absolute_state": 3.1493544192168885,
+              "passed": true,
+              "threshold": 1000.0
+            },
+            "post_transient_samples": 8001,
+            "within_resolution_stability": {
+              "checks": {
+                "maximum_mean_shift": true,
+                "maximum_std_ratio": true,
+                "minimum_std_ratio": true
+              },
+              "maximum_block_mean_shift_in_global_std": 0.35135922730407904,
+              "maximum_block_to_global_std_ratio": 1.0807074148157068,
+              "minimum_block_to_global_std_ratio": 0.8490688463169641,
+              "passed": true,
+              "thresholds": {
+                "maximum_block_mean_shift_in_global_std": 1.5,
+                "maximum_block_to_global_std_ratio": 4.0,
+                "minimum_block_to_global_std_ratio": 0.25
+              }
+            }
+          },
+          "h": 0.005,
+          "integration_status": "completed",
+          "resolution_divisor": 2,
+          "rhs_evaluations": 20001,
+          "runtime_s": 0.908100700000432,
+          "steps": 10000,
+          "trajectory_float64_le_sha256": "830e00d9f8a47a7e5343ca9465713948b71ce9f1fb4a5dd8ccd9be1303e15b01"
+        },
+        {
+          "diagnostics": {
+            "activity": {
+              "active_components": 3,
+              "checks": {
+                "minimum_active_components": true
+              },
+              "minimum_required": 3,
+              "passed": true
+            },
+            "analysis_window_s": [
+              10.0,
+              50.0
+            ],
+            "component_summary": {
+              "maximum": [
+                -0.04833825617758858,
+                2.6576348566075487,
+                2.2475195020294696
+              ],
+              "mean": [
+                -0.8752220557705064,
+                0.1545380008406064,
+                -0.08198797278460963
+              ],
+              "minimum": [
+                -2.357777795795121,
+                -3.0774238290359253,
+                -2.0136795575347057
+              ],
+              "peak_to_peak": [
+                2.3094395396175322,
+                5.735058685643474,
+                4.261199059564175
+              ],
+              "quantile_probabilities": [
+                0.05,
+                0.25,
+                0.5,
+                0.75,
+                0.95
+              ],
+              "quantiles": [
+                [
+                  -2.0231510604434613,
+                  -2.5717064049093707,
+                  -1.5023737854088348
+                ],
+                [
+                  -1.1886770561222837,
+                  -0.5241686728415829,
+                  -0.47823202509251844
+                ],
+                [
+                  -0.7450063466046175,
+                  0.2747287311405977,
+                  -0.09908781616843342
+                ],
+                [
+                  -0.4947374388560959,
+                  1.0219115353382844,
+                  0.1826755899101981
+                ],
+                [
+                  -0.22455536090443784,
+                  2.138765801777496,
+                  1.7625066325147434
+                ]
+              ],
+              "standard_deviation": [
+                0.5185596455278804,
+                1.3184946430918412,
+                0.8433598288040344
+              ]
+            },
+            "diagnostic_sample_period_s": 0.05,
+            "diagnostic_samples": 801,
+            "nonperiodicity_screen": {
+              "checks": {
+                "minimum_normalized_lag_rmse": true,
+                "minimum_normalized_permutation_entropy": true
+              },
+              "interpretation": "Observed no-near-period recurrence and complexity screen; not a proof of chaos.",
+              "lag_at_minimum_s": 7.95,
+              "lag_window_s": [
+                1.0,
+                15.0
+              ],
+              "minimum_normalized_lag_rmse": 1.1526777077003392,
+              "normalized_permutation_entropy": 0.3771940893562917,
+              "passed": true,
+              "permutation_entropy_component": 1,
+              "permutation_entropy_delay_samples": 2,
+              "permutation_entropy_order": 5,
+              "thresholds": {
+                "minimum_normalized_lag_rmse": 0.05,
+                "minimum_normalized_permutation_entropy": 0.25
+              }
+            },
+            "observed_boundedness": {
+              "checks": {
+                "all_finite": true,
+                "maximum_absolute_state": true
+              },
+              "maximum_absolute_state": 3.0774238290359253,
+              "passed": true,
+              "threshold": 1000.0
+            },
+            "post_transient_samples": 16001,
+            "within_resolution_stability": {
+              "checks": {
+                "maximum_mean_shift": true,
+                "maximum_std_ratio": true,
+                "minimum_std_ratio": true
+              },
+              "maximum_block_mean_shift_in_global_std": 0.20452929240370388,
+              "maximum_block_to_global_std_ratio": 1.0517303858846407,
+              "minimum_block_to_global_std_ratio": 0.9342745834385624,
+              "passed": true,
+              "thresholds": {
+                "maximum_block_mean_shift_in_global_std": 1.5,
+                "maximum_block_to_global_std_ratio": 4.0,
+                "minimum_block_to_global_std_ratio": 0.25
+              }
+            }
+          },
+          "h": 0.0025,
+          "integration_status": "completed",
+          "resolution_divisor": 4,
+          "rhs_evaluations": 40001,
+          "runtime_s": 2.5486888999994335,
+          "steps": 20000,
+          "trajectory_float64_le_sha256": "f65185ebe3aaaa9b4a9a5e5bcd22a7f9ef290f47675898dfbc7489e128c55bd4"
+        }
+      ],
+      "selection": {
+        "candidate_id": "hammouch_mekkaoui_2018_caputo_v1",
+        "continuous_margins": {
+          "cross.mean_difference": 21.921593855265908,
+          "cross.permutation_entropy_difference": 180.9173099742467,
+          "cross.quantile_difference": 6.645027291428526,
+          "cross.standard_deviation_ratio": 2.418254816964044,
+          "h_over_2.block_mean_shift": 4.269135071559813,
+          "h_over_2.boundedness": 317.52539310855263,
+          "h_over_2.lag_rmse": 21.667388580545275,
+          "h_over_2.maximum_block_std_ratio": 3.7012793149773295,
+          "h_over_2.minimum_block_std_ratio": 3.3962753852678564,
+          "h_over_2.permutation_entropy": 1.51430374449577,
+          "h_over_4.block_mean_shift": 7.333912821833222,
+          "h_over_4.boundedness": 324.947116664549,
+          "h_over_4.lag_rmse": 23.053554154006783,
+          "h_over_4.maximum_block_std_ratio": 3.8032560946078253,
+          "h_over_4.minimum_block_std_ratio": 3.7370983337542496,
+          "h_over_4.permutation_entropy": 1.5087763574251667
+        },
+        "eligible": true,
+        "manifest_id": "hammouch_mekkaoui_caputo_v1",
+        "minimum_normalized_continuous_margin": 1.5087763574251667,
+        "selected_for_formal_followup": true
+      },
+      "system": "hammouch_mekkaoui"
+    },
+    {
+      "candidate_id": "munoz_pacheco_hidden_2018_caputo_v1",
+      "cross_resolution_stability": {
+        "checks": {
+          "mean_difference": true,
+          "permutation_entropy_difference": true,
+          "quantile_difference": true,
+          "standard_deviation_ratio": true
+        },
+        "interpretation": "Distributional h/2 versus h/4 stability; pointwise trajectory agreement is intentionally not required at long horizon.",
+        "maximum_mean_difference_in_pooled_std": 0.00021053795712957705,
+        "maximum_quantile_difference_in_pooled_std": 0.006652918707680536,
+        "maximum_symmetric_std_ratio": 1.00030995237654,
+        "mean_difference_in_pooled_std_by_component": [
+          2.3053408052602698e-05,
+          0.00021053795712957705,
+          0.0002104608037728448
+        ],
+        "passed": true,
+        "permutation_entropy_difference": 0.0,
+        "symmetric_std_ratio_by_component": [
+          1.0001265430763457,
+          1.00030995237654,
+          1.0002535059550746
+        ],
+        "thresholds": {
+          "maximum_mean_difference_in_pooled_std": 0.75,
+          "maximum_permutation_entropy_difference": 0.25,
+          "maximum_quantile_difference_in_pooled_std": 1.0,
+          "maximum_symmetric_std_ratio": 2.5
+        }
+      },
+      "decision": "qualified_observed_long_horizon_screen",
+      "failure_reasons": [],
+      "manifest": {
+        "candidate_id": "munoz_pacheco_hidden_2018_caputo_v1",
+        "h": 0.01,
+        "initial_state": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "manifest_id": "munoz_pacheco_hidden_caputo_v1",
+        "memory_increments": 1000,
+        "memory_seconds": 10.0,
+        "parameters": [
+          0.35
+        ],
+        "q": 0.97,
+        "system": "munoz_pacheco_hidden"
+      },
+      "manifest_id": "munoz_pacheco_hidden_caputo_v1",
+      "resolutions": [
+        {
+          "diagnostics": {
+            "activity": {
+              "active_components": 3,
+              "checks": {
+                "minimum_active_components": true
+              },
+              "minimum_required": 3,
+              "passed": true
+            },
+            "analysis_window_s": [
+              10.0,
+              50.0
+            ],
+            "component_summary": {
+              "maximum": [
+                5.792847784549177,
+                4.098975383765782,
+                5.271389927371459
+              ],
+              "mean": [
+                -0.051595726543678305,
+                1.2923877360547205,
+                0.14352570599913456
+              ],
+              "minimum": [
+                -4.928813565163303,
+                -1.8557466801620097,
+                -3.2286367158116045
+              ],
+              "peak_to_peak": [
+                10.72166134971248,
+                5.954722063927791,
+                8.500026643183062
+              ],
+              "quantile_probabilities": [
+                0.05,
+                0.25,
+                0.5,
+                0.75,
+                0.95
+              ],
+              "quantiles": [
+                [
+                  -3.001800523408635,
+                  -1.2553621766374827,
+                  -1.998722421320299
+                ],
+                [
+                  -0.3201554576914274,
+                  -0.18687926666514,
+                  -0.24291436882095763
+                ],
+                [
+                  -0.10822583053369605,
+                  1.4527951759810036,
+                  0.05771163274402069
+                ],
+                [
+                  0.18450167757978175,
+                  2.7324304675762967,
+                  0.351334018775719
+                ],
+                [
+                  3.4525075393249187,
+                  3.7606963778696794,
+                  2.705783977213355
+                ]
+              ],
+              "standard_deviation": [
+                1.634251436955807,
+                1.644353006295455,
+                1.2719686498412377
+              ]
+            },
+            "diagnostic_sample_period_s": 0.05,
+            "diagnostic_samples": 801,
+            "nonperiodicity_screen": {
+              "checks": {
+                "minimum_normalized_lag_rmse": true,
+                "minimum_normalized_permutation_entropy": true
+              },
+              "interpretation": "Observed no-near-period recurrence and complexity screen; not a proof of chaos.",
+              "lag_at_minimum_s": 10.700000000000001,
+              "lag_window_s": [
+                1.0,
+                15.0
+              ],
+              "minimum_normalized_lag_rmse": 1.057501082372116,
+              "normalized_permutation_entropy": 0.2597363245035229,
+              "passed": true,
+              "permutation_entropy_component": 1,
+              "permutation_entropy_delay_samples": 2,
+              "permutation_entropy_order": 5,
+              "thresholds": {
+                "minimum_normalized_lag_rmse": 0.05,
+                "minimum_normalized_permutation_entropy": 0.25
+              }
+            },
+            "observed_boundedness": {
+              "checks": {
+                "all_finite": true,
+                "maximum_absolute_state": true
+              },
+              "maximum_absolute_state": 5.792847784549177,
+              "passed": true,
+              "threshold": 1000.0
+            },
+            "post_transient_samples": 8001,
+            "within_resolution_stability": {
+              "checks": {
+                "maximum_mean_shift": true,
+                "maximum_std_ratio": true,
+                "minimum_std_ratio": true
+              },
+              "maximum_block_mean_shift_in_global_std": 0.44604816744734244,
+              "maximum_block_to_global_std_ratio": 1.2935800016186945,
+              "minimum_block_to_global_std_ratio": 0.719213909078877,
+              "passed": true,
+              "thresholds": {
+                "maximum_block_mean_shift_in_global_std": 1.5,
+                "maximum_block_to_global_std_ratio": 4.0,
+                "minimum_block_to_global_std_ratio": 0.25
+              }
+            }
+          },
+          "h": 0.005,
+          "integration_status": "completed",
+          "resolution_divisor": 2,
+          "rhs_evaluations": 20001,
+          "runtime_s": 0.9722234000000753,
+          "steps": 10000,
+          "trajectory_float64_le_sha256": "fe2951a8262e0e9826ae56bdd7177444d559ff65566c4ca082cfab7c13b8d25a"
+        },
+        {
+          "diagnostics": {
+            "activity": {
+              "active_components": 3,
+              "checks": {
+                "minimum_active_components": true
+              },
+              "minimum_required": 3,
+              "passed": true
+            },
+            "analysis_window_s": [
+              10.0,
+              50.0
+            ],
+            "component_summary": {
+              "maximum": [
+                5.79167356266709,
+                4.098939280162368,
+                5.27153177488219
+              ],
+              "mean": [
+                -0.05163339922553268,
+                1.2920415909637535,
+                0.14379343947741854
+              ],
+              "minimum": [
+                -4.927226932448837,
+                -1.855419076428809,
+                -3.229796294439682
+              ],
+              "peak_to_peak": [
+                10.718900495115928,
+                5.954358356591177,
+                8.501328069321872
+              ],
+              "quantile_probabilities": [
+                0.05,
+                0.25,
+                0.5,
+                0.75,
+                0.95
+              ],
+              "quantiles": [
+                [
+                  -3.0019148388782577,
+                  -1.2535663874034686,
+                  -1.9995278840060418
+                ],
+                [
+                  -0.32005650885240056,
+                  -0.18784552530021248,
+                  -0.24262507541076972
+                ],
+                [
+                  -0.10863019931742746,
+                  1.4517583963006624,
+                  0.057822515790948104
+                ],
+                [
+                  0.18468220330191742,
+                  2.7313403457844814,
+                  0.3514943083470782
+                ],
+                [
+                  3.4547629021052506,
+                  3.7614449407105814,
+                  2.7142473539296694
+                ]
+              ],
+              "standard_deviation": [
+                1.6340446599176546,
+                1.6438434930981096,
+                1.2722911014686407
+              ]
+            },
+            "diagnostic_sample_period_s": 0.05,
+            "diagnostic_samples": 801,
+            "nonperiodicity_screen": {
+              "checks": {
+                "minimum_normalized_lag_rmse": true,
+                "minimum_normalized_permutation_entropy": true
+              },
+              "interpretation": "Observed no-near-period recurrence and complexity screen; not a proof of chaos.",
+              "lag_at_minimum_s": 10.700000000000001,
+              "lag_window_s": [
+                1.0,
+                15.0
+              ],
+              "minimum_normalized_lag_rmse": 1.057178040076625,
+              "normalized_permutation_entropy": 0.2597363245035229,
+              "passed": true,
+              "permutation_entropy_component": 1,
+              "permutation_entropy_delay_samples": 2,
+              "permutation_entropy_order": 5,
+              "thresholds": {
+                "minimum_normalized_lag_rmse": 0.05,
+                "minimum_normalized_permutation_entropy": 0.25
+              }
+            },
+            "observed_boundedness": {
+              "checks": {
+                "all_finite": true,
+                "maximum_absolute_state": true
+              },
+              "maximum_absolute_state": 5.79167356266709,
+              "passed": true,
+              "threshold": 1000.0
+            },
+            "post_transient_samples": 16001,
+            "within_resolution_stability": {
+              "checks": {
+                "maximum_mean_shift": true,
+                "maximum_std_ratio": true,
+                "minimum_std_ratio": true
+              },
+              "maximum_block_mean_shift_in_global_std": 0.4461564753111847,
+              "maximum_block_to_global_std_ratio": 1.2935557826242197,
+              "minimum_block_to_global_std_ratio": 0.7190745981949629,
+              "passed": true,
+              "thresholds": {
+                "maximum_block_mean_shift_in_global_std": 1.5,
+                "maximum_block_to_global_std_ratio": 4.0,
+                "minimum_block_to_global_std_ratio": 0.25
+              }
+            }
+          },
+          "h": 0.0025,
+          "integration_status": "completed",
+          "resolution_divisor": 4,
+          "rhs_evaluations": 40001,
+          "runtime_s": 2.4594993000000613,
+          "steps": 20000,
+          "trajectory_float64_le_sha256": "f50a9be284f56c2addedd7dff479b658b7b9302be9007166960ec401ff3571dd"
+        }
+      ],
+      "selection": {
+        "candidate_id": "munoz_pacheco_hidden_2018_caputo_v1",
+        "continuous_margins": {
+          "cross.mean_difference": 3562.3030175903496,
+          "cross.permutation_entropy_difference": 249999999999999.97,
+          "cross.quantile_difference": 150.30996829189252,
+          "cross.standard_deviation_ratio": 2.499225359160419,
+          "h_over_2.block_mean_shift": 3.3628655142431008,
+          "h_over_2.boundedness": 172.62666605313265,
+          "h_over_2.lag_rmse": 21.15002164744232,
+          "h_over_2.maximum_block_std_ratio": 3.0921937529914523,
+          "h_over_2.minimum_block_std_ratio": 2.876855636315508,
+          "h_over_2.permutation_entropy": 1.0389452980140916,
+          "h_over_4.block_mean_shift": 3.36204915316713,
+          "h_over_4.boundedness": 172.66166491943923,
+          "h_over_4.lag_rmse": 21.1435608015325,
+          "h_over_4.maximum_block_std_ratio": 3.0922516475364152,
+          "h_over_4.minimum_block_std_ratio": 2.8762983927798516,
+          "h_over_4.permutation_entropy": 1.0389452980140916
+        },
+        "eligible": true,
+        "manifest_id": "munoz_pacheco_hidden_caputo_v1",
+        "minimum_normalized_continuous_margin": 1.0389452980140916,
+        "selected_for_formal_followup": false
+      },
+      "system": "munoz_pacheco_hidden"
+    },
+    {
+      "candidate_id": "glucose_insulin_2020_caputo_v1",
+      "cross_resolution_stability": {
+        "checks": {
+          "mean_difference": true,
+          "permutation_entropy_difference": true,
+          "quantile_difference": true,
+          "standard_deviation_ratio": true
+        },
+        "interpretation": "Distributional h/2 versus h/4 stability; pointwise trajectory agreement is intentionally not required at long horizon.",
+        "maximum_mean_difference_in_pooled_std": 0.012248159515895652,
+        "maximum_quantile_difference_in_pooled_std": 0.17159661113160893,
+        "maximum_symmetric_std_ratio": 1.0227684157568502,
+        "mean_difference_in_pooled_std_by_component": [
+          0.008847388520265387,
+          0.012248159515895652,
+          0.0030036206892982893
+        ],
+        "passed": true,
+        "permutation_entropy_difference": 0.001069757780061964,
+        "symmetric_std_ratio_by_component": [
+          1.0227684157568502,
+          1.0021395488017486,
+          1.0033495101877958
+        ],
+        "thresholds": {
+          "maximum_mean_difference_in_pooled_std": 0.75,
+          "maximum_permutation_entropy_difference": 0.25,
+          "maximum_quantile_difference_in_pooled_std": 1.0,
+          "maximum_symmetric_std_ratio": 2.5
+        }
+      },
+      "decision": "qualified_observed_long_horizon_screen",
+      "failure_reasons": [],
+      "manifest": {
+        "candidate_id": "glucose_insulin_2020_caputo_v1",
+        "h": 0.01,
+        "initial_state": [
+          0.5,
+          1.2,
+          1.0
+        ],
+        "manifest_id": "glucose_insulin_caputo_v1",
+        "memory_increments": 1000,
+        "memory_seconds": 10.0,
+        "parameters": [
+          1.3,
+          2.01,
+          0.22,
+          0.3
+        ],
+        "q": 0.9,
+        "system": "glucose_insulin"
+      },
+      "manifest_id": "glucose_insulin_caputo_v1",
+      "resolutions": [
+        {
+          "diagnostics": {
+            "activity": {
+              "active_components": 3,
+              "checks": {
+                "minimum_active_components": true
+              },
+              "minimum_required": 3,
+              "passed": true
+            },
+            "analysis_window_s": [
+              10.0,
+              50.0
+            ],
+            "component_summary": {
+              "maximum": [
+                1.121661429081563,
+                1.7969598135842673,
+                1.084268887474103
+              ],
+              "mean": [
+                0.5804894439704888,
+                0.8642572478064313,
+                0.7674462165873573
+              ],
+              "minimum": [
+                0.3904299823266942,
+                0.13906250297853617,
+                0.5943275707688598
+              ],
+              "peak_to_peak": [
+                0.7312314467548688,
+                1.657897310605731,
+                0.4899413167052433
+              ],
+              "quantile_probabilities": [
+                0.05,
+                0.25,
+                0.5,
+                0.75,
+                0.95
+              ],
+              "quantiles": [
+                [
+                  0.4123200152495147,
+                  0.3221855995491456,
+                  0.6216891584389017
+                ],
+                [
+                  0.49468497627003843,
+                  0.7021952607051233,
+                  0.7010364772794793
+                ],
+                [
+                  0.5619042877084617,
+                  0.851996636002281,
+                  0.7459412593887824
+                ],
+                [
+                  0.622268367898615,
+                  1.0086940358722163,
+                  0.8158508345727984
+                ],
+                [
+                  0.8715611077765946,
+                  1.44983764397787,
+                  0.9890941715432245
+                ]
+              ],
+              "standard_deviation": [
+                0.13435900693073416,
+                0.30966889053538627,
+                0.10439102353546821
+              ]
+            },
+            "diagnostic_sample_period_s": 0.05,
+            "diagnostic_samples": 801,
+            "nonperiodicity_screen": {
+              "checks": {
+                "minimum_normalized_lag_rmse": true,
+                "minimum_normalized_permutation_entropy": true
+              },
+              "interpretation": "Observed no-near-period recurrence and complexity screen; not a proof of chaos.",
+              "lag_at_minimum_s": 2.75,
+              "lag_window_s": [
+                1.0,
+                15.0
+              ],
+              "minimum_normalized_lag_rmse": 1.083218360730118,
+              "normalized_permutation_entropy": 0.33146381725826923,
+              "passed": true,
+              "permutation_entropy_component": 1,
+              "permutation_entropy_delay_samples": 2,
+              "permutation_entropy_order": 5,
+              "thresholds": {
+                "minimum_normalized_lag_rmse": 0.05,
+                "minimum_normalized_permutation_entropy": 0.25
+              }
+            },
+            "observed_boundedness": {
+              "checks": {
+                "all_finite": true,
+                "maximum_absolute_state": true
+              },
+              "maximum_absolute_state": 1.7969598135842673,
+              "passed": true,
+              "threshold": 1000.0
+            },
+            "post_transient_samples": 8001,
+            "within_resolution_stability": {
+              "checks": {
+                "maximum_mean_shift": true,
+                "maximum_std_ratio": true,
+                "minimum_std_ratio": true
+              },
+              "maximum_block_mean_shift_in_global_std": 0.16804394677670262,
+              "maximum_block_to_global_std_ratio": 1.1722965498477786,
+              "minimum_block_to_global_std_ratio": 0.8470146244657685,
+              "passed": true,
+              "thresholds": {
+                "maximum_block_mean_shift_in_global_std": 1.5,
+                "maximum_block_to_global_std_ratio": 4.0,
+                "minimum_block_to_global_std_ratio": 0.25
+              }
+            }
+          },
+          "h": 0.005,
+          "integration_status": "completed",
+          "resolution_divisor": 2,
+          "rhs_evaluations": 20001,
+          "runtime_s": 0.9385163999995711,
+          "steps": 10000,
+          "trajectory_float64_le_sha256": "d8d8f5cf7bb20f010649bdfd1864d4e9760d2d098633a96e900d8086b3fbe1dc"
+        },
+        {
+          "diagnostics": {
+            "activity": {
+              "active_components": 3,
+              "checks": {
+                "minimum_active_components": true
+              },
+              "minimum_required": 3,
+              "passed": true
+            },
+            "analysis_window_s": [
+              10.0,
+              50.0
+            ],
+            "component_summary": {
+              "maximum": [
+                1.1201584659338435,
+                1.794732928155904,
+                1.083346515721356
+              ],
+              "mean": [
+                0.5816650133220845,
+                0.860460314150571,
+                0.7677602931856129
+              ],
+              "minimum": [
+                0.39174283739450777,
+                0.14095110373915043,
+                0.5942395943807115
+              ],
+              "peak_to_peak": [
+                0.7284156285393357,
+                1.6537818244167535,
+                0.4891069213406445
+              ],
+              "quantile_probabilities": [
+                0.05,
+                0.25,
+                0.5,
+                0.75,
+                0.95
+              ],
+              "quantiles": [
+                [
+                  0.41418737659437493,
+                  0.2897938571906873,
+                  0.6182557722672252
+                ],
+                [
+                  0.5039164895919841,
+                  0.712791743692494,
+                  0.7065037833046426
+                ],
+                [
+                  0.5646264652107045,
+                  0.8567503622753322,
+                  0.7451686291413491
+                ],
+                [
+                  0.6143852614702371,
+                  0.9871744794020836,
+                  0.8085334633908887
+                ],
+                [
+                  0.8631923516801343,
+                  1.4737247984999384,
+                  1.0070373426261843
+                ]
+              ],
+              "standard_deviation": [
+                0.13136796645339138,
+                0.31033144223907005,
+                0.10474068233231469
+              ]
+            },
+            "diagnostic_sample_period_s": 0.05,
+            "diagnostic_samples": 801,
+            "nonperiodicity_screen": {
+              "checks": {
+                "minimum_normalized_lag_rmse": true,
+                "minimum_normalized_permutation_entropy": true
+              },
+              "interpretation": "Observed no-near-period recurrence and complexity screen; not a proof of chaos.",
+              "lag_at_minimum_s": 8.15,
+              "lag_window_s": [
+                1.0,
+                15.0
+              ],
+              "minimum_normalized_lag_rmse": 1.0128057944186901,
+              "normalized_permutation_entropy": 0.33039405947820727,
+              "passed": true,
+              "permutation_entropy_component": 1,
+              "permutation_entropy_delay_samples": 2,
+              "permutation_entropy_order": 5,
+              "thresholds": {
+                "minimum_normalized_lag_rmse": 0.05,
+                "minimum_normalized_permutation_entropy": 0.25
+              }
+            },
+            "observed_boundedness": {
+              "checks": {
+                "all_finite": true,
+                "maximum_absolute_state": true
+              },
+              "maximum_absolute_state": 1.794732928155904,
+              "passed": true,
+              "threshold": 1000.0
+            },
+            "post_transient_samples": 16001,
+            "within_resolution_stability": {
+              "checks": {
+                "maximum_mean_shift": true,
+                "maximum_std_ratio": true,
+                "minimum_std_ratio": true
+              },
+              "maximum_block_mean_shift_in_global_std": 0.1633110094624985,
+              "maximum_block_to_global_std_ratio": 1.143126794492145,
+              "minimum_block_to_global_std_ratio": 0.8195935520961708,
+              "passed": true,
+              "thresholds": {
+                "maximum_block_mean_shift_in_global_std": 1.5,
+                "maximum_block_to_global_std_ratio": 4.0,
+                "minimum_block_to_global_std_ratio": 0.25
+              }
+            }
+          },
+          "h": 0.0025,
+          "integration_status": "completed",
+          "resolution_divisor": 4,
+          "rhs_evaluations": 40001,
+          "runtime_s": 3.1528613999998925,
+          "steps": 20000,
+          "trajectory_float64_le_sha256": "19a0645a2fffee2206634f90291447e415f2d4c3c1c1033aa49a8cbd69db8f9f"
+        }
+      ],
+      "selection": {
+        "candidate_id": "glucose_insulin_2020_caputo_v1",
+        "continuous_margins": {
+          "cross.mean_difference": 61.233689765931814,
+          "cross.permutation_entropy_difference": 233.6977628576061,
+          "cross.quantile_difference": 5.827620915153348,
+          "cross.standard_deviation_ratio": 2.444346111480179,
+          "h_over_2.block_mean_shift": 8.926236432623218,
+          "h_over_2.boundedness": 556.495472208347,
+          "h_over_2.lag_rmse": 21.664367214602358,
+          "h_over_2.maximum_block_std_ratio": 3.412105921935363,
+          "h_over_2.minimum_block_std_ratio": 3.388058497863074,
+          "h_over_2.permutation_entropy": 1.325855269033077,
+          "h_over_4.block_mean_shift": 9.18492883570381,
+          "h_over_4.boundedness": 557.185965840335,
+          "h_over_4.lag_rmse": 20.256115888373802,
+          "h_over_4.maximum_block_std_ratio": 3.499174386667293,
+          "h_over_4.minimum_block_std_ratio": 3.278374208384683,
+          "h_over_4.permutation_entropy": 1.321576237912829
+        },
+        "eligible": true,
+        "manifest_id": "glucose_insulin_caputo_v1",
+        "minimum_normalized_continuous_margin": 1.321576237912829,
+        "selected_for_formal_followup": false
+      },
+      "system": "glucose_insulin"
+    }
+  ],
+  "provenance": {
+    "abm_oracle_source": "validation/abm_oracle.py",
+    "abm_oracle_source_sha256": "5608dc119e85a01accc4ae8b58f83e13c79b230a7731953c280330e16bcb2aca",
+    "alternative_rhs_source": "validation/alternative_systems.py",
+    "alternative_rhs_source_sha256": "4aad013e3f362189183ad76ab8e451758c040547445999aa6116a3a744ad4af4",
+    "candidate_grid_sha256": "513646675c44857837c34778ef8fc4ca2ba48a50f8cc70eedd58c55154e24951",
+    "candidate_grid_source": "validation/alternative_system_round2_grid_v1.json",
+    "candidate_manifest_sha256": "ebfad80fbcdbb5a0438527deca98b0aed59979c30b26f15e69ce6a2ca4d18c39",
+    "candidate_manifest_source": "validation/alternative_system_round2_manifests_v1.json",
+    "qualification_source": "validation/qualify_alternative_systems.py",
+    "qualification_source_sha256": "81cc7bd575a16ed2b494eccf55086332ecaa72d7c1db0b4d185b4b70af0b41e3"
+  },
+  "qualified_manifest_ids": [
+    "hammouch_mekkaoui_caputo_v1",
+    "munoz_pacheco_hidden_caputo_v1",
+    "glucose_insulin_caputo_v1"
+  ],
+  "schema_version": 1,
+  "scope": "Observed long-horizon qualification of three source-complete three-dimensional Caputo PECE candidates for one vacant hardware-followup slot.",
+  "selection": {
+    "actual_selection_count": 1,
+    "eligible_ranked": [
+      {
+        "candidate_id": "hammouch_mekkaoui_2018_caputo_v1",
+        "continuous_margins": {
+          "cross.mean_difference": 21.921593855265908,
+          "cross.permutation_entropy_difference": 180.9173099742467,
+          "cross.quantile_difference": 6.645027291428526,
+          "cross.standard_deviation_ratio": 2.418254816964044,
+          "h_over_2.block_mean_shift": 4.269135071559813,
+          "h_over_2.boundedness": 317.52539310855263,
+          "h_over_2.lag_rmse": 21.667388580545275,
+          "h_over_2.maximum_block_std_ratio": 3.7012793149773295,
+          "h_over_2.minimum_block_std_ratio": 3.3962753852678564,
+          "h_over_2.permutation_entropy": 1.51430374449577,
+          "h_over_4.block_mean_shift": 7.333912821833222,
+          "h_over_4.boundedness": 324.947116664549,
+          "h_over_4.lag_rmse": 23.053554154006783,
+          "h_over_4.maximum_block_std_ratio": 3.8032560946078253,
+          "h_over_4.minimum_block_std_ratio": 3.7370983337542496,
+          "h_over_4.permutation_entropy": 1.5087763574251667
+        },
+        "manifest_id": "hammouch_mekkaoui_caputo_v1",
+        "minimum_normalized_continuous_margin": 1.5087763574251667
+      },
+      {
+        "candidate_id": "glucose_insulin_2020_caputo_v1",
+        "continuous_margins": {
+          "cross.mean_difference": 61.233689765931814,
+          "cross.permutation_entropy_difference": 233.6977628576061,
+          "cross.quantile_difference": 5.827620915153348,
+          "cross.standard_deviation_ratio": 2.444346111480179,
+          "h_over_2.block_mean_shift": 8.926236432623218,
+          "h_over_2.boundedness": 556.495472208347,
+          "h_over_2.lag_rmse": 21.664367214602358,
+          "h_over_2.maximum_block_std_ratio": 3.412105921935363,
+          "h_over_2.minimum_block_std_ratio": 3.388058497863074,
+          "h_over_2.permutation_entropy": 1.325855269033077,
+          "h_over_4.block_mean_shift": 9.18492883570381,
+          "h_over_4.boundedness": 557.185965840335,
+          "h_over_4.lag_rmse": 20.256115888373802,
+          "h_over_4.maximum_block_std_ratio": 3.499174386667293,
+          "h_over_4.minimum_block_std_ratio": 3.278374208384683,
+          "h_over_4.permutation_entropy": 1.321576237912829
+        },
+        "manifest_id": "glucose_insulin_caputo_v1",
+        "minimum_normalized_continuous_margin": 1.321576237912829
+      },
+      {
+        "candidate_id": "munoz_pacheco_hidden_2018_caputo_v1",
+        "continuous_margins": {
+          "cross.mean_difference": 3562.3030175903496,
+          "cross.permutation_entropy_difference": 249999999999999.97,
+          "cross.quantile_difference": 150.30996829189252,
+          "cross.standard_deviation_ratio": 2.499225359160419,
+          "h_over_2.block_mean_shift": 3.3628655142431008,
+          "h_over_2.boundedness": 172.62666605313265,
+          "h_over_2.lag_rmse": 21.15002164744232,
+          "h_over_2.maximum_block_std_ratio": 3.0921937529914523,
+          "h_over_2.minimum_block_std_ratio": 2.876855636315508,
+          "h_over_2.permutation_entropy": 1.0389452980140916,
+          "h_over_4.block_mean_shift": 3.36204915316713,
+          "h_over_4.boundedness": 172.66166491943923,
+          "h_over_4.lag_rmse": 21.1435608015325,
+          "h_over_4.maximum_block_std_ratio": 3.0922516475364152,
+          "h_over_4.minimum_block_std_ratio": 2.8762983927798516,
+          "h_over_4.permutation_entropy": 1.0389452980140916
+        },
+        "manifest_id": "munoz_pacheco_hidden_caputo_v1",
+        "minimum_normalized_continuous_margin": 1.0389452980140916
+      }
+    ],
+    "requested_promotion_count": 1,
+    "rule": {
+      "promotion_count": 1,
+      "ranking": "Descending minimum normalized continuous acceptance margin among qualified candidates.",
+      "report_all_candidates": true,
+      "tie_breaker": "lexicographic candidate_id"
+    },
+    "selected_manifest_ids": [
+      "hammouch_mekkaoui_caputo_v1"
+    ],
+    "thresholds_unchanged": true
+  },
+  "status": "alternative_system_qualification_completed"
+}

@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "grid_id": "abm_alternative_systems_v1",
+  "status": "predeclared_before_alternative_system_exploration",
+  "declared_date": "2026-07-29",
+  "evidence_layer": "exploratory_candidate_search",
+  "purpose": "Screen four published three-dimensional commensurate Caputo systems as possible replacements for the Lorenz and Rossler primary slots without changing the previously frozen dynamic criteria.",
+  "selection_rule": {
+    "candidate_order_does_not_determine_selection": true,
+    "eligibility": "A candidate must pass every unchanged long-horizon screen at h/2 and h/4 and the unchanged cross-resolution screen.",
+    "ranking": "Among eligible candidates, rank by the largest minimum normalized continuous acceptance margin across the required screens. Activity and finiteness remain eligibility gates but do not enter the ranking score.",
+    "promotion_count": 2,
+    "tie_breaker": "lexicographic candidate_id",
+    "insufficient_passes": "Promote only the number that qualify; do not relax thresholds or add a post-hoc candidate to fill a slot.",
+    "reporting": "Preserve and report every candidate result, including failures and exact failure reasons."
+  },
+  "integration_policy": {
+    "operator": "caputo",
+    "commensurate_order": true,
+    "base_step_s": 0.01,
+    "step_basis": "A uniform protocol-selected base step is used for all four candidates; the qualification itself runs h/2 and h/4.",
+    "physical_horizon_s": 50.0,
+    "transient_s": 10.0,
+    "diagnostic_sample_period_s": 0.05,
+    "memory_policy": "full_history",
+    "embedded_window_for_later_port_s": 10.0
+  },
+  "candidates": [
+    {
+      "candidate_id": "lu_yadav2019_caputo_v1",
+      "manifest": {
+        "manifest_id": "lu_caputo_v1",
+        "system": "lu",
+        "parameters": [36.0, 3.0, 20.0],
+        "initial_state": [0.2, 0.5, 0.3],
+        "q": 0.96,
+        "h": 0.01,
+        "memory_seconds": 10.0,
+        "memory_increments": 1000
+      },
+      "equations": [
+        "C D^q x = a(y-x)",
+        "C D^q y = c y - x z",
+        "C D^q z = x y - b z"
+      ],
+      "source": {
+        "citation": "Yadav, Kumar, Leung, and Das, Chinese Journal of Physics 57 (2019) 282-308",
+        "doi": "10.1016/j.cjph.2018.12.001",
+        "url": "https://doi.org/10.1016/j.cjph.2018.12.001",
+        "contract_evidence": [
+          "The paper defines the Caputo derivative and uses Adams-Bashforth-Moulton numerical simulations.",
+          "The unperturbed Lu case uses q=0.96, parameters (36,3,20), and initial state (0.2,0.5,0.3).",
+          "The base step h=0.01 is selected uniformly by this protocol rather than inferred from the paper."
+        ]
+      }
+    },
+    {
+      "candidate_id": "genesio_tesi_mao2025_simplified_caputo_v1",
+      "manifest": {
+        "manifest_id": "genesio_tesi_simplified_caputo_v1",
+        "system": "genesio_tesi_simplified",
+        "parameters": [1.05, 1.1, 0.45],
+        "initial_state": [-0.1, 0.5, 0.2],
+        "q": 0.9,
+        "h": 0.01,
+        "memory_seconds": 10.0,
+        "memory_increments": 1000
+      },
+      "equations": [
+        "C D^q x = y",
+        "C D^q y = z",
+        "C D^q z = -a x - b y - c z + x^2"
+      ],
+      "source": {
+        "citation": "Mao et al., Fractal and Fractional 9 (2025) 74",
+        "doi": "10.3390/fractalfract9020074",
+        "url": "https://doi.org/10.3390/fractalfract9020074",
+        "contract_evidence": [
+          "The paper declares the Caputo operator and the simplified Genesio-Tesi vector field.",
+          "Its reported attractor uses h=0.01 s, initial state (-0.1,0.5,0.2), a=1.05, fixed b=1.1, fixed c=0.45, and q=0.9."
+        ]
+      }
+    },
+    {
+      "candidate_id": "shimizu_morioka_wei2021_caputo_v1",
+      "manifest": {
+        "manifest_id": "shimizu_morioka_caputo_v1",
+        "system": "shimizu_morioka",
+        "parameters": [0.45, 0.75],
+        "initial_state": [1.0, 1.0, 2.0],
+        "q": 0.99,
+        "h": 0.01,
+        "memory_seconds": 10.0,
+        "memory_increments": 1000
+      },
+      "equations": [
+        "C D^q x = y",
+        "C D^q y = x - beta y - x z",
+        "C D^q z = -alpha z + x^2"
+      ],
+      "source": {
+        "citation": "Wei and Zhang, Frontiers in Physics 9 (2021) 636173",
+        "doi": "10.3389/fphy.2021.636173",
+        "url": "https://doi.org/10.3389/fphy.2021.636173",
+        "contract_evidence": [
+          "The paper gives the Caputo predictor-corrector equations for the Shimizu-Morioka vector field.",
+          "The commensurate experiment reports alpha=0.45, beta=0.75, initial state (1,1,2), and chaotic cases including q=0.99.",
+          "The base step h=0.01 is selected uniformly by this protocol rather than inferred from the paper."
+        ]
+      }
+    },
+    {
+      "candidate_id": "liu_bhalekar2010_caputo_v1",
+      "manifest": {
+        "manifest_id": "liu_caputo_v1",
+        "system": "liu",
+        "parameters": [1.0, 2.5, 5.0, 1.0, 4.0, 4.0],
+        "initial_state": [0.2, 0.0, 0.5],
+        "q": 0.92,
+        "h": 0.01,
+        "memory_seconds": 10.0,
+        "memory_increments": 1000
+      },
+      "equations": [
+        "C D^q x = -a x - e y^2",
+        "C D^q y = b y - k x z",
+        "C D^q z = -c z + m x y"
+      ],
+      "source": {
+        "citation": "V. Daftardar-Gejji and S. Bhalekar, Computers and Mathematics with Applications 59 (2010) 1117-1127",
+        "doi": "10.1016/j.camwa.2009.07.003",
+        "url": "https://doi.org/10.1016/j.camwa.2009.07.003",
+        "contract_evidence": [
+          "The primary paper defines the Caputo derivative and uses the fractional Adams-Bashforth-Moulton method.",
+          "The Liu case uses parameters a=e=1, b=2.5, c=5, k=m=4 and initial state (0.2,0,0.5).",
+          "The reported lowest commensurate effective order 2.76 corresponds to q=0.92, and the numerical experiments use h=0.01."
+        ]
+      }
+    }
+  ],
+  "does_not_establish": [
+    "formal qualification before the frozen screen is executed",
+    "a proof of chaos or a positive Lyapunov exponent",
+    "equivalence to a finite-memory embedded implementation",
+    "STM32 timing, energy, or randomness",
+    "automatic inclusion in the primary hardware matrix"
+  ]
+}

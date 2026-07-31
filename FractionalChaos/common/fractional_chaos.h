@@ -11,7 +11,8 @@ extern "C" {
 #endif
 
 #define FC_STATE_DIMENSION       (3u)
-#define FC_SYSTEM_COUNT          (3u)
+#define FC_PARAMETER_COUNT       (6u)
+#define FC_SYSTEM_COUNT          (5u)
 #define FC_MAX_MEMORY_LENGTH     (2000u)
 #define FC_SUM_BLOCK_LENGTH      (32u)
 
@@ -37,7 +38,9 @@ typedef struct {
 typedef enum {
     FC_SYSTEM_LORENZ = 0,
     FC_SYSTEM_ROSSLER = 1,
-    FC_SYSTEM_CHEN = 2
+    FC_SYSTEM_CHEN = 2,
+    FC_SYSTEM_LIU = 3,
+    FC_SYSTEM_HAMMOUCH_MEKKAOUI = 4
 } fc_system_t;
 
 /*
@@ -69,7 +72,7 @@ typedef struct {
     fc_real_t h;
     fc_real_t memory_seconds;
     uint32_t memory_length;
-    fc_real_t parameters[FC_STATE_DIMENSION];
+    fc_real_t parameters[FC_PARAMETER_COUNT];
     fc_vec3f_t initial_state;
 } fc_manifest_t;
 
@@ -81,7 +84,7 @@ typedef struct {
     fc_real_t q;
     fc_real_t h;
     uint32_t memory_length;
-    fc_real_t parameters[FC_STATE_DIMENSION];
+    fc_real_t parameters[FC_PARAMETER_COUNT];
     fc_vec3f_t initial_state;
     const fc_precomputed_tables_t *precomputed_tables;
 } fc_config_t;
@@ -170,6 +173,7 @@ typedef struct {
 } fc_solver_t;
 
 extern const fc_manifest_t FC_MANIFESTS[FC_SYSTEM_COUNT];
+extern const char FC_SELECTED_SYSTEM_MANIFEST_SHA256_TEXT[65];
 
 /*
  * Symbols emitted by tests/generate_tables.py when the corresponding
@@ -181,9 +185,15 @@ extern const fc_precomputed_tables_t FC_ROSSLER_EFORK_TABLES;
 extern const fc_precomputed_tables_t FC_ROSSLER_GL_TABLES;
 extern const fc_precomputed_tables_t FC_CHEN_EFORK_TABLES;
 extern const fc_precomputed_tables_t FC_CHEN_GL_TABLES;
+extern const fc_precomputed_tables_t FC_LIU_EFORK_TABLES;
+extern const fc_precomputed_tables_t FC_LIU_GL_TABLES;
+extern const fc_precomputed_tables_t FC_HAMMOUCH_MEKKAOUI_EFORK_TABLES;
+extern const fc_precomputed_tables_t FC_HAMMOUCH_MEKKAOUI_GL_TABLES;
 extern const fc_precomputed_tables_t FC_LORENZ_M2SFRK_TABLES;
 extern const fc_precomputed_tables_t FC_ROSSLER_M2SFRK_TABLES;
 extern const fc_precomputed_tables_t FC_CHEN_M2SFRK_TABLES;
+extern const fc_precomputed_tables_t FC_LIU_M2SFRK_TABLES;
+extern const fc_precomputed_tables_t FC_HAMMOUCH_MEKKAOUI_M2SFRK_TABLES;
 
 const fc_manifest_t *fc_manifest(fc_system_t system);
 
@@ -194,7 +204,7 @@ fc_status_t fc_config_from_manifest(
 
 fc_status_t fc_rhs(
     fc_system_t system,
-    const fc_real_t parameters[FC_STATE_DIMENSION],
+    const fc_real_t parameters[FC_PARAMETER_COUNT],
     const fc_vec3f_t *state,
     fc_vec3f_t *derivative);
 

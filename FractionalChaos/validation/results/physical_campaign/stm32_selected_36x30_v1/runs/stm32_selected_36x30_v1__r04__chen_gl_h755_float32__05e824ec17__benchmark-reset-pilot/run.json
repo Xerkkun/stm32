@@ -1,0 +1,155 @@
+{
+  "build": {
+    "benchmark_mode": true,
+    "buffered_capture_mode": false,
+    "buffered_capture_samples": null,
+    "calibration_basis": "compile_time_kind4_timing_endpoint",
+    "decimation": 512,
+    "directory": "C:\\Users\\moren\\Desktop\\Codes\\STM32\\FractionalChaos\\build\\campaign-selected\\h755\\benchmark-10000-release",
+    "images": [
+      {
+        "path": "C:\\Users\\moren\\Desktop\\Codes\\STM32\\FractionalChaos\\build\\campaign-selected\\h755\\benchmark-10000-release\\h755_m7_chen_gl.hex",
+        "sha256": "34e3e7fc73a84aa439e00650aac2e6493bc98690ead6366e5eadf87b0646426e"
+      },
+      {
+        "path": "C:\\Users\\moren\\Desktop\\Codes\\STM32\\FractionalChaos\\build\\campaign-selected\\h755\\benchmark-10000-release\\h755_m4_uart.hex",
+        "sha256": "f30993e42d07938bee7fc81cce0ab6ec5e21c52b594085aa594fbbf9d4989fb3"
+      }
+    ],
+    "maps": [
+      {
+        "path": "C:\\Users\\moren\\Desktop\\Codes\\STM32\\FractionalChaos\\build\\campaign-selected\\h755\\benchmark-10000-release\\h755_m7_chen_gl.map",
+        "sha256": "6d958448fd619910ab8dee0fcdc344d7888985a6ab403659c6819d656fc5b8b4"
+      },
+      {
+        "path": "C:\\Users\\moren\\Desktop\\Codes\\STM32\\FractionalChaos\\build\\campaign-selected\\h755\\benchmark-10000-release\\h755_m4_uart.map",
+        "sha256": "151a2cda69832ced19fe96bacf045f112f3dac6849de1e3b975fafef3f88922e"
+      }
+    ],
+    "target": "h755_m7_chen_gl"
+  },
+  "campaign_id": "stm32_selected_36x30_v1",
+  "capture": {
+    "capture_wall_time_s": 2.625,
+    "csv_path": "capture.csv",
+    "csv_sha256": "c9c9533f2817041658eb3ab4b9154b84dbf86601d7dbff24ade30614ccc9fab0",
+    "program_wall_time_s": 8.656000000000859,
+    "raw_path": "capture.bin",
+    "raw_sha256": "fd8e46da7bc7d1385849900cb403d158705a31462111f9607906f87f8e306ef6",
+    "reset_wall_time_s": 0.875,
+    "timing_cycles_path": "timing_cycles.csv",
+    "timing_cycles_sha256": "168d65ece426d69240fbf5c57bdd1749cd1cdf1a2e300014b47156f63cca30d0"
+  },
+  "cell": {
+    "block_id": "block-04",
+    "board": "h755",
+    "cell_id": "chen_gl_h755_float32",
+    "cold_start_id": 4,
+    "method": "gl",
+    "order_index": 138,
+    "representation": "float32",
+    "system": "chen"
+  },
+  "eligible_as_paper_cold_start": false,
+  "eligible_as_primary_benchmark": false,
+  "endpoint": {
+    "complete": true,
+    "expected_blocks": 2500,
+    "expected_first_sequence": 0,
+    "expected_last_sequence": 9996,
+    "first_sequence": 0,
+    "frame_kind": 4,
+    "last_sequence": 9996,
+    "received_blocks": 2500,
+    "rule": "complete_kind4_block_set_not_duration",
+    "values_per_frame": 4,
+    "watchdog_s": 180
+  },
+  "endpoint_name": "benchmark_reset_pilot",
+  "evidence_level": "solver_only_timing_under_stlink_hardware_reset",
+  "experimental_unit": "stlink_hardware_reset_repetition",
+  "finished_utc": "2026-07-29T08:13:10.864448Z",
+  "hardware": {
+    "baud": 921600,
+    "board_name": "NUCLEO-H755ZI-Q",
+    "mcu": "STM32H755ZI",
+    "port": "COM6",
+    "power_removed": false,
+    "probe_serial": "003700344142501220353451",
+    "reset_mode": "stlink_hardware_reset",
+    "reset_preparation": "program_verify_halt_open_and_flush_uart_then_hardware_reset"
+  },
+  "manifest_sha256": "4e1c59f038aa45d4f178e209805601bb57ef42c17efcc817ecefc0184866ce5e",
+  "method_contract": {
+    "wire_id": 1,
+    "wire_name": "gl_caputo"
+  },
+  "representation_contract": {
+    "decoder_name": "float32",
+    "flash_name": "float32",
+    "target_suffix": "",
+    "wire_kind": 1
+  },
+  "reset": {
+    "eligible_as_paper_cold_start": false,
+    "hardware_reset_repetition_id": 4,
+    "mode": "stlink_hardware_reset",
+    "power_removed": false,
+    "preparation": "program_verify_halt_open_and_flush_uart_then_hardware_reset"
+  },
+  "run_id": "stm32_selected_36x30_v1__r04__chen_gl_h755_float32__05e824ec17__benchmark-reset-pilot",
+  "scheduled_campaign_run_id": "stm32_selected_36x30_v1__r04__chen_gl_h755_float32__05e824ec17",
+  "scheduled_primary_run_id": "stm32_selected_36x30_v1__r04__chen_gl_h755_float32__05e824ec17",
+  "schema": "fractional-chaos-physical-run-v1",
+  "source": {
+    "commit": "207d26d68c926ea27ec52911293f443ed84641dc",
+    "dirty": true,
+    "excluded_generated_paths": [
+      "validation/results/physical_campaign",
+      "build/campaign-selected/h755/benchmark-10000-release"
+    ],
+    "status_scope": "source tree excluding generated run and build paths",
+    "status_sha256": "3a3e2a19c276c81ed8ac3037b63a2b86a21a09f29ad9962d2933ca2cb969f072"
+  },
+  "started_utc": "2026-07-29T08:12:55.703464Z",
+  "system_contract": {
+    "contract_canonical_sha256": "8d36e0fd98455edc575e8c6c0f47dc63f99f4aabeb9f2264a506f0f62c8c00e7",
+    "contract_status": "selected_contract",
+    "dt_s": 0.005,
+    "history_states": 2001,
+    "initial_state_words_hex": [
+      "0x3DCCCCCD",
+      "0x3DCCCCCD",
+      "0x3DCCCCCD"
+    ],
+    "manifest_id": "chen_caputo_v1",
+    "memory_increments": 2000,
+    "memory_s": 10,
+    "observation_steps": 8000,
+    "q": 0.9,
+    "transient_steps": 2000,
+    "wire_id": 2
+  },
+  "timing": {
+    "accepted_as_solver_timing": true,
+    "all_cycles_nonzero": true,
+    "received_cycle_values": 10000,
+    "required_cycle_values": 10000,
+    "solver_only_window": true,
+    "uart_active_during_timed_window": false,
+    "warmup_steps": 2000
+  },
+  "transport": {
+    "accepted": true,
+    "bytes_received": 100000,
+    "crc_errors": 0,
+    "identity_mismatches": 0,
+    "invalid_headers": 0,
+    "matching_frames": 2500,
+    "noise_bytes": 0,
+    "nonzero_dropped_frames": 0,
+    "nonzero_status_frames": 0,
+    "trailing_bytes": 0,
+    "valid_frames": 2500
+  }
+}

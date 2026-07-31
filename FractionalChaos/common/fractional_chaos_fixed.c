@@ -17,12 +17,16 @@ _Static_assert(FC_FIXED_RAW_MIN > INT32_MIN,
                "Q1.14.14 requires guard bits in its int32_t container");
 _Static_assert(FC_FIXED_RAW_MAX < INT32_MAX,
                "Q1.14.14 requires guard bits in its int32_t container");
+_Static_assert(FC_FIXED_SYSTEM_LIU == 3,
+               "fixed and float Liu IDs must match");
+_Static_assert(FC_FIXED_SYSTEM_HAMMOUCH_MEKKAOUI == 4,
+               "fixed and float Hammouch--Mekkaoui IDs must match");
 
 typedef struct {
     double q;
     double h;
     uint32_t memory_length;
-    double parameters[FC_FIXED_STATE_DIMENSION];
+    double parameters[FC_FIXED_PARAMETER_COUNT];
     double initial_state[FC_FIXED_STATE_DIMENSION];
 } fc_fixed_manifest_t;
 
@@ -32,22 +36,36 @@ static const fc_fixed_manifest_t FC_FIXED_MANIFESTS[
         0.995,
         0.005,
         2000u,
-        {10.0, 28.0, 8.0 / 3.0},
+        {10.0, 28.0, 8.0 / 3.0, 0.0, 0.0, 0.0},
         {0.1, 0.1, 0.1}
     },
     {
         0.9877,
         0.010,
         1000u,
-        {0.2, 0.2, 5.7},
+        {0.2, 0.2, 5.7, 0.0, 0.0, 0.0},
         {1.0, 0.0, 0.0}
     },
     {
         0.900,
         0.005,
         2000u,
-        {35.0, 3.0, 28.0},
+        {35.0, 3.0, 28.0, 0.0, 0.0, 0.0},
         {0.1, 0.1, 0.1}
+    },
+    {
+        0.920,
+        0.010,
+        1000u,
+        {1.0, 2.5, 5.0, 1.0, 4.0, 4.0},
+        {0.2, 0.0, 0.5}
+    },
+    {
+        0.980,
+        0.010,
+        1000u,
+        {0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+        {0.7, 0.1, 0.0}
     }
 };
 
@@ -216,6 +234,7 @@ fc_fixed_status_t fc_fixed_config_from_manifest(
 {
     const fc_fixed_manifest_t *manifest;
     uint32_t component;
+    uint32_t parameter;
 
     if (config == NULL) {
         return FC_FIXED_ERR_NULL;
@@ -233,11 +252,15 @@ fc_fixed_status_t fc_fixed_config_from_manifest(
     config->q = manifest->q;
     config->h = manifest->h;
     config->memory_length = manifest->memory_length;
+    for (parameter = 0u;
+         parameter < FC_FIXED_PARAMETER_COUNT;
+         ++parameter) {
+        config->parameters[parameter] =
+            manifest->parameters[parameter];
+    }
     for (component = 0u;
          component < FC_FIXED_STATE_DIMENSION;
          ++component) {
-        config->parameters[component] =
-            manifest->parameters[component];
         config->initial_state[component] =
             manifest->initial_state[component];
     }
@@ -246,7 +269,7 @@ fc_fixed_status_t fc_fixed_config_from_manifest(
 
 fc_fixed_status_t fc_fixed_rhs(
     fc_fixed_system_t system,
-    const fc_fixed_vec3_t *parameters,
+    const fc_fixed_parameters_t *parameters,
     const fc_fixed_vec3_t *state,
     fc_fixed_arithmetic_t *arithmetic,
     fc_fixed_vec3_t *derivative)
@@ -260,6 +283,12 @@ fc_fixed_status_t fc_fixed_rhs(
         (parameters != NULL) ? parameters->v[1] : 0;
     const fc_fixed_t p2 =
         (parameters != NULL) ? parameters->v[2] : 0;
+    const fc_fixed_t p3 =
+        (parameters != NULL) ? parameters->v[3] : 0;
+    const fc_fixed_t p4 =
+        (parameters != NULL) ? parameters->v[4] : 0;
+    const fc_fixed_t p5 =
+        (parameters != NULL) ? parameters->v[5] : 0;
 
     if ((parameters == NULL) ||
         (state == NULL) ||
@@ -302,7 +331,7 @@ fc_fixed_status_t fc_fixed_rhs(
                 fc_fixed_sub(x, p2, arithmetic),
                 arithmetic),
             arithmetic);
-    } else {
+    } else if (system == FC_FIXED_SYSTEM_CHEN) {
         derivative->v[0] = fc_fixed_mul(
             p0,
             fc_fixed_sub(y, x, arithmetic),
@@ -321,6 +350,65 @@ fc_fixed_status_t fc_fixed_rhs(
             fc_fixed_mul(x, y, arithmetic),
             fc_fixed_mul(p1, z, arithmetic),
             arithmetic);
+    } else if (system == FC_FIXED_SYSTEM_LIU) {
+        fc_fixed_t product;
+        fc_fixed_t left;
+        fc_fixed_t right;
+
+        product = fc_fixed_mul(p0, x, arithmetic);
+        left = fc_fixed_neg(product, arithmetic);
+        product = fc_fixed_mul(y, y, arithmetic);
+        right = fc_fixed_mul(p3, product, arithmetic);
+        derivative->v[0] = fc_fixed_sub(
+            left, right, arithmetic);
+
+        left = fc_fixed_mul(p1, y, arithmetic);
+        product = fc_fixed_mul(x, z, arithmetic);
+        right = fc_fixed_mul(p4, product, arithmetic);
+        derivative->v[1] = fc_fixed_sub(
+            left, right, arithmetic);
+
+        product = fc_fixed_mul(p2, z, arithmetic);
+        left = fc_fixed_neg(product, arithmetic);
+        product = fc_fixed_mul(x, y, arithmetic);
+        right = fc_fixed_mul(p5, product, arithmetic);
+        derivative->v[2] = fc_fixed_add(
+            left, right, arithmetic);
+    } else {
+        const fc_fixed_t two =
+            (fc_fixed_t)(2 * FC_FIXED_SCALE);
+        const fc_fixed_t three =
+            (fc_fixed_t)(3 * FC_FIXED_SCALE);
+        const fc_fixed_t four =
+            (fc_fixed_t)(4 * FC_FIXED_SCALE);
+        const fc_fixed_t seven =
+            (fc_fixed_t)(7 * FC_FIXED_SCALE);
+        fc_fixed_t product;
+        fc_fixed_t left;
+        fc_fixed_t right;
+
+        product = fc_fixed_mul(two, x, arithmetic);
+        left = fc_fixed_neg(product, arithmetic);
+        right = fc_fixed_mul(y, y, arithmetic);
+        derivative->v[0] = fc_fixed_sub(
+            left, right, arithmetic);
+
+        product = fc_fixed_mul(x, z, arithmetic);
+        product = fc_fixed_mul(four, product, arithmetic);
+        left = fc_fixed_neg(product, arithmetic);
+        right = fc_fixed_mul(three, y, arithmetic);
+        left = fc_fixed_add(left, right, arithmetic);
+        right = fc_fixed_mul(z, z, arithmetic);
+        derivative->v[1] = fc_fixed_sub(
+            left, right, arithmetic);
+
+        product = fc_fixed_mul(x, y, arithmetic);
+        left = fc_fixed_mul(four, product, arithmetic);
+        right = fc_fixed_mul(seven, z, arithmetic);
+        left = fc_fixed_sub(left, right, arithmetic);
+        right = fc_fixed_mul(y, z, arithmetic);
+        derivative->v[2] = fc_fixed_add(
+            left, right, arithmetic);
     }
     return FC_FIXED_OK;
 }
@@ -328,6 +416,7 @@ fc_fixed_status_t fc_fixed_rhs(
 static int fc_fixed_config_is_valid(const fc_fixed_config_t *config)
 {
     uint32_t component;
+    uint32_t parameter;
 
     if ((config == NULL) ||
         !fc_fixed_valid_system(config->system) ||
@@ -342,11 +431,17 @@ static int fc_fixed_config_is_valid(const fc_fixed_config_t *config)
         return 0;
     }
 
+    for (parameter = 0u;
+         parameter < FC_FIXED_PARAMETER_COUNT;
+         ++parameter) {
+        if (!fc_fixed_isfinite(config->parameters[parameter])) {
+            return 0;
+        }
+    }
     for (component = 0u;
          component < FC_FIXED_STATE_DIMENSION;
          ++component) {
-        if (!fc_fixed_isfinite(config->parameters[component]) ||
-            !fc_fixed_isfinite(config->initial_state[component])) {
+        if (!fc_fixed_isfinite(config->initial_state[component])) {
             return 0;
         }
     }
@@ -609,6 +704,7 @@ fc_fixed_status_t fc_fixed_solver_init(
 {
     fc_fixed_status_t status;
     uint32_t component;
+    uint32_t parameter;
 
     if ((solver == NULL) || (config == NULL)) {
         return FC_FIXED_ERR_NULL;
@@ -625,16 +721,20 @@ fc_fixed_status_t fc_fixed_solver_init(
     solver->config = *config;
     solver->workspace = workspace;
 
-    for (component = 0u;
-         component < FC_FIXED_STATE_DIMENSION;
-         ++component) {
+    for (parameter = 0u;
+         parameter < FC_FIXED_PARAMETER_COUNT;
+         ++parameter) {
         status = fc_fixed_from_double(
-            config->parameters[component],
+            config->parameters[parameter],
             &solver->arithmetic,
-            &solver->parameters.v[component]);
+            &solver->parameters.v[parameter]);
         if (status != FC_FIXED_OK) {
             return status;
         }
+    }
+    for (component = 0u;
+         component < FC_FIXED_STATE_DIMENSION;
+         ++component) {
         status = fc_fixed_from_double(
             config->initial_state[component],
             &solver->arithmetic,

@@ -20,13 +20,27 @@ from typing import Any
 import numpy as np
 
 from abm_oracle import caputo_abm_full_memory, fractional_system_rhs
+from alternative_systems import alternative_system_rhs
 
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
-DEFAULT_MANIFESTS = HERE / "candidate_manifests.json"
-DEFAULT_OUTPUT = HERE / "results" / "embedded_vs_abm_short_horizon"
-SYSTEM_NAMES = ("lorenz", "rossler", "chen")
+DEFAULT_MANIFESTS = HERE / "selected_system_manifests_v1.json"
+DEFAULT_OUTPUT = (
+    HERE / "results" / "embedded_vs_abm_selected_short_horizon_v1"
+)
+SYSTEM_IDS = {
+    "lorenz": 0,
+    "rossler": 1,
+    "chen": 2,
+    "liu": 3,
+    "hammouch_mekkaoui": 4,
+}
+SUPPORTED_COHORTS = {
+    ("lorenz", "rossler", "chen"),
+    ("chen", "liu", "hammouch_mekkaoui"),
+}
+KERNEL_SYSTEM_COUNT = len(SYSTEM_IDS)
 METHOD_NAMES = ("efork3", "gl", "m2sfrk")
 REPRESENTATIONS = ("float32", "fixed_q14_q30")
 FIELDS = (
@@ -66,14 +80,23 @@ def utc_now() -> str:
 def load_manifest(path: Path) -> list[dict[str, Any]]:
     payload = json.loads(path.read_text(encoding="utf-8"))
     manifests = payload.get("manifests")
+    if manifests is None and isinstance(payload.get("systems"), list):
+        manifests = [
+            entry.get("contract")
+            for entry in payload["systems"]
+            if isinstance(entry, dict)
+        ]
     if not isinstance(manifests, list) or len(manifests) != 3:
         raise ComparisonError("se requieren exactamente tres manifiestos")
-    systems = [str(item.get("system")) for item in manifests]
-    if tuple(systems) != SYSTEM_NAMES:
+    if not all(isinstance(item, dict) for item in manifests):
+        raise ComparisonError("cada manifiesto debe ser un objeto JSON")
+    systems = tuple(str(item.get("system")) for item in manifests)
+    if systems not in SUPPORTED_COHORTS:
         raise ComparisonError(
-            f"el orden de sistemas debe ser {SYSTEM_NAMES}, no {systems}"
+            "la cohorte debe ser una de "
+            f"{sorted(SUPPORTED_COHORTS)}, no {systems}"
         )
-    return manifests
+    return manifests  # type: ignore[return-value]
 
 
 def run_dump(executable: Path, steps: int) -> list[dict[str, str]]:
@@ -103,7 +126,7 @@ def run_dump(executable: Path, steps: int) -> list[dict[str, str]]:
             f"cabecera C inesperada: {reader.fieldnames}"
         )
     rows = list(reader)
-    expected = 3 * 3 * 2 * (steps + 1)
+    expected = KERNEL_SYSTEM_COUNT * 3 * 2 * (steps + 1)
     if len(rows) != expected:
         raise ComparisonError(
             f"el dump contiene {len(rows)} filas, se esperaban {expected}"
@@ -201,15 +224,23 @@ def build_report(
     cells: list[dict[str, Any]] = []
     reference_rows: list[dict[str, Any]] = []
 
-    for system, manifest in enumerate(manifests):
+    for manifest in manifests:
+        system_name = str(manifest["system"])
+        system = SYSTEM_IDS[system_name]
         base_h = float(manifest["h"])
         steps = int(round(horizon_s / base_h))
         if abs((steps * base_h) - horizon_s) > 1.0e-12:
             raise ComparisonError("el horizonte no es múltiplo del paso")
+        if system_name in {"lorenz", "rossler", "chen"}:
+            right_hand_side = fractional_system_rhs(
+                system_name, manifest["parameters"]
+            )
+        else:
+            right_hand_side = alternative_system_rhs(
+                system_name, manifest["parameters"]
+            )
         reference_result = caputo_abm_full_memory(
-            fractional_system_rhs(
-                str(manifest["system"]), manifest["parameters"]
-            ),
+            right_hand_side,
             manifest["initial_state"],
             q=float(manifest["q"]),
             h=base_h / resolution_divisor,
@@ -220,7 +251,7 @@ def build_report(
             raise ComparisonError("falló la alineación temporal ABM")
         reference_rows.extend(
             {
-                "system": SYSTEM_NAMES[system],
+                "system": system_name,
                 "step": step,
                 "time_s": step * base_h,
                 "abm_h": base_h / resolution_divisor,
@@ -244,7 +275,7 @@ def build_report(
                 trajectories[(method, representation)] = candidate
                 cells.append(
                     {
-                        "system": SYSTEM_NAMES[system],
+                        "system": system_name,
                         "method": METHOD_NAMES[method],
                         "representation": representation,
                         "h": base_h,
@@ -273,7 +304,7 @@ def build_report(
             pair = next(
                 item
                 for item in cells
-                if item["system"] == SYSTEM_NAMES[system]
+                if item["system"] == system_name
                 and item["method"] == METHOD_NAMES[method]
                 and item["representation"] == "fixed_q14_q30"
             )
@@ -315,6 +346,9 @@ def build_report(
                 ROOT / "common" / "fractional_chaos_fixed.c"
             ),
             "abm_source_sha256": sha256_file(HERE / "abm_oracle.py"),
+            "alternative_rhs_source_sha256": sha256_file(
+                HERE / "alternative_systems.py"
+            ),
             "manifest": str(manifest_path.resolve()),
             "manifest_sha256": sha256_file(manifest_path.resolve()),
         },

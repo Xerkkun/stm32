@@ -57,5 +57,20 @@ def test_expected_matrix_has_36_unique_cells_and_targets() -> None:
 
     assert len(cells) == 36
     assert len(targets) == 36
-    assert "f746_lorenz_m2sfrk" in targets
+    assert "f746_liu_m2sfrk" in targets
     assert "h755_m7_chen_gl_fixed" in targets
+    assert "h755_m7_hammouch_mekkaoui_efork3_fixed" in targets
+
+
+def test_embedded_manifest_hash_verifier_rejects_wrong_image(
+    tmp_path: Path,
+) -> None:
+    expected = "a" * 64
+    valid = tmp_path / "valid.elf"
+    valid.write_bytes(b"prefix" + expected.encode("ascii") + b"suffix")
+    MODULE.verify_embedded_manifest_hash(valid, expected)
+
+    invalid = tmp_path / "invalid.elf"
+    invalid.write_bytes(b"no build identity")
+    with pytest.raises(MODULE.ResourceError, match="no contiene"):
+        MODULE.verify_embedded_manifest_hash(invalid, expected)

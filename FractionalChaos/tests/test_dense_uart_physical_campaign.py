@@ -189,6 +189,20 @@ def test_rossler_classic_dense_manifest_is_scoped_and_preserves_history() -> Non
     )
 
 
+def test_rossler_classic_contract_is_rejected_outside_approved_campaign() -> None:
+    manifest, _digest = campaign.load_manifest(
+        ROSSLER_CLASSIC_DENSE_MANIFEST
+    )
+    unapproved = copy.deepcopy(manifest)
+    unapproved["campaign_id"] = "stm32_unapproved_rossler_classic_v2"
+
+    with pytest.raises(
+        campaign.CampaignError,
+        match="manifest_id de rossler no coincide",
+    ):
+        campaign.validate_manifest(unapproved)
+
+
 def test_dense_build_profile_is_dedicated_and_enables_buffering() -> None:
     manifest, _digest = dense_manifest()
     cell = dense_cell()

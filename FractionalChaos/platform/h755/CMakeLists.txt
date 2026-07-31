@@ -15,6 +15,22 @@ option(FC_H755_SMOKE_DIAGNOSTICS
 option(FC_H755_BENCHMARK_MODE
     "Guardar 10000 conteos DWT y emitirlos después como bloques de timing"
     OFF)
+option(FC_H755_ENERGY_MARKER
+    "Mantener PE0/D34 alto sólo durante la ventana de benchmark"
+    OFF)
+set(FC_H755_ENERGY_WORK_MULTIPLIER
+    "1"
+    CACHE STRING
+    "Pasos de energia como multiplo de los 10000 conteos DWT retenidos")
+option(FC_H755_CLOCK_REFERENCE
+    "Emit a 100 ms DWT-clocked pulse on PA0/D32 after START/READY"
+    OFF)
+option(FC_H755_RUNTIME_PROBE
+    "Paint and report dedicated CM7/CM4 stack-watermark regions"
+    OFF)
+option(FC_H755_PRIMARY_HANDSHAKE
+    "Esperar START del host antes de un benchmark primario"
+    OFF)
 option(FC_H755_BUFFERED_CAPTURE_MODE
     "Retener cada paso en RAM y transmitirlo despues por UART"
     OFF)
@@ -35,9 +51,36 @@ if(NOT FC_H755_BUFFERED_CAPTURE_SAMPLES MATCHES "^[1-9][0-9]*$")
     message(FATAL_ERROR
         "FC_H755_BUFFERED_CAPTURE_SAMPLES debe ser un entero positivo")
 endif()
+if(NOT FC_H755_ENERGY_WORK_MULTIPLIER MATCHES "^[1-9][0-9]*$" OR
+        FC_H755_ENERGY_WORK_MULTIPLIER GREATER 512)
+    message(FATAL_ERROR
+        "FC_H755_ENERGY_WORK_MULTIPLIER debe estar entre 1 y 512")
+endif()
+if(NOT FC_H755_ENERGY_MARKER AND
+        NOT FC_H755_ENERGY_WORK_MULTIPLIER STREQUAL "1")
+    message(FATAL_ERROR
+        "FC_H755_ENERGY_WORK_MULTIPLIER requiere FC_H755_ENERGY_MARKER")
+endif()
+if(NOT FC_H755_PRIMARY_HANDSHAKE AND
+        NOT FC_H755_ENERGY_WORK_MULTIPLIER STREQUAL "1")
+    message(FATAL_ERROR
+        "La ventana energetica ampliada requiere FC_H755_PRIMARY_HANDSHAKE")
+endif()
 if(FC_H755_BUFFERED_CAPTURE_MODE AND FC_H755_BENCHMARK_MODE)
     message(FATAL_ERROR
         "La captura en RAM y el benchmark son mutuamente excluyentes")
+endif()
+if(FC_H755_PRIMARY_HANDSHAKE AND NOT FC_H755_BENCHMARK_MODE)
+    message(FATAL_ERROR
+        "FC_H755_PRIMARY_HANDSHAKE requiere FC_H755_BENCHMARK_MODE")
+endif()
+if(FC_H755_CLOCK_REFERENCE AND NOT FC_H755_PRIMARY_HANDSHAKE)
+    message(FATAL_ERROR
+        "FC_H755_CLOCK_REFERENCE requires FC_H755_PRIMARY_HANDSHAKE")
+endif()
+if(FC_H755_RUNTIME_PROBE AND NOT FC_H755_PRIMARY_HANDSHAKE)
+    message(FATAL_ERROR
+        "FC_H755_RUNTIME_PROBE requires FC_H755_PRIMARY_HANDSHAKE")
 endif()
 if(FC_H755_BUFFERED_CAPTURE_MODE AND
         NOT FC_H755_OUTPUT_DECIMATION STREQUAL "1")
@@ -108,6 +151,7 @@ set(_fc_h755_cm7_sources
     "${FC_H755_ROOT}/common/fractional_chaos.c"
     "${FC_H755_ROOT}/common/fractional_chaos_fixed.c"
     "${FC_H755_ROOT}/transport/fc_shared_queue.c"
+    "${FC_H755_ROOT}/transport/fc_runtime_probe.c"
     "${_fc_h755_startup}"
     "${_fc_h755_system}"
     ${_fc_h755_hal_common})
@@ -119,7 +163,9 @@ set(_fc_h755_cm4_sources
     "${CMAKE_CURRENT_LIST_DIR}/shared/h755_shared_memory.c"
     "${CMAKE_CURRENT_LIST_DIR}/shared/h755_syscalls.c"
     "${FC_H755_ROOT}/transport/fc_protocol.c"
+    "${FC_H755_ROOT}/transport/fc_start_handshake.c"
     "${FC_H755_ROOT}/transport/fc_shared_queue.c"
+    "${FC_H755_ROOT}/transport/fc_runtime_probe.c"
     "${_fc_h755_startup}"
     "${_fc_h755_system}"
     ${_fc_h755_hal_common}
@@ -170,6 +216,7 @@ function(fc_h755_apply_common target core linker_script)
     target_link_options(${target} PRIVATE
         ${_core_options}
         "-T${linker_script}"
+        $<$<BOOL:${FC_H755_RUNTIME_PROBE}>:-Wl,--defsym=FC_RUNTIME_PROBE_ENABLED=1>
         "-Wl,-Map=$<TARGET_FILE_DIR:${target}>/${target}.map"
         "-Wl,--cref"
         "-Wl,--print-memory-usage")
@@ -207,6 +254,11 @@ function(fc_h755_add_m7_target
         FC_H755_BUFFERED_CAPTURE_MODE=$<BOOL:${FC_H755_BUFFERED_CAPTURE_MODE}>
         FC_H755_BUFFERED_CAPTURE_SAMPLES=${FC_H755_BUFFERED_CAPTURE_SAMPLES}
         FC_H755_BENCHMARK_MODE=$<BOOL:${FC_H755_BENCHMARK_MODE}>
+        FC_H755_ENERGY_MARKER=$<BOOL:${FC_H755_ENERGY_MARKER}>
+        FC_H755_ENERGY_WORK_MULTIPLIER=${FC_H755_ENERGY_WORK_MULTIPLIER}
+        FC_H755_CLOCK_REFERENCE=$<BOOL:${FC_H755_CLOCK_REFERENCE}>
+        FC_H755_RUNTIME_PROBE=$<BOOL:${FC_H755_RUNTIME_PROBE}>
+        FC_H755_PRIMARY_HANDSHAKE=$<BOOL:${FC_H755_PRIMARY_HANDSHAKE}>
         FC_REQUIRE_PRECOMPUTED_TABLES=1
         FC_PRECOMPUTED_TABLES_SYMBOL=${table_symbol})
     target_link_libraries(${target} PRIVATE m)
@@ -243,6 +295,27 @@ fc_h755_add_m7_target(
 fc_h755_add_m7_target(
     h755_m7_chen_m2sfrk 2 2
     fc_chen_m2sfrk.c FC_CHEN_M2SFRK_TABLES 0)
+fc_h755_add_m7_target(
+    h755_m7_liu_efork3 3 0
+    fc_liu_efork3.c FC_LIU_EFORK_TABLES 0)
+fc_h755_add_m7_target(
+    h755_m7_liu_gl 3 1
+    fc_liu_gl.c FC_LIU_GL_TABLES 0)
+fc_h755_add_m7_target(
+    h755_m7_liu_m2sfrk 3 2
+    fc_liu_m2sfrk.c FC_LIU_M2SFRK_TABLES 0)
+fc_h755_add_m7_target(
+    h755_m7_hammouch_mekkaoui_efork3 4 0
+    fc_hammouch_mekkaoui_efork3.c
+    FC_HAMMOUCH_MEKKAOUI_EFORK_TABLES 0)
+fc_h755_add_m7_target(
+    h755_m7_hammouch_mekkaoui_gl 4 1
+    fc_hammouch_mekkaoui_gl.c
+    FC_HAMMOUCH_MEKKAOUI_GL_TABLES 0)
+fc_h755_add_m7_target(
+    h755_m7_hammouch_mekkaoui_m2sfrk 4 2
+    fc_hammouch_mekkaoui_m2sfrk.c
+    FC_HAMMOUCH_MEKKAOUI_M2SFRK_TABLES 0)
 
 fc_h755_add_m7_target(
     h755_m7_lorenz_efork3_fixed 0 0
@@ -271,6 +344,27 @@ fc_h755_add_m7_target(
 fc_h755_add_m7_target(
     h755_m7_chen_m2sfrk_fixed 2 2
     fc_chen_m2sfrk.c FC_CHEN_M2SFRK_TABLES 1)
+fc_h755_add_m7_target(
+    h755_m7_liu_efork3_fixed 3 0
+    fc_liu_efork3.c FC_LIU_EFORK_TABLES 1)
+fc_h755_add_m7_target(
+    h755_m7_liu_gl_fixed 3 1
+    fc_liu_gl.c FC_LIU_GL_TABLES 1)
+fc_h755_add_m7_target(
+    h755_m7_liu_m2sfrk_fixed 3 2
+    fc_liu_m2sfrk.c FC_LIU_M2SFRK_TABLES 1)
+fc_h755_add_m7_target(
+    h755_m7_hammouch_mekkaoui_efork3_fixed 4 0
+    fc_hammouch_mekkaoui_efork3.c
+    FC_HAMMOUCH_MEKKAOUI_EFORK_TABLES 1)
+fc_h755_add_m7_target(
+    h755_m7_hammouch_mekkaoui_gl_fixed 4 1
+    fc_hammouch_mekkaoui_gl.c
+    FC_HAMMOUCH_MEKKAOUI_GL_TABLES 1)
+fc_h755_add_m7_target(
+    h755_m7_hammouch_mekkaoui_m2sfrk_fixed 4 2
+    fc_hammouch_mekkaoui_m2sfrk.c
+    FC_HAMMOUCH_MEKKAOUI_M2SFRK_TABLES 1)
 
 add_executable(h755_m4_uart ${_fc_h755_cm4_sources})
 if(FC_H755_SMOKE_DIAGNOSTICS)
@@ -280,6 +374,10 @@ else()
     target_compile_definitions(h755_m4_uart PRIVATE
         FC_H755_SMOKE_DIAGNOSTICS=0)
 endif()
+target_compile_definitions(h755_m4_uart PRIVATE
+    FC_H755_PRIMARY_HANDSHAKE=$<BOOL:${FC_H755_PRIMARY_HANDSHAKE}>
+    FC_H755_BENCHMARK_MODE=$<BOOL:${FC_H755_BENCHMARK_MODE}>
+    FC_H755_RUNTIME_PROBE=$<BOOL:${FC_H755_RUNTIME_PROBE}>)
 fc_h755_apply_common(
     h755_m4_uart
     cm4

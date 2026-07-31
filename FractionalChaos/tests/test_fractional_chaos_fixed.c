@@ -74,6 +74,9 @@ static void test_manifest_and_validation(void)
     fc_fixed_config_t config;
     fc_fixed_solver_t solver;
 
+    CHECK(FC_FIXED_SYSTEM_LIU == 3);
+    CHECK(FC_FIXED_SYSTEM_HAMMOUCH_MEKKAOUI == 4);
+
     CHECK_STATUS(fc_fixed_config_from_manifest(
         FC_FIXED_SYSTEM_LORENZ,
         FC_FIXED_METHOD_EFORK3,
@@ -97,6 +100,40 @@ static void test_manifest_and_validation(void)
     CHECK(config.parameters[2] == 5.7);
     CHECK(config.initial_state[0] == 1.0);
     CHECK(config.initial_state[1] == 0.0);
+    CHECK(config.initial_state[2] == 0.0);
+
+    CHECK_STATUS(fc_fixed_config_from_manifest(
+        FC_FIXED_SYSTEM_LIU,
+        FC_FIXED_METHOD_EFORK3,
+        &config));
+    CHECK(config.q == 0.92);
+    CHECK(config.h == 0.01);
+    CHECK(config.memory_length == 1000u);
+    CHECK(config.parameters[0] == 1.0);
+    CHECK(config.parameters[1] == 2.5);
+    CHECK(config.parameters[2] == 5.0);
+    CHECK(config.parameters[3] == 1.0);
+    CHECK(config.parameters[4] == 4.0);
+    CHECK(config.parameters[5] == 4.0);
+    CHECK(config.initial_state[0] == 0.2);
+    CHECK(config.initial_state[1] == 0.0);
+    CHECK(config.initial_state[2] == 0.5);
+
+    CHECK_STATUS(fc_fixed_config_from_manifest(
+        FC_FIXED_SYSTEM_HAMMOUCH_MEKKAOUI,
+        FC_FIXED_METHOD_EFORK3,
+        &config));
+    CHECK(config.q == 0.98);
+    CHECK(config.h == 0.01);
+    CHECK(config.memory_length == 1000u);
+    CHECK(config.parameters[0] == 0.0);
+    CHECK(config.parameters[1] == 0.0);
+    CHECK(config.parameters[2] == 0.0);
+    CHECK(config.parameters[3] == 0.0);
+    CHECK(config.parameters[4] == 0.0);
+    CHECK(config.parameters[5] == 0.0);
+    CHECK(config.initial_state[0] == 0.7);
+    CHECK(config.initial_state[1] == 0.1);
     CHECK(config.initial_state[2] == 0.0);
 
     CHECK(fc_fixed_config_from_manifest(
@@ -129,7 +166,7 @@ static void test_manifest_and_validation(void)
 static void test_rhs_lorenz(void)
 {
     fc_fixed_arithmetic_t arithmetic = {0u};
-    fc_fixed_vec3_t parameters;
+    fc_fixed_parameters_t parameters = {{0}};
     fc_fixed_vec3_t state;
     fc_fixed_vec3_t derivative;
 
@@ -169,6 +206,101 @@ static void test_rhs_lorenz(void)
         &state,
         &arithmetic,
         &derivative) == FC_FIXED_ERR_NULL);
+}
+
+static void test_rhs_selected_systems(void)
+{
+    static const fc_fixed_t expected[2][FC_FIXED_STATE_DIMENSION] = {
+        {
+            (fc_fixed_t)(-5 * FC_FIXED_SCALE),
+            (fc_fixed_t)(-7 * FC_FIXED_SCALE),
+            (fc_fixed_t)(-7 * FC_FIXED_SCALE)
+        },
+        {
+            (fc_fixed_t)(-6 * FC_FIXED_SCALE),
+            (fc_fixed_t)(-15 * FC_FIXED_SCALE),
+            (fc_fixed_t)(-7 * FC_FIXED_SCALE)
+        }
+    };
+    fc_fixed_parameters_t parameters = {{0}};
+    fc_fixed_vec3_t state;
+    fc_fixed_vec3_t derivative;
+    fc_fixed_arithmetic_t arithmetic = {0u};
+    uint32_t component;
+
+    CHECK_STATUS(fc_fixed_from_double(
+        1.0, &arithmetic, &parameters.v[0]));
+    CHECK_STATUS(fc_fixed_from_double(
+        2.5, &arithmetic, &parameters.v[1]));
+    CHECK_STATUS(fc_fixed_from_double(
+        5.0, &arithmetic, &parameters.v[2]));
+    CHECK_STATUS(fc_fixed_from_double(
+        1.0, &arithmetic, &parameters.v[3]));
+    CHECK_STATUS(fc_fixed_from_double(
+        4.0, &arithmetic, &parameters.v[4]));
+    CHECK_STATUS(fc_fixed_from_double(
+        4.0, &arithmetic, &parameters.v[5]));
+    CHECK_STATUS(fc_fixed_from_double(
+        1.0, &arithmetic, &state.v[0]));
+    CHECK_STATUS(fc_fixed_from_double(
+        2.0, &arithmetic, &state.v[1]));
+    CHECK_STATUS(fc_fixed_from_double(
+        3.0, &arithmetic, &state.v[2]));
+
+    CHECK_STATUS(fc_fixed_rhs(
+        FC_FIXED_SYSTEM_LIU,
+        &parameters,
+        &state,
+        &arithmetic,
+        &derivative));
+    for (component = 0u;
+         component < FC_FIXED_STATE_DIMENSION;
+         ++component) {
+        CHECK(derivative.v[component] == expected[0][component]);
+    }
+    CHECK(arithmetic.saturation_count == 0u);
+
+    parameters = (fc_fixed_parameters_t){{0}};
+    CHECK_STATUS(fc_fixed_rhs(
+        FC_FIXED_SYSTEM_HAMMOUCH_MEKKAOUI,
+        &parameters,
+        &state,
+        &arithmetic,
+        &derivative));
+    for (component = 0u;
+         component < FC_FIXED_STATE_DIMENSION;
+         ++component) {
+        CHECK(derivative.v[component] == expected[1][component]);
+    }
+    CHECK(arithmetic.saturation_count == 0u);
+
+    state.v[0] = (fc_fixed_t)(16000 * FC_FIXED_SCALE);
+    state.v[1] = (fc_fixed_t)(16000 * FC_FIXED_SCALE);
+    state.v[2] = (fc_fixed_t)(16000 * FC_FIXED_SCALE);
+    arithmetic.saturation_count = 0u;
+    parameters.v[0] = (fc_fixed_t)(1 * FC_FIXED_SCALE);
+    parameters.v[1] = (fc_fixed_t)(5 * FC_FIXED_SCALE / 2);
+    parameters.v[2] = (fc_fixed_t)(5 * FC_FIXED_SCALE);
+    parameters.v[3] = (fc_fixed_t)(1 * FC_FIXED_SCALE);
+    parameters.v[4] = (fc_fixed_t)(4 * FC_FIXED_SCALE);
+    parameters.v[5] = (fc_fixed_t)(4 * FC_FIXED_SCALE);
+    CHECK_STATUS(fc_fixed_rhs(
+        FC_FIXED_SYSTEM_LIU,
+        &parameters,
+        &state,
+        &arithmetic,
+        &derivative));
+    CHECK(arithmetic.saturation_count > 0u);
+
+    arithmetic.saturation_count = 0u;
+    parameters = (fc_fixed_parameters_t){{0}};
+    CHECK_STATUS(fc_fixed_rhs(
+        FC_FIXED_SYSTEM_HAMMOUCH_MEKKAOUI,
+        &parameters,
+        &state,
+        &arithmetic,
+        &derivative));
+    CHECK(arithmetic.saturation_count > 0u);
 }
 
 static void test_m2_q_one_midpoint(void)
@@ -298,10 +430,20 @@ static const fc_fixed_t GOLDEN_32
         {47922, 80290, 6158},
         {136682, 226630, 38516},
         {493214, 547510, 665170}
+    },
+    {
+        {2504, -1305, 2402},
+        {2288, -1774, 1402},
+        {1983, -2468, 596}
+    },
+    {
+        {7500, 2911, 567},
+        {5820, 3930, 678},
+        {5516, 4243, 717}
     }
 };
 
-static void test_nine_candidate_golden_states(void)
+static void test_fifteen_candidate_golden_states(void)
 {
     static fc_fixed_workspace_t workspace;
     fc_fixed_solver_t solver;
@@ -385,10 +527,11 @@ int main(void)
     test_arithmetic_contract();
     test_manifest_and_validation();
     test_rhs_lorenz();
+    test_rhs_selected_systems();
     test_m2_q_one_midpoint();
     test_coefficient_diagnostics();
     test_short_memory_ring_wrap();
-    test_nine_candidate_golden_states();
+    test_fifteen_candidate_golden_states();
 
     if (failures != 0) {
         fprintf(stderr, "%d test assertion(s) failed\n", failures);
